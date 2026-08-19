@@ -6,14 +6,30 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Local Owner-designated workspace: `D:\deep-learning-hank`
 
+Canonical handoff:
+
+`docs/governance/DLH_SESSION_HANDOFF_AFTER_TIER0_NUMERICAL_ROBUSTNESS_COMPLETE_2026_08_19.md`
+
 ## Governance state
 
-- live GitHub `main` = synchronized repository/governance authority；
-- open GitHub Issue = sole DSH Builder task authority；
-- `tasks/TASK_INDEX_CURRENT.md` = synchronized Issue pointer only；
+- live GitHub `main` = sole synchronized repository/governance authority；
+- an open GitHub Issue explicitly pointed to by `tasks/TASK_INDEX_CURRENT.md` = sole DSH Builder task authority；
 - DSH = bounded Builder；
-- ChatGPT = independent GitHub reviewer / scientific-route authority / task issuer；
-- Owner = final scientific-direction authority。
+- ChatGPT = independent fresh-GitHub reviewer / scientific-route authority / task issuer；
+- Owner = final scientific-direction authority；
+- Builder completion summary is not acceptance evidence；
+- correct fail-closed scientific BLOCKED results may be accepted as evidence without being relabeled PASS；
+- current `main` is unprotected unless a future fresh GitHub read proves otherwise.
+
+## Current task state
+
+`NO_ACTIVE_GITHUB_ISSUE__DLH_3_NOT_YET_ISSUED`
+
+**Active Builder authority: NONE.**
+
+Issue #9 is accepted and closed. No successor Builder Issue has been created in this session.
+
+DSH must not perform new work until a new open GitHub Issue is created and `TASK_INDEX_CURRENT.md` points to it.
 
 ## Accepted stages
 
@@ -25,92 +41,189 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - Issue #6 DLH-2B steady-state GE: accepted/closed after R1 at `c562ce3a2743ac779123918e9aab5f37044b564a`, D2 only.
 - Issue #7 DLH-2C robustness: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED`, accepted/closed at `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3`.
 - Issue #8 DLH-2C-B1 asset-domain adequacy: `DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED`, accepted/closed at `249c9dcaf3c16b4b308e9d83daf232a23dce79cb`.
+- Issue #9 DLH-2C-B2 fixed-domain third-level grid convergence: `DLH_2C_B2_FIXED_DOMAIN_GRID_CONVERGENCE_ACCEPTED`, accepted/closed at `5632ee1cbc781d67daf305f315f556506da0f6df`, D2 only.
 
-## Accepted Tier-0 computational state
+Issue #9 independent acceptance comment id:
 
-The accepted scientific object remains a small one-region real HA/Aiyagari benchmark under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
+`5342147245`.
 
-`K -> (w,r) -> balanced transfer -> HJB -> stationary KFE -> A(K) -> K-A(K)`.
+## Final accepted Tier-0 scientific object
 
-Accepted numerical/economic modules remain frozen.
+The accepted object remains a small **real one-region HA/Aiyagari** benchmark under:
 
-### Issue #7 accepted blocker
+`VALIDATION_FIXTURE_NOT_CALIBRATION`.
+
+It is **not** yet genuine HANK.
+
+Accepted closure:
+
+`K -> (w,r) -> balanced transfer -> HJB -> stationary KFE -> A(K) -> R_K(K)=K-A(K)`.
+
+Accepted structural/numerical contracts include:
+
+- one liquid/productive asset;
+- productivity states `(0.5,1.5)`, symmetric CTMC intensities `0.25/0.25`;
+- CRRA `gamma=2.0`, `rho_hh=0.01`, inelastic labor;
+- labor tax `tau_l=0.15`;
+- state-constraint/no-outward-drift HJB;
+- continuous-time infinitesimal generator / intensity matrix, not row-stochastic;
+- stationary KFE `G.T @ g = 0`;
+- two-factor Cobb-Douglas validation fixture `A=1.0`, `alpha_k=0.30`, `delta=0.02`;
+- `G=0.0` balanced transfer;
+- deterministic `brentq` capital clearing;
+- accepted HJB/KFE/accounting/reproducibility thresholds.
+
+## Accepted robustness provenance
+
+### Issue #7 — boundary blocker
 
 `a_max=50` is not adequate:
-- matched-spacing `K50=27.2438081362`, `K100=28.2060803850`;
+
+- `K50=27.243808136211925`;
+- `K100=28.206080385009184`;
 - `d50_100=0.03411577346665587 > 0.005`;
-- upper-boundary and upper-tail mass fall sharply when the bound is widened.
+- upper-boundary/top-tail mass falls sharply after domain widening.
 
-### Issue #8 accepted blocker and new information
+Issue #7 remains `BLOCKED_ACCEPTED`, not PASS.
 
-Asset-bound convergence itself is now strongly supported on the wider domain:
+### Issue #8 — asset-domain convergence plus cross-domain grid blocker
 
-- C50→C100: `0.03411577346665587`;
-- C100→C150: `0.000453983596378`;
-- C150→C200: `2.756408258e-06`;
-- C200 upper-boundary mass `5.50488358e-10`;
-- C200 top-5% mass `1.36530748e-08`;
-- F100→F200 fine-spacing bound observation `0.000445042795539 < 0.005`.
+Matched coarse-spacing bound sequence:
 
-Thus the material upper-bound problem exposed by Issue #7 is resolved by the evidence up to `a_max=200`.
+- `d50_100 = 0.03411577346665587`;
+- `d100_150 = 0.000453983596378`;
+- `d150_200 = 2.756408258e-06`.
 
-However grid convergence is not yet independently established:
+At C200:
 
-- C100→F100 `d_grid_100=0.004940431182927`;
-- C200→F200 `d_grid_200=0.004952190294576`;
-- both individually satisfy 0.5%, but Issue #8's frozen cross-domain non-worsening condition fails by about `1.18e-05`.
+- upper-boundary mass `5.50488358e-10`;
+- top-5% mass `1.36530748e-08`.
 
-Issue #8 is therefore correctly BLOCKED_ACCEPTED, not PASS.
+Fine-spacing F100→F200 bound observation:
 
-## Current active task
+`0.000445042795539 < 0.005`.
 
-Issue #9 — `DLH-2C-B2: Fixed-domain third-level grid convergence and canonical Tier-0 numerical standard`
+Thus wide-domain evidence resolves the material `a_max=50` truncation problem by `a_max=200`.
 
-Issue URL:
-`https://github.com/zcx369658780/deep-learning-hank/issues/9`
+Issue #8 nevertheless remains `BLOCKED_ACCEPTED`, not PASS, because its pre-frozen cross-domain grid non-worsening criterion failed:
 
-Expected branch:
-`dsh/issue-9-dlh-2c-b2-fixed-domain-grid-2026-08-19`
+- `d_grid_100=0.0049404311829274825`;
+- `d_grid_200=0.004952190294576287`;
+- both individually `<=0.005`, but `d_grid_200 > d_grid_100 + 1e-12`.
 
-## DLH-2C-B2 authority
+### Issue #9 — fixed-domain grid convergence PASS
 
-Hold asset domain fixed at `[0,200]` and test a true same-domain refinement sequence:
+Asset domain held fixed:
+
+`a in [0,200]`.
+
+Three-level grid sequence:
 
 - C200: 317 points, spacing `50/79`;
 - F200: 633 points, spacing `25/79`;
 - Q200: 1265 points, spacing `12.5/79`.
 
-Mandatory scientific questions:
+Accepted capital sequence:
 
-1. Does accepted C200→F200 difference `0.004952190294576287` reproduce within `1e-12`?
-2. Is F200→Q200 non-worsening on the same domain and `<=0.005`?
-3. Are F200→Q200 differences in Y, wage, net return, transfer, mean consumption and mean assets each `<=0.005`?
-4. Does Q200 pass all accepted HJB/KFE/equilibrium/accounting gates and deterministic reproducibility?
-5. Do all accepted regressions remain green after Issue #8's known red gate is converted to blocker-provenance regression evidence?
+- `K_C=28.218969081766193`;
+- `K_F=28.079912014017818`;
+- `K_Q=28.010252116571742`.
 
-If Issue #9 passes independent review, the planned Tier-0 numerical-robustness block may be considered complete and DLH-3 may be issued separately.
+Accepted same-domain differences:
 
-## Current implementation/scientific authority
+- `d_C_F=0.00495219029457629`;
+- `d_F_Q=0.00248694289348661`.
 
-- DLH-2A fixed-price kernel: `R1_ACCEPTED_D2`；
-- DLH-2B steady-state GE: `R1_ACCEPTED_D2`；
-- DLH-2C: `BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_D2`；
-- DLH-2C-B1: `WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED_D2`；
-- DLH-2C-B2 fixed-domain grid convergence: `ACTIVE_NOT_ACCEPTED`；
-- genuine-HANK nominal implementation authority: `NONE`；
-- regional/W authority: `NONE`；
-- shock/transition authority: `NONE`；
-- neural training authority: `NONE`；
-- empirical calibration authority: `NONE`；
-- Results/manuscript authority: `NONE`；
-- final novelty claim authority: `NONE`。
+Same-domain refinement is non-worsening and final difference is `<0.005`.
 
-## Current boundaries
+Refinement ratio observation:
 
-Issue #9 may only use its exact 7-path allowlist. It may not alter accepted economics/solver modules, accepted DLH-2A/DLH-2B tests, the `[0,200]` asset domain, Issue #7/#8 evidence, or add grid levels beyond Q200.
+`0.5021904946201973`.
 
-No regional/W, SOE/open-economy, nominal/NK, shock/transition, neural/RL, empirical data/calibration, Matlab/legacy Matlab, old-source-repo access or Results/policy/novelty work is authorized.
+No optional STRONG_REFINEMENT flag is claimed.
+
+F200→Q200 macro relative differences all `<0.005`:
+
+- output `0.0007448791102993581`;
+- wage `0.0007448791102993815`;
+- net return `5.056455879453789e-05`;
+- transfer `0.00021271289423335782`;
+- mean consumption `0.000293148050059117`;
+- mean assets `0.00248077335523258`.
+
+Q200 upper-tail observations:
+
+- upper-boundary mass `5.85258246e-10`;
+- top-5% mass `2.37089064e-08`;
+- mean assets/a_max `0.1400512605828587`.
+
+Q200 required reproducibility differences are all `0.0`.
+
+Issue #9 full repository suite:
+
+`54 passed / 0 failed`.
+
+## Canonical numerical interpretation
+
+Q200 on `[0,200]` is the accepted high-accuracy **Tier-0 validation/reference numerical standard**.
+
+This does not automatically require all future DLH-3 development runs to use Q200. A future Issue may define a smaller development grid only if it explicitly states how it is checked against the accepted Tier-0 reference standard.
+
+The planned Tier-0 numerical-robustness block is complete at D2 machine-diagnostic level.
+
+## Evidence boundary
+
+Supported:
+
+- D2 fixed-price HJB/KFE kernel;
+- D2 one-region real HA/Aiyagari steady-state GE;
+- D2 numerical robustness on accepted `[0,200]` domain / C200→F200→Q200 sequence;
+- accepted state-label permutation and bounded root-shape diagnostics;
+- deterministic reproducibility in tested environment.
+
+Not supported / no authority:
+
+- empirical calibration;
+- genuine HANK validity;
+- nominal/New-Keynesian dynamics;
+- transition dynamics or aggregate shock propagation;
+- regional NSR-HANK;
+- learned `W^L` / `W^K`;
+- neural/RL training;
+- policy/Results claims;
+- final novelty claims.
+
+## Queued next route — NOT ACTIVE
+
+`DLH-3 — minimal genuine single-region HANK nominal/New-Keynesian layer`.
+
+DLH-3 has not been issued. The next ChatGPT session must fresh-read the DLH-0 constitution and Master Roadmap and explicitly decide:
+
+- the minimum nominal/New-Keynesian mechanism;
+- whether/which aggregate shock or transition structure is needed and separately authorized;
+- the solver/validation architecture;
+- how any lower-cost development grid is anchored to the accepted Tier-0 `[0,200]` reference;
+- exact tracked-path allowlist and numerical/scientific gates.
+
+No Builder work is authorized until that new Issue exists.
+
+## Required next-session startup order
+
+1. fresh fetch live `refs/heads/main`;
+2. read `docs/governance/DLH_SESSION_HANDOFF_AFTER_TIER0_NUMERICAL_ROBUSTNESS_COMPLETE_2026_08_19.md`;
+3. read `project_rules/PROJECT_RULE_INDEX_CURRENT.md` and all required CURRENT rules;
+4. read `tasks/TASK_INDEX_CURRENT.md`;
+5. read this `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`;
+6. read `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`;
+7. read accepted DLH-0 constitution materials;
+8. read Issue #9 + acceptance comment and accepted DLH-2C-B2 execution/results reports;
+9. only then decide whether/how to issue DLH-3.
 
 ## Reviewer tooling provenance note
 
-During the Issue #8 reviewer-side GitHub transition, ChatGPT accidentally created a one-byte `__dummy__` file through a connector call and immediately removed it in the next reviewer maintenance commit. The current tree contains no such file and no Builder authority was consumed. This is reviewer tooling provenance only and must not be interpreted as project/scientific evidence.
+During the Issue #8 reviewer-side GitHub transition, ChatGPT accidentally created a one-byte `__dummy__` file through a connector call and immediately deleted it in the next reviewer maintenance commit.
+
+- current tree contains no `__dummy__`;
+- no Builder authority was consumed;
+- no scientific evidence was affected;
+- this is reviewer tooling provenance only.
