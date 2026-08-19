@@ -1,37 +1,56 @@
-# Deep Learning + HANK 项目启动包 — START HERE
+# Deep Learning + HANK Project Source — Start Here
 
-生成日期：2026-08-19
+当前项目已进入 GitHub-governed workflow。
 
-## 这个压缩包做什么
+## Authoritative repository
 
-这是新项目 **Deep Learning + HANK** 的启动 Project Source。它把旧多省份 HANK 的高价值 Codex 解析证据保留下来，但把旧模型与新模型之间的 authority 切开。
+`zcx369658780/deep-learning-hank`
 
-新项目从零开始；当前没有模型代码或模型结果 authority。
+Live GitHub `main` is the synchronized repository/governance authority.
 
-## 目录
+## Current scientific roadmap
 
-- `historical_model_analysis/`
-  - 旧 Matlab 多省份 HANK 的程序解析、output provenance、R5 migration 和 parser closeout 证据。
-- `design_notes/`
-  - 新 Deep Learning + HANK Python clean-slate 设计思路。
-- `project_rules/`
-  - DSH、GitHub、只读本地 reference、模型门禁、科研证据和验收规则。
-- `tasks/`
-  - 当前 Builder task 由 GitHub Issue 独立发布；Task Index 只做同步指针。
+`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-## 两个最重要的本地权限边界
+Working scientific label:
 
-DSH 仅有只读权限：
+`Network-Structured Regional HANK (NSR-HANK)`
+
+核心方向：
+
+- 省内 household / firm / HJB / KFE 保持结构经济学硬模块；
+- 第一代 learned object 是可解释的省际劳动力流量权重 `W^L`；
+- `W^K` 与财政模块后置；
+- household home-region identity 第一代固定；
+- Python 为主实现语言；
+- 既有单省 Python HJB/firm code 需要先审计再迁入；
+- one-region real HA/Aiyagari 仅作为 computational benchmark；
+- minimal genuine HANK 是下一独立结构层；
+- 跨年共享 learned structural parameters，但每一年按 year-specific observables 单独求条件稳态；
+- time-invariant geography 与 time-varying development features 必须分离；
+- GNN/message passing 在 flow-weight baseline 稳定后再进入。
+
+## Current Builder authority
+
+Do not trust this file alone for the active task.
+
+Every DSH invocation must first refresh GitHub and read:
+
+1. `project_rules/PROJECT_RULE_INDEX_CURRENT.md`
+2. all CURRENT rules required by that index
+3. `tasks/TASK_INDEX_CURRENT.md`
+4. `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+5. the exact active GitHub Issue body and authoritative comments
+
+GitHub Issue = sole Builder task authority.
+
+## Local workspace
+
+`D:\deep-learning-hank`
+
+## Permanent read-only reference roots
 
 - `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
 - `D:\Zotero-Analytical-Workflow`
 
-可以从中读取和按 task 复制必要参考材料，但源目录不可写。
-
-## 建议下一步
-
-1. GitHub 仓库 `zcx369658780/deep-learning-hank` 已创建并开始治理初始化。
-2. 本地项目根为 `D:\deep-learning-hank`。
-3. DSH 的首个任务通过 GitHub Issue 发布，只做本地 Git/GitHub bootstrap 与只读边界验证。
-4. 该 bootstrap 通过独立 GitHub 验收后，才发布 `DLH-0 Scientific Constitution and Model Scope Freeze`。
-5. DLH-0 只做设计，不写模型代码。
+Only the live active Issue can authorize bounded reads/copy-outs. The source roots themselves remain read-only.
