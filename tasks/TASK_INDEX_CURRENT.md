@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_3_DLH_1A_R1`
+Status: `ACTIVE_GITHUB_ISSUE_4_DLH_1B`
 
 ## Accepted predecessors
 
@@ -20,69 +20,78 @@ Accepted commit:
 
 `73e1ae5db9d7e362781a77fa2a204c80238fad3e`
 
+### Issue #3 — DLH-1A literature / labor-flow data feasibility
+
+Status: `DLH_1A_R1_EVIDENCE_AND_DATA_FEASIBILITY_ACCEPTED_AND_CLOSED`
+
+Accepted commit:
+
+`e9aa7dc8a3f5a198b1655c917659f519239eb67b`
+
+Accepted evidence conclusion:
+
+- SSRN `6028234` = Owner prior work / project provenance, not external precedent;
+- direct true annual bilateral O-D flow labels for `W^L_ij,t` remain `UNRESOLVED`;
+- CMDS = annual repeated migrant cross-section / possible O-D stock source pending schema verification;
+- geodoi `Id=3621` = provincial aggregate/model-derived proxy, not proven bilateral O-D-year matrix;
+- E3 literature evidence remains 0; novelty claims remain blocked.
+
 Authoritative roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
 ## Sole active Builder authority
 
-GitHub Issue #3:
+GitHub Issue #4:
 
-`DLH-1A: Literature evidence and interprovincial labor-flow data feasibility`
+`DLH-1B: Read-only audit of existing single-province Python HJB + firm kernel`
 
 Issue URL:
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/3`
+`https://github.com/zcx369658780/deep-learning-hank/issues/4`
 
 Builder: DSH
 
-Current substage:
+Expected dedicated branch:
 
-`DLH-1A-R1 — evidence provenance / labor-flow data classification correction`
+`dsh/issue-4-dlh-1b-python-kernel-audit-2026-08-19`
 
-Prior candidate:
+Read-only candidate source repository:
 
-`2a04a737bd6aa62b00e8c39a9e2a2d7e3b22b021`
+`zcx369658780/dissertation-ch5-r5-python-model`
 
-Process/geometry review: PASS. Evidence packet: NOT ACCEPTED / bounded R1 correction required.
+The source repository is candidate reusable infrastructure only. DSH must refresh its `main` before reading and perform zero mutations to it.
 
-Expected R1 dedicated branch:
+## Current gate purpose
 
-`dsh/issue-3-dlh-1a-r1-evidence-correction-2026-08-19`
+DLH-1B is a read-only source/equation/dependency/interface audit only.
 
-The latest authoritative ChatGPT review comment on Issue #3 defines the exact R1 correction contract.
+It must determine:
 
-## Material correction requirements entering R1
-
-- SSRN `6028234` is Owner prior dissertation/project provenance, not independent external literature precedent;
-- geodoi `Id=3621` is not currently proven to contain bilateral province-pair O-D-year matrices and must be treated as provincial aggregate / model-derived migration-flow components unless pairwise fields are directly verified;
-- CMDS is an annual repeated migrant cross-section; any province-origin × destination construction is migrant-stock/sample cross-tab evidence pending schema/weight verification, not true annual migration flow;
-- DeepHAM distribution representation must be described as optimal generalized moments rather than a full distribution-state input;
-- master-equation / EMINN evidence must include the primary `arXiv:2406.13726` Gu–Laurière–Merkel–Payne paper;
-- novelty-boundary verdicts must be recomputed without treating Owner prior work as external precedent;
-- revised labor-data taxonomy must distinguish true annual O-D flow, annual O-D stock/sample cross-tab, and multiyear transition/derived proxy.
+- actual equations and state/control structure implemented in the existing Python source;
+- dependency / hidden-state / legacy-coupling risks;
+- correspondence between source modules and existing tests;
+- candidate classifications `REUSE_AS_REFERENCE_IMPLEMENTATION`, `REUSE_WITH_ADAPTER`, `REDESIGN_FOR_NSR_HANK`, `DROP_FROM_TIER0`, or `UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`;
+- a candidate Tier-0 migration allowlist and clean I/O/diagnostic contracts.
 
 ## Scope boundary
 
-DLH-1A-R1 remains evidence/data-feasibility only.
+Issue #4 does **not** authorize:
 
-It does **not** authorize:
-
-- Python/model code creation or migration;
-- legacy Matlab reads;
-- Matlab/Python model or solver execution;
-- neural training/inference;
+- source-repository mutation;
+- code copy/migration into `deep-learning-hank`;
+- Python/model/test execution;
 - package/environment mutation;
-- GPU work;
-- model calibration/regression;
-- data purchase, scraping, bulk download, or ingestion;
-- local Zotero PDF/SQLite access;
+- Matlab/Octave/Dynare reads or execution;
+- neural training/inference;
+- data purchase/download/analysis;
+- calibration;
 - Results/policy claims;
 - final novelty claims;
 - PR/merge/Issue-close/successor/self-accept by Builder.
 
 ## Queued next gate — NOT ACTIVE
 
-`DLH-1B — read-only audit of the existing single-province Python HJB + firm kernel`.
+`DLH-2 — Tier-0 single-region HA/Aiyagari computational benchmark`.
 
-DLH-1B receives a separate GitHub Issue only after corrected DLH-1A is independently accepted.
+DLH-2 may only be issued after DLH-1B is independently reviewed and an exact migration/implementation allowlist is authorized.
