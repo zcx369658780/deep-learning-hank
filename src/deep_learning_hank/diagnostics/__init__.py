@@ -1,1 +1,2 @@
-"""Diagnostics layer: economic-residual and reproducibility gates (Tier-0)."""
+"""Diagnostics layer: economic-residual, steady-state GE, and reproducibility
+gates (Tier-0)."""

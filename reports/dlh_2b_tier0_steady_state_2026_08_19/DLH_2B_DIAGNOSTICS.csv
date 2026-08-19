@@ -1,0 +1,56 @@
+diagnostic,value,threshold,unit,status
+fixture_label,VALIDATION_FIXTURE_NOT_CALIBRATION,,,INFO
+l_bar,1.0,,computed from CTMC stationary law,INFO
+root_capital,27.367823476711713,>0,PASS
+root_converged,True,,bool,PASS
+root_evaluations,11,,count,INFO
+root_bracket_used,(0.5,45.0),,INFO
+root_bracket_from_scan,False,,INFO
+capital_residual_R_K,1.0466294497746276e-11,1e-7,<=,PASS
+output_Y,2.6988085539374342,0.0,>,PASS
+wage,1.889165987756204,0.0,>,PASS
+net_capital_return_r,0.009583739710619838,finite (positive),PASS
+transfer,0.2833748981634306,,INFO
+mean_assets_A_hh,27.367823476701247,,INFO
+mean_consumption_C,2.1514520844030995,0.0,>,PASS
+effective_labor_g_L_g,1.0,,INFO
+effective_labor_error,0.0,1e-8,<=,PASS
+goods_residual_R_goods,1.0047518372857667e-13,1e-7,<=,PASS
+household_budget_residual_R_hh,0.0,1e-7,<=,PASS
+mean_drift,-2.2941717969793274e-16,1e-7,abs <=,PASS
+fiscal_residual,0.0,1e-12,<=,PASS
+hjb_converged,True,,bool,PASS
+hjb_iterations,8,2000,count,PASS
+hjb_true_residual,1.3058058412340756e-08,1e-7,<=,PASS
+hjb_min_consumption,1.0862704429598173,0.0,>,PASS
+hjb_lower_boundary_min_drift,0.0,-1e-12,>=,PASS
+hjb_upper_boundary_max_drift,0.0,1e-12,<=,PASS
+hjb_generator_row_sum_max_abs,1.1102230246251565e-16,1e-12,<=,PASS
+hjb_generator_min_off_diagonal_literal,0.0,-1e-14,>=,PASS
+hjb_nan_inf_count,0,0,count,PASS
+kfe_mass_error,0.0,1e-10,<=,PASS
+kfe_stationarity_residual,2.905661822261152e-17,1e-8,<=,PASS
+kfe_minimum_mass,0.0010123318235136522,-1e-12,>=,PASS
+kfe_negative_mass_count,0,0,count,PASS
+kfe_nan_inf_count,0,0,count,PASS
+kfe_state_marginals,"[0.5, 0.5]",1e-8 (vs analytic),PASS
+repeat_diff_capital_star,0.0,1e-12,<=,PASS
+repeat_diff_wage,0.0,1e-12,<=,PASS
+repeat_diff_net_capital_return,0.0,1e-12,<=,PASS
+repeat_diff_output,0.0,1e-12,<=,PASS
+repeat_diff_transfer,0.0,1e-12,<=,PASS
+repeat_diff_value,0.0,1e-12,<=,PASS
+repeat_diff_consumption,0.0,1e-12,<=,PASS
+repeat_diff_drift,0.0,1e-12,<=,PASS
+repeat_diff_distribution_mass,0.0,1e-12,<=,PASS
+repeat_diff_scalars,0.0,1e-12,<=,PASS
+all_gates_pass,True,,bool,PASS
+test_count_dlh2a_regression,15,,count,INFO
+test_count_dlh2b_new,15,,count,INFO
+test_count_total,30,,count,INFO
+test_attempt_history,"attempt1=29p/1f(tooling); final=30p",,count,INFO
+config_sha256,890276218116E2BAD93B5EC576508D2FF3A6D5569F7C0FB19805F43FED0F77DF,,hex,INFO
+python_version,3.11.9,,,INFO
+numpy_version,2.4.6,,,INFO
+scipy_version,1.17.1,,,INFO
+pytest_version,8.2.1,,,INFO
