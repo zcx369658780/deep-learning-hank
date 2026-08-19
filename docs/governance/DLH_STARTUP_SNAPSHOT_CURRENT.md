@@ -21,96 +21,93 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - Issue #2 DLH-0 scientific constitution: accepted/closed at `73e1ae5db9d7e362781a77fa2a204c80238fad3e`.
 - Issue #3 DLH-1A literature/data feasibility: accepted/closed at `e9aa7dc8a3f5a198b1655c917659f519239eb67b`.
 - Issue #4 DLH-1B Python kernel audit: accepted/closed at `8dce318af5ca704a747e67932ec3caa35f9168ad`.
-- Issue #5 DLH-2A fixed-price HJB/KFE kernel: accepted/closed after R1 at `76b5882a63d8ade18d50098373b7c735eb2c4ca4`, evidence level `D2_MACHINE_DIAGNOSTIC_ONLY`.
+- Issue #5 DLH-2A fixed-price HJB/KFE kernel: accepted/closed after R1 at `76b5882a63d8ade18d50098373b7c735eb2c4ca4`, evidence `D2_MACHINE_DIAGNOSTIC_ONLY`.
+- Issue #6 DLH-2B single-region steady-state GE: accepted/closed after R1 at `c562ce3a2743ac779123918e9aab5f37044b564a`, evidence `D2_MACHINE_DIAGNOSTIC_ONLY`.
+
+## Accepted DLH-2B-R1 computational state
+
+Under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
+
+- one-region closure = `K -> (w,r) -> balanced transfer -> HJB -> KFE -> A(K) -> K-A(K)`;
+- `K*=27.367823476711713`, capital residual `1.0466294497746276e-11`;
+- output `2.6988085539374342`, wage `1.889165987756204`, net return `0.009583739710619838`, mean consumption `2.1514520844030995`;
+- HJB residual `1.3058058412340756e-08` and all accepted HJB generator/boundary gates pass;
+- KFE mass error `0.0`, stationarity residual `2.905661822261152e-17`, state marginals `[0.5,0.5]`;
+- effective-labor error `0.0`;
+- independent goods residual `1.0047518372857667e-13`, household-budget residual `0.0`, mean drift `-2.2941717969793274e-16`;
+- root evidence semantics: 11 trace evaluations + 1 post-root verification = 12 total capital evaluations; all root-trace entries finite;
+- full R1 repository suite `32 passed / 0 failed`, including accepted DLH-2A regression `15/15`;
+- deterministic repeat differences all `0.0`.
+
+These establish only D2 evidence for a small real one-region HA/Aiyagari benchmark. They do not establish empirical calibration, genuine HANK, regional NSR-HANK, transition dynamics, policy validity, Results eligibility or novelty.
 
 ## Authoritative scientific direction
 
 Roadmap:
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`.
 
-First-generation direction remains:
-- Tier 0 = small one-region real HA/Aiyagari computational benchmark;
-- Tier 1 = minimal genuine single-region HANK with nominal/New-Keynesian layer;
+Direction remains:
+- Tier 0 = one-region real HA/Aiyagari computational benchmark;
+- Tier 1 = minimal genuine single-region HANK nominal/New-Keynesian layer;
 - Tier 2 = small multi-region NSR-HANK;
-- local household/firm/HJB/KFE/accounting/clearing remain structural hard modules;
-- learned interregional labor-flow network `W^L` first; `W^K` later;
+- structural household/firm/HJB/KFE/accounting/clearing stay hard economic modules;
+- learned labor-flow network `W^L` first, `W^K` later;
 - household home-region fixed initially, labor services mobile;
 - cross-year shared network parameters with year-specific observables/weights/equilibria;
 - GNN/message passing deferred.
 
 ## Current active task
 
-Issue #6 — `DLH-2B: Single-region Tier-0 HA/Aiyagari steady-state general equilibrium`
+Issue #7 — `DLH-2C: Tier-0 numerical robustness, grid-boundary and invariance validation`
 
 Issue URL:
-`https://github.com/zcx369658780/deep-learning-hank/issues/6`
-
-Current substage:
-
-`DLH-2B-R1 — evidence provenance / root-trace finiteness and evaluation-count correction`
+`https://github.com/zcx369658780/deep-learning-hank/issues/7`
 
 Expected branch:
+`dsh/issue-7-dlh-2c-tier0-robustness-2026-08-19`
 
-`dsh/issue-6-dlh-2b-r1-evidence-root-trace-correction-2026-08-19`
+## DLH-2C authority
 
-Prior candidate:
+DLH-2C is the final planned Tier-0 robustness gate before genuine-HANK implementation.
 
-`2b4316f699720f0d8ad278c98110e8c1128532c4`
+All accepted DLH-2A/DLH-2B solver/economic modules and accepted tests are frozen. Issue #7 permits only its exact 11-path robustness outputs and these numerical/representation variants:
 
-Independent review classification:
+- baseline `B40_50`: accepted 40-point `[0,50]` fixture;
+- `G80_50`: 80-point `[0,50]` refinement;
+- `G160_50`: 160-point `[0,50]` refinement;
+- `W159_100`: 159-point `[0,100]`, exactly matched spacing to `G80_50`;
+- `P40_50`: state-label permutation of the baseline;
+- a 21-point bounded `R_K(K)` scan over `[0.5,45.0]`.
 
-`DLH_2B_CORE_STEADY_STATE_GATE_PASS__EVIDENCE_AND_ROOT_TRACE_R1_REQUIRED`
+Issue #7 freezes all economics, solver families and existing acceptance thresholds. Builder may not tune them after observing robustness results.
 
-## Independently confirmed DLH-2B core D2 facts
+## Required robustness questions
 
-Under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
+1. Do successive fixed-bound grid refinements converge rather than worsen, with final 80→160 capital difference <= 0.5%?
+2. Does doubling the asset upper bound at matched spacing change equilibrium capital by <= 0.5%?
+3. Is the model invariant to pure state-label permutation within `1e-10` after axis realignment?
+4. Does the bounded 21-point residual scan show exactly one finite sign-changing root interval?
+5. Does every variant pass the accepted steady-state numerical/accounting gates and same-environment reproducibility <= `1e-12`?
 
-- accepted DLH-2A household/HJB/KFE dependencies remain frozen and absent from the candidate diff;
-- single-region closure is `K -> firm prices -> fiscal transfer -> HJB -> KFE -> A(K) -> K-A(K)`;
-- `L_bar` is computed from the CTMC stationary law, and final `L_g-L_bar = 0.0`;
-- primary bracket `[0.5,45.0]` has finite opposite-sign endpoint residuals, so no scan is required;
-- root `K*=27.367823476711713` with capital residual `1.0466294497746276e-11`;
-- output `2.6988085539374342`, wage `1.889165987756204`, net capital return `0.009583739710619838`, mean consumption `2.1514520844030995`;
-- equilibrium HJB residual `1.3058058412340756e-08`; generator row-sum error `1.1102230246251565e-16`; literal min off-diagonal `0.0`;
-- KFE mass error `0.0`, stationarity residual `2.905661822261152e-17`, state marginals `[0.5,0.5]`;
-- independent goods residual `1.0047518372857667e-13`, household-budget residual `0.0`, mean drift `-2.2941717969793274e-16`;
-- final full repository suite reported `30 passed / 0 failed`, including DLH-2A regression `15/15`;
-- deterministic steady-state repeat differences are all `0.0`;
-- evidence remains D2 for a small one-region real HA/Aiyagari benchmark only.
-
-These core numerical facts are substantively PASS, but the candidate is not accepted/merged until R1 canonical evidence correction is independently reviewed.
-
-## R1 correction requirements
-
-1. Commit the full exact diagnostics-capture command/script and preserve original-run vs R1-rerun history.
-2. Correct evaluation-count terminology: the accepted fixture has 11 root-trace evaluations plus one separate post-root validation `evaluate_capital`, so total capital evaluations = 12. Equivalent precise naming is acceptable.
-3. Add a machine gate asserting every root-trace capital/residual pair is finite, include it in root/all-gates logic, add/strengthen a test, and rerun the complete repository suite and diagnostics.
-
-No change to economic closure, fixture values, solver family or thresholds is authorized.
+A fail-closed robustness result is scientifically useful and must not be hidden by changing economics or thresholds.
 
 ## Current implementation/scientific authority
 
 - DLH-2A fixed-price kernel: `R1_ACCEPTED_D2`；
-- DLH-2B core single-region steady-state GE: `SUBSTANTIVE_D2_PASS_PENDING_R1_CANONICAL_EVIDENCE_CORRECTION`；
-- DLH-2B merge/acceptance: `NOT_YET_AUTHORIZED`；
-- regional/W authority: `NONE`；
+- DLH-2B single-region steady-state GE: `R1_ACCEPTED_D2`；
+- DLH-2C numerical robustness: `ACTIVE_NOT_ACCEPTED`；
 - genuine-HANK nominal implementation authority: `NONE`；
+- regional/W authority: `NONE`；
 - shock/transition authority: `NONE`；
 - neural training authority: `NONE`；
 - empirical calibration authority: `NONE`；
-- numerical Results/manuscript authority: `NONE`；
+- Results/manuscript authority: `NONE`；
 - final novelty claim authority: `NONE`。
 
 ## Current boundaries
 
-Issue #6 R1 stays within the original 13-path allowlist. It may correct evidence/diagnostic code and tests only as authorized by the latest Issue #6 reviewer comment.
-
-No regional/W, SOE, open-economy, nominal/NK, shock, transition, neural/RL, empirical data/calibration, Matlab/legacy Matlab or Results/policy work is authorized.
+No accepted solver/economics/test modification, regional/W, SOE/open-economy, nominal/NK, shock/transition, neural/RL, empirical data/calibration, Matlab/legacy Matlab, old-source-repo access, or Results/policy/novelty work is authorized by Issue #7.
 
 ## Queued next gate — NOT ACTIVE
 
-Recommended after corrected DLH-2B acceptance:
-
-`DLH-2C — Tier-0 numerical robustness / grid-boundary / limiting-case validation`.
-
-Its purpose would be to test grid/boundary sensitivity before entering genuine HANK. DLH-3 remains later and separately authorized.
+`DLH-3 — minimal genuine single-region HANK nominal/New-Keynesian layer` may only be issued after fresh independent review/disposition of DLH-2C.
