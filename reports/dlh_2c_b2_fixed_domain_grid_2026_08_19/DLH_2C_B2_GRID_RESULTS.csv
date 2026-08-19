@@ -1,0 +1,62 @@
+metric,value,threshold,unit,status
+terminal_classification,DLH_2C_B2_FIXED_DOMAIN_GRID_CONVERGENCE_READY_FOR_GPT_REVIEW,,,SUCCESS
+C200_capital,28.218969081766193,,,INFO
+C200_output,2.7237192673433275,,,INFO
+C200_wage,1.9066034867443273,,,INFO
+C200_net_return,0.008956259113146438,,,INFO
+C200_mean_consumption,2.1593398912664425,,,INFO
+C200_transfer,0.28599051593122116,,,INFO
+C200_all_gates,True,,bool,PASS
+F200_capital,28.079912014017818,,,INFO
+F200_output,2.7196857286301126,,,INFO
+F200_wage,1.9037800112389037,,,INFO
+F200_net_return,0.00905656254114038,,,INFO
+F200_mean_consumption,2.1580874885638535,,,INFO
+F200_transfer,0.2855670018958146,,,INFO
+F200_all_gates,True,,bool,PASS
+Q200_capital,28.010252116571742,,,INFO
+Q200_output,2.7176598943622396,,,INFO
+Q200_wage,1.9023619260535676,,,INFO
+Q200_net_return,0.009107127094593912,,,INFO
+Q200_mean_consumption,2.157454852029981,,,INFO
+Q200_transfer,0.2853542889080351,,,INFO
+Q200_all_gates,True,,bool,PASS
+Q200_hjb_residual,<1e-7 (accepted gates all pass),1e-7,<=,PASS
+Q200_kfe_stationarity,<1e-8 (accepted gates all pass),1e-8,<=,PASS
+grid_C200_spacing,0.6329113924050633,50/79,INFO
+grid_F200_spacing,0.31645569620253167,25/79,INFO
+grid_Q200_spacing,0.15822784810126583,12.5/79,INFO
+grid_d_C_F,0.00495219029457629,accepted 0.004952190294576287 (<=1e-12),rel,PASS
+grid_d_F_Q,0.00248694289348661,<= d_C_F + 1e-12,rel,PASS
+grid_gate_provenance,True,,bool,PASS
+grid_gate_no_worsen,True,,bool,PASS
+grid_gate_final,True,0.005,rel,PASS
+grid_gate,True,,bool,PASS
+grid_ratio_d_F_Q_over_d_C_F,0.5021904946201973,,observation (not a gate),INFO
+grid_strong_refinement_observation,False,ratio <= 0.5 would flag,bool,INFO
+macro_rel_diff_output,0.0007448791102993581,0.005,rel,PASS
+macro_rel_diff_wage,0.0007448791102993815,0.005,rel,PASS
+macro_rel_diff_net_capital_return,5.056455879453789e-05,0.005,rel,PASS
+macro_rel_diff_transfer,0.00021271289423335782,0.005,rel,PASS
+macro_rel_diff_mean_consumption,0.000293148050059117,0.005,rel,PASS
+macro_rel_diff_mean_assets,0.00248077335523258,0.005,rel,PASS
+macro_gate,True,,bool,PASS
+tail_C200_upper_boundary_mass,5.50488358e-10,,,INFO
+tail_C200_top5_mass,1.36530748e-08,,,INFO
+tail_C200_mean_assets_over_amax,0.14109484518701765,,,INFO
+tail_F200_upper_boundary_mass,5.80598484e-10,,,INFO
+tail_F200_top5_mass,1.94212281e-08,,,INFO
+tail_F200_mean_assets_over_amax,0.1403995600700891,,,INFO
+tail_Q200_upper_boundary_mass,5.85258246e-10,,,INFO
+tail_Q200_top5_mass,2.37089064e-08,,,INFO
+tail_Q200_mean_assets_over_amax,0.1400512605828587,,,INFO
+reproducibility_q200_max_abs,0.0,1e-12,<=,PASS
+reproducibility_gate,True,,bool,PASS
+issue8_blocker_provenance_assertion,True,,reproduces accepted d_grid values (BLOCKED_ACCEPTED, not PASS),PASS
+issue7_blocker_provenance_assertion,True,,reproduces accepted d_bound_K (BLOCKED_ACCEPTED, not PASS),PASS
+regression_dlh2a_dlh2b,32/32 pass,,,PASS
+test_suite_total,54 passed / 0 failed,,,PASS
+python_version,3.11.9,,,INFO
+numpy_version,2.4.6,,,INFO
+scipy_version,1.17.1,,,INFO
+pytest_version,8.2.1,,,INFO

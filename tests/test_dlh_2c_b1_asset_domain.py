@@ -1,11 +1,14 @@
-"""DLH-2C-B1 asset-domain adequacy / upper-tail convergence tests (active gates).
+"""DLH-2C-B1 asset-domain adequacy / upper-tail convergence tests.
 
-The wide-domain grid-refinement test asserts the Issue #8 gate
-``d_grid_200 <= d_grid_100 + 1e-12`` and ``d_grid_200 <= 0.005``.  If the
-accepted benchmark does not satisfy it, that test FAILS on purpose — the
-documented fail-closed evidence ``BLOCKED_DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE``
-— and the execution report records the exact values.  No economics, grid
-standard, domain criterion, or threshold is modified to force a PASS.
+Issue #8's ``test_wide_domain_grid_refinement_gates`` was independently
+accepted as a scientific blocker (``DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED``).
+Per Issue #9, that test is converted here into a **provenance regression
+assertion** (``test_issue8_blocker_provenance_regression``) that preserves the
+accepted failure (``d_grid_200 > d_grid_100 + 1e-12`` with the accepted values
+reproduced within 1e-12) so canonical main has no unexplained red test.  It
+does NOT relax the Issue #8 gate and does NOT claim Issue #8 passed.  The
+active fixed-domain grid-convergence gates live in
+``tests/test_dlh_2c_b2_fixed_domain_grid.py``.
 """
 
 from pathlib import Path
@@ -102,23 +105,41 @@ def test_coarse_bound_convergence_gates(variants) -> None:
     assert metrics["gate"]
 
 
-def test_wide_domain_grid_refinement_gates(variants) -> None:
+def test_issue8_blocker_provenance_regression(variants) -> None:
+    """Accepted Issue #8 blocker provenance (NOT a PASS).
+
+    Issue #8 was independently accepted as
+    ``DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED``: the
+    fixed-bound grid-refinement response was marginally non-monotonic
+    (``d_grid_200 > d_grid_100 + 1e-12``).  This assertion preserves that
+    accepted scientific fact: the frozen Issue #8 fixture must still reproduce
+    ``d_grid_100 <= 0.005``, ``d_grid_200 <= 0.005``, and
+    ``d_grid_200 > d_grid_100 + 1e-12``, with the accepted values
+    ``d_grid_100 = 0.0049404311829274825`` and
+    ``d_grid_200 = 0.004952190294576287`` reproduced within ``1e-12``.
+    It does NOT relax the Issue #8 gate and does NOT claim Issue #8 passed.
+    """
     metrics = wide_domain_grid_refinement_metrics(variants)
-    assert metrics["gate_100"], (
-        "BLOCKED_DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE: "
-        f"d_grid_100 = {metrics['d_grid_100']:.12f} > 0.005"
+    d_grid_100 = metrics["d_grid_100"]
+    d_grid_200 = metrics["d_grid_200"]
+    accepted_100 = 0.0049404311829274825
+    accepted_200 = 0.004952190294576287
+    assert d_grid_100 <= 0.005, f"d_grid_100 = {d_grid_100:.15f} > 0.005"
+    assert d_grid_200 <= 0.005, f"d_grid_200 = {d_grid_200:.15f} > 0.005"
+    # The accepted blocker condition must still hold (not PASS).
+    assert d_grid_200 > d_grid_100 + 1e-12, (
+        "Issue #8 blocker provenance violated: d_grid_200 must remain "
+        f"> d_grid_100 + 1e-12 (observed {d_grid_200:.15f} vs {d_grid_100:.15f})"
     )
-    assert metrics["gate_200_no_worsen"], (
-        "BLOCKED_DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE: "
-        f"d_grid_200 = {metrics['d_grid_200']:.12f} > d_grid_100 + 1e-12 "
-        f"(d_grid_100 = {metrics['d_grid_100']:.12f}); "
-        "actual diagnostics preserved; not modified to force a PASS"
+    assert abs(d_grid_100 - accepted_100) <= 1e-12, (
+        f"Issue #8 accepted value drift: d_grid_100 = {d_grid_100:.17f} vs "
+        f"accepted {accepted_100}"
     )
-    assert metrics["gate_200_final"], (
-        "BLOCKED_DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE: "
-        f"d_grid_200 = {metrics['d_grid_200']:.12f} > 0.005"
+    assert abs(d_grid_200 - accepted_200) <= 1e-12, (
+        f"Issue #8 accepted value drift: d_grid_200 = {d_grid_200:.17f} vs "
+        f"accepted {accepted_200}"
     )
-    assert metrics["gate"]
+    assert metrics["gate"] is False  # Issue #8 remains BLOCKED_ACCEPTED, not PASS
 
 
 def test_tail_diagnostics_observations(variants) -> None:
