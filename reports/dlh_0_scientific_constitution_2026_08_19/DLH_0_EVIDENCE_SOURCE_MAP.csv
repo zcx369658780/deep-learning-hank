@@ -1,0 +1,29 @@
+source_type,path,role,evidence_level,notes
+repository,project_rules/PROJECT_RULE_INDEX_CURRENT.md,governance rule index,DESIGN_INPUT,read from fresh origin/main 56c9a72c
+repository,project_rules/PROJECT_RULE_OVERVIEW_CURRENT.md,governance rule,DESIGN_INPUT,read from fresh origin/main
+repository,project_rules/PROJECT_RULE_DSH_GITHUB_WORKFLOW_CURRENT.md,governance rule,DESIGN_INPUT,read from fresh origin/main
+repository,project_rules/PROJECT_RULE_DSH_LOCAL_READONLY_REFERENCE_ACCESS_CURRENT.md,governance rule,DESIGN_INPUT,read from fresh origin/main
+repository,project_rules/PROJECT_RULE_MODEL_DEVELOPMENT_DIAGNOSTIC_GATES_CURRENT.md,governance rule,DESIGN_INPUT,read from fresh origin/main
+repository,project_rules/PROJECT_RULE_RESEARCH_EVIDENCE_AND_CITATION_CURRENT.md,governance rule,DESIGN_INPUT,evidence-level discipline applied throughout DLH-0
+repository,project_rules/PROJECT_RULE_ACCEPTANCE_LEVELS_CURRENT.md,governance rule,DESIGN_INPUT,read from fresh origin/main
+repository,tasks/TASK_INDEX_CURRENT.md,task index,DESIGN_INPUT,points to Issue #2; verified identical scope
+repository,design_notes/PYTHON_REBUILD_THINKING_FROM_SCRATCH.md,design note,DESIGN_INPUT,route A/B/C/D framing and software architecture concept
+repository,design_notes/LEGACY_REFERENCE_BOUNDARY.md,design note,DESIGN_INPUT,clean-slate boundary; Zotero notes relevant to HANK/HJB/regional
+repository,historical_model_analysis/00_HISTORICAL_EVIDENCE_INDEX.md,historical evidence index,DESIGN_INPUT,reference only; not authority
+repository,historical_model_analysis/01_CODEX_CH5_MODEL_EQUATION_READONLY_REPORT_2026_06_22.md,historical codex report,DESIGN_INPUT,two-asset HJB/KFE + firm + multi-province structure map
+repository,historical_model_analysis/04_R5_LEGACY_EQUATION_MIGRATION_MATRIX.csv,historical migration matrix,DESIGN_INPUT,RETAIN/REDESIGN decisions; old_output_authority=FALSE
+repository,historical_model_analysis/05_R5_LEGACY_MIGRATION_STATUS_2026_07_22.md,historical status,DESIGN_INPUT,inter_prv_ratio/rah redesign note; W matrix idea
+repository,historical_model_analysis/07_R5_PYTHON_AR1_REBUILD_ROADMAP_HISTORICAL_2026_07_22.md,historical roadmap,DESIGN_INPUT,AR(1)+conditional IRF principle; gate discipline
+github,https://github.com/zcx369658780/deep-learning-hank/issues/2,sole Builder task authority,E0,body + comments read fresh; 0 comments
+zotero_local,D:\Zotero-Analytical-Workflow\26_06_23.md,keyword match HANK,E0,unverified; process-named artifact at root
+zotero_local,D:\Zotero-Analytical-Workflow\tools\dissertation_ch5_r5\formal_transition_package_contract.json,keyword match HJB,E0,unverified; tooling contract artifact
+zotero_local,D:\Zotero-Analytical-Workflow\tasks\kb_stage_report_current_papers_research_direction_scan_2026_06_15.md,keyword match HANK/heterogeneous agent/distribution/spatial/multi-region,E0,unverified; historical KB scan report under tasks\
+zotero_local,D:\Zotero-Analytical-Workflow\reports\stage3b\stage3b_research_radar_report.md,keyword match deep learning/neural/HANK/operator/distribution/spatial,E0,unverified; historical process report
+zotero_local,D:\Zotero-Analytical-Workflow\reports\stage3b\stage3b_priority_reading_queue.md,keyword match deep learning/neural/HANK/operator/spatial,E0,unverified; historical process report
+zotero_local,D:\Zotero-Analytical-Workflow\reports\stage2g\stage2g_all_remaining_dry_run_report.md,keyword match deep learning/neural/HANK/heterogeneous agent/distribution/spatial/multi-region,E0,unverified; historical dry-run report
+zotero_local,D:\Zotero-Analytical-Workflow\reports\stage2f\stage2f_20_sample_dry_run_report.md,keyword match deep learning/neural/HANK/operator/distribution/spatial,E0,unverified; historical dry-run report
+zotero_local,D:\Zotero-Analytical-Workflow\reports\urhank_readonly_audit_20260701_111154\URHANK_Chapter4_readonly_audit_report.md,keyword match HJB/HANK/distribution,E0,unverified; historical audit report
+zotero_local,D:\Zotero-Analytical-Workflow\reports\urhank_reconciliation_20260701_112949\URHANK_reconciliation_report.md,keyword match HANK,E0,unverified; historical reconciliation report
+zotero_local,D:\Zotero-Analytical-Workflow\skills\research_workflow\econ-literature-search.md,keyword match HANK,E0,unverified; workflow skill doc
+zotero_local_summary,D:\Zotero-Analytical-Workflow\ (tasks\ and reports\ historical gate records),478 additional keyword-matched files,E0,process/task artifacts; excluded from literature candidacy; no citation keys found
+literature_gap,local Zotero-workflow root,verified DL-for-HANK literature notes,E3=0,no E2/E3 literature exists in bounded DLH-0 reconnaissance; novelty not claimed
