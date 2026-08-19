@@ -21,86 +21,82 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - Issue #2 DLH-0 scientific constitution: accepted/closed at `73e1ae5db9d7e362781a77fa2a204c80238fad3e`.
 - Issue #3 DLH-1A literature/data feasibility: accepted/closed at `e9aa7dc8a3f5a198b1655c917659f519239eb67b`.
 - Issue #4 DLH-1B Python kernel audit: accepted/closed at `8dce318af5ca704a747e67932ec3caa35f9168ad`.
-- Issue #5 DLH-2A fixed-price HJB/KFE kernel: accepted/closed after R1 at `76b5882a63d8ade18d50098373b7c735eb2c4ca4`, evidence `D2_MACHINE_DIAGNOSTIC_ONLY`.
-- Issue #6 DLH-2B single-region steady-state GE: accepted/closed after R1 at `c562ce3a2743ac779123918e9aab5f37044b564a`, evidence `D2_MACHINE_DIAGNOSTIC_ONLY`.
-- Issue #7 DLH-2C robustness: fail-closed result independently accepted/closed at `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3` with classification `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED`, evidence `D2_MACHINE_DIAGNOSTIC_ONLY`.
+- Issue #5 DLH-2A fixed-price HJB/KFE: accepted/closed after R1 at `76b5882a63d8ade18d50098373b7c735eb2c4ca4`, D2 only.
+- Issue #6 DLH-2B steady-state GE: accepted/closed after R1 at `c562ce3a2743ac779123918e9aab5f37044b564a`, D2 only.
+- Issue #7 DLH-2C robustness: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED`, accepted/closed at `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3`.
+- Issue #8 DLH-2C-B1 asset-domain adequacy: `DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED`, accepted/closed at `249c9dcaf3c16b4b308e9d83daf232a23dce79cb`.
 
 ## Accepted Tier-0 computational state
 
-Under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
+The accepted scientific object remains a small one-region real HA/Aiyagari benchmark under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
 
-- one-region real HA/Aiyagari closure remains `K -> (w,r) -> transfer -> HJB -> KFE -> A(K) -> K-A(K)`;
-- accepted DLH-2B baseline at 40 points `[0,50]`: `K*=27.367823476711713`;
-- HJB/KFE/effective-labor/fiscal/goods/household-budget/mean-drift gates pass;
-- DLH-2B deterministic repeat differences are all `0.0`.
+`K -> (w,r) -> balanced transfer -> HJB -> stationary KFE -> A(K) -> K-A(K)`.
 
-Issue #7 robustness evidence adds:
+Accepted numerical/economic modules remain frozen.
 
-- fixed-bound grid refinement passes: B40_50→G80_50→G160_50 with `d40_80=0.004552056007726381`, `d80_160=0.002201396805130615`;
-- all 80→160 reported macro relative differences remain <0.5%;
-- state-label permutation invariance passes at machine precision;
-- 21-point bounded capital-residual scan on `[0.5,45]` is finite with exactly one sign-changing interval;
-- new-variant reproducibility differences are all `0.0`;
-- accepted DLH-2A/DLH-2B regression remains 32/32 PASS;
-- **upper-bound sensitivity fails** at matched spacing: `K50=27.243808136211925`, `K100=28.206080385009184`, `d50_100=0.03411577346665587 > 0.005`;
-- upper-boundary mass falls from `0.012470893430997766` to `8.909775784954998e-05`; top-5% mass falls from `0.0337799583738194` to `0.0005909812829154132`;
-- therefore `a_max=50` must not be treated as an adequate canonical numerical domain.
+### Issue #7 accepted blocker
 
-Issue #7 is accepted as a correct scientific fail-closed result, not retroactively converted into a robustness PASS.
+`a_max=50` is not adequate:
+- matched-spacing `K50=27.2438081362`, `K100=28.2060803850`;
+- `d50_100=0.03411577346665587 > 0.005`;
+- upper-boundary and upper-tail mass fall sharply when the bound is widened.
 
-## Authoritative scientific direction
+### Issue #8 accepted blocker and new information
 
-Roadmap:
-`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`.
+Asset-bound convergence itself is now strongly supported on the wider domain:
 
-Direction remains:
-- Tier 0 = one-region real HA/Aiyagari computational benchmark;
-- Tier 1 = minimal genuine single-region HANK nominal/New-Keynesian layer;
-- Tier 2 = small multi-region NSR-HANK;
-- structural household/firm/HJB/KFE/accounting/clearing stay hard economic modules;
-- learned labor-flow network `W^L` first, `W^K` later;
-- household home-region fixed initially, labor services mobile;
-- cross-year shared network parameters with year-specific observables/weights/equilibria;
-- GNN/message passing deferred.
+- C50→C100: `0.03411577346665587`;
+- C100→C150: `0.000453983596378`;
+- C150→C200: `2.756408258e-06`;
+- C200 upper-boundary mass `5.50488358e-10`;
+- C200 top-5% mass `1.36530748e-08`;
+- F100→F200 fine-spacing bound observation `0.000445042795539 < 0.005`.
+
+Thus the material upper-bound problem exposed by Issue #7 is resolved by the evidence up to `a_max=200`.
+
+However grid convergence is not yet independently established:
+
+- C100→F100 `d_grid_100=0.004940431182927`;
+- C200→F200 `d_grid_200=0.004952190294576`;
+- both individually satisfy 0.5%, but Issue #8's frozen cross-domain non-worsening condition fails by about `1.18e-05`.
+
+Issue #8 is therefore correctly BLOCKED_ACCEPTED, not PASS.
 
 ## Current active task
 
-Issue #8 — `DLH-2C-B1: Tier-0 asset-domain adequacy and upper-tail convergence validation`
+Issue #9 — `DLH-2C-B2: Fixed-domain third-level grid convergence and canonical Tier-0 numerical standard`
 
 Issue URL:
-`https://github.com/zcx369658780/deep-learning-hank/issues/8`
+`https://github.com/zcx369658780/deep-learning-hank/issues/9`
 
 Expected branch:
-`dsh/issue-8-dlh-2c-b1-asset-domain-2026-08-19`
+`dsh/issue-9-dlh-2c-b2-fixed-domain-grid-2026-08-19`
 
-## DLH-2C-B1 scientific purpose
+## DLH-2C-B2 authority
 
-Issue #8 is a successor to the accepted Issue #7 blocker. It does not relax or rewrite the 50→100 failure. It grants new bounded authority to determine whether the asset domain converges by `a_max=200` while all economics and solver modules remain frozen.
+Hold asset domain fixed at `[0,200]` and test a true same-domain refinement sequence:
 
-Existing accepted/read-only points:
-- C50 = 80 points `[0,50]`, spacing `50/79`;
-- C100 = 159 points `[0,100]`, same spacing.
+- C200: 317 points, spacing `50/79`;
+- F200: 633 points, spacing `25/79`;
+- Q200: 1265 points, spacing `12.5/79`.
 
-New authorized points:
-- C150 = 238 points `[0,150]`, same coarse spacing `50/79`;
-- C200 = 317 points `[0,200]`, same coarse spacing;
-- F100 = 317 points `[0,100]`, fine spacing `25/79`;
-- F200 = 633 points `[0,200]`, same fine spacing.
+Mandatory scientific questions:
 
-Mandatory questions:
+1. Does accepted C200→F200 difference `0.004952190294576287` reproduce within `1e-12`?
+2. Is F200→Q200 non-worsening on the same domain and `<=0.005`?
+3. Are F200→Q200 differences in Y, wage, net return, transfer, mean consumption and mean assets each `<=0.005`?
+4. Does Q200 pass all accepted HJB/KFE/equilibrium/accounting gates and deterministic reproducibility?
+5. Do all accepted regressions remain green after Issue #8's known red gate is converted to blocker-provenance regression evidence?
 
-1. Does the matched-spacing bound sequence 50→100→150→200 show non-worsening convergence with final `d150_200 <= 0.005`?
-2. Does the accepted Issue #7 `d50_100` reproduce within `1e-12` as provenance?
-3. Are the 100 and 200 upper-bound domains each stable to halving grid spacing, with `d_grid_100 <= 0.005`, `d_grid_200 <= d_grid_100+1e-12`, and `d_grid_200 <=0.005`?
-4. Do all new variants pass accepted steady-state numerical/accounting gates and same-environment reproducibility `<=1e-12`?
-5. Does the canonical test suite preserve the Issue #7 blocker as a provenance assertion instead of leaving an unexplained permanent red test?
+If Issue #9 passes independent review, the planned Tier-0 numerical-robustness block may be considered complete and DLH-3 may be issued separately.
 
 ## Current implementation/scientific authority
 
 - DLH-2A fixed-price kernel: `R1_ACCEPTED_D2`；
 - DLH-2B steady-state GE: `R1_ACCEPTED_D2`；
-- DLH-2C robustness: `BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_D2`；
-- DLH-2C-B1 asset-domain adequacy: `ACTIVE_NOT_ACCEPTED`；
+- DLH-2C: `BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_D2`；
+- DLH-2C-B1: `WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED_D2`；
+- DLH-2C-B2 fixed-domain grid convergence: `ACTIVE_NOT_ACCEPTED`；
 - genuine-HANK nominal implementation authority: `NONE`；
 - regional/W authority: `NONE`；
 - shock/transition authority: `NONE`；
@@ -111,10 +107,10 @@ Mandatory questions:
 
 ## Current boundaries
 
-Issue #8 may only use its exact tracked-path allowlist. Accepted economics/solver modules, accepted DLH-2A/DLH-2B tests, and Issue #7 reports/evidence remain frozen. The only previously accepted test authorized for narrow modification is `tests/test_dlh_2c_grid_boundary.py`, solely to convert the already-accepted boundary failure into a blocker-provenance regression assertion.
+Issue #9 may only use its exact 7-path allowlist. It may not alter accepted economics/solver modules, accepted DLH-2A/DLH-2B tests, the `[0,200]` asset domain, Issue #7/#8 evidence, or add grid levels beyond Q200.
 
 No regional/W, SOE/open-economy, nominal/NK, shock/transition, neural/RL, empirical data/calibration, Matlab/legacy Matlab, old-source-repo access or Results/policy/novelty work is authorized.
 
-## Queued next gate — NOT ACTIVE
+## Reviewer tooling provenance note
 
-`DLH-3 — minimal genuine single-region HANK nominal/New-Keynesian layer` remains blocked until fresh independent disposition of Issue #8 establishes an adequate Tier-0 numerical asset domain or returns another accepted fail-closed result for scientific decision.
+During the Issue #8 reviewer-side GitHub transition, ChatGPT accidentally created a one-byte `__dummy__` file through a connector call and immediately removed it in the next reviewer maintenance commit. The current tree contains no such file and no Builder authority was consumed. This is reviewer tooling provenance only and must not be interpreted as project/scientific evidence.
