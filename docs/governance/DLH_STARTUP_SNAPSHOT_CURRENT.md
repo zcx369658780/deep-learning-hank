@@ -9,27 +9,41 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Current governance state
 
 - live GitHub `main` = synchronized repository/governance authority；
-- GitHub Issue = sole DSH Builder task authority；
+- open GitHub Issue = sole DSH Builder task authority；
 - `tasks/TASK_INDEX_CURRENT.md` = synchronized Issue pointer only；
 - DSH = bounded Builder；
 - ChatGPT = independent GitHub reviewer / scientific-route authority / task issuer；
 - Owner = final scientific-direction authority。
 
+## Accepted bootstrap
+
+Issue #1 is independently accepted and closed.
+
+Accepted bootstrap commit now present on `main`:
+
+`bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`
+
+Accepted facts include:
+
+- local workspace Git initialized and bound to the canonical GitHub repository；
+- dedicated-branch push path demonstrated；
+- the two legacy reference roots exist；
+- Issue #1 performed zero legacy-root writes, zero Matlab/model execution, zero neural training, zero package installs and zero copy-outs。
+
 ## Current active task
 
-Issue #1 — `DLH-INIT: Bind local DSH workspace to GitHub and verify bootstrap boundaries`
+Issue #2 — `DLH-0: Scientific constitution and model scope freeze`
 
 Expected branch:
 
-`dsh/issue-1-local-github-bootstrap-2026-08-19`
+`dsh/issue-2-dlh-0-scientific-constitution-2026-08-19`
 
-Expected only tracked Builder output:
-
-`docs/governance/DLH_DSH_LOCAL_GITHUB_BOOTSTRAP_REPORT_2026_08_19.md`
+DLH-0 is planning/specification only. The Builder must produce a candidate scientific constitution and STOP for fresh GitHub + Owner review.
 
 ## Current scientific state
 
 - Deep Learning + HANK model constitution: `NOT_FROZEN`；
+- primary neural route: `NOT_FROZEN`；
 - model implementation: `NOT_STARTED`；
 - Matlab execution authority: `NONE`；
 - Python model execution authority: `NONE`；
@@ -39,11 +53,11 @@ Expected only tracked Builder output:
 
 ## Permanent read-only local reference roots
 
-- `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
-- `D:\Zotero-Analytical-Workflow`
+1. `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
+2. `D:\Zotero-Analytical-Workflow`
 
-Issue #1 may check root existence/basic metadata only and must perform zero writes to them.
+Issue #2 authorizes only bounded text reconnaissance under the Zotero-workflow root, subject to the exact Issue allowlist. It explicitly authorizes zero legacy Matlab source reads and zero copy-outs.
 
-## Next gate
+## Next decision point
 
-`DLH-0 Scientific Constitution and Model Scope Freeze` is queued conceptually but **not active**. It can be published only after Issue #1 completion is independently reviewed from fresh GitHub.
+After Issue #2 completion, ChatGPT must independently inspect the fresh candidate from live GitHub and the Owner must decide whether to freeze, revise, or reject the proposed scientific constitution before DLH-1/DLH-2 proceeds.
