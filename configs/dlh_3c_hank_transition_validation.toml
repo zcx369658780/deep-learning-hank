@@ -1,0 +1,52 @@
+# DLH-3C HANK time-dependent household HJB/KFE transition-validation fixture —
+# VALIDATION_FIXTURE_NOT_CALIBRATION
+# EXOGENOUS_NUMERICAL_RESPONSE_PATH_NOT_STRUCTURAL_SHOCK
+# D2_MACHINE_DIAGNOSTIC__HANK_TIME_DEPENDENT_HOUSEHOLD_KFE_ONLY
+#
+# Issue #12 §5 frozen transition fixture. These are numerical validation
+# fixtures ONLY, not calibration. The prescribed wage/real-return paths are
+# exogenous numerical response paths, NOT structural shocks and NOT IRFs.
+# Once the first numerical execution begins, these time-grid/path-amplitude/
+# horizon values and scientific thresholds must not be altered within
+# Issue #12.
+
+[baseline]
+# Accepted DLH-3B baseline config (read-only provenance; identity verified at load).
+dlh_3b_config = "configs/dlh_3b_hank_steady_state_validation.toml"
+dlh_3b_config_sha256 = "82AB4A02F9D08FBBAED1349BC027FACE5361B1AB24C710C4CEA6958481CD5FC1"
+
+[time]
+T = 12.0
+dt = 0.05
+T_long = 16.0
+bump_length_L = 5.0
+
+[paths]
+eta_w = 0.002
+eta_r = 0.001
+amplitude_multipliers = [1.0, 0.5, 0.25, 0.0]
+
+[numerical]
+policy_iteration_value_tolerance = 1e-8
+policy_iteration_max_iterations = 200
+consumption_floor = 1e-10
+hjb_residual_tolerance = 1e-6
+kkt_tolerance = 1e-6
+consumption_foc_tolerance = 1e-6
+kfe_mass_tolerance = 1e-10
+minimum_mass_threshold = -1e-12
+negative_mass_threshold = -1e-12
+generator_row_sum_tolerance = 1e-12
+generator_min_off_diagonal_tolerance = -1e-14
+
+[gates]
+zero_path_V_tolerance = 1e-5
+zero_path_policy_tolerance = 1e-4
+zero_path_mass_tolerance = 1e-6
+zero_path_aggregate_tolerance = 1e-5
+nontrivial_response_threshold = 1e-8
+quarter_amplitude_ratio_cap = 0.40
+half_linearity_metric_cap = 0.10
+horizon_window_T = 8.0
+horizon_aggregate_tolerance = 1e-4
+reproducibility_tolerance = 1e-12
