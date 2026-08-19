@@ -1,0 +1,31 @@
+# DLH-2A fixed-price validation fixture — VALIDATION_FIXTURE_NOT_CALIBRATION
+#
+# These values are a numerical regression fixture ONLY. They are NOT accepted
+# economic calibration and must never be described as empirical calibration.
+
+[fixture]
+frequency = "annual"
+asset_grid_count = 40
+a_min = 0.0
+a_max = 50.0
+idiosyncratic_states = [0.5, 1.5]
+q_low_to_high = 0.25
+q_high_to_low = 0.25
+rho_hh = 0.01
+gamma = 2.0
+wage = 1.57
+portfolio_return = 0.01
+transfer = 0.50
+tau_l = 0.15
+
+[numerical]
+hjb_tolerance = 1e-7
+hjb_max_iterations = 2000
+hjb_pseudo_time_step = 1000.0
+consumption_floor = 1e-10
+kfe_stationarity_tolerance = 1e-8
+kfe_mass_tolerance = 1e-10
+negative_mass_threshold = -1e-12
+generator_row_sum_tolerance = 1e-12
+generator_min_off_diagonal_tolerance = -1e-14
+reproducibility_tolerance = 1e-12
