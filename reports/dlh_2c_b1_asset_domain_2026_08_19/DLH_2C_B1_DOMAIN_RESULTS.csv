@@ -1,0 +1,97 @@
+metric,value,threshold,unit,status
+terminal_classification,BLOCKED_DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE,,,FAIL_CLOSED
+C50_capital,27.243808136211925,,,INFO
+C50_output,2.6951338801889896,,,INFO
+C50_wage,1.886593716671097,,,INFO
+C50_net_return,0.009677942258412666,,,INFO
+C50_mean_consumption,2.1502577204134267,,,INFO
+C50_transfer,0.2829890582334447,,,INFO
+C100_capital,28.206080385009184,,,INFO
+C100_output,2.7233460013389235,,,INFO
+C100_wage,1.9063422017283524,,,INFO
+C100_net_return,0.00896552051225706,,,INFO
+C100_mean_consumption,2.1592243875436926,,,INFO
+C100_transfer,0.28595132943514964,,,INFO
+C150_capital,28.21889129876679,,,INFO
+C150_output,2.723717023835849,,,INFO
+C150_wage,1.9066019156884586,,,INFO
+C150_net_return,0.008956314980421441,,,INFO
+C150_mean_consumption,2.1593391920059394,,,INFO
+C150_transfer,0.28599028824046306,,,INFO
+C150_all_gates,True,,bool,PASS
+C200_capital,28.218969081766193,,,INFO
+C200_output,2.7237192673433275,,,INFO
+C200_wage,1.9066034867443273,,,INFO
+C200_net_return,0.008956259113146438,,,INFO
+C200_mean_consumption,2.1593398912664425,,,INFO
+C200_transfer,0.28599051593122116,,,INFO
+C200_all_gates,True,,bool,PASS
+F100_capital,28.067415251476614,,,INFO
+F100_output,2.7193225569237004,,,INFO
+F100_wage,1.9035257937433085,,,INFO
+F100_net_return,0.00906561794802044,,,INFO
+F100_mean_consumption,2.1579742572725567,,,INFO
+F100_transfer,0.28552886835405724,,,INFO
+F100_all_gates,True,,bool,PASS
+F200_capital,28.079912014017818,,,INFO
+F200_output,2.7196857286301126,,,INFO
+F200_wage,1.9037800112389037,,,INFO
+F200_net_return,0.00905656254114038,,,INFO
+F200_mean_consumption,2.1580874885638535,,,INFO
+F200_transfer,0.2855670018958146,,,INFO
+F200_all_gates,True,,bool,PASS
+coarse_d50_100,0.034115773466656,accepted 0.03411577346665587 (<=1e-12),rel,PASS
+coarse_d100_150,0.000453983596378,<= d50_100 + 1e-12,rel,PASS
+coarse_d150_200,2.756408258e-06,<= d100_150 + 1e-12,rel,PASS
+coarse_gate_provenance,True,,bool,PASS
+coarse_gate_no_worsen_1,True,,bool,PASS
+coarse_gate_no_worsen_2,True,,bool,PASS
+coarse_gate_final,True,0.005,rel,PASS
+coarse_gate,True,,bool,PASS
+wide_d_grid_100,0.004940431182927,0.005,rel,PASS
+wide_d_grid_200,0.004952190294576,0.005,rel,PASS (individual)
+wide_gate_100,True,,bool,PASS
+wide_gate_200_no_worsen,False,d_grid_200 <= d_grid_100 + 1e-12,bool,FAIL
+wide_gate_200_final,True,0.005,bool,PASS
+wide_gate,False,,bool,FAIL
+wide_rel_diff_output_100,0.0014773877764686092,0.005,rel,no flag
+wide_rel_diff_wage_100,0.0014773877764685862,0.005,rel,no flag
+wide_rel_diff_net_return_100,0.00010009743744630525,0.005,rel,no flag
+wide_rel_diff_transfer_100,0.0004224609996076878,0.005,rel,no flag
+wide_rel_diff_mean_consumption_100,0.0005789742953157108,0.005,rel,no flag
+wide_rel_diff_mean_assets_100,0.0049161433156382685,0.005,rel,no flag
+wide_rel_diff_output_200,0.0014808929542518754,0.005,rel,no flag
+wide_rel_diff_wage_200,0.0014808929542518754,0.005,rel,no flag
+wide_rel_diff_net_return_200,0.00010030342975382231,0.005,rel,no flag
+wide_rel_diff_transfer_200,0.0004235213507200464,0.005,rel,no flag
+wide_rel_diff_mean_consumption_200,0.0005799898970575549,0.005,rel,no flag
+wide_rel_diff_mean_assets_200,0.004927786955557284,0.005,rel,no flag
+tail_C50_upper_boundary_mass,0.012470893430997766,,,INFO
+tail_C50_top5_mass,0.0337799583738194,,,INFO
+tail_C50_mean_assets_over_amax,0.5448761627240947,,,INFO
+tail_C100_upper_boundary_mass,8.909775784954998e-05,,,INFO
+tail_C100_top5_mass,0.0005909812829154132,,,INFO
+tail_C100_mean_assets_over_amax,0.28206080385008275,,,INFO
+tail_C150_upper_boundary_mass,3.75148759e-07,,,INFO
+tail_C150_top5_mass,4.94554602e-06,,,INFO
+tail_C150_mean_assets_over_amax,0.18812594251214172,,,INFO
+tail_C200_upper_boundary_mass,5.50488358e-10,,,INFO
+tail_C200_top5_mass,1.36530748e-08,,,INFO
+tail_C200_mean_assets_over_amax,0.14109484518701765,,,INFO
+tail_successive_C50_to_C100,0.03411577346665587,,rel,INFO
+tail_successive_C100_to_C150,0.00045398359637766983,,rel,INFO
+tail_successive_C150_to_C200,2.756408257849282e-06,,rel,INFO
+tail_d_fine_bound_100_200,0.00044504279553887104,,observation,no flag
+tail_d_fine_bound_flag_gt_half_percent,False,,observation,no flag
+reproducibility_c150_max_abs,0.0,1e-12,<=,PASS
+reproducibility_c200_max_abs,0.0,1e-12,<=,PASS
+reproducibility_f100_max_abs,0.0,1e-12,<=,PASS
+reproducibility_f200_max_abs,0.0,1e-12,<=,PASS
+reproducibility_gate,True,,bool,PASS
+issue7_blocker_provenance_assertion,True,,reproduces 0.03411577346665587 > 0.005,PASS
+regression_dlh2a_dlh2b,32/32 pass,,,PASS
+test_suite_total,46 passed / 1 failed (wide-domain gate),,,INFO
+python_version,3.11.9,,,INFO
+numpy_version,2.4.6,,,INFO
+scipy_version,1.17.1,,,INFO
+pytest_version,8.2.1,,,INFO

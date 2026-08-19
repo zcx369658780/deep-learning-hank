@@ -1,11 +1,13 @@
 """DLH-2C grid / boundary / residual-shape / reproducibility tests.
 
-Note on the upper-bound sensitivity test: it asserts the Issue #7 gate
-``d_bound_K <= 0.005``.  If the accepted benchmark does not satisfy it, the
-test FAILS on purpose — that is the documented fail-closed evidence
-``BLOCKED_DLH_2C_BOUNDARY_SENSITIVITY`` — and the execution report records the
-exact value.  No economics, grid standard, or threshold is modified to force a
-PASS.
+Issue #7's ``test_upper_bound_sensitivity_gate`` was independently accepted as
+a scientific blocker (``DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED``).  Per
+Issue #8, that test is converted here into a **provenance regression
+assertion** that preserves the accepted scientific failure
+(``d_bound_K = 0.03411577346665587 > 0.005``) so canonical main has no
+unexplained red test.  It does NOT relax the Issue #7 gate and does NOT claim
+Issue #7 passed.  The active asset-domain adequacy gates live in
+``tests/test_dlh_2c_b1_asset_domain.py``.
 """
 
 from pathlib import Path
@@ -80,15 +82,30 @@ def test_grid_convergence_gates(variants) -> None:
         )
 
 
-def test_upper_bound_sensitivity_gate(variants) -> None:
+def test_issue7_blocker_provenance_regression(variants) -> None:
+    """Accepted Issue #7 blocker provenance (NOT a PASS).
+
+    Issue #7 was independently accepted as
+    ``DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED``: the ``a_max=50`` domain
+    is NOT adequate under the frozen 0.5% upper-bound criterion.  This
+    assertion preserves that accepted scientific fact: the frozen Issue #7
+    fixture (G80_50 vs W159_100, matched spacing 50/79) must still reproduce
+    ``d_bound_K > 0.005`` with the accepted value ``0.03411577346665587``
+    within a tight tolerance.  It does NOT relax the Issue #7 gate, and it
+    does NOT claim Issue #7 passed.
+    """
     metrics = upper_bound_sensitivity_metrics(variants)
-    assert metrics["d_bound_K"] <= 0.005, (
-        "BLOCKED_DLH_2C_BOUNDARY_SENSITIVITY: "
-        f"d_bound_K = {metrics['d_bound_K']:.8f} > 0.005 "
-        f"(K50={metrics['k50']:.10f}, K100={metrics['k100']:.10f}); "
-        "not modified to force a PASS — actual diagnostics in report"
+    d_bound_k = metrics["d_bound_K"]
+    accepted = 0.03411577346665587
+    assert d_bound_k > 0.005, (
+        "Issue #7 blocker provenance violated: d_bound_K must remain > 0.005 "
+        f"(observed {d_bound_k:.12f})"
     )
-    assert metrics["gate"]
+    assert abs(d_bound_k - accepted) <= 1e-12, (
+        f"Issue #7 accepted value drift: d_bound_K = {d_bound_k:.17f} vs "
+        f"accepted {accepted}"
+    )
+    assert metrics["gate"] is False  # the Issue #7 gate is still not passed
 
 
 def test_residual_scan_single_root_interval(variants) -> None:
