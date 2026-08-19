@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_4_DLH_1B`
+Status: `ACTIVE_GITHUB_ISSUE_4_DLH_1B_R1`
 
 ## Accepted predecessors
 
@@ -52,31 +52,40 @@ Issue URL:
 
 Builder: DSH
 
-Expected dedicated branch:
+Current substage:
 
-`dsh/issue-4-dlh-1b-python-kernel-audit-2026-08-19`
+`DLH-1B-R1 — audit terminology / evidence-strength correction`
+
+Prior candidate:
+
+`1d2f3b20fb44680afd93e19ff0aba231a7b47467`
+
+Process/geometry/source-scope review: PASS. Audit packet: NOT ACCEPTED / bounded R1 correction required.
+
+Expected R1 dedicated branch:
+
+`dsh/issue-4-dlh-1b-r1-audit-terminology-evidence-correction-2026-08-19`
 
 Read-only candidate source repository:
 
 `zcx369658780/dissertation-ch5-r5-python-model`
 
-The source repository is candidate reusable infrastructure only. DSH must refresh its `main` before reading and perform zero mutations to it.
+Fresh source `main` independently confirmed at review time:
 
-## Current gate purpose
+`3039a145f43d419a08999c476cd0d97fd5f8341f`
 
-DLH-1B is a read-only source/equation/dependency/interface audit only.
+## Material correction requirements entering R1
 
-It must determine:
-
-- actual equations and state/control structure implemented in the existing Python source;
-- dependency / hidden-state / legacy-coupling risks;
-- correspondence between source modules and existing tests;
-- candidate classifications `REUSE_AS_REFERENCE_IMPLEMENTATION`, `REUSE_WITH_ADAPTER`, `REDESIGN_FOR_NSR_HANK`, `DROP_FROM_TIER0`, or `UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`;
-- a candidate Tier-0 migration allowlist and clean I/O/diagnostic contracts.
+- household policy matrix must be described as a continuous-time infinitesimal generator / intensity matrix with nonnegative off-diagonals and **row sums = 0**, not a row-stochastic matrix;
+- HJB asset-boundary handling must be described as **state-constraint / no-outward-drift** treatment, not reflecting boundaries;
+- reuse rationale must remain source-audit/candidate language and must not call an unexecuted algorithm `correct` or scientifically validated;
+- prior candidate remains provenance only and must not be merged as-is.
 
 ## Scope boundary
 
-Issue #4 does **not** authorize:
+DLH-1B-R1 is documentation/audit correction only.
+
+It does **not** authorize:
 
 - source-repository mutation;
 - code copy/migration into `deep-learning-hank`;
@@ -94,4 +103,4 @@ Issue #4 does **not** authorize:
 
 `DLH-2 — Tier-0 single-region HA/Aiyagari computational benchmark`.
 
-DLH-2 may only be issued after DLH-1B is independently reviewed and an exact migration/implementation allowlist is authorized.
+DLH-2 may only be issued after corrected DLH-1B is independently accepted and an exact migration/implementation allowlist is authorized.
