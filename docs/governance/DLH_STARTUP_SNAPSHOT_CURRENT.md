@@ -19,48 +19,52 @@ Canonical handoff:
 - Owner = final scientific-direction authority;
 - Builder completion summary is not acceptance evidence;
 - correct fail-closed scientific BLOCKED results may be accepted without relabeling PASS;
-- `main` remains unprotected unless a fresh read proves otherwise;
 - DSH may not self-accept, merge main, close Issue, create successor/PR, or widen scientific scope unless explicitly authorized.
 
 ## Current task state
 
-`ACTIVE_GITHUB_ISSUE_11__DLH_3B_HANK_STEADY_STATE_STRUCTURAL_KERNEL`
+`ACTIVE_GITHUB_ISSUE_12__DLH_3C_TIME_DEPENDENT_HOUSEHOLD_KFE`
 
-**Active Builder authority: GitHub Issue #11 only.**
+**Active Builder authority: GitHub Issue #12 only.**
 
 Issue title:
 
-`DLH-3B: Minimal HANK steady-state structural kernel and D2 validation`
+`DLH-3C: Time-dependent household HJB/KFE response under prescribed small paths`
 
 Issue URL:
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/11`
+`https://github.com/zcx369658780/deep-learning-hank/issues/12`
 
 Task nature:
 
-`STEADY_STATE_IMPLEMENTATION_AND_BOUNDED_CPU_D2_VALIDATION_ONLY`
+`TIME_DEPENDENT_HOUSEHOLD_HJB_KFE_UNDER_PRESCRIBED_SMALL_PATHS_ONLY`
 
 Dedicated Builder branch:
 
-`dsh/issue-11-dlh-3b-hank-steady-state-2026-08-20`
+`dsh/issue-12-dlh-3c-time-dependent-household-kfe-2026-08-20`
 
 Expected successful candidate classification:
 
-`DLH_3B_HANK_STEADY_STATE_STRUCTURAL_KERNEL_READY_FOR_GPT_REVIEW`
+`DLH_3C_TIME_DEPENDENT_HOUSEHOLD_KFE_RESPONSE_READY_FOR_GPT_REVIEW`
 
-## Accepted stages through DLH-3A
+Evidence ceiling if successful:
+
+`D2_MACHINE_DIAGNOSTIC__HANK_TIME_DEPENDENT_HOUSEHOLD_KFE_ONLY`
+
+## Accepted stages through DLH-3B
 
 - Issues #1–#6: accepted/closed under their canonical commits and D1/D2 evidence boundaries.
 - Issue #7: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_AND_CLOSED`.
 - Issue #8: `DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED_AND_CLOSED`.
 - Issue #9: `DLH_2C_B2_FIXED_DOMAIN_GRID_CONVERGENCE_ACCEPTED_AND_CLOSED`, commit `5632ee1cbc781d67daf305f315f556506da0f6df`.
-- Issue #10 DLH-3A: R0 candidate `4b17acb...` rejected for equation inconsistencies; R1 candidate `f56a7c4058a32cc0a7bdc903cada98602a3706b1` independently accepted, fast-forwarded to main and Issue closed with classification `DLH_3A_R1_EQUATION_CONSISTENCY_ACCEPTED`.
+- Issue #10 DLH-3A: corrected R1 candidate `f56a7c4058a32cc0a7bdc903cada98602a3706b1` independently accepted/closed as `DLH_3A_R1_EQUATION_CONSISTENCY_ACCEPTED`.
+- Issue #11 DLH-3B: candidate `267fef0386098796c06f4b7bf331121af9061a43` independently accepted/closed as `DLH_3B_HANK_STEADY_STATE_STRUCTURAL_KERNEL_ACCEPTED_WITH_OBSERVATIONS`; evidence ceiling `D2_MACHINE_DIAGNOSTIC__HANK_STEADY_STATE_STRUCTURAL_ONLY`.
 
 Issue #7 and #8 remain accepted fail-closed provenance, not retroactive PASS.
 
 ## Final Tier-0 reference
 
-Scientific object: small one-region real HA/Aiyagari benchmark, **not genuine HANK**.
+Scientific object: small one-region real HA/Aiyagari benchmark, not genuine HANK.
 
 - `VALIDATION_FIXTURE_NOT_CALIBRATION`;
 - canonical Tier-0 asset domain `[0,200]`;
@@ -70,77 +74,101 @@ Scientific object: small one-region real HA/Aiyagari benchmark, **not genuine HA
 - `K_Q=28.010252116571742`;
 - `d_C_F=0.00495219029457629`;
 - `d_F_Q=0.00248694289348661`;
-- F200→Q200 macro differences all `<0.005`;
-- Q200 repeat differences all `0.0`;
 - Issue #9 full suite `54 passed / 0 failed`.
 
-Tier-0 Q200 remains a real-HA numerical reference only. Its domain adequacy is not inherited by the HANK economy.
+Tier-0 domain adequacy is not inherited by HANK.
 
-## Accepted DLH-3A R1 equation contract
+## Accepted DLH-3A architecture / DLH-3B steady state
 
-Accepted commit:
-
-`f56a7c4058a32cc0a7bdc903cada98602a3706b1`
-
-The accepted single-region HANK validation route uses:
+The accepted single-region validation route uses:
 
 - one liquid/risk-free real financial asset, not Tier-0 productive capital;
 - two-state idiosyncratic CTMC;
 - CRRA consumption + endogenous static labor;
 - continuous-time HJB/KFE semantics and stationary reduction;
-- `Z_t` = aggregate productivity, `A^hh_t` = household liquid assets;
-- labor-only production `Y_t=Z_t N_t`;
-- Rotemberg pricing with an explicitly derived exact nonlinear price-setting FOC and a frozen local-linear NKPC for the validation route;
-- Fisher relation and Taylor rule `i_t = r_bar + pi_bar + phi_pi*(pi_t-pi_bar)+epsilon_i_t`;
+- labor-only production `Y=Z*N`;
+- Rotemberg price-setting convention;
+- Fisher relation and Taylor rule;
 - constant real bond supply `B` through 3B–3D;
 - fiscal transfer and lump-sum profit/dividend incidence;
-- explicit HJB/KFE/asset/labor/goods/fiscal/profit/wealth/NKPC/Fisher/Taylor residuals.
+- explicit household/distribution/market/accounting/nominal residuals.
 
-Owner deferral remains binding: this is a single-region validation architecture, not an irreversible final regional steady-state NSR-HANK asset/production structure.
+Accepted DLH-3B commit:
 
-## Issue #11 scientific scope
+`267fef0386098796c06f4b7bf331121af9061a43`
 
-DLH-3B implements the **zero-inflation / zero-shock steady-state structural kernel** only.
+Accepted central D2 steady-state provenance:
 
-Frozen validation fixture in Issue #11 includes:
+- accepted DLH-3B config SHA-256 `82AB4A02F9D08FBBAED1349BC027FACE5361B1AB24C710C4CEA6958481CD5FC1`;
+- `r*=i*=0.007370613883670197`;
+- `N*=1.0656334480169984`;
+- `Y*=1.0656334480169984`;
+- `w*=5/6`;
+- `tr*=0.05949804216542284`;
+- `Pi*=0.17760557466949967`;
+- `A_hh=10.000000002223675` against `B=10`;
+- `R_asset≈2.22e-9`, `R_labor≈5.50e-10`, `R_goods≈-4.06e-10`;
+- true HJB residual `≈6.76e-8 <=1e-7`;
+- KFE stationarity residual `≈1.26e-15`;
+- state-marginal error `≈2.22e-16`;
+- full repository suite reported `77 passed / 0 failed`;
+- deterministic repeat differences reported exactly `0.0`.
 
-- liquid asset grid `[0,100]`, 401 points, explicitly a starting development domain rather than proven HANK domain adequacy;
-- states `(0.5,1.5)`, CTMC intensities `0.25/0.25`;
-- `rho_hh=0.01`, `gamma=2.0`, `tau_l=0.15`;
-- endogenous labor: `frisch=1.0`, `chi=0.70`, `n_max=5.0`;
-- `Z=1.0`, `epsilon=6.0`, `phi_p=100.0`;
-- `phi_pi=1.5`, `pi_bar=0`, `epsilon_i=0`;
-- constant real bond supply `B=10.0`, `G=0`;
-- deterministic nested `brentq` steady-state roots in real return and aggregate labor;
-- HJB/KKT, KFE, asset/labor clearing, accounting, nominal consistency, reproducibility, gross upper-bound truncation sanity and full Tier-0 regression gates.
+Acceptance observations:
 
-Evidence ceiling for a successful Issue #11 result:
+- structural `all_gates_pass` does not itself include reproducibility, but reproducibility is separately mandatory and enforced by the accepted test suite;
+- the accepted HJB residual passes but is not a robustness-margin claim;
+- `[0,100]` / 401 points passed gross truncation sanity only and is not accepted HANK domain adequacy.
 
-`D2_MACHINE_DIAGNOSTIC__HANK_STEADY_STATE_STRUCTURAL_ONLY`
+Owner deferral remains binding: this single-region validation structure does not irreversibly freeze the later regional steady-state NSR-HANK asset/production architecture.
 
-A 3B PASS does **not** establish dynamic HANK monetary transmission.
+## Issue #12 scientific scope
 
-## Exact authority / forbidden boundary
+DLH-3C validates the first **time-dependent household/distribution engine** while keeping aggregate GE open.
 
-Issue #11 alone defines its 16-path allowlist and exact equations, fixture, root scans and thresholds. Builder must read the fresh Issue body/comments before mutation.
+Frozen transition-validation structure in Issue #12 includes:
 
-Explicitly no authority for:
+- accepted DLH-3B steady state as terminal/initial baseline;
+- primary horizon `T=12`, `dt=0.05`;
+- long horizon `T_long=16` at the same `dt`;
+- compact-support numerical bump `sin(pi*t/5)^2` on `[0,5]`;
+- Path W: prescribed wage-only bump, peak relative amplitude `0.002`;
+- Path R: prescribed real-return-only bump, peak additive amplitude `0.001`;
+- full/half/quarter/zero amplitude sequence;
+- implicit backward HJB with within-step policy iteration;
+- implicit forward KFE without mass renormalization;
+- zero-path invariance;
+- nontrivial response + amplitude-to-zero/local-scaling diagnostics;
+- mass/non-negativity/boundary/KKT/HJB gates;
+- horizon/terminal robustness on `[0,8]`;
+- deterministic reproducibility;
+- full predecessor regression.
 
-- mutation of accepted Tier-0 modules/tests/configs/evidence;
-- mutation of accepted DLH-3A specifications;
-- time-dependent HJB/KFE;
-- transition paths;
-- monetary/TFP/fiscal shock simulation or IRFs;
+The prescribed paths are explicitly:
+
+`EXOGENOUS_NUMERICAL_RESPONSE_PATH_NOT_STRUCTURAL_SHOCK`.
+
+They are not IRFs and have no policy interpretation.
+
+## Explicit non-authority during DLH-3C
+
+No authority for:
+
+- mutation of accepted Tier-0 / DLH-3A / DLH-3B paths;
+- structural monetary/TFP/fiscal shocks;
+- `epsilon_i != 0`;
+- endogenous NKPC/inflation feedback or full NK GE closure;
+- dynamic market-clearing claims;
+- IRF terminology/policy interpretation;
+- time-step robustness claims;
 - regional / `W^L` / `W^K` / `W^G`;
-- multi-region code;
 - neural/RL/training/GPU;
 - empirical calibration/data/regression;
-- legacy Matlab / old Python reference repo / private Zotero access;
-- HANK domain/grid robustness claims beyond Issue #11's gross-truncation sanity gate;
+- legacy Matlab / old Python reference repository / private Zotero access;
 - Results/policy/welfare/novelty claims;
 - Builder PR/merge/Issue close/successor/self-accept.
 
-Future DLH-3C/3D/3E remain `NO_BUILDER_AUTHORITY` until separate open GitHub Issues exist.
+Future DLH-3D/3E remain `NO_BUILDER_AUTHORITY` until separate open GitHub Issues exist.
 
 ## Required Builder startup order
 
@@ -150,6 +178,6 @@ Future DLH-3C/3D/3E remain `NO_BUILDER_AUTHORITY` until separate open GitHub Iss
 4. read this Startup Snapshot;
 5. read Master Roadmap;
 6. read all four accepted DLH-3A R1 contracts;
-7. read only the accepted Tier-0 interfaces/provenance explicitly authorized by Issue #11;
-8. fresh-read GitHub Issue #11 body + all comments;
-9. confirm Issue #11 remains OPEN and Task Index points exactly to it before mutation.
+7. read accepted DLH-3B config/modules/tests/evidence only as authorized by Issue #12;
+8. fresh-read GitHub Issue #12 body + all comments;
+9. confirm Issue #12 remains OPEN and Task Index points exactly to it before mutation.
