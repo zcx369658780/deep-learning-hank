@@ -15,77 +15,92 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - ChatGPT = independent GitHub reviewer / scientific-route authority / task issuer；
 - Owner = final scientific-direction authority。
 
-## Accepted bootstrap
+## Accepted stages
 
-Issue #1 is independently accepted and closed.
+### Bootstrap
 
-Accepted bootstrap commit:
+Issue #1 accepted and closed.
+
+Accepted commit:
 
 `bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`
 
-## Current active task
+### DLH-0 / NSR-HANK scientific constitution
 
-Issue #2 — `DLH-0: Scientific constitution and model scope freeze`
+Issue #2 accepted and closed after R1 correction.
 
-Current substage:
+Acceptance classification:
 
-`DLH-0R1 — NSR-HANK roadmap alignment / scientific constitution correction`
+`DLH_0_R1_NSR_HANK_SCIENTIFIC_CONSTITUTION_ACCEPTED`
+
+Accepted R1 commit:
+
+`73e1ae5db9d7e362781a77fa2a204c80238fad3e`
 
 Authoritative roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-Prior candidate:
+Accepted working scientific direction:
 
-`b79b0310bffafaf2a9b562aff349f173dec7d5eb`
+- working label `Network-Structured Regional HANK (NSR-HANK)`;
+- province-local household / firm / HJB / KFE / accounting / clearing remain structural hard modules;
+- first learned object = interpretable interregional labor-flow network `W^L`;
+- `W^K` later; fiscal transfers remain a separate central-government allocation layer;
+- household home-region identity fixed; labor services may move across provinces;
+- Python is the main implementation language;
+- existing single-province Python HJB/firm code is candidate reusable infrastructure subject to DLH-1B audit;
+- Tier 0 one-region real HA/Aiyagari = computational benchmark only, not genuine HANK;
+- Tier 1 = minimal genuine single-region HANK with NK nominal layer;
+- Tier 2 = small multi-region NSR-HANK;
+- cross-year model separates `Z_static`, time-varying node features, and time-varying pair features;
+- network structural parameters are shared across years while `W^L_t` is year-varying;
+- each year solves a separate conditional equilibrium `X*_t = T(X*_t; theta, Z_t)`;
+- hold-out-year + hold-out-pair validation mandatory;
+- learning sequence = flow-supervised pretraining -> GE embedding -> bounded equilibrium-constrained fine-tuning;
+- GNN/message passing deferred.
 
-Independent review found the process/branch/output contract clean, but the scientific direction requires correction before acceptance. The prior candidate must not be merged as-is.
+Novelty remains unverified; E3 literature evidence is currently zero.
 
-Expected R1 branch:
+## Current active task
 
-`dsh/issue-2-dlh-0-r1-nsr-hank-roadmap-alignment-2026-08-19`
+Issue #3 — `DLH-1A: Literature evidence and interprovincial labor-flow data feasibility`
 
-The latest authoritative reviewer comment on Issue #2 defines the exact R1 correction contract.
+Expected branch:
 
-## Owner-confirmed scientific direction
+`dsh/issue-3-dlh-1a-literature-data-feasibility-2026-08-19`
 
-Working label: `Network-Structured Regional HANK (NSR-HANK)`.
+DLH-1A goals:
 
-First-generation design:
+1. establish the current literature boundary for NSR-HANK;
+2. map Structural RL / DeepHAM / neural HJB / differentiable-equilibrium / spatial HA-HANK / learned-flow-network precedents;
+3. assess Chinese interprovincial O-D-year labor-flow data feasibility;
+4. assess static/time-varying feature feasibility;
+5. build E0/E1/E2 evidence plus an E3 human-verification queue.
 
-- province-local household/firm/HJB/KFE modules remain structural hard economic modules；
-- neural/learned component first targets interpretable interregional labor-flow weights `W^L`；
-- capital-flow learning `W^K` is later；
-- central fiscal transfers are initially a separate central-government allocation layer；
-- labor services may be allocated across provinces while household home-region identity remains fixed；
-- Python is the implementation language；
-- existing single-province Python HJB/firm code is candidate reusable infrastructure subject to audit；
-- one-region real HA/Aiyagari model is a computational benchmark only；
-- a minimal genuine single-region HANK is a separate later layer；
-- cross-year learning uses shared structural network parameters plus year-specific observables/equilibria；
-- time-invariant and time-varying determinants must be explicitly separated；
-- GNN/message passing is deferred until the interpretable flow-weight baseline is stable。
-
-## Current scientific state
+## Current scientific / implementation state
 
 - master roadmap: `INITIAL_V0_1_PUBLISHED`；
-- DLH-0 scientific constitution: `R1_CORRECTION_ACTIVE_NOT_FROZEN`；
-- primary learned object: `OWNER_DIRECTION_WL_FIRST`；
+- scientific constitution: `DLH_0_R1_ACCEPTED`；
+- primary learned object: `W^L_FIRST_ACCEPTED_AT_SPEC_LEVEL`；
 - model implementation: `NOT_STARTED`；
 - code migration authority: `NONE`；
 - Matlab execution authority: `NONE`；
 - Python model execution authority: `NONE`；
 - neural training authority: `NONE`；
-- numerical results authority: `NONE`；
-- Results/manuscript claim authority: `NONE`。
+- numerical Results authority: `NONE`；
+- Results/manuscript claim authority: `NONE`；
+- final novelty claim authority: `NONE`。
 
 ## Permanent read-only local reference roots
 
 1. `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
 2. `D:\Zotero-Analytical-Workflow`
 
-DLH-0R1 does not authorize new legacy-source reads beyond what its authoritative Issue comment explicitly permits. No model code migration or execution is authorized.
+Issue #3 permits bounded read-only local Zotero-workflow text reconnaissance only as explicitly defined in the Issue. It authorizes zero legacy Matlab reads and zero source-root writes/copy-outs.
 
-## Next decision point
+## Queued next gate — NOT ACTIVE
 
-After the DLH-0R1 correction candidate is pushed, ChatGPT must independently inspect it from fresh GitHub and the Owner must confirm the corrected scientific constitution. Only then may Issue #2 close and DLH-1 literature/kernel-audit tasks be issued.
+`DLH-1B — read-only audit of existing single-province Python HJB + firm kernel`.
+
+It requires a separate GitHub Issue after DLH-1A review. No code migration is authorized yet.
