@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Local reference imports (may contain private/copyrighted material)
+references/local_imports/**
+!references/local_imports/README.md
+!references/local_imports/*manifest*.csv
+!references/local_imports/*manifest*.json
+
+# Data / legacy outputs
+*.mat
+*.h5
+*.hdf5
+*.xlsx
+*.xls
+*.sav
+*.dta
+*.parquet
+*.feather
+*.pdf
+
+# ML checkpoints / experiment tracking
+*.pt
+*.pth
+*.ckpt
+wandb/
+mlruns/
+lightning_logs/
+
+# Runtime outputs
+outputs/**
+runs/**
+checkpoints/**
+artifacts/**
+
+# Local logs/caches
+*.log
+.cache/

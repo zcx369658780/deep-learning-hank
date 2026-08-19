@@ -1,0 +1,11 @@
+id,block,source,decision,target_module,test,old_output_authority
+EM01,household_HJB,HANK_2ASSETS_HJB:111-250,RETAIN,household_hjb.py,residual,FALSE
+EM02,distribution_KFE,HANK_2ASSETS_HJB:299-345,RETAIN,distribution_kfe.py,mass,FALSE
+EM03,production,HANK_firm:14-45,RETAIN,aggregate_block.py,identity,FALSE
+EM04,GovInv_services,mpHANK_shock_2000:35-40,REDESIGN,aggregate_block.py,loading,FALSE
+EM05,rah_inter_prv,HANK_mp_1turn:30-40,REDESIGN,spatial_links.py,orientation,FALSE
+EM06,nominal,HANK_firm:34-48,REDESIGN,aggregate_block.py,closure,FALSE
+EM07,fiscal,HANK_firm:52-95,REDESIGN,aggregate_block.py,accounting,FALSE
+EM08,clearing,HANK_mp_1eq:31-42,REDESIGN,steady_state.py,residual,FALSE
+EM09,shock,main:44-55,REDESIGN,shocks.py,AR1_limits,FALSE
+EM10,transition,mpHANK_shock_2000:30-66,REDESIGN,transition.py,terminal,FALSE
