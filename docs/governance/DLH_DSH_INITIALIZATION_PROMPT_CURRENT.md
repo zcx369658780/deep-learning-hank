@@ -1,44 +1,53 @@
-# DSH Initialization Prompt — CURRENT
+# DSH Initialization / Startup Prompt — CURRENT
 
-Use the following prompt to start DeepSeek Harness for the first project task.
+Repository: `zcx369658780/deep-learning-hank`
 
-```text
-你好，请初始化并接入新的 Deep Learning + HANK 项目。
+Local workspace: `D:\deep-learning-hank`
 
-Repository:
-zcx369658780/deep-learning-hank
+DSH role: bounded Builder.
 
-Local workspace:
-D:\deep-learning-hank
+Current task authority is always the single open GitHub Issue referenced by fresh `tasks/TASK_INDEX_CURRENT.md`. Chat prompts do not expand Issue authority.
 
-你在本项目中的角色是 bounded Builder。Owner 是最终 scientific-direction authority；ChatGPT 是 independent GitHub reviewer / scientific-route authority / task issuer。
+## Mandatory startup
 
-从现在开始，本项目采用 GitHub-governed workflow：
-- live GitHub main = synchronized repository/governance authority；
-- GitHub Issue = sole Builder task authority；
-- tasks/TASK_INDEX_CURRENT.md 只用于指向当前唯一 active Issue，不能扩大 Issue authority；
-- 你不得 self-accept、merge main、close/edit Issue、创建 successor Issue/PR、release 或扩大科学范围，除非当前 Issue 明确授权。
+1. `Set-Location D:\deep-learning-hank`
+2. Inspect `.git`, canonical `origin`, current branch, worktree/staging/untracked state.
+3. `git fetch origin`.
+4. Record fresh `origin/main` SHA.
+5. Read from fresh `origin/main`:
+   - `project_rules/PROJECT_RULE_INDEX_CURRENT.md`;
+   - all CURRENT rules required by that index;
+   - `tasks/TASK_INDEX_CURRENT.md`;
+   - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`;
+   - any roadmap/specification explicitly referenced by Task Index or the active Issue.
+6. From GitHub, re-read the exact active Issue body and all authoritative comments in chronological order.
+7. Confirm Issue number/title/state/scope and Task Index identity match.
+8. If any authority mismatch exists, STOP fail-closed before mutation.
 
-本次唯一 active task 是 GitHub Issue #1：
-https://github.com/zcx369658780/deep-learning-hank/issues/1
+## Current scientific route
 
-请先在 D:\deep-learning-hank 中完成 Git/GitHub 连接初始化：
-1. 如果 .git 不存在，只在该目录初始化 Git main；如果已存在，先检查 identity。
-2. canonical origin 必须是：
-   https://github.com/zcx369658780/deep-learning-hank.git
-3. fetch origin/main，记录 fresh SHA。
-4. 在不删除 Owner 已解压的未跟踪 bootstrap 文件的前提下，将本地 tracked state 绑定并恢复到 fresh origin/main。
-5. 严禁 git clean 或其他会删除未跟踪 Owner 文件的操作。
-6. 然后严格按 fresh origin/main 的 project_rules/PROJECT_RULE_INDEX_CURRENT.md 读取全部 CURRENT rules、tasks/TASK_INDEX_CURRENT.md，再重新从 GitHub 读取 Issue #1 的最新 body/comments。
-7. 若 Task Index 没有指向 Issue #1、origin 不匹配、或任何 authority 不一致，fail closed。
+The current `main` roadmap is:
 
-两个 legacy roots 永久只读：
-- D:\MatlabProgram\2023年12月2日 多省份神经网络HANK
-- D:\Zotero-Analytical-Workflow
+`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-本次 Issue #1 只允许检查这两个 root 的存在和 basic metadata；不得递归读取、运行、写入、建索引、建 cache/log 或复制 reference。
+Current working label:
 
-严格执行 Issue #1 的 dedicated branch、exact changed path、commit/push 和 STOP contract。不要从这条聊天 prompt 推断任何 Issue #1 之外的权限。
+`Network-Structured Regional HANK (NSR-HANK)`.
 
-完成后只返回 Issue #1 要求的 completion report，然后 STOP，等待 ChatGPT 从 fresh live GitHub 独立验收。
-```
+Do not infer implementation authority from the roadmap. Only the live active GitHub Issue authorizes Builder mutations.
+
+## Permanent restrictions
+
+Unless the live Issue explicitly authorizes otherwise:
+
+- no self-accept;
+- no merge to `main`;
+- no PR;
+- no Issue edit/close/reopen;
+- no successor Issue;
+- no release/tag;
+- no scope expansion;
+- no writes to legacy reference roots;
+- no committing private PDFs/data/notes/secrets to public GitHub;
+- no `git add .` / `git add -A`;
+- completion must STOP for independent fresh-GitHub review.
