@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_5_DLH_2A_R1`
+Status: `ACTIVE_GITHUB_ISSUE_6_DLH_2B`
 
 ## Accepted predecessors
 
@@ -21,64 +21,72 @@ Status: `DLH_1B_R2_PYTHON_KERNEL_READONLY_AUDIT_ACCEPTED_AND_CLOSED`
 Accepted commit: `8dce318af5ca704a747e67932ec3caa35f9168ad`
 Accepted source repo: `zcx369658780/dissertation-ch5-r5-python-model` @ `3039a145f43d419a08999c476cd0d97fd5f8341f`.
 
+### Issue #5 — DLH-2A Tier-0 fixed-price HJB/KFE validation
+Status: `DLH_2A_R1_TIER0_KERNEL_FIXED_PRICE_VALIDATION_ACCEPTED_AND_CLOSED`
+Accepted commit: `76b5882a63d8ade18d50098373b7c735eb2c4ca4`
+Evidence level: `D2_MACHINE_DIAGNOSTIC_ONLY`.
+
+Accepted numerical conclusions:
+- new clean package implements one-asset finite-z CRRA/inelastic-labor fixed-price household HJB + stationary KFE;
+- HJB uses state-constraint/no-outward-drift boundaries and CTMC infinitesimal generator/intensity matrix;
+- accepted fixture is explicitly `VALIDATION_FIXTURE_NOT_CALIBRATION`;
+- R1 full suite: `15 passed / 0 failed / 0 skipped`;
+- HJB true residual `8.335084289434747e-08 <= 1e-7`;
+- generator row-sum max abs `5.551115123125783e-17`; literal minimum off-diagonal `0.0`;
+- KFE mass error `0.0`, stationarity residual `3.69712940817557e-17`, state marginals `[0.5,0.5]`;
+- deterministic repeat differences all `0.0 <= 1e-12`;
+- no outer GE, regional/W, nominal, shock/transition, neural or empirical-calibration authority was consumed.
+
 Authoritative roadmap:
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
 ## Sole active Builder authority
 
-GitHub Issue #5:
+GitHub Issue #6:
 
-`DLH-2A: Tier-0 kernel migration and fixed-price HJB/KFE validation`
+`DLH-2B: Single-region Tier-0 HA/Aiyagari steady-state general equilibrium`
 
 Issue URL:
-`https://github.com/zcx369658780/deep-learning-hank/issues/5`
+`https://github.com/zcx369658780/deep-learning-hank/issues/6`
 
 Builder: DSH
 
-Current substage:
+Expected dedicated branch:
+`dsh/issue-6-dlh-2b-tier0-steady-state-ge-2026-08-19`
 
-`DLH-2A-R1 — evidence/provenance and off-diagonal diagnostic correction`
+## Current gate purpose
 
-Prior candidate:
+DLH-2B closes the accepted fixed-price household/KFE kernel with a minimal one-region two-factor firm, balanced fiscal transfer and productive-capital market.
 
-`2a2534d0660e433bbe48b5576dba18c8df83c9c4`
+Economic closure:
 
-Independent review disposition:
+`K -> (w,r) -> transfer -> HJB -> KFE -> mean assets A(K) -> R_K(K)=K-A(K)`.
 
-`DLH_2A_CORE_NUMERICAL_GATE_PASS__EVIDENCE_AND_DIAGNOSTIC_R1_REQUIRED`
-
-The prior candidate's core fixed-price HJB/KFE numerics and Issue #5 thresholds were independently reviewed as substantively PASS at D2 level, but the candidate is NOT accepted/merged until the bounded R1 correction is completed.
-
-Expected R1 dedicated branch:
-
-`dsh/issue-5-dlh-2a-r1-evidence-diagnostic-correction-2026-08-19`
-
-## R1 correction requirements
-
-Preserve the accepted core implementation/economics and all original Issue #5 thresholds. Correct only the following bounded items under the latest authoritative ChatGPT comment on Issue #5:
-
-1. Test-count evidence: canonical breakdown must reflect the actual candidate files (`7` economics + `7` HJB/KFE + `1` reproducibility = `15` total for the original suite).
-2. Source-provenance schema: 40-character Git blob object IDs must not be labeled `sha256`; use an accurate blob-OID field name or add actual SHA-256 separately.
-3. Exact command provenance: replace placeholder `python -c "..."` with the full exact R1 execution/diagnostics command(s); preserve history of the original first run and the R1 rerun.
-4. Off-diagonal diagnostic semantics: `generator_min_off_diagonal` must represent the literal minimum over all off-diagonal matrix entries, including implicit sparse zeros. Keep threshold `>= -1e-14`; rerun full DLH-2A tests/diagnostics after the bounded correction.
-5. Remove unsupported byte-level claim `no code copied verbatim`; retain only the supported statement that no wholesale old-package copy occurred and all adapted/reimplemented logic is provenance-mapped.
+The task must independently validate:
+- deterministic `brentq` capital clearing;
+- HJB/KFE diagnostics at equilibrium;
+- effective labor from the CTMC stationary distribution and final KFE consistency;
+- goods/resource accounting;
+- household aggregate-budget accounting;
+- mean asset drift;
+- deterministic full-steady-state reproducibility;
+- preservation of all accepted DLH-2A regressions.
 
 ## Scope boundary
 
-DLH-2A-R1 remains inside Issue #5 only. It does NOT authorize:
-- outer single-region GE/capital root (future DLH-2B);
-- regional / `W^L` / `W^K` / old `W` code;
+DLH-2B remains a small **real single-region HA/Aiyagari Tier-0 validation fixture**, not genuine HANK.
+
+It does **not** authorize:
+- `W^L`, `W^K`, old `W`, spatial/multi-region code;
 - SOE third factor or RegionalAccounts;
-- nominal/NK block;
+- nominal/Fisher/NKPC/Taylor-rule block;
 - shocks/AR(1) or transition;
 - neural/RL work;
-- data/calibration/Results claims;
-- Matlab/legacy Matlab access;
-- source-repo mutation;
+- empirical data/calibration/regression;
+- legacy Matlab access;
+- Results/policy/novelty claims;
 - PR/merge/Issue-close/successor/self-accept by Builder.
 
 ## Queued next gate — NOT ACTIVE
 
-`DLH-2B — single-region Tier-0 HA/Aiyagari steady-state general equilibrium`.
-
-DLH-2B may only be issued after corrected DLH-2A-R1 is independently reviewed and accepted.
+A post-DLH-2B Tier-0 numerical robustness / limiting-case validation gate may be issued only after independent review of Issue #6. Genuine-HANK implementation remains later and separately authorized.
