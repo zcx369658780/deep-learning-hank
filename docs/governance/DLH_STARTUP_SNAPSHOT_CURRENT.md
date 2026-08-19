@@ -17,102 +17,124 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 
 ## Accepted stages
 
-### Bootstrap
+### Issue #1 — Bootstrap
 
-Issue #1 accepted and closed.
+Status: accepted and closed.
 
 Accepted commit:
 
 `bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`
 
-### DLH-0 / NSR-HANK scientific constitution
+### Issue #2 — DLH-0 / NSR-HANK scientific constitution
 
-Issue #2 accepted and closed after R1 correction.
-
-Acceptance classification:
-
-`DLH_0_R1_NSR_HANK_SCIENTIFIC_CONSTITUTION_ACCEPTED`
+Status: accepted and closed after R1 correction.
 
 Accepted R1 commit:
 
 `73e1ae5db9d7e362781a77fa2a204c80238fad3e`
 
-Authoritative roadmap:
+### Issue #3 — DLH-1A literature / labor-flow data feasibility
+
+Status: accepted and closed after R1 evidence correction.
+
+Acceptance classification:
+
+`DLH_1A_R1_EVIDENCE_AND_DATA_FEASIBILITY_ACCEPTED`
+
+Accepted R1 commit:
+
+`e9aa7dc8a3f5a198b1655c917659f519239eb67b`
+
+Accepted evidence conclusions:
+
+- Owner prior dissertation / SSRN `6028234` is project provenance, not external precedent;
+- no credible true annual bilateral O-D flow matrix is currently proven for direct `W^L_ij,t` supervision;
+- CMDS is an annual repeated migrant cross-section and may support annual origin×destination migrant-stock/sample cross-tabs only after schema/weight/questionnaire harmonization verification;
+- geodoi `Id=3621` is a provincial aggregate/model-derived proxy under current documentation, not a proven bilateral O-D-year matrix;
+- DeepHAM / Structural RL / master-equation primary-source descriptions are corrected;
+- E3 literature evidence remains 0 and final novelty claims remain unauthorized.
+
+## Authoritative scientific direction
+
+Roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-Accepted working scientific direction remains:
+Accepted first-generation NSR-HANK direction remains:
 
-- working label `Network-Structured Regional HANK (NSR-HANK)`;
-- province-local household / firm / HJB / KFE / accounting / clearing remain structural hard modules;
+- province-local household / firm / HJB / KFE / accounting / clearing = structural hard modules;
 - first learned object = interpretable interregional labor-flow network `W^L`;
-- `W^K` later; fiscal transfers separate central-government allocation layer;
+- `W^K` later; fiscal transfers remain a separate central-government allocation layer;
 - household home-region identity fixed; labor services may move across provinces;
 - Python main implementation language;
-- existing single-province Python HJB/firm code = candidate reusable infrastructure subject to DLH-1B audit;
-- Tier 0 HA/Aiyagari benchmark only; Tier 1 minimal genuine HANK; Tier 2 small multi-region NSR-HANK;
-- `Z_static` separated from time-varying node/pair features;
-- shared cross-year network parameters + year-specific `W^L_t` and separate yearly equilibrium `X*_t`;
-- hold-out-year + hold-out-pair validation mandatory;
+- Tier 0 = one-region real HA/Aiyagari computational benchmark only;
+- Tier 1 = minimal genuine single-region HANK with NK nominal layer;
+- Tier 2 = small multi-region NSR-HANK;
+- shared cross-year network parameters + year-specific observables / `W^L_t` / equilibrium `X*_t`;
 - flow-supervised pretraining -> GE embedding -> bounded equilibrium-constrained fine-tuning;
 - GNN/message passing deferred.
 
 ## Current active task
 
-Issue #3 — `DLH-1A: Literature evidence and interprovincial labor-flow data feasibility`
+Issue #4 — `DLH-1B: Read-only audit of existing single-province Python HJB + firm kernel`
 
-Current substage:
+Issue URL:
 
-`DLH-1A-R1 — evidence provenance / labor-flow data classification correction`
+`https://github.com/zcx369658780/deep-learning-hank/issues/4`
 
-Prior candidate:
+Expected branch:
 
-`2a04a737bd6aa62b00e8c39a9e2a2d7e3b22b021`
+`dsh/issue-4-dlh-1b-python-kernel-audit-2026-08-19`
 
-Independent review found its process/branch/output contract clean, but evidence classification requires correction before acceptance.
+Read-only candidate source repository:
 
-Expected R1 branch:
+`zcx369658780/dissertation-ch5-r5-python-model`
 
-`dsh/issue-3-dlh-1a-r1-evidence-correction-2026-08-19`
+At Issue publication time source `main` was observed at:
 
-The latest authoritative reviewer comment on Issue #3 defines the exact R1 correction contract.
+`3039a145f43d419a08999c476cd0d97fd5f8341f`
 
-### Evidence corrections required
+DSH must refresh source `main` before reads; the publication-time SHA is not assumed current.
 
-1. SSRN `6028234` = Owner prior dissertation / project provenance, not independent external literature precedent.
-2. geodoi `Id=3621` currently documents provincial growth balance plus provincial inflow/outflow-rate estimates derived from census/employment data; bilateral O-D-year pair fields are not established and must not be assumed.
-3. CMDS = annual repeated cross-sectional migrant survey; potential O-D migrant-stock/sample cross-tabs require schema and survey-weight verification and are not true annual migration flows.
-4. DeepHAM distribution representation = optimal generalized moments; correct any full-distribution-state wording.
-5. Master-equation / EMINN map must include primary `arXiv:2406.13726` (Gu, Laurière, Merkel, Payne).
-6. Recompute bounded novelty verdicts after removing Owner prior work from external-precedent evidence.
-7. Labor-data verdict must separate true annual bilateral flow, annual O-D stock/sample cross-tab, and multiyear transition/derived proxy.
+Current source tree is known to include candidate modules such as household HJB, distribution KFE, aggregate/firm block, steady-state, diagnostics, grids, parameters, regional/spatial links, shocks and transition, plus corresponding tests. These are reference candidates only and carry no automatic NSR-HANK authority.
 
-E3 remains zero unless later human verification explicitly promotes a source.
+## DLH-1B gate purpose
+
+Read-only audit only:
+
+- actual implemented equations / states / controls / asset dimension;
+- HJB/KFE/firm/steady-state logic;
+- dependency / hidden-state / hard-coded legacy coupling;
+- source-to-test mapping;
+- reuse/redesign/drop classification;
+- proposed Tier-0 migration allowlist candidate;
+- clean I/O and diagnostic interface design.
+
+No execution is authorized. Existing tests are read as source evidence only and must not be represented as passing evidence.
 
 ## Current scientific / implementation state
 
 - master roadmap: `INITIAL_V0_1_PUBLISHED`；
 - scientific constitution: `DLH_0_R1_ACCEPTED`；
+- DLH-1A evidence/data feasibility: `ACCEPTED_WITH_DATA_BLOCKER_RECORDED`；
 - primary learned object: `W^L_FIRST_ACCEPTED_AT_SPEC_LEVEL`；
-- DLH-1A evidence packet: `R1_CORRECTION_ACTIVE_NOT_ACCEPTED`；
 - model implementation: `NOT_STARTED`；
 - code migration authority: `NONE`；
-- Matlab execution authority: `NONE`；
-- Python model execution authority: `NONE`；
+- Python model/test execution authority: `NONE`；
+- Matlab execution/read authority for current gate: `NONE`；
 - neural training authority: `NONE`；
 - numerical Results authority: `NONE`；
 - Results/manuscript claim authority: `NONE`；
 - final novelty claim authority: `NONE`。
 
-## Permanent read-only local reference roots
+## Read-only boundaries for current gate
 
-1. `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
-2. `D:\Zotero-Analytical-Workflow`
+Source repo `zcx369658780/dissertation-ch5-r5-python-model` must receive zero mutations.
 
-Issue #3 permits bounded read-only local Zotero-workflow text reconnaissance only as explicitly defined in the Issue/current correction comment. Zero legacy Matlab reads and zero source-root writes/copy-outs.
+Issue #4 authorizes no code copy/migration, no test execution, no package install, no data operation, and no legacy Matlab reads.
 
 ## Queued next gate — NOT ACTIVE
 
-`DLH-1B — read-only audit of existing single-province Python HJB + firm kernel`.
+`DLH-2 — Tier-0 single-region HA/Aiyagari computational benchmark`.
 
-No code migration is authorized yet. DLH-1B may be published only after corrected DLH-1A acceptance.
+DLH-2 can only be issued after DLH-1B is independently accepted and an exact implementation/migration allowlist is authorized.
