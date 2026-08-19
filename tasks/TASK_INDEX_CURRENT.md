@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_4_DLH_1B_R1`
+Status: `ACTIVE_GITHUB_ISSUE_4_DLH_1B_R2`
 
 ## Accepted predecessors
 
@@ -54,17 +54,16 @@ Builder: DSH
 
 Current substage:
 
-`DLH-1B-R1 — audit terminology / evidence-strength correction`
+`DLH-1B-R2 — classification-count consistency correction`
 
-Prior candidate:
+Prior candidates:
 
-`1d2f3b20fb44680afd93e19ff0aba231a7b47467`
+- `1d2f3b20fb44680afd93e19ff0aba231a7b47467` — R0 audit candidate; process PASS, terminology/evidence correction required.
+- `4254a85cf9f40f80d8ad9e9ecbba061f64143a0d` — R1 candidate; generator/boundary/evidence-strength correction PASS, but classification summary inconsistent with matrix.
 
-Process/geometry/source-scope review: PASS. Audit packet: NOT ACCEPTED / bounded R1 correction required.
+Expected R2 dedicated branch:
 
-Expected R1 dedicated branch:
-
-`dsh/issue-4-dlh-1b-r1-audit-terminology-evidence-correction-2026-08-19`
+`dsh/issue-4-dlh-1b-r2-classification-consistency-2026-08-19`
 
 Read-only candidate source repository:
 
@@ -74,30 +73,25 @@ Fresh source `main` independently confirmed at review time:
 
 `3039a145f43d419a08999c476cd0d97fd5f8341f`
 
-## Material correction requirements entering R1
+## Accepted R1 corrections to preserve exactly
 
-- household policy matrix must be described as a continuous-time infinitesimal generator / intensity matrix with nonnegative off-diagonals and **row sums = 0**, not a row-stochastic matrix;
-- HJB asset-boundary handling must be described as **state-constraint / no-outward-drift** treatment, not reflecting boundaries;
-- reuse rationale must remain source-audit/candidate language and must not call an unexecuted algorithm `correct` or scientifically validated;
-- prior candidate remains provenance only and must not be merged as-is.
+- household policy matrix = continuous-time infinitesimal generator / intensity matrix; off-diagonals nonnegative; diagonal = negative total outflow; row sums = 0;
+- HJB asset boundary = state-constraint / no-outward-drift treatment;
+- reuse statements remain candidate/source-audit only; numerical convergence and scientific validity remain unverified.
+
+## R2 consistency correction
+
+R2 must restore and consistently report:
+
+- `shocks.py = DROP_FROM_TIER0` because Tier-0 is steady-state only; this does not reject the AR(1) code as a future reference;
+- `transition.py = UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`;
+- authoritative 14-row counts = `2 / 4 / 3 / 3 / 2` for `REUSE_AS_REFERENCE_IMPLEMENTATION / REUSE_WITH_ADAPTER / REDESIGN_FOR_NSR_HANK / DROP_FROM_TIER0 / UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`.
 
 ## Scope boundary
 
-DLH-1B-R1 is documentation/audit correction only.
+DLH-1B-R2 is documentation/audit consistency correction only.
 
-It does **not** authorize:
-
-- source-repository mutation;
-- code copy/migration into `deep-learning-hank`;
-- Python/model/test execution;
-- package/environment mutation;
-- Matlab/Octave/Dynare reads or execution;
-- neural training/inference;
-- data purchase/download/analysis;
-- calibration;
-- Results/policy claims;
-- final novelty claims;
-- PR/merge/Issue-close/successor/self-accept by Builder.
+It does **not** authorize source-repository mutation, code copy/migration, Python/model/test execution, package/environment mutation, Matlab/Octave/Dynare reads or execution, neural training/inference, data operations, calibration, Results/policy claims, final novelty claims, PR/merge/Issue-close/successor/self-accept by Builder.
 
 ## Queued next gate — NOT ACTIVE
 
