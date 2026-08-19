@@ -1,0 +1,93 @@
+metric,value,threshold,unit,status
+terminal_classification,BLOCKED_DLH_2C_BOUNDARY_SENSITIVITY,,,FAIL_CLOSED
+B40_50_capital,27.367823476711713,,,INFO
+B40_50_output,2.6988085539374342,,,INFO
+B40_50_wage,1.889165987756204,,,INFO
+B40_50_net_return,0.009583739710619838,,,INFO
+B40_50_mean_consumption,2.1514520844030995,,,INFO
+B40_50_mean_assets,27.367823476701247,,,INFO
+B40_50_transfer,0.2833748981634306,,,INFO
+B40_50_all_gates,True,,bool,PASS
+G80_50_capital,27.243808136211925,,,INFO
+G80_50_output,2.6951338801889896,,,INFO
+G80_50_wage,1.886593716671097,,,INFO
+G80_50_net_return,0.009677942258412666,,,INFO
+G80_50_mean_consumption,2.1502577204134267,,,INFO
+G80_50_mean_assets,27.243808136211925,,,INFO
+G80_50_transfer,0.2829890582334447,,,INFO
+G80_50_all_gates,True,,bool,PASS
+G160_50_capital,27.18396544153814,,,INFO
+G160_50_output,2.6933565143175044,,,INFO
+G160_50_wage,1.8853495621258332,,,INFO
+G160_50_net_return,0.009723660218040652,,,INFO
+G160_50_mean_consumption,2.1496771968482835,,,INFO
+G160_50_mean_assets,27.18396544153814,,,INFO
+G160_50_transfer,0.28280243348399795,,,INFO
+G160_50_all_gates,True,,bool,PASS
+W159_100_capital,28.206080385009184,,,INFO
+W159_100_output,2.7233460013389235,,,INFO
+W159_100_wage,1.9063422017283524,,,INFO
+W159_100_net_return,0.00896552051225706,,,INFO
+W159_100_mean_consumption,2.1592243875436926,,,INFO
+W159_100_mean_assets,28.206080385009184,,,INFO
+W159_100_transfer,0.28595132943514964,,,INFO
+W159_100_all_gates,True,,bool,PASS
+P40_50_capital,27.367823476711713,,,INFO
+P40_50_output,2.6988085539374342,,,INFO
+P40_50_wage,1.889165987756204,,,INFO
+P40_50_net_return,0.009583739710619838,,,INFO
+P40_50_mean_consumption,2.1514520844030995,,,INFO
+P40_50_mean_assets,27.367823476701247,,,INFO
+P40_50_transfer,0.2833748981634306,,,INFO
+P40_50_all_gates,True,,bool,PASS
+grid_d40_80,0.004552056007726381,,rel,PASS
+grid_d80_160,0.002201396805130615,0.005,rel,PASS
+grid_gate_no_worsen,True,,bool,PASS
+grid_gate_final,True,,bool,PASS
+grid_rel_diff_output_80_160,0.000659475634718914,0.005,rel,no flag
+grid_rel_diff_wage_80_160,0.0006594756347189612,0.005,rel,no flag
+grid_rel_diff_net_return_80_160,4.5717961989967526e-05,0.005,rel,no flag
+grid_rel_diff_transfer_80_160,0.00018662438842881324,0.005,rel,no flag
+grid_rel_diff_mean_consumption_80_160,0.0002699775148687238,0.005,rel,no flag
+grid_rel_diff_mean_assets_80_160,0.002196561306352015,0.005,rel,no flag
+boundary_d_bound_K,0.03411577346665587,0.005,rel,FAIL
+boundary_k50,27.243808136211925,,,INFO
+boundary_k100,28.206080385009184,,,INFO
+boundary_upper_boundary_mass_50,0.012470893430997766,,,INFO
+boundary_upper_boundary_mass_100,8.909775784954998e-05,,,INFO
+boundary_top5_mass_50,0.0337799583738194,,,INFO
+boundary_top5_mass_100,0.0005909812829154132,,,INFO
+boundary_mean_assets_over_amax_50,0.5448761627240947,,,INFO
+boundary_mean_assets_over_amax_100,0.28206080385008275,,,INFO
+boundary_rel_diff_output_50_100,0.010467798118192576,0.005,rel,flag
+boundary_rel_diff_wage_50_100,0.010467798118192529,0.005,rel,flag
+boundary_rel_diff_net_return_50_100,0.0007124217455128194,0.005,rel,no flag
+boundary_rel_diff_transfer_50_100,0.0029622723254005834,0.005,rel,no flag
+boundary_rel_diff_mean_consumption_50_100,0.004170045444279783,0.005,rel,no flag
+permutation_max_abs_diff_capital,6.039613253960852e-14,1e-10,abs,PASS
+permutation_max_abs_diff_output,1.7763568394002505e-15,1e-10,abs,PASS
+permutation_max_abs_diff_wage,1.3322676295501878e-15,1e-10,abs,PASS
+permutation_max_abs_diff_net_return,4.85722573273506e-17,1e-10,abs,PASS
+permutation_max_abs_diff_transfer,2.220446049250313e-16,1e-10,abs,PASS
+permutation_max_abs_diff_value,1.6342482922482304e-13,1e-10,abs,PASS
+permutation_max_abs_diff_consumption,1.176836406102666e-13,1e-10,abs,PASS
+permutation_max_abs_diff_drift,1.1812772982011666e-13,1e-10,abs,PASS
+permutation_max_abs_diff_distribution_mass,2.9802549317281546e-15,1e-10,abs,PASS
+permutation_max_abs_diff_scalars,5.648814749292796e-13,1e-10,abs,PASS
+permutation_gate,True,,bool,PASS
+residual_scan_points,21,,count,INFO
+residual_scan_all_finite,True,,bool,PASS
+residual_scan_sign_changing_intervals,1,1,count,PASS
+residual_scan_exact_zero_samples,0,,count,INFO
+reproducibility_g80_max_abs,0.0,1e-12,<=,PASS
+reproducibility_g160_max_abs,0.0,1e-12,<=,PASS
+reproducibility_w159_max_abs,0.0,1e-12,<=,PASS
+reproducibility_p40_max_abs,0.0,1e-12,<=,PASS
+reproducibility_gate,True,,bool,PASS
+regression_dlh2a_dlh2b,32/32 pass,,,PASS
+test_suite_total,39 passed / 1 failed (boundary gate),,,INFO
+config_sha256_baseline,890276218116E2BAD93B5EC576508D2FF3A6D5569F7C0FB19805F43FED0F77DF,,hex,INFO
+python_version,3.11.9,,,INFO
+numpy_version,2.4.6,,,INFO
+scipy_version,1.17.1,,,INFO
+pytest_version,8.2.1,,,INFO
