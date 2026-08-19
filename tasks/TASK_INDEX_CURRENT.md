@@ -1,66 +1,80 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_2_DLH_0_R1`
+Status: `ACTIVE_GITHUB_ISSUE_3_DLH_1A`
 
-## Accepted predecessor
+## Accepted predecessors
 
-GitHub Issue #1 — `DLH-INIT: Bind local DSH workspace to GitHub and verify bootstrap boundaries`
+### Issue #1 — local/GitHub bootstrap
 
 Status: `ACCEPTED_AND_CLOSED`
 
-Accepted candidate / main commit:
+Accepted commit:
 
 `bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`
 
-## Sole active Builder authority
+### Issue #2 — DLH-0 / NSR-HANK scientific constitution
 
-GitHub Issue #2:
+Status: `DLH_0_R1_NSR_HANK_SCIENTIFIC_CONSTITUTION_ACCEPTED_AND_CLOSED`
 
-`DLH-0: Scientific constitution and model scope freeze`
+Accepted commit / accepted main state:
 
-Issue URL: `https://github.com/zcx369658780/deep-learning-hank/issues/2`
+`73e1ae5db9d7e362781a77fa2a204c80238fad3e`
 
-Builder: DSH
-
-Current substage:
-
-`DLH-0R1 — NSR-HANK roadmap alignment / scientific constitution correction`
-
-Authoritative scientific roadmap on `main`:
+Authoritative roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-Prior DSH candidate:
+Accepted scientific constitution:
 
-`b79b0310bffafaf2a9b562aff349f173dec7d5eb`
+`docs/specifications/DLH_0_SCIENTIFIC_CONSTITUTION_CANDIDATE_2026_08_19.md`
 
-Process review: PASS. Scientific direction: NOT ACCEPTED / correction required.
+## Sole active Builder authority
 
-Expected R1 dedicated branch:
+GitHub Issue #3:
 
-`dsh/issue-2-dlh-0-r1-nsr-hank-roadmap-alignment-2026-08-19`
+`DLH-1A: Literature evidence and interprovincial labor-flow data feasibility`
 
-The latest authoritative Issue #2 reviewer comment defines the exact R1 mutation/output contract.
+Issue URL:
 
-## Owner-frozen scientific direction entering R1
+`https://github.com/zcx369658780/deep-learning-hank/issues/3`
 
-- working model label: `Network-Structured Regional HANK (NSR-HANK)`;
-- province-local household/firm/HJB/KFE/economic equations remain structural hard modules;
-- first learned object = interpretable interregional labor-flow network `W^L`;
-- `W^K` enters only after labor-flow baseline is stable;
-- fiscal transfers are initially represented through a central-government allocation layer, not folded into ordinary capital flow;
-- household home-region identity is fixed in the first generation; labor services may be allocated across provinces;
-- existing single-province Python HJB/firm code is a candidate reusable kernel subject to DLH-1 audit, not automatic authority;
-- one-region real HA/Aiyagari model is a computational benchmark, not a genuine HANK claim;
-- minimal genuine single-region HANK is a separate subsequent structural layer;
-- cross-year learning shares structural network parameters while each year solves a separate equilibrium;
-- time-invariant features and time-varying features must be explicitly separated;
-- GNN/message passing is deferred until an interpretable flow-weight baseline is stable.
+Builder: DSH
+
+Expected dedicated branch:
+
+`dsh/issue-3-dlh-1a-literature-data-feasibility-2026-08-19`
+
+## Current gate purpose
+
+DLH-1A is evidence/data-feasibility only.
+
+It must establish:
+
+- the literature boundary around Structural RL, DeepHAM, neural HJB/master-equation methods, differentiable-equilibrium methods, spatial/multi-region HA/HANK, learned economic networks, and interpretable migration/flow models;
+- whether the NSR-HANK `W^L`-first route has existing precedent, partial precedent, or remains unresolved under bounded search;
+- whether credible Chinese interprovincial origin-destination-year labor-flow evidence exists for flow-supervised identification;
+- feasibility of `Z_static`, time-varying node features, and time-varying pair features;
+- an E3 human-verification queue without self-promoting machine evidence to E3.
 
 ## Scope boundary
 
-DLH-0R1 is still planning / scientific specification only.
+Issue #3 does **not** authorize:
 
-It does **not** authorize model implementation, code migration, legacy Matlab source reads, Matlab/Dynare/Octave execution, Python model/solver execution, neural training/inference, package installation, GPU experiments, calibration, data analysis/regression, PDF/full-text extraction, Results prose, final novelty claims, or successor creation.
+- Python/model code creation or migration;
+- legacy Matlab reads;
+- Matlab/Python model or solver execution;
+- neural training/inference;
+- package/environment mutation;
+- GPU work;
+- model calibration/regression;
+- data purchase, scraping, bulk download, or ingestion;
+- local Zotero PDF/SQLite access;
+- Results/policy claims;
+- final novelty claims;
+- PR/merge/Issue-close/successor/self-accept by Builder.
 
-Any R1 Builder completion remains a **candidate** until fresh GitHub review plus Owner scientific-direction confirmation.
+## Queued next gate — NOT ACTIVE
+
+`DLH-1B — read-only audit of the existing single-province Python HJB + firm kernel`.
+
+DLH-1B will receive a separate GitHub Issue only after DLH-1A is independently reviewed. The two DLH-1 workstreams are parallel in the roadmap conceptually, but governance remains one active Builder Issue at a time.
