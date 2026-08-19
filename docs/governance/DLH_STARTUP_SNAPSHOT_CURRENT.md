@@ -26,11 +26,10 @@ Accepted and closed after R1 at `73e1ae5db9d7e362781a77fa2a204c80238fad3e`.
 ### Issue #3 — DLH-1A literature / labor-flow data feasibility
 Accepted and closed after R1 at `e9aa7dc8a3f5a198b1655c917659f519239eb67b`.
 
-Key data/evidence state:
-- true annual bilateral O-D labor-flow labels for direct `W^L_ij,t` supervision remain unresolved;
-- CMDS is a repeated migrant cross-section / possible annual O-D migrant-stock source pending schema, weights and questionnaire harmonization;
-- geodoi `Id=3621` is aggregate/model-derived proxy under current evidence;
-- E3 literature evidence remains zero; novelty claims remain unauthorized.
+Key evidence state:
+- direct true annual bilateral O-D labor-flow labels for `W^L_ij,t` remain unresolved;
+- CMDS remains a repeated migrant cross-section / possible O-D stock source pending schema/weight harmonization;
+- E3 literature evidence remains zero; final novelty claims remain unauthorized.
 
 ### Issue #4 — DLH-1B Python kernel read-only audit
 Accepted and closed after R2 at `8dce318af5ca704a747e67932ec3caa35f9168ad`.
@@ -39,16 +38,11 @@ Accepted source identity:
 `zcx369658780/dissertation-ch5-r5-python-model` @ `3039a145f43d419a08999c476cd0d97fd5f8341f`.
 
 Accepted audit conclusions:
-- old source is a frozen two-region capital-exposure scaffold, not a clean single-region solver;
-- household candidate has one liquid asset, finite-state productivity, CRRA utility and inelastic labor;
-- HJB source uses upwind finite differences with state-constraint/no-outward-drift boundaries;
-- policy matrix is a CTMC infinitesimal generator/intensity matrix with nonnegative off-diagonals and rows summing to zero;
-- stationary KFE solves `G.T g = 0` with normalization/diagnostics;
-- old `W`, open-economy accounts, SOE third factor, nominal placeholder, shocks and transition are excluded from Tier-0 implementation scope;
-- numerical convergence and scientific validity were not established by DLH-1B.
-
-Authoritative 14-row reuse counts:
-`2 / 4 / 3 / 3 / 2` = reference / adapter / redesign / drop-from-Tier0 / unresolved.
+- old source top level = frozen two-region capital-exposure scaffold, not clean single-region solver;
+- Tier-0 candidate household = one liquid asset, finite-state productivity, CRRA, inelastic labor;
+- HJB contract = upwind continuous-time finite differences + state-constraint/no-outward-drift boundary + CTMC infinitesimal generator;
+- KFE contract = stationary `G.T g = 0` + mass/non-negativity/diagnostic checks;
+- Tier-0 excludes old `W`, open-economy accounts, SOE third factor, nominal placeholder, shocks and transition.
 
 ## Authoritative scientific direction
 
@@ -73,26 +67,40 @@ Issue #5 — `DLH-2A: Tier-0 kernel migration and fixed-price HJB/KFE validation
 Issue URL:
 `https://github.com/zcx369658780/deep-learning-hank/issues/5`
 
-Expected branch:
-`dsh/issue-5-dlh-2a-tier0-kernel-validation-2026-08-19`
+Current substage:
 
-## DLH-2A authority
+`DLH-2A-R1 — evidence/provenance and off-diagonal diagnostic correction`
 
-This is the first implementation + numerical-execution gate.
+Prior candidate:
+`2a2534d0660e433bbe48b5576dba18c8df83c9c4`.
 
-Allowed only under exact Issue #5 scope:
-- create the new `src/deep_learning_hank` package within the 21-path allowlist;
-- adapt/reimplement accepted HJB/KFE/grid patterns from the read-only source repo;
-- implement two-factor firm and minimal fiscal helpers for unit-level tests;
-- execute a fixed-price small validation fixture labeled `VALIDATION_FIXTURE_NOT_CALIBRATION`;
-- run HJB/KFE diagnostics, new pytest suite and deterministic repeat validation;
-- create a task-local environment/install minimal dependencies only if needed.
+Independent review classification:
 
-The HJB/KFE contract must preserve:
-- CTMC generator/intensity matrix, not row-stochastic;
-- state-constraint/no-outward-drift asset boundaries;
-- explicit HJB residual;
-- stationary KFE residual/mass/non-negativity diagnostics.
+`DLH_2A_CORE_NUMERICAL_GATE_PASS__EVIDENCE_AND_DIAGNOSTIC_R1_REQUIRED`
+
+### What independently passed in the prior candidate
+
+- geometry = one commit / 21 allowlisted paths / no PR;
+- source repo remained at audited SHA `3039a145...`;
+- one-asset finite-z CRRA/inelastic-labor household implementation stayed inside Tier-0 scope;
+- HJB generator/boundary mathematics matched the accepted contract;
+- fixed-price HJB residual `8.335084289434747e-08 <= 1e-7`;
+- positive consumption and state-constraint boundary gates passed;
+- KFE mass error `0`, stationarity residual `3.69712940817557e-17`, non-negative distribution, state marginals `[0.5,0.5]`;
+- deterministic repeat differences were all `0.0`;
+- fixture was explicitly `VALIDATION_FIXTURE_NOT_CALIBRATION`;
+- D2 evidence only; no calibration/HANK/regional/Results authority.
+
+### Why R1 is required before acceptance
+
+1. Original execution report test-file breakdown is inconsistent with the candidate tests: actual original suite = `7 economics + 7 HJB/KFE + 1 reproducibility = 15`, not `7 + 8 + 1`.
+2. Source-provenance CSV labels 40-character Git blob OIDs as `source_blob_sha256`; this must be corrected.
+3. Exact diagnostics-capture command was replaced by placeholder `python -c "..."`; R1 must record exact reproducible commands and preserve original-run vs R1-rerun history.
+4. `generator_min_off_diagonal` currently takes the minimum over stored nonzero sparse off-diagonal entries. Issue #5 requires the literal minimum over all off-diagonal entries, including implicit zero entries. R1 must correct this diagnostic semantics and rerun the full suite without changing thresholds.
+5. Remove unsupported byte-level statement `no code copied verbatim`; retain the supportable no-wholesale-copy + ADAPTED/REIMPLEMENTED provenance statement.
+
+Expected R1 branch:
+`dsh/issue-5-dlh-2a-r1-evidence-diagnostic-correction-2026-08-19`.
 
 ## Current scientific / implementation state
 
@@ -100,7 +108,8 @@ The HJB/KFE contract must preserve:
 - scientific constitution: `DLH_0_R1_ACCEPTED`；
 - DLH-1A evidence/data feasibility: `ACCEPTED_WITH_DATA_BLOCKER_RECORDED`；
 - DLH-1B source audit: `R2_ACCEPTED`；
-- DLH-2A implementation: `ACTIVE_NOT_ACCEPTED`；
+- DLH-2A core fixed-price numerical gate: `SUBSTANTIVE_D2_PASS_PENDING_R1_CANONICAL_EVIDENCE_CORRECTION`；
+- DLH-2A merge/acceptance: `NOT_YET_AUTHORIZED`；
 - outer steady-state GE authority: `NONE`；
 - regional/W authority: `NONE`；
 - nominal/genuine-HANK implementation authority: `NONE`；
@@ -111,12 +120,10 @@ The HJB/KFE contract must preserve:
 
 ## Current boundaries
 
-Issue #5 does NOT authorize outer GE solving, regional links, nominal/NK blocks, shocks, transition, neural training, empirical data/calibration, legacy Matlab reads, or Results/policy claims.
-
-The old Python source repository remains read-only.
+Issue #5 R1 remains within the original 21-path allowlist and does not authorize DLH-2B or any scientific expansion. The source repository remains read-only. Original numerical thresholds are frozen and may not be relaxed by Builder.
 
 ## Queued next gate — NOT ACTIVE
 
 `DLH-2B — single-region Tier-0 HA/Aiyagari steady-state general equilibrium`.
 
-It may only be issued after fresh independent review of DLH-2A.
+It may only be issued after fresh independent review and acceptance of corrected DLH-2A-R1.
