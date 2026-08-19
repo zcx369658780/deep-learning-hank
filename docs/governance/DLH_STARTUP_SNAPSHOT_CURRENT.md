@@ -41,48 +41,60 @@ Authoritative roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
-Accepted working scientific direction:
+Accepted working scientific direction remains:
 
 - working label `Network-Structured Regional HANK (NSR-HANK)`;
 - province-local household / firm / HJB / KFE / accounting / clearing remain structural hard modules;
 - first learned object = interpretable interregional labor-flow network `W^L`;
-- `W^K` later; fiscal transfers remain a separate central-government allocation layer;
+- `W^K` later; fiscal transfers separate central-government allocation layer;
 - household home-region identity fixed; labor services may move across provinces;
-- Python is the main implementation language;
-- existing single-province Python HJB/firm code is candidate reusable infrastructure subject to DLH-1B audit;
-- Tier 0 one-region real HA/Aiyagari = computational benchmark only, not genuine HANK;
-- Tier 1 = minimal genuine single-region HANK with NK nominal layer;
-- Tier 2 = small multi-region NSR-HANK;
-- cross-year model separates `Z_static`, time-varying node features, and time-varying pair features;
-- network structural parameters are shared across years while `W^L_t` is year-varying;
-- each year solves a separate conditional equilibrium `X*_t = T(X*_t; theta, Z_t)`;
+- Python main implementation language;
+- existing single-province Python HJB/firm code = candidate reusable infrastructure subject to DLH-1B audit;
+- Tier 0 HA/Aiyagari benchmark only; Tier 1 minimal genuine HANK; Tier 2 small multi-region NSR-HANK;
+- `Z_static` separated from time-varying node/pair features;
+- shared cross-year network parameters + year-specific `W^L_t` and separate yearly equilibrium `X*_t`;
 - hold-out-year + hold-out-pair validation mandatory;
-- learning sequence = flow-supervised pretraining -> GE embedding -> bounded equilibrium-constrained fine-tuning;
+- flow-supervised pretraining -> GE embedding -> bounded equilibrium-constrained fine-tuning;
 - GNN/message passing deferred.
-
-Novelty remains unverified; E3 literature evidence is currently zero.
 
 ## Current active task
 
 Issue #3 — `DLH-1A: Literature evidence and interprovincial labor-flow data feasibility`
 
-Expected branch:
+Current substage:
 
-`dsh/issue-3-dlh-1a-literature-data-feasibility-2026-08-19`
+`DLH-1A-R1 — evidence provenance / labor-flow data classification correction`
 
-DLH-1A goals:
+Prior candidate:
 
-1. establish the current literature boundary for NSR-HANK;
-2. map Structural RL / DeepHAM / neural HJB / differentiable-equilibrium / spatial HA-HANK / learned-flow-network precedents;
-3. assess Chinese interprovincial O-D-year labor-flow data feasibility;
-4. assess static/time-varying feature feasibility;
-5. build E0/E1/E2 evidence plus an E3 human-verification queue.
+`2a04a737bd6aa62b00e8c39a9e2a2d7e3b22b021`
+
+Independent review found its process/branch/output contract clean, but evidence classification requires correction before acceptance.
+
+Expected R1 branch:
+
+`dsh/issue-3-dlh-1a-r1-evidence-correction-2026-08-19`
+
+The latest authoritative reviewer comment on Issue #3 defines the exact R1 correction contract.
+
+### Evidence corrections required
+
+1. SSRN `6028234` = Owner prior dissertation / project provenance, not independent external literature precedent.
+2. geodoi `Id=3621` currently documents provincial growth balance plus provincial inflow/outflow-rate estimates derived from census/employment data; bilateral O-D-year pair fields are not established and must not be assumed.
+3. CMDS = annual repeated cross-sectional migrant survey; potential O-D migrant-stock/sample cross-tabs require schema and survey-weight verification and are not true annual migration flows.
+4. DeepHAM distribution representation = optimal generalized moments; correct any full-distribution-state wording.
+5. Master-equation / EMINN map must include primary `arXiv:2406.13726` (Gu, Laurière, Merkel, Payne).
+6. Recompute bounded novelty verdicts after removing Owner prior work from external-precedent evidence.
+7. Labor-data verdict must separate true annual bilateral flow, annual O-D stock/sample cross-tab, and multiyear transition/derived proxy.
+
+E3 remains zero unless later human verification explicitly promotes a source.
 
 ## Current scientific / implementation state
 
 - master roadmap: `INITIAL_V0_1_PUBLISHED`；
 - scientific constitution: `DLH_0_R1_ACCEPTED`；
 - primary learned object: `W^L_FIRST_ACCEPTED_AT_SPEC_LEVEL`；
+- DLH-1A evidence packet: `R1_CORRECTION_ACTIVE_NOT_ACCEPTED`；
 - model implementation: `NOT_STARTED`；
 - code migration authority: `NONE`；
 - Matlab execution authority: `NONE`；
@@ -97,10 +109,10 @@ DLH-1A goals:
 1. `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
 2. `D:\Zotero-Analytical-Workflow`
 
-Issue #3 permits bounded read-only local Zotero-workflow text reconnaissance only as explicitly defined in the Issue. It authorizes zero legacy Matlab reads and zero source-root writes/copy-outs.
+Issue #3 permits bounded read-only local Zotero-workflow text reconnaissance only as explicitly defined in the Issue/current correction comment. Zero legacy Matlab reads and zero source-root writes/copy-outs.
 
 ## Queued next gate — NOT ACTIVE
 
 `DLH-1B — read-only audit of existing single-province Python HJB + firm kernel`.
 
-It requires a separate GitHub Issue after DLH-1A review. No code migration is authorized yet.
+No code migration is authorized yet. DLH-1B may be published only after corrected DLH-1A acceptance.
