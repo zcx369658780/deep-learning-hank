@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_7_DLH_2C`
+Status: `ACTIVE_GITHUB_ISSUE_8_DLH_2C_B1`
 
 ## Accepted predecessors
 
@@ -23,62 +23,77 @@ Accepted commit: `8dce318af5ca704a747e67932ec3caa35f9168ad`
 ### Issue #5 — DLH-2A fixed-price HJB/KFE validation
 Status: `DLH_2A_R1_TIER0_KERNEL_FIXED_PRICE_VALIDATION_ACCEPTED_AND_CLOSED`
 Accepted commit: `76b5882a63d8ade18d50098373b7c735eb2c4ca4`
-Evidence level: `D2_MACHINE_DIAGNOSTIC_ONLY`.
+Evidence: `D2_MACHINE_DIAGNOSTIC_ONLY`.
 
 ### Issue #6 — DLH-2B single-region Tier-0 steady-state GE
 Status: `DLH_2B_R1_TIER0_SINGLE_REGION_STEADY_STATE_GE_ACCEPTED_AND_CLOSED`
 Accepted commit: `c562ce3a2743ac779123918e9aab5f37044b564a`
-Evidence level: `D2_MACHINE_DIAGNOSTIC_ONLY`.
+Evidence: `D2_MACHINE_DIAGNOSTIC_ONLY`.
 
-Accepted numerical facts under `VALIDATION_FIXTURE_NOT_CALIBRATION`:
-- `K*=27.367823476711713` with capital residual `1.0466294497746276e-11`;
-- equilibrium HJB/KFE, effective-labor, fiscal, goods, household-budget and mean-drift gates pass;
-- R1 root evidence: `root_trace_evaluations=11`, `post_root_validation_evaluations=1`, `total_capital_evaluations=12`, `root_trace_finite_ok=True`;
-- R1 complete repository suite = `32 passed / 0 failed`, including accepted DLH-2A regression `15/15`;
-- deterministic repeat differences all `0.0`;
-- this remains a small one-region real HA/Aiyagari D2 benchmark, not calibration or genuine HANK.
+### Issue #7 — DLH-2C numerical robustness
+Status: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_AND_CLOSED`
+Accepted fail-closed commit: `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3`
+Evidence: `D2_MACHINE_DIAGNOSTIC_ONLY`.
+
+Accepted scientific findings from Issue #7:
+- all per-variant HJB/KFE/equilibrium/accounting gates pass;
+- fixed-bound grid refinement passes: `d40_80=0.004552056`, `d80_160=0.002201397`;
+- state-label permutation invariance passes at machine precision;
+- 21-point bounded residual scan has exactly one finite sign-changing interval;
+- deterministic repeat differences are all `0.0`;
+- **asset-upper-bound gate fails materially** at matched spacing: `K50=27.2438081362`, `K100=28.2060803850`, `d50_100=0.03411577346665587 > 0.005`;
+- upper-boundary mass falls `0.012470893 -> 8.909776e-05` and top-5% mass falls `0.033779958 -> 0.000590981` when `a_max` doubles;
+- therefore `a_max=50` is not an adequate canonical numerical domain.
 
 Authoritative roadmap:
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
 
 ## Sole active Builder authority
 
-GitHub Issue #7:
+GitHub Issue #8:
 
-`DLH-2C: Tier-0 numerical robustness, grid-boundary and invariance validation`
+`DLH-2C-B1: Tier-0 asset-domain adequacy and upper-tail convergence validation`
 
 Issue URL:
-`https://github.com/zcx369658780/deep-learning-hank/issues/7`
+`https://github.com/zcx369658780/deep-learning-hank/issues/8`
 
 Builder: DSH
 
-Expected dedicated branch:
-`dsh/issue-7-dlh-2c-tier0-robustness-2026-08-19`
+Expected branch:
+`dsh/issue-8-dlh-2c-b1-asset-domain-2026-08-19`
 
 ## Current gate purpose
 
-DLH-2C is the final planned Tier-0 robustness gate before any genuine-HANK nominal implementation.
+Issue #8 grants new authority to resolve the accepted Issue #7 boundary blocker without relaxing it.
 
-It keeps all accepted DLH-2B economics and solver code frozen and tests only numerical/representation robustness through:
+All accepted economics and solver modules remain frozen. The task tests asset-domain adequacy using:
 
-- accepted baseline `B40_50`;
-- fixed-bound grid refinements `G80_50` and `G160_50`;
-- matched-spacing upper-bound expansion `W159_100`;
-- pure state-label permutation `P40_50`;
-- 21-point bounded capital-residual scan on `[0.5,45.0]`;
-- per-variant full steady-state gates and deterministic reproducibility.
+- accepted coarse-spacing C50 = 80 points `[0,50]`;
+- accepted coarse-spacing C100 = 159 points `[0,100]`;
+- new C150 = 238 points `[0,150]`;
+- new C200 = 317 points `[0,200]`;
+- new F100 = 317 points `[0,100]` with half the coarse spacing;
+- new F200 = 633 points `[0,200]` with the same fine spacing as F100.
 
-Mandatory robustness criteria are defined only by Issue #7 and may not be relaxed by Builder.
+Mandatory questions:
+
+1. Does matched-spacing bound convergence improve from 50→100→150→200, with final `d150_200 <= 0.005`?
+2. Are the `a_max=100` and `a_max=200` domains each stable to halving the grid spacing, with final wide-domain grid difference <= 0.5% and non-worsening?
+3. Do all new variants preserve the accepted steady-state numerical/accounting gates and deterministic reproducibility?
+4. Does the accepted Issue #7 blocker remain preserved as provenance rather than being rewritten as a PASS?
 
 ## Scope boundary
 
-DLH-2C remains `VALIDATION_FIXTURE_NOT_CALIBRATION` and real single-region Tier-0 only.
+Issue #8 remains `VALIDATION_FIXTURE_NOT_CALIBRATION`, real single-region Tier-0 only.
 
 It does **not** authorize:
-- modification of accepted DLH-2A/DLH-2B solver/economics modules or tests;
-- regional / `W^L` / `W^K` / old `W` code;
+- modification of accepted household/KFE/firm/fiscal/steady-state solver/economics modules;
+- modification of accepted DLH-2A/DLH-2B tests;
+- rewriting accepted Issue #7 reports/evidence;
+- expansion beyond `a_max=200`;
+- regional / `W^L` / `W^K` / old W;
 - SOE / RegionalAccounts;
-- nominal/Fisher/NKPC/Taylor-rule mechanisms;
+- nominal/Fisher/NKPC/Taylor mechanisms;
 - shocks/transition;
 - neural/RL;
 - empirical data/calibration/regression;
@@ -88,4 +103,4 @@ It does **not** authorize:
 
 ## Queued next gate — NOT ACTIVE
 
-`DLH-3 — minimal genuine single-region HANK nominal/New-Keynesian layer` may only be issued after independent disposition of Issue #7.
+`DLH-3 — minimal genuine single-region HANK nominal/New-Keynesian layer` remains blocked until Issue #8 receives fresh independent disposition and the Tier-0 asset domain is judged numerically adequate.
