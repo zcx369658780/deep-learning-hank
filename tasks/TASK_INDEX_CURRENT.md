@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_3_DLH_1A`
+Status: `ACTIVE_GITHUB_ISSUE_3_DLH_1A_R1`
 
 ## Accepted predecessors
 
@@ -16,17 +16,13 @@ Accepted commit:
 
 Status: `DLH_0_R1_NSR_HANK_SCIENTIFIC_CONSTITUTION_ACCEPTED_AND_CLOSED`
 
-Accepted commit / accepted main state:
+Accepted commit:
 
 `73e1ae5db9d7e362781a77fa2a204c80238fad3e`
 
 Authoritative roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
-
-Accepted scientific constitution:
-
-`docs/specifications/DLH_0_SCIENTIFIC_CONSTITUTION_CANDIDATE_2026_08_19.md`
 
 ## Sole active Builder authority
 
@@ -40,25 +36,37 @@ Issue URL:
 
 Builder: DSH
 
-Expected dedicated branch:
+Current substage:
 
-`dsh/issue-3-dlh-1a-literature-data-feasibility-2026-08-19`
+`DLH-1A-R1 — evidence provenance / labor-flow data classification correction`
 
-## Current gate purpose
+Prior candidate:
 
-DLH-1A is evidence/data-feasibility only.
+`2a04a737bd6aa62b00e8c39a9e2a2d7e3b22b021`
 
-It must establish:
+Process/geometry review: PASS. Evidence packet: NOT ACCEPTED / bounded R1 correction required.
 
-- the literature boundary around Structural RL, DeepHAM, neural HJB/master-equation methods, differentiable-equilibrium methods, spatial/multi-region HA/HANK, learned economic networks, and interpretable migration/flow models;
-- whether the NSR-HANK `W^L`-first route has existing precedent, partial precedent, or remains unresolved under bounded search;
-- whether credible Chinese interprovincial origin-destination-year labor-flow evidence exists for flow-supervised identification;
-- feasibility of `Z_static`, time-varying node features, and time-varying pair features;
-- an E3 human-verification queue without self-promoting machine evidence to E3.
+Expected R1 dedicated branch:
+
+`dsh/issue-3-dlh-1a-r1-evidence-correction-2026-08-19`
+
+The latest authoritative ChatGPT review comment on Issue #3 defines the exact R1 correction contract.
+
+## Material correction requirements entering R1
+
+- SSRN `6028234` is Owner prior dissertation/project provenance, not independent external literature precedent;
+- geodoi `Id=3621` is not currently proven to contain bilateral province-pair O-D-year matrices and must be treated as provincial aggregate / model-derived migration-flow components unless pairwise fields are directly verified;
+- CMDS is an annual repeated migrant cross-section; any province-origin × destination construction is migrant-stock/sample cross-tab evidence pending schema/weight verification, not true annual migration flow;
+- DeepHAM distribution representation must be described as optimal generalized moments rather than a full distribution-state input;
+- master-equation / EMINN evidence must include the primary `arXiv:2406.13726` Gu–Laurière–Merkel–Payne paper;
+- novelty-boundary verdicts must be recomputed without treating Owner prior work as external precedent;
+- revised labor-data taxonomy must distinguish true annual O-D flow, annual O-D stock/sample cross-tab, and multiyear transition/derived proxy.
 
 ## Scope boundary
 
-Issue #3 does **not** authorize:
+DLH-1A-R1 remains evidence/data-feasibility only.
+
+It does **not** authorize:
 
 - Python/model code creation or migration;
 - legacy Matlab reads;
@@ -77,4 +85,4 @@ Issue #3 does **not** authorize:
 
 `DLH-1B — read-only audit of the existing single-province Python HJB + firm kernel`.
 
-DLH-1B will receive a separate GitHub Issue only after DLH-1A is independently reviewed. The two DLH-1 workstreams are parallel in the roadmap conceptually, but governance remains one active Builder Issue at a time.
+DLH-1B receives a separate GitHub Issue only after corrected DLH-1A is independently accepted.
