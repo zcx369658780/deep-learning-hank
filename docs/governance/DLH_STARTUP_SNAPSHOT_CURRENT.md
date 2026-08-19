@@ -18,52 +18,29 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Accepted stages
 
 ### Issue #1 — Bootstrap
-
-Status: accepted and closed.
-
-Accepted commit:
-
-`bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`
+Accepted and closed at `bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`.
 
 ### Issue #2 — DLH-0 / NSR-HANK scientific constitution
-
-Status: accepted and closed after R1 correction.
-
-Accepted R1 commit:
-
-`73e1ae5db9d7e362781a77fa2a204c80238fad3e`
+Accepted and closed after R1 correction at `73e1ae5db9d7e362781a77fa2a204c80238fad3e`.
 
 ### Issue #3 — DLH-1A literature / labor-flow data feasibility
+Accepted and closed after R1 evidence correction at `e9aa7dc8a3f5a198b1655c917659f519239eb67b`.
 
-Status: accepted and closed after R1 evidence correction.
-
-Acceptance classification:
-
-`DLH_1A_R1_EVIDENCE_AND_DATA_FEASIBILITY_ACCEPTED`
-
-Accepted R1 commit:
-
-`e9aa7dc8a3f5a198b1655c917659f519239eb67b`
-
-Accepted evidence conclusions:
-
-- Owner prior dissertation / SSRN `6028234` is project provenance, not external precedent;
-- no credible true annual bilateral O-D flow matrix is currently proven for direct `W^L_ij,t` supervision;
-- CMDS is an annual repeated migrant cross-section and may support annual origin×destination migrant-stock/sample cross-tabs only after schema/weight/questionnaire harmonization verification;
-- geodoi `Id=3621` is a provincial aggregate/model-derived proxy under current documentation, not a proven bilateral O-D-year matrix;
-- E3 literature evidence remains 0 and final novelty claims remain unauthorized.
+Accepted DLH-1A evidence conclusions:
+- Owner prior dissertation / SSRN `6028234` = project provenance, not external precedent;
+- true annual bilateral O-D flow labels for direct `W^L_ij,t` supervision remain unproven;
+- CMDS = annual repeated migrant cross-section / possible O-D stock source pending schema/weight/questionnaire harmonization;
+- geodoi `Id=3621` = provincial aggregate/model-derived proxy under current evidence;
+- E3 literature evidence remains zero and novelty claims remain unauthorized.
 
 ## Authoritative scientific direction
 
-Roadmap:
-
-`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
+Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`.
 
 Accepted first-generation NSR-HANK direction remains:
-
 - province-local household / firm / HJB / KFE / accounting / clearing = structural hard modules;
 - first learned object = interpretable interregional labor-flow network `W^L`;
-- `W^K` later; fiscal transfers remain a separate central-government allocation layer;
+- `W^K` later; fiscal transfers separate central-government allocation layer;
 - household home-region identity fixed; labor services may move across provinces;
 - Python main implementation language;
 - Tier 0 = one-region real HA/Aiyagari computational benchmark only;
@@ -77,56 +54,39 @@ Accepted first-generation NSR-HANK direction remains:
 
 Issue #4 — `DLH-1B: Read-only audit of existing single-province Python HJB + firm kernel`
 
-Issue URL:
+Current substage: `DLH-1B-R2 — classification-count consistency correction`.
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/4`
+Read-only candidate source repository: `zcx369658780/dissertation-ch5-r5-python-model`.
+Fresh source `main` independently confirmed at review time: `3039a145f43d419a08999c476cd0d97fd5f8341f`.
 
-Current substage:
+### Independently confirmed audit findings
 
-`DLH-1B-R1 — audit terminology / evidence-strength correction`
+- source top-level model is a frozen two-region symmetric capital-exposure scaffold, not a clean single-province solver;
+- household source uses one liquid asset, two idiosyncratic productivity states, CRRA utility and inelastic labor;
+- household policy matrix is a continuous-time infinitesimal generator / intensity matrix with nonnegative off-diagonals, diagonal equal to negative total outflow, and rows summing to zero;
+- asset-grid boundary handling is state-constraint / no-outward-drift, not a reflected-process claim;
+- source configuration freezes `region_count=2`, `W=((0.8,0.2),(0.2,0.8))`, SOE factor `alpha_g=0.10` and other fixture values;
+- all reuse statements are candidate/source-audit only; no test/model execution has occurred and numerical/scientific validity remains unverified.
 
-Prior candidate:
+### Why R2 is active
 
-`1d2f3b20fb44680afd93e19ff0aba231a7b47467`
+R1 correctly fixed generator/boundary/evidence-strength terminology but left a classification inconsistency:
+- R1 matrix currently has `shocks.py = UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`, yielding actual counts `2 / 4 / 3 / 2 / 3`;
+- R1 review packet reports `2 / 4 / 3 / 3 / 3`, which is internally inconsistent and sums to 15 for a 14-row matrix.
 
-Independent review found its branch/output/source-scope contract clean and independently confirmed its major source findings, but the audit terminology/evidence strength requires a bounded correction before acceptance.
+Authoritative R2 resolution:
+- `shocks.py = DROP_FROM_TIER0` because Tier-0 is steady-state only; this preserves the AR(1) implementation as future reference but excludes it from Tier-0 implementation scope;
+- `transition.py = UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`;
+- final 14-row counts must be `2 / 4 / 3 / 3 / 2` for `REUSE_AS_REFERENCE_IMPLEMENTATION / REUSE_WITH_ADAPTER / REDESIGN_FOR_NSR_HANK / DROP_FROM_TIER0 / UNRESOLVED_NEEDS_EXECUTION_OR_SCIENTIFIC_DECISION`.
 
-Expected R1 branch:
-
-`dsh/issue-4-dlh-1b-r1-audit-terminology-evidence-correction-2026-08-19`
-
-Read-only candidate source repository:
-
-`zcx369658780/dissertation-ch5-r5-python-model`
-
-Fresh source `main` independently confirmed at review time:
-
-`3039a145f43d419a08999c476cd0d97fd5f8341f`
-
-### Independently confirmed source findings
-
-- actual top-level model is frozen two-region symmetric, not a clean single-province solver;
-- one liquid asset, two-state idiosyncratic productivity, CRRA, inelastic labor;
-- HJB uses an upwind continuous-time finite-difference structure and constructs an **infinitesimal generator with row sums zero**;
-- asset boundaries are handled as **state constraints / no outward drift**;
-- KFE solves the stationary transpose-generator equation with normalization;
-- firm block includes the legacy `alpha_g` / state-owned-services third factor;
-- steady state uses two-region capital exposure `W` and symmetric `brentq` capital clearing;
-- parameters are frozen by equality validation;
-- source package self-identifies as an engineering scaffold without accepted economic solver/results authority.
-
-### R1 correction requirements
-
-1. Replace `row-stochastic generator` wording with `continuous-time infinitesimal generator / intensity matrix (off-diagonals >= 0; diagonal absorbs outflow; row sums = 0)`.
-2. Replace `reflecting boundaries` with `state-constraint / no-outward-drift boundary treatment` unless later separately proven otherwise.
-3. Weaken any unexecuted-validity language such as `algorithm correct` / `exact Tier-0 kernel` to candidate/source-compatibility language. Numerical convergence and scientific validity remain unaccepted until a later execution gate.
+No new source research or execution is required if the source ref remains unchanged.
 
 ## Current scientific / implementation state
 
 - master roadmap: `INITIAL_V0_1_PUBLISHED`；
 - scientific constitution: `DLH_0_R1_ACCEPTED`；
 - DLH-1A evidence/data feasibility: `ACCEPTED_WITH_DATA_BLOCKER_RECORDED`；
-- DLH-1B audit: `R1_CORRECTION_ACTIVE_NOT_ACCEPTED`；
+- DLH-1B: `R2_CLASSIFICATION_CONSISTENCY_ACTIVE_NOT_ACCEPTED`；
 - primary learned object: `W^L_FIRST_ACCEPTED_AT_SPEC_LEVEL`；
 - model implementation: `NOT_STARTED`；
 - code migration authority: `NONE`；
@@ -134,17 +94,14 @@ Fresh source `main` independently confirmed at review time:
 - Matlab execution/read authority for current gate: `NONE`；
 - neural training authority: `NONE`；
 - numerical Results authority: `NONE`；
-- Results/manuscript claim authority: `NONE`；
 - final novelty claim authority: `NONE`。
 
-## Read-only boundaries for current gate
+## Current boundaries
 
-Source repo `zcx369658780/dissertation-ch5-r5-python-model` must receive zero mutations.
-
-Issue #4 R1 authorizes no code copy/migration, no test execution, no package install, no data operation, and no legacy Matlab reads.
+Issue #4 R2 is documentation/audit consistency correction only. No source-repository mutation, code migration, test/model execution, package install, legacy Matlab read, data operation, calibration, training or Results claim is authorized.
 
 ## Queued next gate — NOT ACTIVE
 
 `DLH-2 — Tier-0 single-region HA/Aiyagari computational benchmark`.
 
-DLH-2 can only be issued after corrected DLH-1B is independently accepted and an exact implementation/migration allowlist is authorized.
+DLH-2 can only be issued after DLH-1B-R2 is independently accepted and an exact implementation/migration allowlist is authorized.
