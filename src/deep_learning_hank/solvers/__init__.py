@@ -1,1 +1,2 @@
-"""Solvers layer: transparent household HJB and stationary KFE (Tier-0)."""
+"""Solvers layer: transparent household HJB, stationary KFE, and single-region
+Tier-0 steady-state GE (real HA/Aiyagari benchmark; not genuine HANK)."""
