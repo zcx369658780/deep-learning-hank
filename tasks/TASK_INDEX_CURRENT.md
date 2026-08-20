@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_12__DLH_3C_TIME_DEPENDENT_HOUSEHOLD_KFE`
+Status: `ACTIVE_GITHUB_ISSUE_13__DLH_3D_MINIMAL_HANK_MONETARY_GE`
 
 ## Canonical session handoff
 
@@ -10,126 +10,130 @@ A Builder invocation must fresh-fetch live `main` before using this pointer.
 
 ## Accepted provenance
 
-- Issue #1 bootstrap: accepted/closed, commit `bcded9b9137f3c10f71a7a6ecb929f78b40bdc11`.
-- Issue #2 DLH-0 scientific constitution: `DLH_0_R1_NSR_HANK_SCIENTIFIC_CONSTITUTION_ACCEPTED_AND_CLOSED`, commit `73e1ae5db9d7e362781a77fa2a204c80238fad3e`.
-- Issue #3 DLH-1A literature/data feasibility: accepted/closed, commit `e9aa7dc8a3f5a198b1655c917659f519239eb67b`.
-- Issue #4 DLH-1B Python kernel audit: accepted/closed, commit `8dce318af5ca704a747e67932ec3caa35f9168ad`.
-- Issue #5 DLH-2A fixed-price HJB/KFE: accepted/closed, commit `76b5882a63d8ade18d50098373b7c735eb2c4ca4`, D2 only.
-- Issue #6 DLH-2B single-region real HA steady-state GE: accepted/closed, commit `c562ce3a2743ac779123918e9aab5f37044b564a`, D2 only.
-- Issue #7 DLH-2C robustness: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_AND_CLOSED`, commit `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3`.
-- Issue #8 DLH-2C-B1 asset-domain adequacy: `DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED_AND_CLOSED`, commit `249c9dcaf3c16b4b308e9d83daf232a23dce79cb`.
-- Issue #9 DLH-2C-B2 fixed-domain grid convergence: `DLH_2C_B2_FIXED_DOMAIN_GRID_CONVERGENCE_ACCEPTED_AND_CLOSED`, commit `5632ee1cbc781d67daf305f315f556506da0f6df`, D2 only.
-- Issue #10 DLH-3A architecture/equation freeze: corrected R1 `f56a7c4058a32cc0a7bdc903cada98602a3706b1` accepted/closed as `DLH_3A_R1_EQUATION_CONSISTENCY_ACCEPTED`.
-- Issue #11 DLH-3B HANK steady-state structural kernel: commit `267fef0386098796c06f4b7bf331121af9061a43` accepted/closed as `DLH_3B_HANK_STEADY_STATE_STRUCTURAL_KERNEL_ACCEPTED_WITH_OBSERVATIONS`; evidence ceiling `D2_MACHINE_DIAGNOSTIC__HANK_STEADY_STATE_STRUCTURAL_ONLY`.
+- Issues #1–#6: accepted/closed under their canonical commits and D1/D2 evidence boundaries.
+- Issue #7: `DLH_2C_BOUNDARY_SENSITIVITY_BLOCKED_ACCEPTED_AND_CLOSED`, commit `583e352b3ba37d25ebb7d8f468b5fd9f4f5eb5d3`.
+- Issue #8: `DLH_2C_B1_WIDE_DOMAIN_GRID_CONVERGENCE_BLOCKED_ACCEPTED_AND_CLOSED`, commit `249c9dcaf3c16b4b308e9d83daf232a23dce79cb`.
+- Issue #9: `DLH_2C_B2_FIXED_DOMAIN_GRID_CONVERGENCE_ACCEPTED_AND_CLOSED`, commit `5632ee1cbc781d67daf305f315f556506da0f6df`, Tier-0 D2 numerical robustness complete.
+- Issue #10 / DLH-3A: corrected R1 `f56a7c4058a32cc0a7bdc903cada98602a3706b1` accepted/closed as `DLH_3A_R1_EQUATION_CONSISTENCY_ACCEPTED`.
+- Issue #11 / DLH-3B: `267fef0386098796c06f4b7bf331121af9061a43` accepted/closed as `DLH_3B_HANK_STEADY_STATE_STRUCTURAL_KERNEL_ACCEPTED_WITH_OBSERVATIONS`; ceiling `D2_MACHINE_DIAGNOSTIC__HANK_STEADY_STATE_STRUCTURAL_ONLY`.
+- Issue #12 / DLH-3C: `3b24790e24e7b7d358848f55640b255a3a2b3191` accepted/closed as `DLH_3C_TIME_DEPENDENT_HOUSEHOLD_KFE_RESPONSE_ACCEPTED_WITH_OBSERVATIONS`; ceiling `D2_MACHINE_DIAGNOSTIC__HANK_TIME_DEPENDENT_HOUSEHOLD_KFE_ONLY`.
 
 Issue #7 and #8 remain accepted fail-closed provenance, not retroactive PASS.
 
-## Accepted Tier-0 numerical reference
+## Accepted scientific state before DLH-3D
 
-The accepted Tier-0 object remains a small one-region real HA/Aiyagari benchmark, not genuine HANK.
+### Tier-0 reference
 
-- `VALIDATION_FIXTURE_NOT_CALIBRATION`;
-- canonical Tier-0 asset domain `[0,200]`;
-- C200/F200/Q200 = 317/633/1265 points;
-- `K_C=28.218969081766193`;
-- `K_F=28.079912014017818`;
-- `K_Q=28.010252116571742`;
-- `d_C_F=0.00495219029457629`;
-- `d_F_Q=0.00248694289348661`;
-- Issue #9 full suite `54 passed / 0 failed`.
+The Tier-0 object remains a small one-region real HA/Aiyagari benchmark, not genuine HANK. Q200 `[0,200]` remains the accepted Tier-0 numerical reference; its domain adequacy is not inherited by HANK.
 
-Tier-0 domain adequacy is not inherited by HANK.
+### DLH-3A architecture
 
-## Accepted DLH-3A / DLH-3B boundary
-
-Accepted DLH-3A R1 single-region validation architecture:
+The accepted single-region HANK validation route uses:
 
 - one liquid/risk-free real financial asset, distinct from Tier-0 productive capital;
 - two-state idiosyncratic CTMC;
 - CRRA + endogenous static labor;
-- continuous-time HJB / forward KFE semantics with stationary reduction;
-- labor-only production `Y=Z*N` for the minimal validation route;
-- Rotemberg pricing, Fisher relation and unambiguous Taylor rule;
+- continuous-time HJB/KFE semantics;
+- labor-only production `Y=Z*N`;
+- Rotemberg pricing with accepted local-linear operational NKPC;
+- Fisher relation and Taylor rule;
 - constant real bond supply `B` through 3B–3D;
-- explicit household/distribution/market/accounting/nominal residuals.
+- explicit market/accounting/nominal residuals.
 
-Accepted DLH-3B steady-state kernel commit:
+Owner deferral remains binding: this validation structure does not irreversibly freeze the later regional steady-state NSR-HANK asset/production structure.
 
-`267fef0386098796c06f4b7bf331121af9061a43`
+### Accepted DLH-3B steady state
 
-Central accepted D2 steady-state provenance:
+Accepted config SHA-256:
+
+`82AB4A02F9D08FBBAED1349BC027FACE5361B1AB24C710C4CEA6958481CD5FC1`
+
+Central D2 provenance:
 
 - `r*=i*=0.007370613883670197`;
-- `N*=1.0656334480169984`;
-- `Y*=1.0656334480169984`;
-- `A_hh=10.000000002223675` against `B=10`;
-- clearing/accounting/nominal/KFE/KKT gates passed;
-- full repository suite reported `77 passed / 0 failed`;
-- deterministic repeat differences reported exactly `0.0`;
-- `[0,100]` / 401 points passed only gross truncation sanity, not HANK domain adequacy.
+- `N*=Y*=1.0656334480169984`;
+- `w*=5/6`;
+- `tr*=0.05949804216542284`;
+- `Pi*=0.17760557466949967`;
+- `A_hh*=10.000000002223675` against `B=10`;
+- full suite reported `77 passed / 0 failed`;
+- repeat differences `0.0`.
 
-Owner deferral remains binding: this validation architecture does not irreversibly freeze the later regional steady-state NSR-HANK asset/production structure.
+`[0,100] / 401` is a development-domain/gross-truncation result only, not HANK domain adequacy.
+
+### Accepted DLH-3C dynamic household/KFE engine
+
+Accepted transition config SHA-256:
+
+`C7AA76DF3758F46FCBA827872FC0FD0078EDD5309CCFAD04E32C42F5CB4D39A2`
+
+Accepted D2 evidence includes:
+
+- implicit backward household HJB with terminal `V(T)=V_ss`;
+- implicit forward KFE `[I-dt*G_k^T]g_{k+1}=g_k` without mass renormalization;
+- zero-path invariance;
+- prescribed wage-only and real-return-only numerical response paths with amplitude-to-zero/local-scaling checks;
+- fixed-`dt` horizon/terminal robustness;
+- deterministic repeat differences reported `0.0`;
+- full suite reported `97 passed / 0 failed`.
+
+The prescribed 3C paths were `EXOGENOUS_NUMERICAL_RESPONSE_PATH_NOT_STRUCTURAL_SHOCK`, not IRFs.
+
+Non-blocking acceptance observations remain provenance: the execution report misstated the path-diagnostics row count; and the ~1e-12 dynamic HJB residual is an implicit discrete-equation residual, not a time-step robustness result.
 
 ## Sole active Builder authority
 
-**GitHub Issue #12 — OPEN**
+**GitHub Issue #13 — OPEN**
 
 Title:
 
-`DLH-3C: Time-dependent household HJB/KFE response under prescribed small paths`
+`DLH-3D: Full single-region NK GE closure with first deterministic monetary-policy innovation`
 
 Issue URL:
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/12`
+`https://github.com/zcx369658780/deep-learning-hank/issues/13`
 
 Task nature:
 
-`TIME_DEPENDENT_HOUSEHOLD_HJB_KFE_UNDER_PRESCRIBED_SMALL_PATHS_ONLY`
+`FULL_MINIMAL_SINGLE_REGION_NK_GE_PLUS_FIRST_DETERMINISTIC_MONETARY_INNOVATION`
 
-Evidence ceiling if successful:
-
-`D2_MACHINE_DIAGNOSTIC__HANK_TIME_DEPENDENT_HOUSEHOLD_KFE_ONLY`
-
-Issue #12 is the sole DSH Builder authority. Builder must fresh-read its body/comments from GitHub.
+Issue #13 is the sole DSH Builder authority. Builder must fresh-read its body/comments from GitHub.
 
 Dedicated branch:
 
-`dsh/issue-12-dlh-3c-time-dependent-household-kfe-2026-08-20`
+`dsh/issue-13-dlh-3d-monetary-ge-2026-08-20`
 
-Expected success classification:
+Expected success candidate classification:
 
-`DLH_3C_TIME_DEPENDENT_HOUSEHOLD_KFE_RESPONSE_READY_FOR_GPT_REVIEW`
+`DLH_3D_MINIMAL_GENUINE_SINGLE_REGION_HANK_DYNAMIC_VALIDATION_READY_FOR_GPT_REVIEW`
 
-### Scientific boundary
+If independently accepted, Issue #13 may first qualify the validation fixture for:
 
-DLH-3C validates only:
+`MINIMAL_GENUINE_SINGLE_REGION_HANK_DYNAMIC_VALIDATED`
 
-- backward time-dependent household HJB;
-- forward KFE under the resulting policy generators;
-- prescribed non-structural wage-only and real-return-only small paths;
-- zero-path invariance;
-- amplitude-to-zero / local-scaling diagnostics;
-- mass/non-negativity/boundary/KKT/HJB diagnostics;
-- horizon/terminal robustness at fixed `dt`;
-- deterministic reproducibility and full predecessor regression.
+with ceiling:
 
-No dynamic asset/labor/goods market clearing is required because the real paths are prescribed and full aggregate GE is intentionally open.
+`D2_MACHINE_DIAGNOSTIC__MINIMAL_SINGLE_REGION_HANK_DYNAMIC_VALIDATION_FIXTURE`
 
-No authority for:
+This is still not empirical calibration, policy effectiveness evidence, regional NSR-HANK validation, or Results.
 
-- structural monetary/TFP/fiscal shocks;
-- `epsilon_i != 0`;
-- endogenous NKPC/inflation feedback or full NK GE;
-- IRF terminology or policy interpretation;
-- time-step robustness claims;
-- regional / `W^L` / `W^K` / `W^G`;
-- neural/RL/training/GPU;
-- empirical calibration/data/regression;
-- legacy Matlab / old Python reference repository / private Zotero access;
-- Results/policy/welfare/novelty claims;
-- Builder PR/merge/Issue close/successor/self-accept.
+## DLH-3D key scientific boundary
 
-Future DLH-3D/3E remain `NO_BUILDER_AUTHORITY` until separate open Issues are created.
+Issue #13 authorizes the first small deterministic monetary-policy innovation `epsilon_i(t)` and full minimal single-region NK GE closure.
+
+At candidate aggregate paths `(w_t,N_t)` it closes:
+
+- `Y=Z*N`, `mc=w/Z`;
+- backward NKPC recursion with terminal `pi(T)=0`;
+- Taylor + Fisher -> `i_t,r_t`;
+- constant-`B` fiscal transfer and Rotemberg-cost-adjusted profits;
+- accepted DLH-3C household HJB/KFE engine;
+- nonlinear path roots only for asset clearing and labor clearing;
+- goods/resource and wealth flow remain independent diagnostic residuals.
+
+No authority for productive capital, varying debt, TFP/fiscal shocks, empirical calibration/data, regional/W, neural/RL/GPU, legacy sources, time-step robustness claims, policy/welfare/Results/novelty, or Builder PR/merge/close/successor/self-accept.
+
+Future DLH-3E remains `NO_BUILDER_AUTHORITY` until a separate open Issue is created.
 
 ## Governance numbering note
 
