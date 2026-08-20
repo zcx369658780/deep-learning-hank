@@ -1,0 +1,12 @@
+object,max_abs_repeat_diff
+root_r,0.000e+00
+root_N,0.000e+00
+A_hh,0.000e+00
+N_hh,0.000e+00
+C,0.000e+00
+value,0.000e+00
+consumption,0.000e+00
+labor,0.000e+00
+mass,0.000e+00
+residual_vector,0.000e+00
+note,kernel is fully deterministic (no RNG); two identical solves
