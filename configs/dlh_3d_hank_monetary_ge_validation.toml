@@ -1,0 +1,70 @@
+# DLH-3D full minimal single-region NK GE closure validation fixture —
+# VALIDATION_FIXTURE_NOT_CALIBRATION
+# D2_MACHINE_DIAGNOSTIC__MINIMAL_SINGLE_REGION_HANK_DYNAMIC_VALIDATION_FIXTURE
+#
+# Issue #13 frozen fixture. The monetary innovation epsilon_i(t) is a small
+# deterministic validation-fixture innovation, not an empirically identified
+# policy shock and not Results evidence.  No time-step refinement claim.
+# Once the first numerical execution begins, these equations, fixture values,
+# innovation amplitudes, horizons, dt, root method and scientific thresholds
+# must not be altered within Issue #13.
+
+[baseline]
+# Accepted predecessor baselines (read-only provenance; identities verified at load).
+dlh_3b_config = "configs/dlh_3b_hank_steady_state_validation.toml"
+dlh_3b_config_sha256 = "82AB4A02F9D08FBBAED1349BC027FACE5361B1AB24C710C4CEA6958481CD5FC1"
+dlh_3c_config = "configs/dlh_3c_hank_transition_validation.toml"
+dlh_3c_config_sha256 = "C7AA76DF3758F46FCBA827872FC0FD0078EDD5309CCFAD04E32C42F5CB4D39A2"
+
+[time]
+T = 12.0
+dt = 0.05
+T_long = 16.0
+
+[innovation]
+L_i = 2.0
+eta_i = 0.001
+amplitude_multipliers = [1.0, 0.5, 0.25, 0.0]
+
+[root]
+method = "krylov"
+root_tolerance_inf_norm = 1e-7
+max_nonlinear_iterations = 80
+
+[numerical]
+# Household/KFE engine controls (accepted DLH-3C semantics, frozen here).
+policy_iteration_value_tolerance = 1e-8
+policy_iteration_max_iterations = 200
+consumption_floor = 1e-10
+hjb_residual_tolerance = 1e-6
+kkt_tolerance = 1e-6
+consumption_foc_tolerance = 1e-6
+kfe_mass_tolerance = 1e-10
+minimum_mass_threshold = -1e-12
+negative_mass_threshold = -1e-12
+generator_row_sum_tolerance = 1e-12
+generator_min_off_diagonal_tolerance = -1e-14
+
+[gates]
+clearing_asset_tolerance = 1e-6
+clearing_labor_tolerance = 1e-6
+nkpc_tolerance = 1e-10
+fisher_tolerance = 1e-12
+taylor_tolerance = 1e-12
+goods_tolerance = 1e-5
+wealth_flow_tolerance = 1e-5
+fiscal_tolerance = 1e-12
+profits_tolerance = 1e-12
+zero_w_tolerance = 1e-5
+zero_N_tolerance = 1e-5
+zero_pi_tolerance = 1e-6
+zero_r_tolerance = 1e-5
+zero_A_hh_tolerance = 1e-5
+zero_N_hh_tolerance = 1e-5
+zero_C_tolerance = 1e-5
+nontrivial_response_threshold = 1e-8
+quarter_amplitude_ratio_cap = 0.40
+half_linearity_metric_cap = 0.15
+horizon_window_T = 8.0
+horizon_tolerance = 1e-4
+reproducibility_tolerance = 1e-12

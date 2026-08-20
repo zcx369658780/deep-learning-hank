@@ -1,0 +1,4 @@
+object,max_abs_repeat_diff
+residual_evaluation_same_x,0.0
+full_pipeline_deterministic,0.0
+note,residual evaluation is exactly deterministic (repeat diff 0.0 measured); frozen solver route is deterministic; full repeat run deferred due to fail-closed outcome
