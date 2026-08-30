@@ -1,0 +1,6 @@
+metric,value
+oracle_sha256,276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8
+r_a_test,0.052
+L_star_at_test,0.8702391437969477
+R2_bracket_protocol_result_at_R1_consistent_r_a,RootBracketError
+conclusion,no GE steady state: R2 (bond clearing) feasible only at r_a<=~0.038; R1 (capital clearing) requires r_a>=~0.050; frozen fixture infeasible
