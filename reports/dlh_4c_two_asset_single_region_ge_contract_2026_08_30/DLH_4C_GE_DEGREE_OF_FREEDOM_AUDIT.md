@@ -1,8 +1,9 @@
 # DLH-4C — GE Degree-of-Freedom Audit（自由度审计：未知量/方程计数）
 
-- Date: 2026-08-30
+- Date: 2026-08-30（revised 2026-08-30 per Owner Decision + GPT targeted revision authority）
 - Authority: GitHub Issue #19（OPEN）
-- 目标：显式计数各闭合选项的未知量与方程，证明推荐系统（Option A）既非欠定也非超定；记录 legacy 的隐含自由度；为决策矩阵提供方程计数。
+- 目标：显式计数各闭合选项的未知量与方程，证明推荐系统（**Option A，已由 Owner 冻结**）既非欠定也非超定；记录 legacy 的隐含自由度；为决策矩阵提供方程计数。
+- **冻结状态**：Option A 为活跃路线（Owner binding）；Option B/C 为历史备选（非活跃）。
 
 ## 1. 计数基础（通用构件）
 
@@ -17,7 +18,7 @@
 | 未知量 | **3** | `x = (r_a, r_b, L)` |
 | 均衡方程（残差） | **3** | `R1 = A_hh − K(x)`；`R2 = B_hh − B_gov`；`R3 = L_hh − L` |
 | 确定函数 | — | `K = L·(αZ/(r_a+δ))^(1/(1−α))`（由 `r_a = αZ(K/L)^(α−1) − δ` 反解）；`w = Z(1−α)(K/L)^α`；`Tt = τwL − r_b·B_gov`；`Π = 0` |
-| 诊断残差（非 root） | — | `R_goods = Y − C − δK − AC − G`（恒等推导，见合同 E）；`R_fiscal`；`R_wealth`；`R_profits` |
+| 诊断残差（非 root） | — | ① `R_resource_structural = Y − C − δK − AC`；② `W_taper = ∫[r_a − r_a_eff(a)]·a·g`（`NUMERICAL_REGULARIZATION`）；③ **`R_resource_faithful = R_resource_structural − W_taper`（gate 对象）**；另 `R_fiscal`、`R_wealth`、`R_profits` |
 
 **计数：3 = 3 ⇒ 恰好确定（neither under- nor over-determined）。**
 - 无隐藏自由度：`B_gov`、`Z`、`α`、`δ`、`τ`、`rb_gap`、家户参数、网格均为外生 fixture（`VALIDATION_FIXTURE_NOT_CALIBRATION`）。
@@ -33,12 +34,12 @@
 
 **计数：3 = 3 ⇒ 恰好确定。** 无外生 `B_gov` 参数（更少 fixture），但聚合 liquid 位置恒为零（借贷者对消储蓄者），`r_b` 完全由家户 Euler 决定。
 
-## 4. Option C — "Markup + dividends (+ optional public capital)"
+## 4. Option C — "Markup + dividends (+ optional public capital)"（历史备选）
 
 | 类别 | 数量 | 对象 |
 |---|---|---|
 | 未知量 | **3** | `x = (r_a, r_b, L)` |
-| 均衡方程 | **3** | `R1 = A_hh − K(x)`（`K = A_hh + K_gov`）；`R2 = B_hh − B_gov`；`R3 = L_hh − L` |
+| 均衡方程 | **3** | `R1 = A_hh − (K − K_gov)`（**记号修正（2026-08-30，provenance）**：若 `K = A_hh + K_gov`，私人资本清算残差必须写为 `A_hh − (K − K_gov)`；`K_gov = 0` 时退化为 `A_hh − K`——原写法 `R1 = A_hh − K` 与 `K = A_hh + K_gov` 不能同时成立）；`R2 = B_hh − B_gov`；`R3 = L_hh − L` |
 | 确定函数 | — | `K = A_hh + K_gov`（`K_gov ≥ 0` 外生）；`μ = ε/(ε−1)`（`ε` fixture，如 6 ⇒ μ=1.2）；`w = Z·F_L/μ`；`Π = (1 − 1/μ)·Y`；`r_a = r_k − δ + divrate`，`divrate = (1−τ_c)·Π/K`（`τ_c` 公司税 fixture）；`Tt = τ·w·L + τ_c·Π − r_b·B_gov` |
 
 **计数：3 = 3 ⇒ 恰好确定。** 额外 fixture 参数：`ε`、`τ_c`、`K_gov`（`K_gov=0` 时为纯加成选项）。加成使要素价格分解改变（`w` 更低、`Π > 0` 分红进入 `r_a`），资源条件 `Y = C + δK + AC + G` 仍成立（加成在稳态下是消费者→所有者转移，非资源损耗；无 NK 价格调整成本）。
@@ -57,4 +58,4 @@
 
 ## 6. 推荐
 
-Option A（3=3、最少 fixture、与 accepted one-asset 恒定债券惯例一致、`A_hh/B_hh` 语义显式）为推荐项；B、C 为合法备选（见决策矩阵）。最终选择须 Owner 决定（本任务终分类 `BLOCKED_DLH_4C_OWNER_CLOSURE_DECISION_REQUIRED`）。
+**Option A（Owner 已选定并冻结）**：3=3 恰好确定、最少 fixture、与 accepted one-asset 恒定债券惯例一致、`A_hh/K`、`B_hh/B_gov` 语义显式。Option B、C 为历史备选（非活跃路线）；最终选择由 Owner 决定（已于 2026-08-30 完成，见 `DLH_4C_OWNER_DECISION_MATRIX.md`）。修订后本任务终分类：**`DLH_4C_OPTION_A_GE_CLOSURE_CONTRACT_REVISED_READY_FOR_GPT_REVIEW`**。

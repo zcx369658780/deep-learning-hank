@@ -1,8 +1,8 @@
 # DLH-4C — GE Validation Plan（后续实现任务的验证夹具与规划 gates）
 
-- Date: 2026-08-30
+- Date: 2026-08-30（revised 2026-08-30 per Owner Decision + GPT targeted revision authority）
 - Authority: GitHub Issue #19（OPEN）
-- 状态：设计计划（不实现）；供后续 DLH-4D（或等价）实现任务使用；以 Owner 选定闭合选项为前提。
+- 状态：设计计划（不实现）；供后续 DLH-4D（或等价）实现任务使用；**以 Owner 冻结的 Option A 为前提**（`B/C` 为历史备选，非活跃路线）。
 
 ## 1. 验证夹具（`VALIDATION_FIXTURE_NOT_CALIBRATION`）
 
@@ -48,10 +48,15 @@
 | G3 | KFE 密度 | 归一化 `∫g·db·da = 1`；非负性（min g ≥ −1e-12；negative count 0） |
 | G4 | 分离聚合报告 | `A_hh`、`B_hh` 分别报告（`A_hh ≠ B_hh` 恒为真；不合并） |
 | G5 | GE 残差 | 归一化 `R1/R2/R3` inf-norm ≤ 1e-8（root）与市场残差 ≤ 1e-6 |
-| G6 | 资源残差 | `Y − C − δK − AC − G` ≤ 冻结容差（如 1e-6） |
+| G6 | **Faithful 资源残差** | **`R_resource_faithful = R_resource_structural − W_taper` ≤ 冻结容差（如 1e-6）**；**必须分别报告** ① `R_resource_structural = Y − C − δK − AC`、② `W_taper = ∫[r_a − r_a_eff(a)]·a·g`（`NUMERICAL_REGULARIZATION`）、③ `R_resource_faithful`。**不得**在保留 taper 的同时强制 `R_resource_structural = 0`（过度约束，与不可变家户块不一致） |
 | G7 | 确定性 repeat | 两次完整 GE 求解 max diff = 0.0 |
 | G8 | 局部扰动/root 稳定性 | 在 root 附近施加有界扰动（如各未知量 ±1%），root 返回原解（偏差 ≤ 容差）；至少一个方向 |
 | G9 | predecessor regression | accepted 家户/one-asset 测试套件不回归 |
+
+## 2b. 聚合对象只读计算（oracle 外；2026-08-30 澄清）
+
+- `AC = Σ hjb.adjustment_cost · kfe.density · db · da`（accepted solver 输出只读聚合；oracle 不修改）。
+- `W_taper = Σ [r_a − r_a_eff(a_j)] · a_j · kfe.density · db · da`（`r_a_eff(a) = r_a·(1 − 0.1·(a/a_max)^9)`，oracle taper；`NUMERICAL_REGULARIZATION` 报告项）。
 
 ## 3. Fail-closed 约定
 

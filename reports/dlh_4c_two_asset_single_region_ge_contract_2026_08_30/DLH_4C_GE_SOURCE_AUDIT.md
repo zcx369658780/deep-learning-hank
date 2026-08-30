@@ -54,3 +54,11 @@
 ## 4. 结论
 
 Legacy multi-province GE 闭合**不可直接采用**（无唯一 residual vector、无 bond/resource/numeraire 方程、手动顺序更新、隐含自由度）。新单区域合同必须：显式定义 unknown vector 与 residual map、显式资产映射、显式资源核算（含调整成本）、显式 numeraire，并满足 `ACCEPTED_IMMUTABLE_HOUSEHOLD_STRUCTURE` / `NUMERICAL_REGULARIZATION` / `NEW_SINGLE_REGION_GE_CLOSURE_DESIGN` 三层分离。
+
+## 5. Addendum（2026-08-30，per Owner Decision + GPT targeted revision authority）
+
+1. **Owner 选定 Option A**（`IC_kwDOT9FOGc8AAAABReicYg`）：Aiyagari-minimal、恒定政府债券、竞争厂商；`K=A_hh`、`B_hh=B_gov`、`μ=1`、`x=(r_a,r_b,L)`、`R=(A_hh−K, B_hh−B_gov, L_hh−L)`。B/C 为历史备选。
+2. **Taper-wedge 资源核算发现**（GPT review `IC_kwDOT9FOGc8AAAABRegOmw`，Owner 接受）：不可变 oracle 使用状态依赖有效 illiquid 回报 `r_a_eff(a)=r_a·(1−0.1·(a/a_max)^9)`，故精确稳态聚合恒等式含 `∫r_a_eff(a)·a·g` 而非 `r_a·A_hh`；定义 `W_taper=∫[r_a−r_a_eff(a)]·a·g`（`NUMERICAL_REGULARIZATION`）；faithful 资源残差 `R_resource_faithful = Y−C−δK−AC−W_taper = 0` 为 gate 对象（不得强制结构 gap 归零）。
+3. **AC 聚合澄清**：`AC = Σ hjb.adjustment_cost·kfe.density·db·da`（oracle 外只读）。
+4. **Option C 记号修正**（provenance）：`K=A_hh+K_gov` 时资本清算残差须为 `A_hh−(K−K_gov)`。
+5. 修订后终分类：**`DLH_4C_OPTION_A_GE_CLOSURE_CONTRACT_REVISED_READY_FOR_GPT_REVIEW`**。
