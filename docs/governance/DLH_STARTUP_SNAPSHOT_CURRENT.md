@@ -13,20 +13,33 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - DSH = bounded Builder/executor;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route authority / task issuer / GitHub governance operator;
 - Owner = final scientific-direction authority;
-- Builder completion is not acceptance;
-- no active Builder task currently exists.
+- Builder completion is not acceptance.
 
 Priority:
 
 `Scientific correctness > Experiment reproducibility > Research iteration speed > Git auditability > Documentation completeness`
 
-## Current scientific stage
+## Active Builder task
+
+`ACTIVE_GITHUB_ISSUE_19__DLH_4C_TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
+
+Issue:
+
+`DLH-4C: Freeze minimal single-region two-asset GE steady-state closure contract`
+
+Task type:
+
+`SCIENTIFIC_DESIGN__TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
+
+Builder:
+
+DSH bounded scientific auditor / contract drafter.
+
+## Accepted immutable household foundation
+
+Current accepted stage:
 
 `TWO_ASSET_HA_HOUSEHOLD_FOUNDATION_ACCEPTED`
-
-Issue #18 has been independently reviewed and accepted at candidate commit:
-
-`24dde6792f6800f1ae872001587c2a1a3503d919`
 
 Canonical package:
 
@@ -36,110 +49,107 @@ Canonical household implementation:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-## Accepted source authority
+Accepted Issue #18 candidate commit:
 
-Source repository:
+`24dde6792f6800f1ae872001587c2a1a3503d919`
 
-`zcx369658780/dissertation-ch5-two-asset-hank`
-
-Accepted source export:
-
-`exports/matlab_faithful_two_asset_ha.py`
-
-Export-authority marker:
-
-`6469e5a87a00366c1b2af38f27efaa3014206936`
-
-Required transferred artifact SHA-256:
-
-`276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
-
-Source and canonical Git blob identity:
+Canonical Git blob:
 
 `57e32076f0e11c9a047e1f90f8c2446d4148e457`
 
-Designated MATLAB source:
+Required SHA-256 provenance:
 
-`HANK_2ASSETS_HJB.m`
+`276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-MATLAB SHA-256:
+The household module is immutable in DLH-4C. No changes to household economics, HJB, KFE, policy selection, numerical regularization, boundaries, or aggregation are authorized.
 
-`049136B769560040BC678F828F5D3EC5338DDCAA2090D6BED4E40732F56C3EAE`
+## Household scientific identity
 
-## Accepted household object
-
-The canonical household foundation now contains:
+Accepted household object:
 
 - state `(b,a,z)`;
-- liquid asset `b` and illiquid asset `a`;
-- consumption/labor/transfer policy logic;
+- liquid asset `b`;
+- illiquid asset `a`;
+- consumption/labor/transfer choice;
 - adjustment cost;
 - MATLAB-faithful HJB iteration operator;
-- separate post-convergence operator;
-- stationary KFE density solve;
-- consumption, effective-labor, liquid-asset, and illiquid-asset aggregates.
+- post-convergence operator;
+- stationary KFE density;
+- aggregate `C`, effective labor, `A_hh`, `B_hh`.
 
-Independent review reproduced the validation fixture with:
-
-- HJB convergence: 11 iterations;
-- convergence statistic approximately `1.6736e-8`;
-- post-convergence `A^T` nullity = 1;
-- KFE contaminated-system residual approximately `3.47e-18`;
-- density normalization approximately 1;
-- illiquid assets `A ≈ 8.9586992251`;
-- liquid assets `B ≈ 0.7952878841`;
-- consumption `C ≈ 1.0582828618`;
-- effective labor `L ≈ 0.9924967366`.
-
-These are validation-fixture results, not empirical calibration.
-
-## Economic structure versus numerical implementation
-
-Maintain an explicit distinction between:
+Maintain the distinction between:
 
 ### `ECONOMIC_STRUCTURE`
 
-- two assets;
-- household budget structure;
-- consumption/labor choices;
-- transfer/deposit choice;
-- adjustment-cost mechanism;
-- productivity heterogeneity and stationary distribution.
+and
 
 ### `NUMERICAL_REGULARIZATION / MATLAB_FAITHFUL_IMPLEMENTATION`
 
-- `max(a,a_bar)` denominator floor used in adjustment cost near `a=0`;
-- production bare-`a` transfer-FOC pairing retained for faithful parity;
-- illiquid-return taper used to stabilize finite-grid stationary distributions;
-- exact MATLAB-spdiags-equivalent boundary truncation;
-- contaminated-row stationary KFE solve and subsequent density normalization.
+The accepted numerical baseline preserves the `max(a,a_bar)` cost floor, bare-`a` production transfer-FOC pairing, illiquid-return taper, MATLAB-spdiags-equivalent boundary behavior, and contaminated-row KFE. These must not be silently changed or reinterpreted as new GE equations.
 
-These devices are preserved in the canonical faithful baseline but must not all be described as primitive economic equations. Any future redesign of them requires a separate explicit scientific task and new validation.
+## Current scientific objective — DLH-4C
 
-## Historical route status
+Freeze the minimal single-region two-asset steady-state GE design contract around the immutable household oracle.
 
-- one-asset DLH-3B/DLH-3C kernels remain useful numerical benchmarks only;
-- Issue #17 failed two-asset reconstruction remains superseded provenance and is not scientific authority;
-- Issue #18 imported the separately accepted Chapter-5 faithful implementation and is now the canonical household foundation.
+The contract must explicitly close or escalate:
 
-## Current scientific ceiling
+- `A_hh` ↔ productive-capital mapping;
+- `B_hh` economic meaning and liquid-asset supply;
+- firm production, wage, depreciation and illiquid-return equations;
+- household price mappings `r_a`, `r_b`, wage, tax, transfer and borrowing spread;
+- fiscal/debt balance sheet;
+- steady-state resource accounting including household adjustment costs;
+- explicit ordered GE unknown vector and equally sized residual vector;
+- degree-of-freedom audit;
+- numeraire/normalization;
+- deterministic solver architecture;
+- compact validation fixture;
+- stable interfaces for future dynamics, NK, regional flows and learned matrices.
 
-Accepted:
+The Chapter-5 legacy GE route is read-only provenance only. Its manual multi-province iteration, lack of a unique residual map, and missing liquid-bond/resource closures must not be copied blindly.
+
+If materially different scientifically legitimate closures remain, DSH must stop with:
+
+`BLOCKED_DLH_4C_OWNER_CLOSURE_DECISION_REQUIRED`
+
+and return a compact decision matrix instead of choosing silently.
+
+## Mutation boundary
+
+Authorized writes only under:
+
+`reports/dlh_4c_two_asset_single_region_ge_contract_2026_08_30/`
+
+No source/config/test mutation.
+
+## Scientific ceiling
+
+Current accepted ceiling:
 
 `TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`
 
-Not yet validated or authorized:
+Possible DLH-4C design ceiling after independent acceptance:
 
-- GE closure;
+`TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`
+
+Not authorized or validated:
+
+- GE solver implementation;
 - transition dynamics / IRFs;
 - NK monetary closure;
-- regional flow networks / NSR-HANK;
-- Deep Learning training or learned flow matrices;
+- regional/multi-province HANK;
+- learned `W^L` / `W^K`;
+- Deep Learning training;
 - empirical calibration;
-- policy/welfare/paper Results claims.
+- policy/welfare/paper Results.
 
-## Builder state
+## Required Builder startup
 
-`NO_ACTIVE_BUILDER_TASK`
-
-Future work requires a separately published and activated GitHub Issue.
+1. fresh fetch live `origin/main`;
+2. read CURRENT rules;
+3. read `tasks/TASK_INDEX_CURRENT.md`;
+4. read this Startup Snapshot;
+5. fresh-read Issue #19 body + all comments;
+6. verify immutable household blob/SHA identity;
+7. read authorized Chapter-5 GE audit/source provenance;
+8. fail closed on authority or household-identity mismatch.
