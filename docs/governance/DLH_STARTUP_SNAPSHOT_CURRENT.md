@@ -9,7 +9,6 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Governance state
 
 - live GitHub `main` = synchronized repository/governance authority;
-- active GitHub Issue pointed to by `tasks/TASK_INDEX_CURRENT.md` = sole Builder authority;
 - DSH = bounded Builder/executor;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route authority / task issuer / GitHub governance operator;
 - Owner = final scientific-direction authority;
@@ -19,23 +18,7 @@ Priority:
 
 `Scientific correctness > Experiment reproducibility > Research iteration speed > Git auditability > Documentation completeness`
 
-## Active Builder task
-
-`ACTIVE_GITHUB_ISSUE_21__DLH_4D_R1_FROZEN_FIXTURE_FEASIBILITY_CERTIFICATION`
-
-Issue #21:
-
-`DLH-4D-R1: Certify frozen Option A fixture GE feasibility over the full domain`
-
-Task type:
-
-`SCIENTIFIC_DIAGNOSTIC__FROZEN_FIXTURE_GE_FEASIBILITY_CERTIFICATION`
-
-Builder:
-
-DSH bounded scientific diagnostic executor.
-
-## Immutable two-asset household foundation
+## Accepted immutable household foundation
 
 Canonical household implementation:
 
@@ -49,7 +32,7 @@ SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-This household oracle remains frozen. No active task authorizes changes to it.
+The household oracle remains frozen.
 
 ## Accepted Option A GE contract
 
@@ -57,7 +40,7 @@ Issue #19 / DLH-4C accepted contract commit:
 
 `7fcfd6412c580f888d2ef8175335c3909f146e59`
 
-Owner-frozen Option A remains:
+Owner-frozen Option A remains unchanged:
 
 - `K=A_hh`;
 - `B_hh=B_gov` with constant exogenous real government bonds;
@@ -69,39 +52,40 @@ Owner-frozen Option A remains:
 - unknowns `x=(r_a,r_b,L)`;
 - residuals `(A_hh-K, B_hh-B_gov, L_hh-L)`.
 
-Faithful accounting continues to distinguish:
-
-- `R_resource_structural=Y-C-delta*K-AC`;
-- numerical `W_taper`;
-- gated `R_resource_faithful=R_resource_structural-W_taper`.
-
-## Issue #20 accepted fail-closed evidence
+## Issue #20 accepted blocker evidence
 
 Issue #20 / DLH-4D implementation commit:
 
 `40ec7ee3d676fc03863a3d2c2b1722b7ad53b2a5`
 
-Reviewer classification:
+Accepted reviewer classification:
 
 `DLH_4D_ROOT_BRACKET_FAILURE_ACCEPTED_AS_BLOCKER_EVIDENCE__GE_NONEXISTENCE_NOT_YET_CERTIFIED`
 
+## Issue #21 accepted diagnostic evidence
+
+Issue #21 / DLH-4D-R1 diagnostic commit:
+
+`a6187c31d7a1f008e94718778030c3117b6edae7`
+
+Accepted classification:
+
+`DLH_4D_R1_DIAGNOSTIC_INCONCLUSIVE_ACCEPTED__NONFINITE_REGION_REQUIRES_DIAGNOSTIC`
+
 Accepted meaning:
 
-- GE-layer implementation and deterministic bracketing machinery are established;
-- frozen Option A fixture attempt correctly fail-closes because the nested solver cannot establish the required bond-market bracket in the relevant region;
-- sampled evidence suggests tension among `B_gov=1`, `rho=0.02`, `a_max=10`, and firm capital demand;
-- the prior sparse scan is not accepted as a mathematical/global proof that the full frozen domain contains no GE root;
-- no single-region GE steady state is yet validated.
+- no GE root candidate was found in the frozen 729-point map or 27-start bounded least-squares diagnostic;
+- best finite normalized residual remains far from the Issue #20 acceptance tolerance;
+- the diagnostic is exactly reproducible;
+- 452/729 points are non-finite, preventing frozen-fixture numerical infeasibility certification;
+- the Builder's report-only `<50% non-finite` rule is not an authoritative project threshold; Issue #21's qualitative condition 6 remains controlling;
+- no single-region GE steady state is validated.
 
-## Current scientific objective — Issue #21
+## Next scientific objective
 
-Use the Issue #20 residual evaluator and solver code **read-only** to distinguish:
+Before changing `B_gov`, `rho`, `a_max`, solver domains, or Option A economics, classify the non-finite household/KFE region that prevented Issue #21 from reaching a stronger conclusion.
 
-1. frozen-fixture numerical infeasibility under a predetermined full-domain diagnostic protocol;
-2. an alternative valid root missed by the production nested-Brent architecture;
-3. inconclusive evidence.
-
-Issue #21 freezes all existing economics, fixture values and domains. It authorizes only report generation.
+This next step should remain diagnostic/read-only with respect to household and production GE source.
 
 ## Current scientific ceiling
 
@@ -109,32 +93,22 @@ Accepted:
 
 - `TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`;
 - `TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`;
-- GE implementation/bracketing blocker evidence from Issue #20.
+- GE implementation/bracketing blocker evidence;
+- full-domain feasibility diagnostic evidence ending INCONCLUSIVE.
 
 Not established:
 
 `MINIMAL_SINGLE_REGION_TWO_ASSET_REAL_GE_STEADY_STATE_VALIDATED`
 
-Not authorized or validated:
+Not authorized or validated without a new active Issue:
 
 - fixture revision;
 - household redesign;
 - production GE solver repair;
 - transition dynamics / IRFs;
-- NKPC/Taylor/Fisher/monetary shocks;
-- regional/multi-province HANK;
+- NK monetary closure;
+- regional HANK;
 - learned `W^L` / `W^K`;
 - Deep Learning training;
 - empirical calibration;
 - policy/welfare/paper Results.
-
-## Required Builder startup
-
-1. fresh fetch live `origin/main`;
-2. read CURRENT project rules;
-3. read `tasks/TASK_INDEX_CURRENT.md`;
-4. read this Startup Snapshot;
-5. read Issue #20 body/comments/evidence and GE implementation read-only;
-6. verify immutable household blob/SHA;
-7. fresh-read Issue #21 body + all comments;
-8. fail closed on authority or household-identity mismatch.
