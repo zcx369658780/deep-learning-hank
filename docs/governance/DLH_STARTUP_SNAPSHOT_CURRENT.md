@@ -21,21 +21,21 @@ Priority:
 
 ## Active Builder task
 
-`ACTIVE_GITHUB_ISSUE_20__DLH_4D_TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE`
+`ACTIVE_GITHUB_ISSUE_21__DLH_4D_R1_FROZEN_FIXTURE_FEASIBILITY_CERTIFICATION`
 
-Issue #20:
+Issue #21:
 
-`DLH-4D: Implement and validate minimal single-region two-asset GE steady state`
+`DLH-4D-R1: Certify frozen Option A fixture GE feasibility over the full domain`
 
 Task type:
 
-`SCIENTIFIC_IMPLEMENTATION__TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE`
+`SCIENTIFIC_DIAGNOSTIC__FROZEN_FIXTURE_GE_FEASIBILITY_CERTIFICATION`
 
 Builder:
 
-DSH bounded executor.
+DSH bounded scientific diagnostic executor.
 
-## Accepted immutable household foundation
+## Immutable two-asset household foundation
 
 Canonical household implementation:
 
@@ -49,61 +49,77 @@ SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-This household oracle is frozen for the active route. Issue #20 authorizes zero changes to `src/deep_learning_hank/two_asset/**`.
+This household oracle remains frozen. No active task authorizes changes to it.
 
-## Accepted DLH-4C GE contract
+## Accepted Option A GE contract
 
-Issue #19 is accepted/closed at contract commit:
+Issue #19 / DLH-4C accepted contract commit:
 
 `7fcfd6412c580f888d2ef8175335c3909f146e59`
 
-Classification:
-
-`DLH_4C_OPTION_A_GE_CLOSURE_CONTRACT_ACCEPTED`
-
-Owner-frozen Option A:
+Owner-frozen Option A remains:
 
 - `K=A_hh`;
-- `B_hh=B_gov` with constant exogenous real government-bond supply;
-- competitive firms, `mu=1`;
+- `B_hh=B_gov` with constant exogenous real government bonds;
+- competitive firms (`mu=1`);
 - `Y=Z*K^alpha*L^(1-alpha)`;
 - `w=F_L`;
 - `r_a=F_K-delta`;
-- balanced transfer `T=tau*w*L-r_b*B_gov`;
-- ordered unknowns `x=(r_a,r_b,L)`;
-- ordered root residuals `(A_hh-K, B_hh-B_gov, L_hh-L)`.
+- `T=tau*w*L-r_b*B_gov`;
+- unknowns `x=(r_a,r_b,L)`;
+- residuals `(A_hh-K, B_hh-B_gov, L_hh-L)`.
 
-Resource/accounting distinction:
+Faithful accounting continues to distinguish:
 
-- structural resource gap `R_resource_structural=Y-C-delta*K-AC`;
-- numerical taper wedge `W_taper` from the immutable faithful oracle;
-- faithful gated residual `R_resource_faithful=R_resource_structural-W_taper`.
+- `R_resource_structural=Y-C-delta*K-AC`;
+- numerical `W_taper`;
+- gated `R_resource_faithful=R_resource_structural-W_taper`.
 
-`W_taper` is numerical regularization, not economic resource use.
+## Issue #20 accepted fail-closed evidence
 
-## Current scientific objective — DLH-4D
+Issue #20 / DLH-4D implementation commit:
 
-Implement and validate the minimal single-region two-asset real GE steady-state fixture around the immutable household oracle.
+`40ec7ee3d676fc03863a3d2c2b1722b7ad53b2a5`
 
-Frozen validation fixture and deterministic solver architecture are specified in Issue #20. DSH must fail closed rather than alter economics, fixture values, solver domains, or the household oracle to seek PASS.
+Reviewer classification:
+
+`DLH_4D_ROOT_BRACKET_FAILURE_ACCEPTED_AS_BLOCKER_EVIDENCE__GE_NONEXISTENCE_NOT_YET_CERTIFIED`
+
+Accepted meaning:
+
+- GE-layer implementation and deterministic bracketing machinery are established;
+- frozen Option A fixture attempt correctly fail-closes because the nested solver cannot establish the required bond-market bracket in the relevant region;
+- sampled evidence suggests tension among `B_gov=1`, `rho=0.02`, `a_max=10`, and firm capital demand;
+- the prior sparse scan is not accepted as a mathematical/global proof that the full frozen domain contains no GE root;
+- no single-region GE steady state is yet validated.
+
+## Current scientific objective — Issue #21
+
+Use the Issue #20 residual evaluator and solver code **read-only** to distinguish:
+
+1. frozen-fixture numerical infeasibility under a predetermined full-domain diagnostic protocol;
+2. an alternative valid root missed by the production nested-Brent architecture;
+3. inconclusive evidence.
+
+Issue #21 freezes all existing economics, fixture values and domains. It authorizes only report generation.
 
 ## Current scientific ceiling
 
-Accepted before DLH-4D:
+Accepted:
 
-`TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`
+- `TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`;
+- `TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`;
+- GE implementation/bracketing blocker evidence from Issue #20.
 
-and
-
-`TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`
-
-Possible ceiling after independent DLH-4D acceptance:
+Not established:
 
 `MINIMAL_SINGLE_REGION_TWO_ASSET_REAL_GE_STEADY_STATE_VALIDATED`
 
 Not authorized or validated:
 
+- fixture revision;
 - household redesign;
+- production GE solver repair;
 - transition dynamics / IRFs;
 - NKPC/Taylor/Fisher/monetary shocks;
 - regional/multi-province HANK;
@@ -118,7 +134,7 @@ Not authorized or validated:
 2. read CURRENT project rules;
 3. read `tasks/TASK_INDEX_CURRENT.md`;
 4. read this Startup Snapshot;
-5. fresh-read Issue #20 body + all comments;
+5. read Issue #20 body/comments/evidence and GE implementation read-only;
 6. verify immutable household blob/SHA;
-7. read accepted DLH-4C contract/validation plan;
+7. fresh-read Issue #21 body + all comments;
 8. fail closed on authority or household-identity mismatch.
