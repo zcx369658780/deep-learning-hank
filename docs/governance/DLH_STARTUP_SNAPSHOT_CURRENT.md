@@ -9,69 +9,54 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Governance state
 
 - live GitHub `main` = synchronized repository/governance authority;
-- the open GitHub Issue pointed to by `tasks/TASK_INDEX_CURRENT.md` = sole Builder task authority;
-- Codex/DSH = bounded Builder according to the active Issue;
+- GitHub Issue = Builder task authority only when separately published and activated;
+- DSH = bounded Builder/executor;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route authority / task issuer / GitHub governance operator;
 - Owner = final scientific-direction authority;
 - Builder completion is not acceptance;
-- correct fail-closed results remain scientific evidence;
-- metadata mismatch is a governance blocker, not automatically a scientific blocker.
+- no active Builder task currently exists.
 
 Priority:
 
 `Scientific correctness > Experiment reproducibility > Research iteration speed > Git auditability > Documentation completeness`
 
-## Current active task
-
-`ACTIVE_GITHUB_ISSUE_18__DLH_4B_ACCEPTED_TWO_ASSET_HA_IMPORT`
-
-Active Builder authority:
-
-**GitHub Issue #18 — OPEN**
-
-Title:
-
-`DLH-4B: Import accepted MATLAB-faithful two-asset HA oracle as canonical household kernel`
-
-Task type:
-
-`SCIENTIFIC_INTEGRATION__ACCEPTED_TWO_ASSET_HA_IMPORT`
-
-Builder:
-
-Codex bounded integrator.
-
 ## Current scientific stage
 
-Current model stage:
+`TWO_ASSET_HA_HOUSEHOLD_FOUNDATION_ACCEPTED`
 
-`TWO_ASSET_HA_FOUNDATION__ACCEPTED_EXTERNAL_IMPLEMENTATION_PENDING_REPOSITORY_INTEGRATION`
+Issue #18 has been independently reviewed and accepted at candidate commit:
 
-Current experiment stage:
+`24dde6792f6800f1ae872001587c2a1a3503d919`
 
-`TRANSFER_INTEGRATION_VALIDATION`
+Canonical package:
 
-Current manuscript stage:
+`src/deep_learning_hank/two_asset/`
 
-`NO_RESULTS_AUTHORITY`
+Canonical household implementation:
 
-## Accepted two-asset household authority
+`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
+
+## Accepted source authority
 
 Source repository:
 
 `zcx369658780/dissertation-ch5-two-asset-hank`
 
-Accepted standalone source:
+Accepted source export:
 
 `exports/matlab_faithful_two_asset_ha.py`
 
-Export authority recorded by source artifact:
+Export-authority marker:
 
 `6469e5a87a00366c1b2af38f27efaa3014206936`
 
-Transferred artifact SHA-256:
+Required transferred artifact SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
+
+Source and canonical Git blob identity:
+
+`57e32076f0e11c9a047e1f90f8c2446d4148e457`
 
 Designated MATLAB source:
 
@@ -81,70 +66,80 @@ MATLAB SHA-256:
 
 `049136B769560040BC678F828F5D3EC5338DDCAA2090D6BED4E40732F56C3EAE`
 
-Accepted household evidence includes:
+## Accepted household object
 
-- MATLAB-faithful HJB propagation/operator parity;
-- MATLAB↔Python faithful HJB operator parity;
-- MATLAB↔Python faithful KFE density parity;
-- end-to-end stationary-distribution parity;
-- household aggregate parity.
+The canonical household foundation now contains:
 
-The accepted standalone implementation is a household numerical baseline/oracle. GE closure and dynamics are excluded.
-
-## Scientific identity of the canonical household foundation
-
-The canonical target is a MATLAB-faithful two-asset HA household block with:
-
-- state space `(b,a,z)`;
-- liquid asset `b`;
-- illiquid asset `a`;
-- deposit/transfer control `d`;
+- state `(b,a,z)`;
+- liquid asset `b` and illiquid asset `a`;
+- consumption/labor/transfer policy logic;
 - adjustment cost;
-- MATLAB-faithful illiquid-return taper;
-- exact MATLAB-spdiags-equivalent iteration-operator boundary semantics;
+- MATLAB-faithful HJB iteration operator;
 - separate post-convergence operator;
-- contaminated-row stationary KFE;
-- aggregate consumption, effective labor, illiquid assets, and liquid assets.
+- stationary KFE density solve;
+- consumption, effective-labor, liquid-asset, and illiquid-asset aggregates.
 
-The earlier one-asset route remains useful benchmark provenance but is not the final household foundation for future HANK/NSR-HANK work.
+Independent review reproduced the validation fixture with:
 
-## Historical route correction
+- HJB convergence: 11 iterations;
+- convergence statistic approximately `1.6736e-8`;
+- post-convergence `A^T` nullity = 1;
+- KFE contaminated-system residual approximately `3.47e-18`;
+- density normalization approximately 1;
+- illiquid assets `A ≈ 8.9586992251`;
+- liquid assets `B ≈ 0.7952878841`;
+- consumption `C ≈ 1.0582828618`;
+- effective labor `L ≈ 0.9924967366`.
 
-- Issue #13: closed after the previous single-region NK GE route was superseded by household-foundation reassessment.
-- Issue #14: completed audit; established one-asset vs two-asset identity mismatch.
-- Issue #15: completed one-asset validation kernel; benchmark only.
-- Issue #16: completed one-asset Chinese review package; documentation only.
-- Issue #17: closed/superseded local two-asset reconstruction attempt; not scientific authority.
+These are validation-fixture results, not empirical calibration.
 
-## Issue #18 scientific boundary
+## Economic structure versus numerical implementation
 
-Authorized:
+Maintain an explicit distinction between:
 
-- import the accepted standalone two-asset household artifact;
-- establish canonical `src/deep_learning_hank/two_asset/` package;
-- add minimal import plumbing and transfer-validation tests;
-- deprecate/replace conflicting live-main two-asset code only if such code actually exists.
+### `ECONOMIC_STRUCTURE`
 
-Not authorized:
+- two assets;
+- household budget structure;
+- consumption/labor choices;
+- transfer/deposit choice;
+- adjustment-cost mechanism;
+- productivity heterogeneity and stationary distribution.
 
-- changing accepted household economics/numerics;
+### `NUMERICAL_REGULARIZATION / MATLAB_FAITHFUL_IMPLEMENTATION`
+
+- `max(a,a_bar)` denominator floor used in adjustment cost near `a=0`;
+- production bare-`a` transfer-FOC pairing retained for faithful parity;
+- illiquid-return taper used to stabilize finite-grid stationary distributions;
+- exact MATLAB-spdiags-equivalent boundary truncation;
+- contaminated-row stationary KFE solve and subsequent density normalization.
+
+These devices are preserved in the canonical faithful baseline but must not all be described as primitive economic equations. Any future redesign of them requires a separate explicit scientific task and new validation.
+
+## Historical route status
+
+- one-asset DLH-3B/DLH-3C kernels remain useful numerical benchmarks only;
+- Issue #17 failed two-asset reconstruction remains superseded provenance and is not scientific authority;
+- Issue #18 imported the separately accepted Chapter-5 faithful implementation and is now the canonical household foundation.
+
+## Current scientific ceiling
+
+Accepted:
+
+`TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`
+
+Not yet validated or authorized:
+
 - GE closure;
-- HANK transition dynamics;
-- NK/monetary shocks;
-- regional flow networks;
-- Deep Learning architecture/training;
-- calibration/data work;
-- policy/welfare/Results claims.
+- transition dynamics / IRFs;
+- NK monetary closure;
+- regional flow networks / NSR-HANK;
+- Deep Learning training or learned flow matrices;
+- empirical calibration;
+- policy/welfare/paper Results claims.
 
-## Required Builder startup order
+## Builder state
 
-1. fresh fetch live `origin/main`;
-2. read CURRENT rules;
-3. read `tasks/TASK_INDEX_CURRENT.md`;
-4. read this snapshot;
-5. fresh-read Issue #18 body + comments;
-6. inspect the accepted source repository export task and source file;
-7. verify source SHA-256 exactly before mutation;
-8. stop fail-closed on any authority/hash mismatch.
+`NO_ACTIVE_BUILDER_TASK`
 
-Future successor tasks remain unauthorized until separately issued.
+Future work requires a separately published and activated GitHub Issue.
