@@ -1,92 +1,55 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_19__DLH_4C_TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
+Status: `DLH_4C_OPTION_A_GE_CLOSURE_CONTRACT_ACCEPTED__SUCCESSOR_PENDING`
 
 Last synchronized: 2026-08-30
 
 Repository: `zcx369658780/deep-learning-hank`
 
-## Sole active Builder authority
+## Accepted scientific state
 
-**GitHub Issue #19 — OPEN**
+Issue #19 / DLH-4C is accepted at commit:
 
-Title:
+`7fcfd6412c580f888d2ef8175335c3909f146e59`
 
-`DLH-4C: Freeze minimal single-region two-asset GE steady-state closure contract`
+Accepted classification:
 
-Task type:
+`DLH_4C_OPTION_A_GE_CLOSURE_CONTRACT_ACCEPTED`
 
-`SCIENTIFIC_DESIGN__TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
+Owner-frozen Option A:
 
-Builder:
+- `K = A_hh`;
+- `B_hh = B_gov` with constant exogenous real government bond supply;
+- competitive firms, `mu = 1`;
+- `Y = Z*K^alpha*L^(1-alpha)`;
+- `w = F_L`;
+- `r_a = F_K - delta`;
+- balanced transfer `T = tau*w*L - r_b*B_gov`;
+- GE unknowns `x = (r_a, r_b, L)`;
+- root residuals `(A_hh-K, B_hh-B_gov, L_hh-L)`.
 
-DSH bounded scientific auditor / contract drafter.
+Faithful resource accounting must report separately:
 
-Issue URL:
+- `R_resource_structural = Y - C - delta*K - AC`;
+- `W_taper = integral[(r_a-r_a_eff(a))*a*g]`;
+- `R_resource_faithful = R_resource_structural - W_taper`.
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/19`
+Only `R_resource_faithful` is a near-zero faithful numerical gate while the accepted taper remains active.
 
-Builder must fresh-read Issue #19 body and all comments before mutation.
-
-## Immutable accepted household foundation
-
-Issue #18 is accepted and closed.
-
-Canonical household path:
+## Immutable household foundation
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-Accepted candidate commit:
-
-`24dde6792f6800f1ae872001587c2a1a3503d919`
-
-Canonical Git blob:
+Git blob:
 
 `57e32076f0e11c9a047e1f90f8c2446d4148e457`
 
-Required SHA-256 provenance:
+SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-DLH-4C authorizes zero mutation of the accepted household HJB/KFE/economics/numerical implementation.
+No future task may modify this accepted household oracle without a new explicit Owner scientific decision.
 
-## Current scientific task
+## Builder authority
 
-DLH-4C is a design/source-audit gate only.
-
-Its objective is to freeze an explicit, degree-of-freedom-complete minimal single-region two-asset steady-state GE contract around the immutable household block.
-
-The contract must explicitly settle or escalate:
-
-- mapping of `A_hh` to productive capital;
-- economic meaning and supply of `B_hh`;
-- firm production/wage/illiquid-return equations;
-- liquid-rate closure;
-- tax/transfer/government balance sheet;
-- resource accounting including adjustment costs;
-- ordered GE unknown vector and residual map;
-- numeraire/normalization;
-- solver architecture and validation fixture;
-- future interfaces for dynamics, NK, regional flows and learned matrices.
-
-If materially different closures remain legitimate, DSH must stop with `BLOCKED_DLH_4C_OWNER_CLOSURE_DECISION_REQUIRED` rather than silently choosing.
-
-## Authorized mutation boundary
-
-Only:
-
-`reports/dlh_4c_two_asset_single_region_ge_contract_2026_08_30/**`
-
-No source/config/test mutation is authorized.
-
-## Scientific ceiling
-
-Accepted baseline:
-
-`TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`
-
-DLH-4C may at most establish:
-
-`TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`
-
-It does not authorize or validate GE code, transition dynamics, NK monetary closure, regional NSR-HANK, Deep Learning, empirical calibration, policy/welfare, or Results.
+No successor Builder authority is active until a separately published and activated GitHub Issue is created.
