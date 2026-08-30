@@ -1,36 +1,46 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_TASK__DLH_4B_TWO_ASSET_HA_IMPORT_ACCEPTED`
+Status: `ACTIVE_GITHUB_ISSUE_19__DLH_4C_TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
 
 Last synchronized: 2026-08-30
 
 Repository: `zcx369658780/deep-learning-hank`
 
-## Current Builder authority
+## Sole active Builder authority
 
-There is **no active Builder task** after acceptance of Issue #18.
+**GitHub Issue #19 — OPEN**
 
-Future scientific or implementation work remains `NO_BUILDER_AUTHORITY` until ChatGPT publishes and activates a separate GitHub Issue.
+Title:
 
-## Most recent accepted task
+`DLH-4C: Freeze minimal single-region two-asset GE steady-state closure contract`
 
-GitHub Issue #18:
+Task type:
 
-`DLH-4B: Import accepted MATLAB-faithful two-asset HA oracle as canonical household kernel`
+`SCIENTIFIC_DESIGN__TWO_ASSET_SINGLE_REGION_GE_CLOSURE_CONTRACT`
+
+Builder:
+
+DSH bounded scientific auditor / contract drafter.
+
+Issue URL:
+
+`https://github.com/zcx369658780/deep-learning-hank/issues/19`
+
+Builder must fresh-read Issue #19 body and all comments before mutation.
+
+## Immutable accepted household foundation
+
+Issue #18 is accepted and closed.
+
+Canonical household path:
+
+`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
 Accepted candidate commit:
 
 `24dde6792f6800f1ae872001587c2a1a3503d919`
 
-Accepted classification:
-
-`DLH_4B_ACCEPTED_TWO_ASSET_HA_IMPORT_ACCEPTED`
-
-The accepted canonical household file is:
-
-`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
-
-Its Git blob identity matches the source-repository export exactly:
+Canonical Git blob:
 
 `57e32076f0e11c9a047e1f90f8c2446d4148e457`
 
@@ -38,41 +48,45 @@ Required SHA-256 provenance:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-## Current scientific state
+DLH-4C authorizes zero mutation of the accepted household HJB/KFE/economics/numerical implementation.
 
-The canonical household foundation is now the accepted MATLAB-faithful two-asset HA block with state `(b,a,z)`, separate liquid/illiquid assets, HJB, stationary KFE, and household aggregates.
+## Current scientific task
 
-Maintain the distinction between:
+DLH-4C is a design/source-audit gate only.
 
-- `ECONOMIC_STRUCTURE`; and
-- `NUMERICAL_REGULARIZATION / MATLAB_FAITHFUL_IMPLEMENTATION`.
+Its objective is to freeze an explicit, degree-of-freedom-complete minimal single-region two-asset steady-state GE contract around the immutable household block.
 
-The bare-`a` production transfer FOC pairing, the `max(a,a_bar)` adjustment-cost floor, the illiquid-return taper, exact MATLAB-spdiags-equivalent boundary behavior, and contaminated-row KFE are preserved for faithful numerical parity. They must not all be reinterpreted as primitive economic equations.
+The contract must explicitly settle or escalate:
 
-The earlier one-asset HA/HANK route remains benchmark provenance only, not the canonical future HANK household foundation.
+- mapping of `A_hh` to productive capital;
+- economic meaning and supply of `B_hh`;
+- firm production/wage/illiquid-return equations;
+- liquid-rate closure;
+- tax/transfer/government balance sheet;
+- resource accounting including adjustment costs;
+- ordered GE unknown vector and residual map;
+- numeraire/normalization;
+- solver architecture and validation fixture;
+- future interfaces for dynamics, NK, regional flows and learned matrices.
 
-## Historical provenance
+If materially different closures remain legitimate, DSH must stop with `BLOCKED_DLH_4C_OWNER_CLOSURE_DECISION_REQUIRED` rather than silently choosing.
 
-- Issues #1–#12: retained under their accepted evidence ceilings.
-- Issue #13: closed `not_planned` after scientific-route reassessment.
-- Issue #14: completed identity/parity audit.
-- Issue #15: completed one-asset validation kernel; benchmark provenance only.
-- Issue #16: completed one-asset review package; documentation provenance only.
-- Issue #17: closed/superseded failed local two-asset reconstruction; not scientific authority.
-- Issue #18: accepted canonical two-asset HA import.
+## Authorized mutation boundary
 
-## Scientific ceiling after Issue #18
+Only:
 
-Accepted now:
+`reports/dlh_4c_two_asset_single_region_ge_contract_2026_08_30/**`
+
+No source/config/test mutation is authorized.
+
+## Scientific ceiling
+
+Accepted baseline:
 
 `TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`
 
-Not yet accepted or authorized:
+DLH-4C may at most establish:
 
-- two-asset GE closure;
-- transition dynamics / IRFs;
-- NK monetary closure;
-- regional NSR-HANK;
-- Deep Learning architecture/training;
-- empirical calibration;
-- welfare/policy/Results claims.
+`TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`
+
+It does not authorize or validate GE code, transition dynamics, NK monetary closure, regional NSR-HANK, Deep Learning, empirical calibration, policy/welfare, or Results.
