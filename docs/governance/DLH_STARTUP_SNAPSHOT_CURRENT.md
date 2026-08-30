@@ -21,120 +21,135 @@ Priority:
 
 ## Active Builder task
 
-`ACTIVE_GITHUB_ISSUE_22__DLH_4D_R2_NONFINITE_REGION_DIAGNOSTIC`
+`ACTIVE_GITHUB_ISSUE_23__DLH_4D_R3_MATLAB_TRANSFER_FOC_PARITY_REPAIR`
 
-Issue #22:
+Issue #23:
 
-`DLH-4D-R2: Classify non-finite household/KFE region before any fixture revision`
+`DLH-4D-R3: Repair MATLAB-faithful transfer-FOC liquid-derivative semantics and revalidate frozen GE path`
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__NONFINITE_HOUSEHOLD_KFE_REGION_CLASSIFICATION`
+`SCIENTIFIC_REPAIR__MATLAB_FAITHFUL_TRANSFER_FOC_PARITY`
 
 Builder:
 
-DSH bounded scientific diagnostic executor.
+DSH bounded scientific repair executor.
 
-## Accepted immutable household foundation
+## Accepted two-asset household foundation — pre-repair identity
 
-Canonical household implementation:
+Canonical implementation:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-Git blob:
+Pre-repair Git blob:
 
 `57e32076f0e11c9a047e1f90f8c2446d4148e457`
 
-SHA-256:
+Pre-repair SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-The household oracle remains frozen. Issue #22 authorizes zero mutation of it.
+This remains the accepted household foundation except for the single narrow MATLAB-faithfulness repair explicitly authorized by Issue #23.
 
 ## Accepted Option A GE contract
 
-Issue #19 / DLH-4C contract commit:
+Issue #19 contract commit:
 
 `7fcfd6412c580f888d2ef8175335c3909f146e59`
 
-Owner-frozen Option A remains unchanged.
+Option A economics remain unchanged.
 
-## Issue #20 accepted blocker evidence
+## Accepted GE blocker evidence
 
-Implementation commit:
+Issue #20 implementation commit:
 
 `40ec7ee3d676fc03863a3d2c2b1722b7ad53b2a5`
 
-Classification:
+Accepted classification:
 
 `DLH_4D_ROOT_BRACKET_FAILURE_ACCEPTED_AS_BLOCKER_EVIDENCE__GE_NONEXISTENCE_NOT_YET_CERTIFIED`
 
-## Issue #21 accepted diagnostic evidence
-
-Diagnostic commit:
+Issue #21 diagnostic commit:
 
 `a6187c31d7a1f008e94718778030c3117b6edae7`
 
-Classification:
+Accepted classification:
 
 `DLH_4D_R1_DIAGNOSTIC_INCONCLUSIVE_ACCEPTED__NONFINITE_REGION_REQUIRES_DIAGNOSTIC`
 
-Accepted meaning:
+Issue #22 diagnostic commit:
 
-- no GE root candidate found by frozen 729-point map or 27-start bounded least-squares diagnostic;
-- best finite residual remains far from acceptance;
-- exact reproducibility established;
-- 452/729 candidate points are non-finite;
-- therefore frozen-fixture numerical infeasibility is not certified;
-- no single-region GE steady state is validated.
+`3e623160796ed175244703bb01ad40baa1b23749`
 
-Reviewer correction retained: the Builder's report-only `<50% non-finite` language is not an authoritative project threshold.
+Accepted classification:
 
-## Current scientific objective — Issue #22
+`DLH_4D_R2_NONFINITE_STAGE_MAP_COMPLETE_ACCEPTED`
 
-Classify all 452 non-finite Issue #21 candidate points by exact failure stage without changing household, GE source, config, tests, fixture values, domains, or Option A economics.
+Accepted Issue #22 stage map:
 
-Required stage resolution includes:
+- 415/452 non-finite points fail at the Python transfer-FOC positivity guard;
+- 37/452 reach converged HJB and fail at faithful contaminated-row KFE;
+- Phase A classification is exactly reproducible.
 
-- GE pre-household mapping;
-- cold initialization;
-- HJB exception/nonconvergence/nonfinite output;
-- post-convergence operator finiteness;
-- KFE contaminated-row singular/nonfinite solve;
-- KFE normalization;
+## New source-level finding after Issue #22
+
+Owner re-supplied the designated MATLAB household files.
+
+Designated `HANK_2ASSETS_HJB.m` SHA-256:
+
+`049136B769560040BC678F828F5D3EC5338DDCAA2090D6BED4E40732F56C3EAE`
+
+This exactly matches the MATLAB provenance embedded in the canonical Python oracle.
+
+The MATLAB source uses `max(Vb,1e-6)` for consumption and labor but passes raw `VbB/VbF` into all four transfer FOC calls. Domestic `HANK3_FOC.m` computes `pa./pb` directly and has no strict-positive `pb` guard or derivative floor.
+
+The current Python canonical oracle has extra `v_b>0` transfer-FOC guards. These guards are now a narrow scientific/fidelity blocker rather than an accepted numerical-regularization feature.
+
+## Explicit narrow household-repair authority
+
+Issue #23 overrides prior household immutability only for this exact source-proven transfer-FOC mismatch.
+
+Authorized scientific change:
+
+- remove the Python-only strict-positive raw-liquid-derivative requirement from the transfer FOC;
+- preserve raw `v_a/v_b` MATLAB semantics for the transfer candidate;
+- retain the `1e-6` derivative floor only for consumption/labor as MATLAB does.
+
+Still frozen:
+
+- economic structure;
+- `max(a,a_bar)` adjustment-cost floor;
+- bare-`a` FOC scaling;
+- illiquid-return taper;
+- boundary/upwind policy selection except purely mechanical compatibility needed by the narrow repair;
+- source-operator construction;
+- contaminated-row KFE;
 - aggregation;
-- other explicit exception classes.
+- Option A GE economics;
+- Issue #20 fixture and solver domains.
 
-Matched finite/non-finite boundary pairs and bounded KFE/operator topology diagnostics on deterministic representatives are authorized as report-only diagnostics.
+## Current scientific objective
 
-## Mutation boundary
+1. establish source-to-source parity evidence;
+2. implement the narrow faithful transfer-FOC repair;
+3. run focused parity/regression tests;
+4. reclassify the prior 452 non-finite candidates on the unchanged frozen grid;
+5. rerun the existing frozen Issue #20 GE solve unchanged.
 
-Authorized writes only under:
-
-`reports/dlh_4d_r2_nonfinite_region_diagnostic_2026_08_30/`
-
-No source/config/test mutation.
+No PASS-seeking parameter or fixture changes are permitted.
 
 ## Current scientific ceiling
 
-Accepted:
-
-- `TWO_ASSET_HA_HOUSEHOLD_HJB_KFE_AGGREGATE_FOUNDATION`;
-- `TWO_ASSET_SINGLE_REGION_GE_STEADY_STATE_DESIGN_CONTRACT`;
-- GE implementation/bracketing blocker evidence;
-- full-domain feasibility diagnostic evidence ending INCONCLUSIVE.
-
-Not established:
+Not yet established:
 
 `MINIMAL_SINGLE_REGION_TWO_ASSET_REAL_GE_STEADY_STATE_VALIDATED`
 
-Issue #22 may at most establish a stage-resolved mechanism diagnosis for the non-finite region.
+Issue #23 may establish only repaired transfer-FOC MATLAB fidelity, updated non-finite evidence, and—only if all unchanged gates pass—the minimal single-region real GE fixture.
 
-Not authorized or validated:
+Not authorized:
 
-- fixture revision;
-- household/KFE redesign;
-- production GE solver repair;
+- broader household redesign;
+- KFE redesign;
 - transition dynamics / IRFs;
 - NK monetary closure;
 - regional HANK;
@@ -149,7 +164,7 @@ Not authorized or validated:
 2. read CURRENT project rules;
 3. read `tasks/TASK_INDEX_CURRENT.md`;
 4. read this Startup Snapshot;
-5. read accepted Issues #20/#21 evidence;
-6. verify immutable household blob/SHA;
-7. fresh-read Issue #22 body + all comments;
-8. fail closed on authority/evidence/identity mismatch.
+5. read accepted Issues #20-#22 evidence;
+6. verify pre-repair oracle identity;
+7. fresh-read Issue #23 body + all comments;
+8. fail closed on authority/source-parity mismatch.
