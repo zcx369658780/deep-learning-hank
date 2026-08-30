@@ -1,14 +1,36 @@
 # Deep Learning + HANK Task Index
 
-Status: `DLH_4D_R1_DIAGNOSTIC_INCONCLUSIVE_ACCEPTED__SUCCESSOR_PENDING`
+Status: `ACTIVE_GITHUB_ISSUE_22__DLH_4D_R2_NONFINITE_REGION_DIAGNOSTIC`
 
 Last synchronized: 2026-08-30
 
 Repository: `zcx369658780/deep-learning-hank`
 
-## Accepted scientific state
+## Sole active Builder authority
 
-Issue #21 / DLH-4D-R1 is accepted at commit:
+**GitHub Issue #22 — OPEN**
+
+Title:
+
+`DLH-4D-R2: Classify non-finite household/KFE region before any fixture revision`
+
+Task type:
+
+`SCIENTIFIC_DIAGNOSTIC__NONFINITE_HOUSEHOLD_KFE_REGION_CLASSIFICATION`
+
+Builder:
+
+DSH bounded scientific diagnostic executor.
+
+Issue URL:
+
+`https://github.com/zcx369658780/deep-learning-hank/issues/22`
+
+Builder must fresh-read Issue #22 body and all authoritative comments before execution.
+
+## Accepted predecessor state
+
+Issue #21 / DLH-4D-R1 accepted diagnostic commit:
 
 `a6187c31d7a1f008e94718778030c3117b6edae7`
 
@@ -16,14 +38,14 @@ Accepted classification:
 
 `DLH_4D_R1_DIAGNOSTIC_INCONCLUSIVE_ACCEPTED__NONFINITE_REGION_REQUIRES_DIAGNOSTIC`
 
-Accepted meaning:
+Accepted facts:
 
-- no GE root candidate was found by the frozen 729-point full-domain map or the 27-start bounded least-squares diagnostic;
-- the best finite normalized residual remained far from the GE acceptance tolerance;
-- the result is exactly reproducible under the frozen diagnostic protocol;
-- however, 452/729 grid points were non-finite, so frozen-fixture numerical infeasibility is NOT certified;
-- production nested-Brent failure is not the only evidence: the independent diagnostic also found no root, but non-finite household/KFE regions prevent a stronger conclusion;
-- the report-only `<50% non-finite` statement introduced by the Builder is NOT a separate project authority threshold. The controlling Issue #21 rule remains qualitative: infeasibility may be certified only when evidence does not suggest the conclusion is driven solely by non-finite regions.
+- no GE root candidate found by frozen production/independent bounded diagnostics;
+- best finite residual remains far from acceptance tolerance;
+- full-domain diagnostic exactly reproducible;
+- 452/729 grid candidates are non-finite;
+- frozen-fixture numerical infeasibility is NOT certified;
+- report-only `<50% non-finite` language is not an authority threshold.
 
 ## Immutable household foundation
 
@@ -37,41 +59,32 @@ SHA-256:
 
 `276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
 
-The household oracle remains immutable.
+Issue #22 authorizes zero household mutation.
 
-## Accepted Option A GE contract
+## Active diagnostic objective
 
-Issue #19 contract commit:
+Classify every one of the 452 Issue #21 non-finite grid candidates by the exact stage that fails, preserving warnings/exceptions and comparing matched finite/non-finite boundary points.
 
-`7fcfd6412c580f888d2ef8175335c3909f146e59`
+Issue #22 also authorizes bounded read-only KFE/operator topology diagnostics on at most 12 deterministic representative KFE-failure points.
 
-Option A economics remain unchanged.
+## Mutation boundary
 
-## GE implementation / blocker evidence
+Only new files under:
 
-Issue #20 implementation commit:
+`reports/dlh_4d_r2_nonfinite_region_diagnostic_2026_08_30/`
 
-`40ec7ee3d676fc03863a3d2c2b1722b7ad53b2a5`
+No mutation of:
 
-Accepted blocker classification:
-
-`DLH_4D_ROOT_BRACKET_FAILURE_ACCEPTED_AS_BLOCKER_EVIDENCE__GE_NONEXISTENCE_NOT_YET_CERTIFIED`
-
-## Builder authority
-
-No successor Builder authority is active until a separately published and activated GitHub Issue is created.
+- `src/deep_learning_hank/two_asset/**`;
+- `src/deep_learning_hank/ge/**`;
+- configs/tests;
+- fixture values or solver domains;
+- Option A economics.
 
 ## Scientific ceiling
 
-Accepted:
+No single-region GE steady state is validated.
 
-- two-asset HA household HJB/KFE/aggregates;
-- Option A single-region GE design contract;
-- GE implementation/bracketing blocker evidence;
-- full-domain feasibility diagnostic evidence ending INCONCLUSIVE.
+Issue #22 may establish only a stage-resolved diagnosis of the frozen non-finite candidate region.
 
-Not established:
-
-`MINIMAL_SINGLE_REGION_TWO_ASSET_REAL_GE_STEADY_STATE_VALIDATED`
-
-No authority yet for fixture revision, household redesign, GE solver repair, dynamics, NK, regional HANK, Deep Learning, calibration, welfare/policy, or Results.
+It does not authorize fixture revision, household/KFE redesign, GE solver repair, dynamics, NK, regional HANK, Deep Learning, calibration, welfare/policy, or Results.
