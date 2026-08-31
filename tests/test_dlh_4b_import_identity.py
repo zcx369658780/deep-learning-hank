@@ -20,13 +20,20 @@ from scipy import sparse
 from deep_learning_hank.two_asset import matlab_faithful_two_asset_ha as oracle
 
 CANONICAL_PATH = Path("src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py")
-REQUIRED_SHA256 = "276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8"
+# Issue #23 (DLH-4D-R3) is the sole Owner-authorized exception to oracle
+# immutability: the narrow transfer-FOC liquid-derivative repair changed the
+# canonical file.  The post-repair identity below replaces the pre-repair
+# 276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8; the frozen
+# Issue #20 config retains the pre-repair value and its identity gate now
+# fail-closes against the authorized change (see
+# test_dlh_4d_ge_equations.py::test_immutable_oracle_identity_detects_issue23_repair).
+REQUIRED_SHA256 = "1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024"
 EXPORT_AUTHORITY = "6469e5a87a00366c1b2af38f27efaa3014206936"
 MATLAB_SHA256 = "049136B769560040BC678F828F5D3EC5338DDCAA2090D6BED4E40732F56C3EAE"
 
 
 def test_canonical_file_sha256_integrity():
-    """The committed canonical copy is byte-identical to the accepted export."""
+    """The committed canonical copy carries the Issue #23 post-repair identity."""
     observed = hashlib.sha256(CANONICAL_PATH.read_bytes()).hexdigest().upper()
     assert observed == REQUIRED_SHA256
 

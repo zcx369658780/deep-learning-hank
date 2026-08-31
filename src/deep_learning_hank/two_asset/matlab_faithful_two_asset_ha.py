@@ -83,12 +83,20 @@ def adjustment_cost(d: np.ndarray | float, a: np.ndarray | float, params: Econom
     return params.chi_0 * np.abs(d_array) + 0.5 * params.chi_1 * d_array**2 / scale
 
 def transfer_candidate(v_a: float, v_b: float, a: float, params: EconomicParams) -> float:
-    """Return the production MATLAB-faithful bare-a transfer candidate."""
-    if not np.isfinite([v_a, v_b, a]).all() or v_b <= 0:
-        raise ValueError("transfer FOC requires finite derivatives and V_b > 0")
-    q = v_a / v_b - 1.0
+    """Return the production MATLAB-faithful bare-a transfer candidate.
+
+    Issue #23 narrow repair: the designated MATLAB ``HANK3_FOC`` evaluates
+    ``pa./pb`` on the RAW liquid derivative with no strict-positivity guard and
+    no ``1e-6`` floor on ``pb`` (that floor applies to consumption/labor only).
+    Finite negative ``v_b`` are therefore accepted and evaluated by the literal
+    MATLAB formula.  An exact-zero (or non-finite) denominator yields the IEEE
+    floating result (Inf/NaN) exactly as MATLAB's ``pa./pb`` would; that result
+    is handed to the MATLAB-faithful downstream Idh masks (which absorb it as
+    zero-transfer evidence) rather than replaced by an invented epsilon floor.
+    """
+    q = float(np.float64(v_a) / np.float64(v_b) - 1.0)
     threshold = min(q + params.chi_0, 0.0) + max(q - params.chi_0, 0.0)
-    return a * threshold / params.chi_1
+    return float(a) * threshold / params.chi_1
 
 def matlab_faithful_illiquid_return(
     a: np.ndarray | float,
@@ -244,8 +252,11 @@ def select_matlab_faithful_local_policy(
         raise ValueError("faithful local policy requires a nondegenerate illiquid grid")
     if at_lower_b and at_upper_b:
         raise ValueError("faithful local policy requires a nondegenerate liquid grid")
-    if min(v_b_forward, v_b_backward) <= 0.0:
-        raise ValueError("designated transfer FOCs require positive liquid derivatives")
+    # Issue #23 narrow repair: the designated MATLAB transfer-FOC path passes raw
+    # VbB/VbF into HANK3_FOC with no strict-positivity guard (the 1e-6 derivative
+    # floor is applied to consumption/labor controls only).  The former Python-only
+    # strict-positive raw-liquid-derivative guard is removed; finite negative v_b
+    # are evaluated by the literal MATLAB formula.
 
     effective_r_b = inputs.r_b + (borrowing_rate_gap if b < 0.0 else 0.0)
     local_inputs = HouseholdInputs(
@@ -292,16 +303,21 @@ def select_matlab_faithful_local_policy(
     d_bf = transfer_candidate(v_a_forward, v_b_backward, a, params)
     d_fb = transfer_candidate(v_a_backward, v_b_forward, a, params)
     d_ff = transfer_candidate(v_a_forward, v_b_forward, a, params)
-    d_b = (d_bf if d_bf > 0.0 else 0.0) + (d_bb if d_bb < 0.0 else 0.0)
-    d_f = (d_ff if d_ff > 0.0 else 0.0) + (d_fb if d_fb < 0.0 else 0.0)
+    # Issue #23 mechanical compatibility edit (separately documented): MATLAB
+    # assembles dh_B/dh_F via logical masks `(x>0).*x` / `(x<0).*x`.  IEEE
+    # mask-multiply preserves NaN/Inf exactly as MATLAB (e.g. 0*Inf=NaN), whereas
+    # the former Python ternary clamped NaN to 0.  For all-finite candidates the
+    # two forms coincide, so the dominant finite case is behavior-identical.
+    d_b = d_bf * (d_bf > 0.0) + d_bb * (d_bb < 0.0)
+    d_f = d_ff * (d_ff > 0.0) + d_fb * (d_fb < 0.0)
     if at_lower_a:
-        d_b = d_bf if d_bf > tolerance else 0.0
-        d_f = d_ff if d_ff > tolerance else 0.0
+        d_b = d_bf * (d_bf > tolerance)
+        d_f = d_ff * (d_ff > tolerance)
         if at_lower_b:
             d_b = max(d_b, 0.0)
     if at_upper_a:
-        d_b = d_bb if d_bb < -tolerance else 0.0
-        d_f = d_fb if d_fb < -tolerance else 0.0
+        d_b = d_bb * (d_bb < -tolerance)
+        d_f = d_fb * (d_fb < -tolerance)
 
     sdh_b = -d_b - float(
         # The accepted cost helper retains MATLAB's max(a, a_bar) denominator floor.

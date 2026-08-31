@@ -8,11 +8,13 @@ identity.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import numpy as np
+import pytest
 
-from deep_learning_hank.ge import GeConfig, evaluate_ge
+from deep_learning_hank.ge import GeConfig, GeSolveError, evaluate_ge
 
 CONFIG_PATH = Path("configs/dlh_4d_two_asset_single_region_ge_validation.toml")
 
@@ -34,10 +36,20 @@ def test_config_fixture_values():
     assert cfg.L_low == 0.2 and cfg.L_high == 3.0
 
 
-def test_immutable_oracle_identity():
+def test_immutable_oracle_identity_detects_issue23_repair():
+    """Issue #23 (DLH-4D-R3) is the sole Owner-authorized exception to oracle
+    immutability: the narrow transfer-FOC liquid-derivative repair changed the
+    canonical file.  The frozen Issue #20 config still asserts the pre-repair
+    SHA, so the identity gate now fail-closes with exactly the authorized
+    mismatch, and the on-disk oracle carries the documented post-repair
+    identity."""
     cfg = _config()
-    observed = cfg.verify_oracle_identity()
-    assert observed == "276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8"
+    with pytest.raises(
+        GeSolveError, match="BLOCKED_DLH_4D_IMMUTABLE_HOUSEHOLD_IDENTITY_MISMATCH"
+    ):
+        cfg.verify_oracle_identity()
+    observed = hashlib.sha256(cfg.oracle_path().read_bytes()).hexdigest().upper()
+    assert observed == "1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024"
 
 
 def test_frozen_firm_mapping():
