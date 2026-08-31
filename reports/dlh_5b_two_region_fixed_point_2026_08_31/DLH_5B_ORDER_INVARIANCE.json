@@ -1,0 +1,7 @@
+{
+ "max_numeric_difference": 0.0,
+ "order12_valid": true,
+ "order21_valid": true,
+ "pass_bool": true,
+ "tol": 1e-12
+}
