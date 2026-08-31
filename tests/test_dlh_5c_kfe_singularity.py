@@ -210,11 +210,19 @@ def test_d1_vs_d2_operator_near_identical(cases):
 
 
 def test_graph_closed_classes(cases):
+    # corrected row->col orientation: closed (sink) = no outgoing transition
     g = cases["d2"]["graph"]
+    assert g["edge_orientation"].startswith("row -> col")
     assert g["scc_count"] == 46
-    assert g["closed_component_count"] == 3
-    assert sorted(g["closed_component_sizes"]) == [2, 2, 40]
-    assert g["accepted_row_in_closed_component"] is False  # row 295 is transient
+    assert g["closed_component_count"] == 2
+    assert sorted(g["closed_component_sizes"]) == [40, 546]
+    # sources (no incoming) = the three R1-mislabeled 'closed' classes
+    assert g["source_component_count"] == 3
+    assert sorted(g["source_component_sizes"]) == [2, 2, 40]
+    # accepted row 295 is in the 546-state closed sink (NOT transient under the
+    # corrected orientation; the R1 'transient' label was an orientation artifact)
+    assert g["accepted_row_in_closed_component"] is True
+    assert g["accepted_row_scc_size"] == 546
     assert g["accepted_row_coords"] == [15, 14, 0]
 
 
@@ -222,8 +230,59 @@ def test_graph_structure_identical_d1_d2(cases):
     g1 = cases["d1"]["graph"]
     g2 = cases["d2"]["graph"]
     assert g1["scc_count"] == g2["scc_count"] == 46
-    assert sorted(g1["closed_component_sizes"]) == sorted(g2["closed_component_sizes"]) == [2, 2, 40]
-    assert g1["accepted_row_in_closed_component"] == g2["accepted_row_in_closed_component"] is False
+    assert sorted(g1["closed_component_sizes"]) == sorted(g2["closed_component_sizes"]) == [40, 546]
+    assert sorted(g1["source_component_sizes"]) == sorted(g2["source_component_sizes"]) == [2, 2, 40]
+    assert g1["accepted_row_in_closed_component"] is True
+    assert g2["accepted_row_in_closed_component"] is True
+
+
+# ---------------------------------------------------------------------------
+# R2-F: graph-direction synthetic regression test
+# ---------------------------------------------------------------------------
+
+
+def test_graph_direction_row_to_col_synthetic():
+    """R2-A/F: for a positive off-diagonal entry A[row,col]>0 the directed
+    transition is row -> col. For Q = [[-1,1,0],[0,-1,1],[0,0,0]] the chain is
+    0 -> 1 -> 2, so the true closed sink is {2} (not {0}) and the source is {0}."""
+    from deep_learning_hank.diagnostics.dlh_5c_kfe_singularity import graph_diagnostics
+    Q = sparse.csr_matrix(np.array([
+        [-1.0, 1.0, 0.0],
+        [0.0, -1.0, 1.0],
+        [0.0, 0.0, 0.0],
+    ]))
+    g = graph_diagnostics(Q, accepted_row=0, n=3)
+    assert g["edge_orientation"].startswith("row -> col")
+    assert g["scc_count"] == 3
+    assert g["closed_component_count"] == 1
+    assert g["closed_component_sizes"] == [1]
+    # true closed sink = {2}, NOT {0}
+    sink_members = g["closed_classes"][0]["member_indices"]
+    assert sink_members == [2]
+    # source = {0}
+    assert g["source_component_count"] == 1
+    assert g["source_classes"][0]["member_indices"] == [0]
+
+
+def test_graph_reversal_preserves_scc_but_swaps_source_sink():
+    """R2-A: full edge reversal preserves SCC membership/count but exchanges the
+    source and sink interpretation."""
+    from deep_learning_hank.diagnostics.dlh_5c_kfe_singularity import graph_diagnostics
+    Q = sparse.csr_matrix(np.array([
+        [-1.0, 1.0, 0.0],
+        [0.0, -1.0, 1.0],
+        [0.0, 0.0, 0.0],
+    ]))
+    g_forward = graph_diagnostics(Q, accepted_row=0, n=3)
+    g_reversed = graph_diagnostics(Q.T.tocsr(), accepted_row=0, n=3)
+    # SCC count and membership preserved under reversal
+    assert g_reversed["scc_count"] == g_forward["scc_count"] == 3
+    assert g_reversed["scc_sizes_sorted"] == g_forward["scc_sizes_sorted"] == [1, 1, 1]
+    # source/sink interpretations exchange
+    assert g_forward["closed_classes"][0]["member_indices"] == [2]
+    assert g_reversed["closed_classes"][0]["member_indices"] == [0]
+    assert g_forward["source_classes"][0]["member_indices"] == [0]
+    assert g_reversed["source_classes"][0]["member_indices"] == [2]
 
 
 # ---------------------------------------------------------------------------
@@ -405,8 +464,9 @@ def test_in_class_pins_are_near_solutions_of_original_equation(cases):
 
 
 def test_transient_pins_are_non_solutions_with_max_at_pinned_row(cases):
-    """R1-A: transient pins manufacture NON-solutions of the original equation;
-    the largest original residual sits exactly on the pinned (replaced) row."""
+    """R1-A (re-confirmed R2): pins in the leaky 546-state closed sink (200, 295,
+    600, 799) manufacture NON-solutions of the original equation; the largest
+    original residual sits exactly on the pinned (replaced) row."""
     for cid in ("d0", "d1", "d3"):
         pins = cases[cid]["pins"]["rows"]
         for label in ("quarter", "accepted", "three_quarter", "last"):
@@ -422,36 +482,48 @@ def test_transient_pins_are_non_solutions_with_max_at_pinned_row(cases):
 
 
 def test_sink_component_leakage_conservative(cases):
-    """R1-B: every closed/sink SCC is conservative within tolerance (non-leaky
-    recurrent-class candidate) at D0-D3; graph sinks are not leaky."""
+    """R2-B: the corrected closed (sink) classes are [40, 546]; the a=0 class is
+    conservative (non-leaky recurrent-class candidate) while the 546-state sink
+    containing the accepted row is LEAKY (sub-generator-like), so a graph sink is
+    NOT automatically a stationary recurrent class."""
     for cid in ("d0", "d1", "d2", "d3"):
         g = cases[cid]["graph"]
-        assert g["any_closed_class_leaky"] is False
-        assert g["all_closed_classes_conservative"] is True
-        assert len(g["closed_class_member_indices"]) == len(g["closed_classes"]) == 3
+        sizes = [cc["size"] for cc in g["closed_classes"]]
+        assert set(sizes) == {40, 546}
+        assert len(g["closed_class_member_indices"]) == len(g["closed_classes"]) == 2
         for cc in g["closed_classes"]:
-            assert cc["leaky_rows_count"] == 0
-            assert cc["all_rows_conservative_within_tol"] is True
-            assert cc["classification"] == "non_leaky_recurrent_class_candidate"
-            assert cc["row_sum_min"] > -1e-12
             assert len(cc["member_indices"]) == cc["size"]
+            if cc["size"] == 40:
+                # the a=0 class is conservative (non-leaky recurrent-class candidate)
+                assert cc["leaky_rows_count"] == 0
+                assert cc["all_rows_conservative_within_tol"] is True
+                assert cc["classification"] == "non_leaky_recurrent_class_candidate"
+                assert cc["row_sum_min"] > -1e-12
+            else:
+                # the 546-state closed sink containing row 295 is LEAKY
+                assert cc["size"] == 546
+                assert cc["leaky_rows_count"] > 0
+                assert cc["all_rows_conservative_within_tol"] is False
+                assert cc["classification"] == "leaky_graph_sink"
+        # because the 546 sink is leaky, not all closed classes are conservative
+        assert g["any_closed_class_leaky"] is True
+        assert g["all_closed_classes_conservative"] is False
 
 
 def test_graph_sink_not_auto_equated_to_stationary_class(cases):
-    """R1-B/C: although all closed classes are conservative, they are NOT three
-    independent stationary classes; the singular vector shows the unique null
-    vector is the a=0 class measure (fed sinks' isolated measures are not null
-    vectors of the full operator)."""
+    """R2-B/C: the leaky 546-state closed sink is NOT a stationary recurrent
+    class; the singular vector shows the unique null vector is the a=0 class
+    measure (the 546 sink carries ~0 mass)."""
     for cid in ("d1", "d2"):
         g = cases[cid]["graph"]
         sv = cases[cid]["singular_vector"]
         sizes = [cc["size"] for cc in g["closed_classes"]]
         fracs = sv["closed_class_mass_fractions"]
-        assert len(fracs) == 3
+        assert len(fracs) == 2
         a0_frac = fracs[sizes.index(40)]
+        sink546_frac = fracs[sizes.index(546)]
         assert a0_frac > 0.99
-        for frac in (fracs[i] for i, s in enumerate(sizes) if s == 2):
-            assert frac < 1e-3
+        assert sink546_frac < 1e-3
 
 
 # ---------------------------------------------------------------------------
@@ -509,8 +581,9 @@ def test_scan_wording_conservative_within_frozen_resolution():
 
 
 def test_root_cause_classification_driven_by_r1_evidence(cfg, repro):
-    """R1-D: the root-cause classification is driven by A-C evidence (not forced
-    to category 2); with a unique stationary measure and transient-pin
-    inconsistencies it must be the fixed-row-selection artifact candidate."""
+    """R1-D/R2-E: the root-cause classification is driven by A-C evidence (not
+    forced to category 2); with a unique stationary measure and 546-sink-pin
+    inconsistencies it must be the fixed-row-selection artifact candidate (the
+    corrected graph does not conflict with Category 1)."""
     cls = _root_cause_classification(cfg, repro["run1"])
     assert cls == "FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE"
