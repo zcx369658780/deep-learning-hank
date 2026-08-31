@@ -1,0 +1,53 @@
+# DLH-5C (Issue #26) — frozen stationary KFE singularity diagnostic config.
+#
+# Diagnostic-only. The household/grid/numerical fixture is loaded READ-ONLY from
+# the accepted DLH-5B frozen config (configs/dlh_5b_two_region_symmetric_anchor.toml)
+# via the accepted regional build_fixture(), so no scientific fixture drift is
+# possible. This config holds ONLY the frozen diagnostic cases, the 9-point
+# D1->D2 line scan, the deterministic alternative row-pin spec, tolerances and
+# the no-overwrite output root.
+#
+# No solver/household/regional code is modified; alternative row pins and
+# singular-value attempts are diagnostic evidence only and never become solver
+# authority.
+
+[household_fixture]
+# accepted DLH-5B frozen config path (read-only reference)
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+# region-0 conditional household state (the preserved failing region)
+region_index = 0
+
+[cases]
+# frozen exact states from preserved DLH-5B R1 S1 evidence (do not change)
+d0_wbar = 1.0
+d0_r_a = 0.03
+d1_wbar = 0.9977278388290097
+d1_r_a = 0.0299127630152404
+d2_wbar = 0.998807521160338
+d2_r_a = 0.029964194758276677
+d3_wbar = 1.0011941548981047
+d3_r_a = 0.03003565330704072
+
+[scan]
+# exact 9-point linear scan D1->D2, region 0 only, no adaptive refinement.
+start_case = "d1"
+end_case = "d2"
+n_points = 9   # t in {0,1/8,2/8,3/8,4/8,5/8,6/8,7/8,1}
+
+[diagnostics]
+# deterministic alternative row-pin spec {first, floor(N/4), accepted,
+# floor(N/2), floor(3N/4), N-1}; indices computed from N at runtime.
+pin_spec = ["first", "quarter", "accepted", "half", "three_quarter", "last"]
+pin_rhs = 0.007
+# accepted MATLAB-faithful contaminated-row fraction
+accepted_pin_fraction = 0.37
+# reproducibility / numeric-comparison tolerance
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# optional bounded smallest-singular-value diagnostic cases (D1/D2 only)
+singular_value_cases = ["d1", "d2"]
+svd_maxiter = 5000
+svd_tol = 1e-10
+
+[output]
+root = "reports/dlh_5c_kfe_singularity_diagnostic_2026_08_31"
