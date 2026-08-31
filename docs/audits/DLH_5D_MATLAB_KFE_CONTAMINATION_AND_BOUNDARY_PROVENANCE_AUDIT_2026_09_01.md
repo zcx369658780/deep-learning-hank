@@ -5,6 +5,12 @@
 - **Status:** PROVENANCE / DESIGN ONLY (read-only analysis; no mutation of legacy sources)
 - **Branch:** `dsh/issue-27-dlh-5d-kfe-boundary-contamination-contract-2026-09-01`
 - **Baseline `origin/main`:** `b0ab6857f82434f89416b784c312682645163c10`
+- **Revision:** R1 (2026-09-01) — per GPT review of candidate `d5cb5dd…`, corrects the
+  orientation wording in Section 3.2 (`A(row,col)>0` means `row -> col`, not "into state row from
+  col"), tightens the normalization-weight wording in Section 3.5 (`cell_weight = db*dah` per
+  discrete z state, no `dz` quadrature factor), and adds pin-admissibility / pin-classification
+  rows to the provenance mapping (owner-frozen contract items). All other provenance content is
+  preserved.
 
 This audit locates, in the authorized read-only MATLAB source root
 `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`, the stationary-KFE contamination and
@@ -62,9 +68,10 @@ DLH-5C accepted report on `origin/main` (issue-26 root, R2) and the prior
 | 9 | Any MATLAB structure missing in Python | none missing: the Python faithful port reproduces generator structure, boundary truncation, contamination, row index, RHS constant, normalization, and stores only the contaminated residual | `PYTHON_CURRENT_BEHAVIOR_TO_BE_SUPERSEDED` (superseded by the new contract) |
 | 10 | Singular-`Q` expected; singularity not failure | not present in MATLAB (MATLAB never treats singularity as a gate); frozen as new contract | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
 | 11 | Original-equation acceptance rule `||Q^T g|| <= tol` | not present in MATLAB | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
-| 12 | Pin-row invariance requirement | not present in MATLAB | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
-| 13 | Conservative generator `sum_j Q[i,j]=0`, no-outflow law | not satisfied by the MATLAB assembly (boundary leak) and absent as a requirement | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
-| 14 | `BOUNDARY_POLICY_VIOLATION` fail-closed semantics | not present in MATLAB (outward requested flow is silently clipped) | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
+| 12 | Pin admissibility (component pin `g_n=c>0` valid only if `g_star[n]!=0`) distinguished from stationary uniqueness | not present in MATLAB (MATLAB pins `iFix` unconditionally and never checks original validity) | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
+| 13 | Successor pin classification `PIN_VALID_STATIONARY_NORMALIZATION` / `PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT` / `PIN_NUMERICAL_FAILURE_UNRESOLVED`; only valid pins compared; >= 2 valid pins for contamination acceptance | not present in MATLAB | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
+| 14 | Conservative generator `sum_j Q[i,j]=0`, no-outflow law | not satisfied by the MATLAB assembly (boundary leak) and absent as a requirement | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
+| 15 | `BOUNDARY_POLICY_VIOLATION` fail-closed semantics | not present in MATLAB (outward requested flow is silently clipped) | `OWNER_FROZEN_NEW_SCIENTIFIC_CONTRACT` |
 
 ---
 
@@ -94,9 +101,11 @@ DLH-5C accepted report on `origin/main` (issue-26 root, R2) and the prior
 
 `MATLAB_PROVENANCE` — `HANK_2ASSETS_HJB.m:335` `AT = A';`. The stationary distribution solves
 the forward/adjoint system built from the transpose of the HJB generator, i.e. the MATLAB analog
-of the frozen `Q^T g = 0` (with `Q` = MATLAB `A`, orientation `row -> col` as frozen by Issue #27;
-`A(row,col)>0` is the transition rate into state `row` from `col` in the forward/adjoint sense,
-consistent with the accepted DLH-5C orientation finding).
+of the frozen `Q^T g = 0` (with `Q` = MATLAB `A`). Orientation is exactly the frozen contract:
+in the backward/source generator, `A(row,col) > 0` means `row -> col` (row = current/source
+state, col = destination state). In the forward equation `A' g`, that same rate transports mass
+from the source `row` into the destination `col`, and the stationary KFE is the adjoint balance
+`A' g = 0`. This is consistent with the accepted DLH-5C orientation finding.
 
 ### 3.3 Contaminated-row / pinned-equation construction
 
@@ -138,12 +147,13 @@ g_sum = g_stacked'*ones(M,1)*db*dah;
 g_stacked = g_stacked./g_sum;
 ```
 
-- The cell weight used in normalization is `db*dah` only; there is **no `dz` factor** for the
-  two-point z process (the z states are treated as a finite two-state Markov chain whose
-  transition block is `Bswitch`). Aggregates likewise use `*g*dah*db` everywhere
+- The cell weight used in normalization is exactly `cell_weight = db * dah` **per discrete z
+  state**: there is **no `dz` quadrature factor** — the two z values are a finite-state Markov
+  process (transition block `Bswitch`), not a continuum quadrature direction, so there is no
+  "z-state quadrature weight" multiplier. Aggregates likewise use `*g*dah*db` everywhere
   (`:345-372`), and `results.g = g*db*dah` (`:387`).
-- The frozen contract (Section 1 of the specification) leaves the exact weight convention to the
-  successor implementation but requires the normalization identity
+- The frozen contract (Section 1 of the specification) freezes this weight convention exactly as
+  `cell_weight = db * dah` per discrete z state and requires the normalization identity
   `sum_s g_s * cell_weight(s) = 1` to hold to the frozen tolerance, consistent with the
   MATLAB-faithful `db*dah` weight.
 

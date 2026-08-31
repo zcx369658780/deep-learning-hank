@@ -5,6 +5,12 @@
 - **Status:** DESIGN / PROVENANCE ONLY (freezes the scientific contract; NO source implementation or experiment execution)
 - **Branch:** `dsh/issue-27-dlh-5d-kfe-boundary-contamination-contract-2026-09-01`
 - **Baseline `origin/main`:** `b0ab6857f82434f89416b784c312682645163c10`
+- **Revision:** R1 (2026-09-01) — per GPT review of candidate `d5cb5dd…`:
+  `DLH_5D_DESIGN_SCIENTIFICALLY_STRONG__ACCEPTANCE_BLOCKED_PENDING_PIN_ADMISSIBILITY_AND_PROVENANCE_ORIENTATION_WORDING_REPAIR`.
+  Adds pin-admissibility vs stationary-uniqueness distinction (Section 3.3), successor pin
+  classification (Section 3.4), default-parity-pin rule (Section 3.5), uniqueness-gate caveat
+  (Section 5), admissible-pin-only invariance with >= 2 valid pins (Section 7), and fixes the
+  normalization-weight and orientation wording. All other accepted content is preserved.
 - **Prior accepted gate:** Issue #26 / DLH-5C accepted at `c6b773323fa4d7fe480f4ae8a1523bcb97d8113c` —
   `DLH_5C_KFE_SINGULARITY_DIAGNOSTIC_ACCEPTED__FIXED_ROW_SELECTION_ARTIFACT_PRIMARY__OWNER_KFE_REDESIGN_DECISION_REQUIRED`
 
@@ -61,10 +67,12 @@ so that:
 - the stationary KFE is the forward/adjoint equation `Q^T g = 0`.
 
 `cell_weight(s)` is the measure weight of state `s` used for integrals over the grid. In the
-MATLAB-faithful convention the weights are the b- and a-axis spacings times the z-state weight
-(see the provenance audit: MATLAB uses `db*dah` with no `dz` factor for the two-point z process).
-The successor implementation must freeze the same weight convention it integrates with, and the
-normalization identity must be exact to the tolerance in Section 6.
+MATLAB-faithful convention the weight is exactly `cell_weight = db * dah` **per discrete z
+state**: the two z values form a finite-state Markov process (transition block `Bswitch`), not a
+continuum quadrature direction, so there is **no `dz` quadrature factor** and no "z-state
+quadrature weight" multiplier (see the provenance audit, Section 3.5). The successor
+implementation must freeze the same weight convention it integrates with, and the normalization
+identity must be exact to the tolerance in Section 6.
 
 ## 2. Singularity is expected, not a failure
 
@@ -126,17 +134,70 @@ equation.
   2. original residual `|| Q^T g ||_inf` (with `g` the normalized density),
   and acceptance is gated on the ORIGINAL residual, not the contaminated one.
 
-### 3.3 Row arbitrariness / pin-row invariance contract
+### 3.3 Pin admissibility vs stationary uniqueness vs contamination-row invariance
 
-- If `Q` is conservative and the stationary nullspace is one-dimensional, replacing **any** truly
-  redundant stationary equation should recover the same normalized stationary distribution up to
-  numerical tolerance.
-- Therefore the successor implementation must prove **bounded pin-row invariance** on a
-  deterministic diagnostic row set (Section 7).
-- A fixed production row may be retained for reproducibility **only after** this invariance is
-  established.
+The design separates three distinct objects that must not be conflated:
+
+1. **Stationary uniqueness** — the ORIGINAL `Q^T g = 0` has a one-dimensional nullspace (up to
+   scale) on the canonical fixture (Sections 2 and 5). This says nothing, by itself, about which
+   states carry positive stationary mass.
+2. **Pin admissibility** — a MATLAB-style component-value pin `g_n = c > 0` is a legal
+   scaling/normalization device **only if** the true stationary vector satisfies `g_star[n] != 0`.
+3. **Contamination-row invariance** — among admissible pins, the normalized density must be
+   recovered within tolerance.
+
+The conditional contract (replaces any unconditional "any row works" statement):
+
+- If `Q^T` has a one-dimensional nullspace **and** the true stationary vector has a nonzero
+  component at pin `n` (`g_star[n] != 0`), then a component-value contamination `g_n = c > 0` may
+  fix the scale and must recover the same normalized density as any other admissible pin.
+- If the stationary component at `n` is zero (`g_star[n] = 0`), then `g_n = c > 0` is
+  **inadmissible**: the component-value constraint is inconsistent with the ORIGINAL stationary
+  equation. Even if `Q` is conservative and the stationary distribution is unique, that pin may
+  be singular or may manufacture a vector that fails the ORIGINAL equation. Failure or a
+  non-solution at such a row is **not** evidence against the stationary KFE itself.
+
+Therefore the contract does **not** assert that "nullspace dimension = 1 implies any component
+pin must succeed". A claim that **arbitrary** component pins are valid requires separately
+establishing **irreducibility / strictly positive stationary support** (Section 5). Otherwise the
+successor requirement is only **admissible-pin invariance**: the deterministic pin set is
+classified per Section 3.4, and only pins classified `PIN_VALID_STATIONARY_NORMALIZATION` are
+compared (Section 7).
+
+- The successor implementation must prove **bounded pin-row invariance** among admissible pins on
+  a deterministic diagnostic row set (Section 7).
+- A fixed production row may be retained for reproducibility **only after** admissible-pin
+  invariance is established (Sections 3.4-3.5).
 - The current `floor(0.37*N)-1` row may remain the default parity pin candidate; it does **not**
-  receive scientific privilege if invariance fails.
+  receive scientific privilege if it is inadmissible (Section 3.5).
+
+### 3.4 Successor pin classification (frozen)
+
+For the deterministic pin set (Section 7), the successor implementation must classify each pin
+after the solve as exactly one of:
+
+- `PIN_VALID_STATIONARY_NORMALIZATION` — conditions (at least): finite solve; normalized density
+  finite; ORIGINAL `Q^T g` residual PASS (`<= tolerance_original_residual`, Section 6); mass
+  normalization PASS (`<= tolerance_mass_normalization`, Section 6); density minimum PASS
+  (`>= tolerance_min_density`, Section 6).
+- `PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT` — evidence supports that the stationary component at
+  that pin is zero, i.e. the component-value constraint is inconsistent with the stationary null
+  vector (e.g. bounded sparse null-vector / communicating-class diagnostics show zero stationary
+  support at the pin).
+- `PIN_NUMERICAL_FAILURE_UNRESOLVED` — neither valid stationary normalization nor zero-support
+  inadmissibility can be established.
+
+Only pins classified `PIN_VALID_STATIONARY_NORMALIZATION` are compared for normalized-density
+invariance.
+
+### 3.5 Default MATLAB parity pin rule (frozen)
+
+- `floor(0.37*N)-1` may continue as the default parity / production pin candidate.
+- In the successor, it must itself pass `PIN_VALID_STATIONARY_NORMALIZATION` (Section 3.4) to
+  remain the production pin.
+- If, after conservative repair, it is classified
+  `PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT`, STOP for scientific review. Do **not** automatically
+  switch to another pin.
 
 ## 4. Finite-grid boundary / generator conservation law
 
@@ -215,6 +276,12 @@ stationary nullspace dimension = 1
 - If the repaired conservative generator instead has **multiple economically valid closed
   recurrent classes / multiple stationary measures**, STOP for Owner scientific decision. Do not
   choose a mixture implicitly through a pin row.
+- `nullspace dimension = 1` does **not** imply full support: a unique stationary distribution may
+  still have transient states with `g_star[n] = 0` (this is exactly the DLH-5C exposure — a
+  conservative `a=0` recurrent class plus transient/leaky mass). Claiming that **arbitrary**
+  component pins are valid requires separately establishing **irreducibility / strictly positive
+  stationary support**; otherwise the successor requirement is admissible-pin invariance only
+  (Sections 3.3-3.4, 7).
 - DLH-5C established the current (un-repaired) operator has a conservative `a=0` class and a leaky
   546-state sink containing row 295; the successor conservative generator must re-derive its
   communicating-class / nullspace structure from scratch under Section 4.
@@ -252,17 +319,25 @@ For future validation, freeze the bounded diagnostic pin set:
 {0, floor(N/4), floor(0.37*N)-1, floor(N/2), floor(3N/4), N-1}
 ```
 
-Deduplicate if needed. For every pin that yields a finite solve, future acceptance must compare:
+Deduplicate if needed. Each pin is first classified per Section 3.4
+(`PIN_VALID_STATIONARY_NORMALIZATION` / `PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT` /
+`PIN_NUMERICAL_FAILURE_UNRESOLVED`). For every pin that yields a finite solve, future acceptance
+must record, per pin:
 
-- normalized density (against every other finite pin, pairwise `max |g_p1 - g_p2|` on the shared
-  grid);
+- pin classification (Section 3.4);
+- normalized density (against every other **valid** pin, pairwise `max |g_p1 - g_p2|` on the
+  shared grid);
 - ORIGINAL `Q^T g` residual (Section 3.2);
 - mass normalization error;
 - density minimum.
 
-For a valid unique-stationary-distribution fixture, all these rows must recover the same
-normalized density within tolerance (Section 6). Any row-dependent economic density is a blocker.
-This test validates the **contamination method**, not any particular row.
+Only pins classified `PIN_VALID_STATIONARY_NORMALIZATION` are compared for normalized-density
+invariance. The contamination method is accepted on the canonical fixture only if **at least two
+distinct valid pins** are found and their normalized densities agree within tolerance (Section 6),
+with original residual, mass normalization and non-negativity all PASS for every valid pin. A pin
+classified `PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT` or `PIN_NUMERICAL_FAILURE_UNRESOLVED` is
+**not** evidence against the stationary KFE. This test validates the **contamination method**, not
+any particular row.
 
 ## 8. Household aggregate and two-region anchor revalidation sequence (frozen)
 
@@ -313,11 +388,14 @@ required before any of the above. This contract only freezes what that successor
 2. MATLAB-style contamination remains authorized as a numerical method, conditional on
    original-equation validation;
 3. contaminated residual vs original `Q^T g` residual distinction is binding;
-4. pin-row invariance frozen as a successor acceptance test;
+4. pin admissibility distinguished from stationary uniqueness, and admissible-pin (bounded
+   pin-row) invariance frozen as a successor acceptance test with per-pin classification
+   (Sections 3.3-3.4, 7);
 5. conservative generator / no-outflow boundary law frozen;
 6. economically requested outward boundary flow has explicit fail-closed semantics
    (`BOUNDARY_POLICY_VIOLATION`);
-7. unique-stationary-distribution gate for the canonical fixture frozen (nullspace dimension 1);
+7. unique-stationary-distribution gate for the canonical fixture frozen (nullspace dimension 1),
+   with the explicit caveat that nullity 1 does not imply full support (Section 5);
 8. exact successor tolerances frozen (Section 6);
 9. household aggregates / `K=M*A` / firm anchor revalidation order frozen (Section 8);
 10. MATLAB provenance audit complete to the extent the source permits (companion audit document);
