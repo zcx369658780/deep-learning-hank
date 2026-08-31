@@ -21,9 +21,21 @@ Priority:
 
 ## Current Builder state
 
-`NO_ACTIVE_BUILDER_ISSUE__ROADMAP_REBASE_COMPLETE`
+Current published task:
 
-Do not execute a new Builder/model task until a new GitHub Issue is published, Task Index/Startup Snapshot are synchronized, and an authoritative activation comment is added.
+**Issue #24 — DLH-5A: Freeze network-ready two-region structural and outer-fixed-point contract**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__NETWORK_READY_TWO_REGION_FIXED_POINT_CONTRACT`
+
+Builder authority is active only when the authoritative Issue #24 activation comment is present and Issue #24 remains open.
+
+Dedicated branch after activation:
+
+`dsh/issue-24-dlh-5a-two-region-structural-contract-2026-08-31`
+
+DLH-5A is design/specification only. DSH may create only the two Issue-authorized Markdown artifacts and must not modify production/model/config/test/governance/roadmap files.
 
 ## Latest accepted household foundation
 
@@ -50,26 +62,22 @@ Accepted meaning:
 - MATLAB raw-`V_b` transfer-FOC semantics are repaired;
 - consumption/labor derivative floor remains separate from raw transfer-FOC `V_b`;
 - bare-`a` FOC scaling, `max(a,a_bar)` cost floor, illiquid-return taper, boundary/upwind construction and contaminated-row KFE were not broadened/redesigned in Issue #23;
-- committed test evidence reports 137 passing tests;
+- committed evidence reports 137 passing tests;
 - 729-point post-repair diagnostic: FULL_FINITE 277→499, zero previously-finite regressions, exact repeat reproducibility;
 - remaining HJB non-convergence/KFE singular regions are research diagnostics, not silently tuned away.
 
 ## Superseded single-region GE route
 
-Owner scientific clarification on 2026-08-31 supersedes the prior arbitrary fixed-bond validation architecture as the project route.
-
 Not current authority:
 
 - `B_hh = B_gov = 1` as an intended equilibrium target;
-- nested cold-start Brent over `(r_a,r_b,L)` as the HANK steady-state architecture;
-- resuming the 8.77h Phase-E frozen `solve_ge` run;
+- nested cold-start Brent over `(r_a,r_b,L)` as HANK steady-state architecture;
+- resuming the 8.77h Phase-E frozen solve;
 - treating HA as an analytic/static DSGE steady-state block.
 
 The Phase-E run is preserved only as `INCONCLUSIVE / SUPERSEDED_CLOSURE_EXECUTION_EVIDENCE`.
 
-Historical Issues #19–#22 remain useful provenance/negative evidence but do not define the forward equilibrium closure.
-
-## Correct HANK equilibrium concept for this project
+## Correct HANK equilibrium concept
 
 Regional HANK steady state is an outer/nested fixed point across structural blocks:
 
@@ -81,7 +89,7 @@ Regional HANK steady state is an outer/nested fixed point across structural bloc
 → `new regional prices/state`
 → repeat until project-defined convergence and validity gates pass.
 
-The historical MATLAB outer iteration is provenance for this computational architecture only. Its hand-coded spatial allocation rules are not automatically new-model authority.
+Historical MATLAB outer iteration is provenance for this computational architecture only. Its hand-coded spatial allocation rules are not automatically new-model authority.
 
 ## Current scientific route
 
@@ -89,7 +97,7 @@ Current roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_08_31.md`
 
-Working model label:
+Working label:
 
 `Network-Structured Regional HANK (NSR-HANK)`
 
@@ -109,6 +117,78 @@ Core architecture:
 8. scale to 31-region year-specific equilibrium panel;
 9. later country/union model-generator extension.
 
+## DLH-5A Owner-frozen scientific decisions
+
+### 1. Prototype role
+
+A1/A2 first build a two-region **real structural HA-GE outer-fixed-point prototype**. Common liquid return `r_b`, regional taxes `tau_i` and transfers `T_i` are exogenous/config inputs. Genuine nominal HANK closure is deferred to Track B.
+
+### 2. Provisional private-capital closure
+
+New exploratory NSR-HANK specification for A1/A2:
+
+`K_i = M_i * A_i`
+
+with real firm block:
+
+`Y_i = Z_i * K_i^alpha_i * (L_i^dest)^(1-alpha_i)`
+
+`w_i = (1-alpha_i) * Y_i / L_i^dest`
+
+`r_i^a = alpha_i * Y_i / K_i - delta_i`.
+
+This is not claimed as the historical MATLAB `N=1` limit.
+
+`B_i` remains a household liquid-asset aggregate/diagnostic; no `B=1` clearing.
+
+Government productive capital / historical `GovInv` is deferred from A1/A2.
+
+### 3. Labor network
+
+Household home-region identity stays fixed. Define origin outflow `m_i^L`, conditional destination network `W^L`, full allocation matrix `P^L`, flows
+
+`F^L_ij = M_i * L_i^home * P^L_ij`,
+
+and destination labor
+
+`L_j^dest = sum_i F^L_ij`.
+
+First-prototype composite gross wage:
+
+`wbar_i = sum_j P^L_ij * w_j`.
+
+No migration/commuting resource cost is introduced in A1/A2.
+
+### 4. Outer semantics
+
+Both regional HA solves consume the same old outer-state snapshot. The mathematical one-turn map is synchronous/Jacobi and must have no region-order dependence.
+
+## DLH-5A required outputs
+
+DSH may create exactly:
+
+1. `docs/specifications/DLH_5A_NETWORK_READY_TWO_REGION_STRUCTURAL_AND_OUTER_FIXED_POINT_CONTRACT_2026_08_31.md`
+2. `docs/audits/DLH_5A_HISTORICAL_MATLAB_PROVENANCE_AND_REPLACEMENT_BOUNDARY_2026_08_31.md`
+
+The first must freeze interfaces, notation, equations, one-turn order, conservation/validity diagnostics, residual/trace interface, and A2 handoff checklist.
+
+The second must distinguish historical MATLAB provenance from new NSR-HANK authority, including `At/Bt/GovInv` semantics and the old spatial/controller formulas intentionally replaced or deferred.
+
+## DLH-5A explicit non-authority
+
+Issue #24 does not authorize:
+
+- source/model implementation;
+- HJB/KFE/GE numerical execution;
+- household redesign;
+- neural training or learned `W^L`;
+- `W^K`;
+- government productive capital / `GovInv` integration;
+- Taylor/Fisher/Phillips/nominal structure;
+- new fiscal/debt closure;
+- 31-region scaling;
+- policy/welfare/Results claims.
+
 ## Parameter-learning boundary
 
 Do not start by making all economic parameters free neural outputs.
@@ -122,35 +202,19 @@ Separate:
 
 Only after separate identification gates may the project use a joint equilibrium-constrained loss.
 
-## Immediate next task candidate — not active yet
+## Scientific ceiling during DLH-5A
 
-Tentative:
-
-`DLH-5A — Freeze Network-Ready Two-Region Structural and Outer-Fixed-Point Contract`
-
-Expected design goals:
-
-- two structural regional household modules;
-- home-region identity fixed;
-- hand-specified `W^L` interface that later becomes learned;
-- explicit outer state and one-turn update order;
-- deterministic convergence/failure trace;
-- labor-flow and accounting conservation gates;
-- no old MATLAB spatial-formula replication requirement;
-- no neural training yet;
-- no arbitrary `B=1` root target.
-
-## Scientific ceiling until next Issue
-
-Accepted:
+Accepted before Issue #24:
 
 - repaired two-asset HA foundation;
 - HANK outer-fixed-point interpretation;
-- current NSR-HANK/data-to-regional-HANK roadmap.
+- NSR-HANK/data-to-regional-HANK roadmap.
+
+Issue #24 may establish only a reviewed **network-ready two-region structural design contract**.
 
 Not yet established:
 
-- regional network-ready fixed-point implementation;
+- an implemented/converged two-region fixed point;
 - learned labor/capital networks;
 - genuine nominal regional HANK;
 - differentiable/equilibrium-constrained calibration;
@@ -158,13 +222,16 @@ Not yet established:
 - 31-region learned equilibrium;
 - policy/welfare/paper Results.
 
-## Required next-session startup
+## DSH startup sequence for Issue #24
 
-1. fresh fetch live `origin/main`;
-2. read CURRENT project rules;
-3. read `tasks/TASK_INDEX_CURRENT.md`;
-4. read this Startup Snapshot;
-5. read `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_08_31.md`;
-6. read Issue #23 acceptance/supersession comments and commit `b038db8...` as needed;
-7. read `DeepLearning_HANK_MATLAB_NATIVE_STEADY_STATE_OUTER_ITERATION_SCIENTIFIC_HANDOFF_2026_08_31.md` from project sources when outer-loop provenance is needed;
-8. do not activate a Builder task until the next exact Issue is published and activated.
+1. `Set-Location D:\deep-learning-hank`;
+2. verify repo/remote/worktree;
+3. `git fetch origin` and record fresh `origin/main`;
+4. read all CURRENT rules;
+5. read `tasks/TASK_INDEX_CURRENT.md` and this Startup Snapshot from fresh `origin/main`;
+6. read Issue #24 latest body/comments and verify activation;
+7. read the current roadmap/handoff and accepted household source;
+8. use the historical MATLAB handoff only under its read-only/provenance boundary;
+9. create the exact dedicated branch from fresh `origin/main`;
+10. create only the two authorized Markdown design artifacts;
+11. commit/push and STOP for ChatGPT independent review.
