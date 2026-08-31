@@ -23,209 +23,197 @@ Priority:
 
 Current published task:
 
-**Issue #25 — DLH-5B: Implement and validate deterministic two-region hand-specified-flow outer fixed point**
+**Issue #26 — DLH-5C: Diagnose stationary KFE contaminated-row singularity on the preserved two-region perturbed path**
 
 Task type:
 
-`SCIENTIFIC_IMPLEMENTATION__TWO_REGION_HAND_SPECIFIED_FIXED_POINT_PROTOTYPE`
+`SCIENTIFIC_DIAGNOSTIC__STATIONARY_KFE_SINGULARITY_ON_REGIONAL_PATH`
 
-Builder authority is active only when Issue #25 remains open, Task Index/Startup identity is synchronized, and the authoritative activation comment is present.
+Builder authority is active only when Issue #26 remains open, Task Index/Startup identity is synchronized, and the authoritative activation comment is present.
 
 Dedicated branch after activation:
 
-`dsh/issue-25-dlh-5b-two-region-fixed-point-prototype-2026-08-31`
+`dsh/issue-26-dlh-5c-kfe-singularity-diagnostic-2026-08-31`
 
-## Latest accepted scientific-design gate
+DLH-5C is diagnostic only. It may create only the exact new diagnostic script/config/test/report-root paths authorized by Issue #26. It may not modify the accepted household oracle, accepted regional fixed-point implementation/config, prior evidence, roadmap/governance or legacy sources.
 
-Issue #24 — DLH-5A
+## Latest accepted implementation gate
 
-Accepted commit merged to `main`:
+Issue #25 — DLH-5B
 
-`820f23375377b21561d261c0850917056dec15c2`
+Accepted candidate merged to `main`:
 
-Accepted classification:
+`4c97ae30d98c40466af3ff11ce8048e5e5087335`
 
-`DLH_5A_NETWORK_READY_TWO_REGION_STRUCTURAL_CONTRACT_ACCEPTED`
+Accepted reviewer classification:
+
+`DLH_5B_TWO_REGION_ARCHITECTURE_ACCEPTED__PERTURBED_FIXED_POINT_BLOCKED_BY_REPRODUCIBLE_HOUSEHOLD_KFE_SINGULARITY`
 
 Acceptance level:
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_CONTRACT_ACCEPTED`
+`L3_COMMIT_OR_PR_VERIFIED`
 
-Accepted artifacts:
+Scientific numerical evidence level:
 
-- `docs/specifications/DLH_5A_NETWORK_READY_TWO_REGION_STRUCTURAL_AND_OUTER_FIXED_POINT_CONTRACT_2026_08_31.md`
-- `docs/audits/DLH_5A_HISTORICAL_MATLAB_PROVENANCE_AND_REPLACEMENT_BOUNDARY_2026_08_31.md`
+`D2_MACHINE_NUMERICAL_EVIDENCE__NO_STRONG_ECONOMIC_RESULTS_CLAIM`
 
-## Accepted A1/A2 structural contract
+### Accepted positive evidence
 
-A1/A2 is a two-region **real structural HA-GE outer-fixed-point prototype**.
+- two-region real structural prototype implements the accepted DLH-5A `K_i=M_i*A_i`, hand-specified labor network and synchronous/Jacobi outer map;
+- accepted household oracle remains unchanged;
+- deterministic anchor derives finite `A*=8.9586992251`, `L*=0.992496736638`, `Z*=0.720420345882`, `delta*=0.0253929042432`;
+- S0 anchor one-turn passes at machine precision: `R_w=2.220e-16`, `R_ra=6.939e-18`;
+- labor-origin conservation, economy labor conservation, gross wage-bill consistency, network, KFE and firm gates pass at S0;
+- S2 region-order invariance is exact (`0.0`);
+- R1 adds complete per-turn validity enforcement, full trace `P^L/lambda/Gamma_next`, NaN/Inf-aware numeric comparison, and fail-closed terminal classification;
+- R1 scientific results are identical to predecessor evidence on all common fields.
 
-Binding economics:
+### Preserved negative evidence
 
-- household block = accepted two-asset HA/HJB/KFE foundation;
-- `K_i = M_i * A_i` is the provisional exploratory private-capital closure;
-- `B_i` is household liquid-asset aggregate/diagnostic only;
-- hand-specified labor network uses `m_i^L / W^L / P^L`, `F^L_ij=M_i L_i^home P^L_ij`, `L_j^dest=sum_i F^L_ij`;
-- composite wage `wbar_i=sum_j P^L_ij w_j`;
-- firm block `Y_i=Z_i K_i^alpha_i (L_i^dest)^(1-alpha_i)`, `w_i=(1-alpha_i)Y_i/L_i^dest`, `r_i^a=alpha_i Y_i/K_i-delta_i`;
-- outer state `Gamma={w_1,w_2,r_1^a,r_2^a}`;
-- both regional HA solves use the same immutable old `Gamma^(n)` snapshot (Jacobi/synchronous);
-- common `r_b`, regional taxes/transfers remain exogenous for A1/A2;
-- genuine nominal HANK remains deferred to Track B.
-
-The accepted current `solve_household_steady_state` fail-closes if HJB does not converge. Historical MATLAB KFE-after-false behavior is provenance only and must not be silently reintroduced.
-
-## Accepted household foundation
-
-Canonical source:
-
-`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
-
-Accepted Issue #23 commit:
-
-`b038db800da3760cebee484b1c7a76bf7c1529d0`
-
-Post-repair identity:
-
-- blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
-- SHA-256 `1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024`
-
-Old `B_hh=B_gov=1` / nested-Brent GE closure is superseded and must not be resumed.
-
-## DLH-5B exact exploratory fixture
-
-The exact task authority is Issue #25. Summary only:
-
-### Household fixture — both regions
-
-Reuse the accepted `VALIDATION_FIXTURE_NOT_CALIBRATION` from `tests/test_dlh_4b_transfer.py`:
-
-```text
-rho=0.02, gamma_c=2.0, phi=5.0, chi_0=0.1, chi_1=2.0,
-a_bar=1e-6, mu_z=0, sigma_z=0
-b-grid: [-2,5], 20 points
-a-grid: [0,10], 20 points
-z=[0.8,1.3]
-switch=[[-1/3,1/3],[1/3,-1/3]]
-r_b=0.015, tau_i=0.15, T_i=0, rb_gap_i=0.01
-HJB Delta=1000, tol=1e-7, maxit=1000, drift tol=1e-12
-```
-
-Baseline labor/value initialization must reuse the exact accepted household fixture logic. Its local scalar Brent solve is allowed only for household initialization; it is not outer GE authority.
-
-### Symmetric network
-
-```text
-M_1=M_2=1
-m_1^L=m_2^L=0.10
-W_12=W_21=1
-P^L=[[0.9,0.1],[0.1,0.9]]
-```
-
-No migration resource cost.
-
-### Deterministic firm anchor
-
-Anchor:
-
-```text
-w_1*=w_2*=1.0
-r_1^a*=r_2^a*=0.03
-alpha_1=alpha_2=1/3
-```
-
-Run the accepted household solve once at anchor and record `A*,L*,C*,B*`. With symmetry and `M=1`, set `K*=A*`, `Ldest*=L*` and derive once:
-
-```text
-Z* = [1/(1-alpha)] * (L*/K*)^alpha
-delta* = [alpha/(1-alpha)] * (L*/K*) - 0.03
-```
-
-Require finite positive anchor objects and `0<delta*<1`; otherwise fail closed. Then freeze the same `Z*,delta*` for both regions and all DLH-5B cases. This is a validation-fixture anchor, not empirical calibration.
-
-## DLH-5B experiments
-
-### S0 — anchor smoke
-
-`Gamma0={1.0,1.0,0.03,0.03}`.
-
-Full one-turn map must satisfy `R_w<=1e-10`, `R_ra<=1e-10` plus all validity gates. If S0 fails, stop before S1.
-
-### S1 — asymmetric perturbation
+S1 starts from:
 
 ```text
 w_1=0.99, w_2=1.01
 r_1^a=0.0295, r_2^a=0.0305
 lambda=0.5
-tol_w=tol_ra=1e-6
-max_iter=25
 ```
 
-No retry or adaptive retuning. Convergence is positive evidence; deterministic nonconvergence/household fail-closed is preserved negative research evidence.
+The first three valid turns reduce residuals:
 
-### S2 — region-order invariance
+```text
+R_w:  0.00933470495 -> 0.00504853749 -> 0.00270360504
+R_ra: 0.00058124990 -> 0.00024618752 -> 0.00010286349
+```
 
-Evaluate same S1 snapshot in explicit orders `[1,2]` and `[2,1]`; complete one-turn numeric difference must be `<=1e-12`.
+Turn 4 region 0 then fail-closes at the accepted household stationary KFE with:
 
-## DLH-5B validity/reproducibility
+`faithful contaminated-row solve is non-finite`.
 
-- labor/accounting/network identities: abs+rel tolerance `1e-12`;
-- order invariance: `1e-12`;
-- KFE integrated mass error `<=1e-10`;
-- KFE min density `>=-1e-10` and finite;
-- firm factors `K,L>0`, output/wage positive finite, return finite;
-- boundary masses on four asset edges must be reported; threshold `0.10` is non-blocking warning only;
-- no grid expansion;
-- S0/S1 deterministic repeats required; numeric trace differences `<=1e-12` with identical stop reason/iteration count as applicable;
-- randomness `NOT_APPLICABLE`;
-- retry policy `NO_AUTOMATIC_RETRY`;
-- output root `reports/dlh_5b_two_region_fixed_point_2026_08_31/`, no-overwrite mandatory.
+Exact failing region-0 conditional state:
 
-## Issue #25 allowed paths
+```text
+wbar = 0.998807521160338
+r_a  = 0.029964194758276677
+```
 
-Only the explicit allowlist in Issue #25 is Builder authority. It includes new regional implementation/config/test paths and required new evidence under the DLH-5B report root.
+This failure is deterministic and repeated exactly. No tuning, retry or grid expansion was used.
 
-The accepted household source, existing GE code, historical outputs, roadmaps and governance files are not Builder-mutable under Issue #25.
+S0 also shows `a_max` boundary mass near `0.196`, above the architecture-stage warning threshold `0.10`. This warning is preserved and means the fixture is not substantive distribution-validation evidence.
 
-## DLH-5B explicit non-authority
+## Accepted structural contract
+
+Issue #24 / DLH-5A remains controlling for A1/A2 economics:
+
+- two-region real structural HA-GE prototype first;
+- `K_i=M_i*A_i` provisional private capital;
+- `B_i` liquid-asset diagnostic only;
+- hand-specified `m^L/W^L/P^L`, `F^L`, `L^dest`, composite `wbar`;
+- synchronous old-state outer mapping;
+- common `r_b`, regional tax/transfer exogenous;
+- genuine nominal HANK deferred.
+
+Canonical household source:
+
+`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
+
+Accepted blob:
+
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+
+Current accepted stationary KFE implementation uses:
+
+```text
+transpose = operator.T
+row = floor(0.37*N)-1
+contaminated[row,:] = 0
+contaminated[row,row] = 1
+rhs[row] = 0.007
+raw = spsolve(contaminated,rhs)
+```
+
+and fail-closes if `raw` is non-finite.
+
+## DLH-5C exact diagnostic authority
+
+Issue #26 freezes four exact cases:
+
+### D0 anchor control
+
+```text
+wbar=1.0
+r_a=0.03
+```
+
+### D1 last valid region-0 S1 input
+
+```text
+wbar=0.9977278388290097
+r_a=0.0299127630152404
+```
+
+### D2 exact failing region-0 S1 input
+
+```text
+wbar=0.998807521160338
+r_a=0.029964194758276677
+```
+
+### D3 same-turn region-1 valid control
+
+```text
+wbar=1.0011941548981047
+r_a=0.03003565330704072
+```
+
+Issue #26 also freezes one 9-point linear scan D1->D2 for region 0, no adaptive refinement.
+
+Required diagnostic families:
+
+- HJB and accepted KFE success/failure reproduction;
+- sparse operator finite/nnz/diagonal/off-diagonal/row-sum/rank diagnostics;
+- accepted contaminated-row index and coordinates;
+- positive-transition strongly connected / closed-class graph structure;
+- deterministic diagnostic row-pin set `{0,floor(N/4),accepted row,floor(N/2),floor(3N/4),N-1}`;
+- optional bounded sparse smallest-singular-value diagnostics for D1/D2;
+- exact repeat reproducibility.
+
+Alternative row pins are diagnostic only and do not become solver authority.
+
+## DLH-5C explicit non-authority
 
 No:
 
-- household redesign;
-- fixed-bond `B=1` closure;
-- outer Brent/Newton/fsolve;
-- PASS-seeking fixture changes;
-- adaptive damping/retry/grid expansion;
-- `GovInv`;
-- learned `W^L` or `W^K`;
-- neural training;
-- nominal rigidity/Taylor/Fisher/new debt closure;
-- 31-region scaling;
+- household-oracle mutation;
+- regional fixed-point mutation;
+- solver repair;
+- alternative production row pin;
+- regularization/jitter/pseudoinverse in production;
+- grid/parameter/S1-path tuning;
+- retry/adaptive scan;
+- `B=1`, `GovInv`, learned `W^L/W^K`, neural training;
+- nominal HANK;
+- larger-region scaling;
 - policy/welfare/Results claims.
 
 ## Current scientific route
 
 Working label: `Network-Structured Regional HANK (NSR-HANK)`.
 
-Current sequence:
+Sequence now:
 
-1. accepted two-asset HA foundation;
-2. accepted two-region design contract;
-3. **DLH-5B current: deterministic hand-specified-flow implementation/validation**;
-4. OD-year data schema + transparent baseline;
-5. learned labor-flow network `W^L`;
-6. 3–5 region equilibrium embedding;
-7. separately frozen/validated minimal genuine nominal HANK;
-8. learned `W^K` later;
-9. equilibrium-constrained calibration / parameter mapping;
-10. 31-region panel / automated pipeline;
-11. policy/welfare only after all gates.
+1. accepted two-asset household foundation;
+2. accepted two-region structural contract;
+3. accepted deterministic two-region architecture implementation;
+4. **current: diagnose the exact reproducible stationary KFE blocker**;
+5. after fresh review, decide whether the evidence supports a numerical repair and whether that repair requires new Owner scientific authority;
+6. only after the regional fixed-point path is trustworthy proceed to OD-year labor-flow data/baseline and learned `W^L`;
+7. later 3–5 regions, genuine nominal HANK, `W^K`, equilibrium-constrained calibration, 31-region panel and policy/welfare.
 
-## Scientific ceiling during Issue #25
+## Scientific ceiling during Issue #26
 
-Issue #25 may establish only the deterministic two-region real structural prototype, including convergence or preserved nonconvergence evidence, conservation/accounting validity, reproducibility and order invariance.
+DLH-5C may establish a root-cause diagnostic classification only.
 
-It does not establish learned networks, empirical calibration, genuine nominal HANK, 31-region results, policy/welfare or paper Results authority.
+It does not establish a repaired KFE, converged perturbed two-region equilibrium, learned network, empirical calibration, nominal regional HANK, 31-region results or paper Results authority.
 
 ## DSH startup sequence
 
@@ -234,9 +222,9 @@ It does not establish learned networks, empirical calibration, genuine nominal H
 3. `git fetch origin` and record fresh `origin/main`;
 4. read all CURRENT rules;
 5. read fresh Task Index and this Startup Snapshot;
-6. read accepted DLH-5A contract/audit;
-7. read Issue #25 latest body/comments and verify activation;
-8. verify accepted household identity/read its API and canonical fixture source;
-9. create the exact Issue #25 dedicated branch from fresh `origin/main`;
-10. implement/test/run only the exact Issue allowlist;
-11. commit/push and STOP for fresh ChatGPT independent review.
+6. read Issue #26 latest body/comments and verify activation;
+7. read accepted Issue #25 implementation/evidence and Issue #24 contract;
+8. read the accepted household HJB/KFE source read-only;
+9. create the exact Issue #26 dedicated branch from fresh `origin/main`;
+10. create/run only the Issue #26 diagnostic allowlist;
+11. commit/push and STOP for fresh ChatGPT review.
