@@ -30,6 +30,17 @@ Every diagnostic conclusion is mapped back to the accepted implementation::
     contaminated[row,:] = 0; contaminated[row,row] = 1
     rhs[row] = 0.007
     raw = spsolve(contaminated, rhs)     # fail-closes if raw is non-finite
+
+R1 (GPT review 2026-08-31) diagnostic refinement:
+- A: original unmodified stationary-equation residual ``operator.T @ density``
+  for every finite pin density (separate from the contaminated residual);
+- B: per closed/sink SCC row-sum leakage diagnostics, distinguishing a graph
+  sink from a true non-leaky recurrent/stationary class;
+- C: smallest right-singular-vector candidate of ``operator.T`` for D1/D2 with
+  original residual and mass/support concentration by the sink classes;
+- D: root-cause reclassification driven by A-C (category 2 is not assumed);
+- E: conservative scan wording (endpoint-only failure at the frozen 9-point
+  resolution; an unsampled narrower failure interval near D2 is not ruled out).
 """
 
 from __future__ import annotations
@@ -198,6 +209,11 @@ def _pin_indices(n: int, cfg: DLH5CConfig) -> dict:
         "last": n - 1,
     }
     return index_of, accepted
+
+
+def _fortran_coords(idx: int):
+    """(b_index, a_index, z_index) under the accepted Fortran ordering (b fastest)."""
+    return (int(idx % 20), int((idx // 20) % 20), int(idx // 400))
 
 
 def diagnostic_solve(cont: sparse.csr_matrix, rhs: np.ndarray):
@@ -394,13 +410,15 @@ def graph_diagnostics(A: sparse.csr_matrix, accepted_row: int, n: int) -> dict:
     closed_sizes = [sizes[c] for c in closed_comps]
     accepted_in_closed = bool(labels[accepted_row] in set(closed_comps))
     accepted_comp_size = sizes[int(labels[accepted_row])]
-    # coordinates (b_index, a_index, z_index) under Fortran ordering (b fastest)
-    def coords(r: int):
-        return (int(r % 20), int((r // 20) % 20), int(r // 400))
+    # R1-B: per closed/sink SCC leakage diagnostics (distinguish a graph sink
+    # from a true non-leaky recurrent/stationary class)
+    row_sums = np.asarray(A.sum(axis=1)).ravel()
     closed_classes = []
     for c in closed_comps:
         rows = np.where(labels == c)[0]
-        b_coords = [coords(int(r)) for r in rows]
+        b_coords = [_fortran_coords(int(r)) for r in rows]
+        rs = row_sums[rows]
+        leaky_count = int((rs < -1e-12).sum())
         closed_classes.append(
             {
                 "size": sizes[c],
@@ -410,8 +428,19 @@ def graph_diagnostics(A: sparse.csr_matrix, accepted_row: int, n: int) -> dict:
                 "a_max": max(x[1] for x in b_coords),
                 "z_set": sorted({x[2] for x in b_coords}),
                 "sample_coords": b_coords[:4],
+                "row_sum_min": float(rs.min()),
+                "row_sum_max": float(rs.max()),
+                "row_sum_maxabs": float(np.abs(rs).max()),
+                "leaky_rows_count": leaky_count,
+                "all_rows_conservative_within_tol": bool(leaky_count == 0),
+                "classification": (
+                    "non_leaky_recurrent_class_candidate" if leaky_count == 0
+                    else "leaky_graph_sink"
+                ),
+                "member_indices": rows.tolist(),
             }
         )
+    any_closed_leaky = any(not cc["all_rows_conservative_within_tol"] for cc in closed_classes)
     return {
         "positive_edges": pos_edges,
         "scc_count": int(n_comp),
@@ -419,9 +448,12 @@ def graph_diagnostics(A: sparse.csr_matrix, accepted_row: int, n: int) -> dict:
         "closed_component_count": len(closed_comps),
         "closed_component_sizes": sorted(closed_sizes, reverse=True),
         "closed_classes": closed_classes,
+        "any_closed_class_leaky": any_closed_leaky,
+        "all_closed_classes_conservative": bool(not any_closed_leaky),
+        "closed_class_member_indices": [cc["member_indices"] for cc in closed_classes],
         "accepted_row_in_closed_component": accepted_in_closed,
         "accepted_row_scc_size": accepted_comp_size,
-        "accepted_row_coords": list(coords(accepted_row)),
+        "accepted_row_coords": list(_fortran_coords(accepted_row)),
     }
 
 
@@ -450,10 +482,25 @@ def pin_diagnostics(T: sparse.csr_matrix, n: int, db: float, da: float, cfg: DLH
             factor = float(np.sum(raw) * db * da)
             density = raw / factor
             densities[label] = density
+            # R1-A: original UNMODIFIED stationary-equation residual, recorded
+            # separately from the contaminated residual. r_original = operator.T
+            # @ density (T IS operator.T). This is the validity of the stationary
+            # equation itself, not the pinned solve.
+            r_original = T @ density
+            r_original_inf = float(np.linalg.norm(r_original, ord=np.inf))
+            argmax_idx = int(np.argmax(np.abs(r_original)))
             entry.update(
                 {
                     "normalization_factor": factor,
+                    # contaminated residual: residual of the pinned solve
+                    "contaminated_residual_inf": float(np.linalg.norm(cont @ raw - rhs, ord=np.inf)),
                     "residual_inf": float(np.linalg.norm(cont @ raw - rhs, ord=np.inf)),
+                    # original unmodified stationary-equation residual
+                    "original_residual_inf": r_original_inf,
+                    "original_residual_argmax_index": argmax_idx,
+                    "original_residual_argmax_coords": list(_fortran_coords(argmax_idx)),
+                    "original_residual_at_pinned_row": float(abs(r_original[p])),
+                    "max_residual_at_pinned_row": bool(argmax_idx == p),
                     "density_min": float(np.min(density)),
                     "density_max": float(np.max(density)),
                     "density_mass": float(np.sum(density) * db * da),
@@ -463,7 +510,13 @@ def pin_diagnostics(T: sparse.csr_matrix, n: int, db: float, da: float, cfg: DLH
             entry.update(
                 {
                     "normalization_factor": None,
+                    "contaminated_residual_inf": None,
                     "residual_inf": None,
+                    "original_residual_inf": None,
+                    "original_residual_argmax_index": None,
+                    "original_residual_argmax_coords": None,
+                    "original_residual_at_pinned_row": None,
+                    "max_residual_at_pinned_row": None,
                     "density_min": None,
                     "density_max": None,
                     "density_mass": None,
@@ -558,9 +611,87 @@ def singular_value_diagnostics(cont: sparse.csr_matrix, T: sparse.csr_matrix, cf
     return out
 
 
-# ---------------------------------------------------------------------------
-# Per-case diagnostic run
-# ---------------------------------------------------------------------------
+def singular_vector_diagnostics(
+    T: sparse.csr_matrix, closed_members, db: float, da: float, cfg: DLH5CConfig
+) -> dict:
+    """Smallest right-singular-vector candidate of ``operator.T`` (D1/D2 only).
+
+    Bounded sparse machinery only (no dense fallback). The returned vector is a
+    diagnostic candidate for the null direction of the original stationary
+    equation ``operator.T @ g = 0``; it is NOT a new KFE solver. Reports the
+    singular value, convergence, sign structure, masses, the ORIGINAL equation
+    residual ``||operator.T @ v||_inf`` and the L1 mass/support concentration on
+    the closed (sink) classes vs transient states.
+    """
+    n = int(T.shape[0])
+    out = {
+        "requested": True,
+        "method": None,
+        "converged": False,
+        "singular_value": None,
+        "exception": None,
+        "warning": None,
+        "vector_finite": False,
+        "vector_min": None,
+        "vector_max": None,
+        "positive_count": None,
+        "negative_count": None,
+        "zero_count": None,
+        "positive_fraction": None,
+        "vector_mass": None,
+        "vector_abs_mass": None,
+        "normalized_mass": None,
+        "original_residual_inf": None,
+        "closed_class_mass_fractions": None,
+        "transient_mass_proportion": None,
+    }
+    v = None
+    for solver in ("propack", "arpack"):
+        try:
+            with warnings.catch_warnings(record=True) as wlist:
+                warnings.simplefilter("always")
+                _, s, Vh = spla.svds(
+                    T, k=1, which="SM", solver=solver,
+                    maxiter=cfg.svd_maxiter, tol=cfg.svd_tol, random_state=0,
+                )
+            v = np.asarray(Vh[0], dtype=float)
+            out["method"] = f"svds(k=1, which='SM', solver={solver})"
+            out["converged"] = True
+            out["singular_value"] = float(s[0])
+            out["warning"] = "; ".join(str(w.message) for w in wlist)
+            break
+        except Exception as exc:  # noqa: BLE001
+            out["exception"] = f"{type(exc).__name__}: {exc}"
+    if v is None or not np.isfinite(v).all():
+        return out
+    out["vector_finite"] = True
+    out["vector_min"] = float(np.min(v))
+    out["vector_max"] = float(np.max(v))
+    pos = int((v > 0).sum())
+    neg = int((v < 0).sum())
+    zero = int((v == 0).sum())
+    out["positive_count"] = pos
+    out["negative_count"] = neg
+    out["zero_count"] = zero
+    out["positive_fraction"] = float(pos / v.size)
+    abs_mass = float(np.sum(np.abs(v)) * db * da)
+    mass = float(np.sum(v) * db * da)
+    out["vector_abs_mass"] = abs_mass
+    out["vector_mass"] = mass
+    if np.isfinite(mass):
+        out["normalized_mass"] = mass  # total signed mass (db*da weighted)
+    out["original_residual_inf"] = float(np.linalg.norm(T @ v, ord=np.inf))
+    if abs_mass > 0 and closed_members:
+        fracs = [
+            float(np.sum(np.abs(v[np.asarray(m)])) * db * da / abs_mass)
+            for m in closed_members
+        ]
+        out["closed_class_mass_fractions"] = fracs
+        closed_l1 = sum(np.sum(np.abs(v[np.asarray(m)])) for m in closed_members)
+        total_l1 = float(np.sum(np.abs(v)))
+        out["closed_class_total_mass_proportion"] = float(closed_l1 / total_l1) if total_l1 > 0 else None
+        out["transient_mass_proportion"] = float(1.0 - closed_l1 / total_l1) if total_l1 > 0 else None
+    return out
 
 
 def run_case(dlh5b, cfg: DLH5CConfig, grid, params, numerics, case_id: str, kind: str, wbar: float, r_a: float) -> dict:
@@ -619,11 +750,16 @@ def run_case(dlh5b, cfg: DLH5CConfig, grid, params, numerics, case_id: str, kind
 
     # 3) optional bounded smallest-singular-value attempts (D1/D2 only)
     rec["singular_values"] = {}
+    rec["singular_vector"] = {}
     if case_id in cfg.singular_value_cases:
         index_of, _ = _pin_indices(n, cfg)
         T = A.transpose().tocsr()
         cont, _ = build_contaminated(T, index_of["accepted"], cfg.pin_rhs, n)
         rec["singular_values"] = singular_value_diagnostics(cont, T, cfg)
+        # C: smallest right-singular-vector candidate of operator.T
+        rec["singular_vector"] = singular_vector_diagnostics(
+            T, rec["graph"].get("closed_class_member_indices", []), db, da, cfg
+        )
 
     return rec
 
@@ -661,12 +797,37 @@ def canonical_case_numbers(rec: dict) -> list:
     ):
         v = op.get(key)
         out.append(float(v) if v is not None else float("nan"))
+    # R1-A: finite-pin original stationary-equation residuals
+    pins = rec.get("pins") or {"rows": []}
+    for p in pins["rows"]:
+        if p.get("solve_finite"):
+            out.append(float(p.get("original_residual_inf", float("nan"))))
+            out.append(float(p.get("original_residual_at_pinned_row", float("nan"))))
+        else:
+            out.append(float("nan"))
+            out.append(float("nan"))
+    # R1-B: per closed-class leakage numeric fields
+    g = rec.get("graph") or {}
+    for cc in g.get("closed_classes", []):
+        out.append(float(cc.get("row_sum_min", float("nan"))))
+        out.append(float(cc.get("row_sum_max", float("nan"))))
+        out.append(float(cc.get("row_sum_maxabs", float("nan"))))
+        out.append(float(cc.get("leaky_rows_count", float("nan"))))
+    # R1-C: singular-vector numeric fields (D1/D2 only; NaN elsewhere)
+    sv = rec.get("singular_vector") or {}
+    for key in ("singular_value", "vector_min", "vector_max", "positive_fraction",
+                "vector_mass", "vector_abs_mass", "original_residual_inf",
+                "transient_mass_proportion"):
+        v = sv.get(key)
+        out.append(float(v) if v is not None else float("nan"))
     return out
 
 
 def structural_signature(rec: dict) -> str:
     """Deterministic structural signature (classifications + graph counts)."""
     g = rec.get("graph") or {}
+    sv = rec.get("singular_vector") or {}
+    pins = rec.get("pins") or {"rows": []}
     return json.dumps(
         {
             "kfe_status": rec.get("kfe_status"),
@@ -675,11 +836,20 @@ def structural_signature(rec: dict) -> str:
             "scc_count": g.get("scc_count"),
             "closed_component_count": g.get("closed_component_count"),
             "closed_component_sizes": g.get("closed_component_sizes"),
+            "any_closed_class_leaky": g.get("any_closed_class_leaky"),
+            "all_closed_classes_conservative": g.get("all_closed_classes_conservative"),
+            "closed_class_leakage": tuple(
+                (cc.get("size"), cc.get("leaky_rows_count"),
+                 cc.get("all_rows_conservative_within_tol"))
+                for cc in g.get("closed_classes", [])
+            ),
             "accepted_row_in_closed_component": g.get("accepted_row_in_closed_component"),
             "accepted_row_scc_size": g.get("accepted_row_scc_size"),
             "pin_finite_pattern": tuple(
-                (p["pin_label"], p["solve_finite"]) for p in (rec.get("pins") or {}).get("rows", [])
+                (p["pin_label"], p["solve_finite"]) for p in pins["rows"]
             ),
+            "singular_vector_converged": sv.get("converged"),
+            "singular_vector_sign": (sv.get("positive_count"), sv.get("negative_count")),
         },
         sort_keys=True,
     )
@@ -829,15 +999,30 @@ GRAPH_FIELDS = [
     "case_id", "kind",
     "positive_edges", "scc_count", "scc_sizes_sorted",
     "closed_component_count", "closed_component_sizes",
+    "any_closed_class_leaky", "all_closed_classes_conservative",
+    "closed_class_leakage_summary",
     "accepted_row_in_closed_component", "accepted_row_scc_size",
 ]
 
 PIN_FIELDS = [
     "case_id", "pin_label", "pin_index", "solve_finite",
     "solve_exception", "solve_warning",
-    "normalization_factor", "residual_inf",
+    "normalization_factor", "contaminated_residual_inf", "residual_inf",
+    "original_residual_inf", "original_residual_argmax_index",
+    "original_residual_argmax_b", "original_residual_argmax_a", "original_residual_argmax_z",
+    "original_residual_at_pinned_row", "max_residual_at_pinned_row",
     "density_min", "density_max", "density_mass",
 ]
+
+
+def _closed_class_leakage_summary(g: dict) -> str:
+    """Compact per-closed-class leakage summary: ``size:leaky_rows:conservative``."""
+    parts = []
+    for cc in g.get("closed_classes", []):
+        parts.append(
+            f"{cc.get('size')}:{cc.get('leaky_rows_count')}:{cc.get('all_rows_conservative_within_tol')}"
+        )
+    return ";".join(parts)
 
 
 def _write_evidence(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) -> None:
@@ -875,6 +1060,8 @@ def _write_evidence(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict
              g.get("positive_edges"), g.get("scc_count"),
              g.get("scc_sizes_sorted"), g.get("closed_component_count"),
              g.get("closed_component_sizes"),
+             g.get("any_closed_class_leaky"), g.get("all_closed_classes_conservative"),
+             _closed_class_leakage_summary(g),
              g.get("accepted_row_in_closed_component"), g.get("accepted_row_scc_size")]
         )
     write_csv(root / "DLH_5C_GRAPH_DIAGNOSTICS.csv", GRAPH_FIELDS, rows)
@@ -884,10 +1071,14 @@ def _write_evidence(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict
     for rec in cases:
         pins = rec.get("pins") or {"rows": []}
         for p in pins["rows"]:
+            coords = p.get("original_residual_argmax_coords") or [None, None, None]
             rows.append(
                 [rec["case_id"], p["pin_label"], p["pin_index"], p["solve_finite"],
                  p.get("solve_exception"), p.get("solve_warning"),
-                 p.get("normalization_factor"), p.get("residual_inf"),
+                 p.get("normalization_factor"), p.get("contaminated_residual_inf"), p.get("residual_inf"),
+                 p.get("original_residual_inf"), p.get("original_residual_argmax_index"),
+                 coords[0], coords[1], coords[2],
+                 p.get("original_residual_at_pinned_row"), p.get("max_residual_at_pinned_row"),
                  p.get("density_min"), p.get("density_max"), p.get("density_mass")]
             )
     write_csv(root / "DLH_5C_PIN_ROW_DIAGNOSTICS.csv", PIN_FIELDS, rows)
@@ -919,53 +1110,72 @@ def _classification(cfg: DLH5CConfig, run: dict, repro: dict) -> str:
 
 
 def _root_cause_classification(cfg: DLH5CConfig, run: dict) -> str:
-    """Bounded root-cause primary category per Issue #26 Section 7.
+    """Bounded root-cause primary category per Issue #26 Section 7, driven by the
+    R1 (A-C) evidence.
 
-    Evidence layers (all mapped to the accepted implementation in the report):
-    - primary: non-unique stationary distribution (>= 2 closed recurrent
-      classes under the positive-transition graph; pin-dependent normalized
-      densities at D0/D1/D3; >= 3 zero singular values at D1 and D2);
-    - secondary: D2's all-NaN is a fixed-row-selection artifact (accepted
-      transient row 295; in-class pins 0/400 stay finite at D2) amplified by
-      sparse-solver conditioning (SuperLU near-zero pivot; the exact-pivot
-      event at D2 is a knife-edge discontinuity, all 8 interior scan points
-      succeed).
+    R1 evidence inputs (recorded per case):
+    - A: original stationary-equation residual ``||operator.T @ density||_inf``
+      per finite pin; transient-row pins give a large residual whose argmax sits
+      exactly on the pinned (replaced) row, while pins inside the a=0 class give
+      machine-epsilon residuals (they recover the true stationary measure);
+    - B: per closed/sink SCC row-sum leakage; the three closed classes are all
+      conservative within tolerance (non-leaky), so they are recurrent-class
+      candidates, not leaky sinks;
+    - C: smallest right-singular-vector candidate of ``operator.T`` is a
+      near-null vector (original residual ~1e-12) with ~100% of its L1 mass on
+      the a=0 class -> a UNIQUE (up to scale) stationary measure concentrated on
+      the a=0 borrowing-constrained class (transpose nullspace dimension 1).
+
+    Classification logic (evidence-driven, category 2 is not assumed):
+    1. if some finite pin is a near-solution of the ORIGINAL equation AND other
+       finite pins are non-solutions whose residual argmax is exactly the pinned
+       row AND the singular vector is a near-null vector -> the stationary
+       measure is unique; the accepted fixed pin on a transient state is
+       inconsistent with it; the D2 all-NaN is the sparse solve of an
+       inconsistent pinned system -> FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE
+       (category 1, primary);
+    2. if several finite pins are near-solutions of the ORIGINAL equation but
+       give DIFFERENT densities -> MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_
+       CANDIDATE (category 2; not supported by the R1 evidence);
+    3. if NO finite pin is a near-solution and the singular vector is NOT
+       near-null -> the original equation has no recovered solution: either
+       conditioning or conservation/boundary structure; if not cleanly
+       distinguishable -> UNRESOLVED_WITH_CURRENT_DIAGNOSTICS;
+    4. otherwise UNRESOLVED_WITH_CURRENT_DIAGNOSTICS.
     """
     cases = {c["case_id"]: c for c in run["cases"]}
-    d1 = cases["d1"]
-    d2 = cases["d2"]
-    g1 = d1.get("graph") or {}
-    g2 = d2.get("graph") or {}
-    pins1 = d1.get("pins") or {"rows": [], "pairwise_density_maxdiff": {}}
-    pins2 = d2.get("pins") or {"rows": [], "pairwise_density_maxdiff": {}}
-    sv2 = d2.get("singular_values") or {}
+    near_solution_pins: list[tuple] = []
+    poor_pins_at_pinned_row: list[tuple] = []
+    for cid in ("d0", "d1", "d2", "d3"):
+        rows = (cases[cid].get("pins") or {}).get("rows", [])
+        for p in rows:
+            r = p.get("original_residual_inf")
+            if not p.get("solve_finite") or r is None:
+                continue
+            if r < 1e-9:
+                near_solution_pins.append((cid, p["pin_label"], r))
+            elif p.get("max_residual_at_pinned_row"):
+                poor_pins_at_pinned_row.append((cid, p["pin_label"], r))
 
-    # non-uniqueness evidence (primary)
-    closed1 = (g1.get("closed_component_count") or 0)
-    closed2 = (g2.get("closed_component_count") or 0)
-    pin_dependent_d1 = bool(pins1.get("pairwise_density_maxdiff")) and any(
-        v > 1e-9 for v in pins1["pairwise_density_maxdiff"].values()
+    sv = cases["d2"].get("singular_vector") or {}
+    singular_near_null = bool(
+        sv.get("converged")
+        and sv.get("vector_finite")
+        and sv.get("original_residual_inf") is not None
+        and sv["original_residual_inf"] < 1e-6
     )
-    k4 = sv2.get("transpose_k4_smallest") or {}
-    zero_singular = k4.get("converged") and k4.get("values_sorted") is not None and any(
-        abs(v) < 1e-8 for v in k4["values_sorted"]
-    )
 
-    # the pinned normalized density is pin-dependent AND/OR there are multiple
-    # closed classes in the positive-transition graph -> non-unique stationary
-    # class / pin-dependent pinned solve (primary category 2)
-    if (closed1 >= 2 or closed2 >= 2) or pin_dependent_d1:
-        return "MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE"
+    has_near_solution = bool(near_solution_pins)
+    has_poor_pins_at_pinned_row = bool(poor_pins_at_pinned_row)
 
-    # numerical rank deficiency (zero singular value / SuperLU zero pivot)
-    if zero_singular:
-        return "NUMERICAL_CONDITIONING_OR_RANK_DEFICIENCY_CANDIDATE"
-
-    # pin-dependence without closed classes -> row-selection artifact
-    pin_pattern_differs = [p["pin_label"] for p in pins2.get("rows", []) if not p["solve_finite"]]
-    if pin_pattern_differs:
+    if has_near_solution and has_poor_pins_at_pinned_row and singular_near_null:
         return "FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE"
-
+    if has_near_solution and not has_poor_pins_at_pinned_row:
+        return "MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE"
+    if not has_near_solution:
+        if not singular_near_null:
+            return "UNRESOLVED_WITH_CURRENT_DIAGNOSTICS"
+        return "NUMERICAL_CONDITIONING_OR_RANK_DEFICIENCY_CANDIDATE"
     return "UNRESOLVED_WITH_CURRENT_DIAGNOSTICS"
 
 
@@ -976,7 +1186,13 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
     scan_cases = [c for c in run["cases"] if c["kind"] == "scan"]
 
     lines: list[str] = []
-    lines.append("# DLH-5C — Stationary KFE Contaminated-Row Singularity Diagnostic (Issue #26)")
+    lines.append("# DLH-5C — Stationary KFE Contaminated-Row Singularity Diagnostic, R1 (Issue #26)")
+    lines.append("")
+    lines.append("R1 GPT-review refinement (2026-08-31): original-equation residual (A), "
+                 "sink-component leakage (B), smallest-singular-vector diagnostic (C), "
+                 "evidence-driven reclassification (D), conservative scan wording (E). The "
+                 "predecessor evidence root "
+                 "`reports/dlh_5c_kfe_singularity_diagnostic_2026_08_31/` is preserved unchanged.")
     lines.append("")
     lines.append("Terminal classification:")
     lines.append("")
@@ -1014,17 +1230,17 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
     first_fail = next((c["case_id"] for c in scan_cases if c["kfe_status"] == "FAILED"), None)
     if first_fail is None:
         lines.append("All 9 scan points: KFE SUCCESS.")
-        lines.append("")
-        lines.append("**Scan discontinuity finding:** no interior scan point fails; the accepted "
-                     "KFE failure appears discontinuously at the exact D2 endpoint (t=1). At the "
-                     "frozen scan resolution (1/8 of the D1-D2 gap) no failure is detected on any "
-                     "interior point, consistent with a knife-edge numerical pivot event at D2 "
-                     "rather than a gradual degradation across the interval.")
     else:
         lines.append(f"First scan point with KFE FAILED: `{first_fail}`")
-        lines.append("")
-        lines.append("**Scan discontinuity finding:** failure appears discontinuously (single-point "
-                     "event at the D2 endpoint) rather than over a resolved interior interval.")
+    lines.append("")
+    lines.append("**Scan finding (frozen 9-point resolution):** at the frozen 9-point D1->D2 "
+                 "region-0 scan (t = k/8, k=0..8) the accepted KFE succeeds at t=0..7/8 and fails "
+                 "only at the sampled endpoint t=1, i.e. **D2 is the only failed sampled point / "
+                 "endpoint-only failure at the frozen 9-point resolution**. The frozen scan does "
+                 "**not** rule out an unsampled narrower failure interval between t=7/8 and t=1; "
+                 "no new scan points were added and no adaptive refinement was performed. The "
+                 "endpoint-only failure is therefore not interpreted as a proof of a mathematical "
+                 "discontinuity.")
     lines.append("")
     lines.append("## Operator diagnostics (selected)")
     lines.append("")
@@ -1081,12 +1297,45 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
     lines.append("")
     lines.append(f"The accepted contaminated row (coordinates {g2.get('accepted_row_coords')}) does "
                  f"**not** belong to any closed component: it is a transient state in the "
-                 f"{g2.get('accepted_row_scc_size')}-state SCC. The closed components are sink "
-                 "classes (mass can enter but not leave), the operator is non-conservative at the "
-                 "upper boundary, and the unpinned transpose has a 1-dimensional numerical "
-                 "nullspace; pinning a transient state does not robustly determine a unique element "
-                 "of the (near-)nullspace, so the accepted single-row pin yields an ill-conditioned "
-                 "and pin-dependent pinned system, and at the exact D2 state an exact zero pivot.")
+                 f"{g2.get('accepted_row_scc_size')}-state SCC.")
+    lines.append("")
+    lines.append("### Sink-component leakage diagnostic (R1-B)")
+    lines.append("")
+    lines.append("For every closed (sink) SCC the R1 diagnostic measures the row sums of the "
+                 "accepted post-convergence operator restricted to that component, distinguishing a "
+                 "graph sink from a true non-leaky recurrent/stationary class: a component whose "
+                 "rows are all conservative within tolerance (`row_sum >= -1e-12` on every member) "
+                 "is a **non-leaky recurrent-class candidate**; a component with materially "
+                 "negative row sums is a **leaky graph sink**. All three closed classes are "
+                 "conservative within tolerance at D0-D3, so they are recurrent-class candidates, "
+                 "not leaky sinks.")
+    lines.append("")
+    lines.append("| case | closed sizes | all conservative | closed-class leakage (size:leaky_rows:conservative) |")
+    lines.append("|---|---|---|---|")
+    for cid in ("d0", "d1", "d2", "d3"):
+        g = cases[cid].get("graph") or {}
+        lines.append(f"| {cid} | {g.get('closed_component_sizes')} | "
+                     f"{g.get('all_closed_classes_conservative')} | "
+                     f"{_closed_class_leakage_summary(g)} |")
+    lines.append("")
+    g1 = cases["d1"].get("graph") or {}
+    g2 = cases["d2"].get("graph") or {}
+    for cc in g2.get("closed_classes", []):
+        lines.append(f"- Closed class size {cc['size']}: "
+                     f"b in [{cc['b_min']},{cc['b_max']}], a in [{cc['a_min']},{cc['a_max']}], "
+                     f"z in {cc['z_set']}; sample coords {cc['sample_coords']}; "
+                     f"row-sum [{cc['row_sum_min']:.3e}, {cc['row_sum_max']:.3e}], "
+                     f"maxabs {cc['row_sum_maxabs']:.3e}, leaky rows {cc['leaky_rows_count']}, "
+                     f"classification `{cc['classification']}`")
+    lines.append("")
+    lines.append("**Graph finding (R1):** the three closed classes are all non-leaky "
+                 "recurrent-class candidates, but they are NOT three independent stationary "
+                 "classes: the unpinned transpose has a 1-dimensional numerical nullspace (see "
+                 "singular-value evidence), and the smallest right-singular-vector candidate "
+                 "concentrates ~100% of its mass on the a=0 class (see below). The two size-2 "
+                 "classes receive mass flow from transient states (they are fed sinks: mass can "
+                 "enter, not leave) so their isolated invariant measures are not null vectors of "
+                 "the full operator; only the a=0 class measure is a genuine null vector.")
     lines.append("")
     graph_differs = (
         g1.get("scc_count") != g2.get("scc_count")
@@ -1113,14 +1362,50 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
             lines.append(f"  - pairwise normalized-density max abs diff (finite pins): "
                          f"{pins['pairwise_density_maxdiff']}")
         lines.append("")
-    lines.append("**Pin evidence:** at D0/D1/D3 all six pins are finite but their normalized "
-                 "densities differ across pins (e.g. D1 `first_vs_last` max abs diff ~2.10), "
-                 "confirming that the pinned normalized density is pin-dependent and the accepted "
-                 "single-row pin does not define a unique stationary density. At D2 the accepted "
-                 "transient pin (295) and the other transient pins (200, 600, 799) produce an "
-                 "all-NaN solve while the in-class pins (0, 400) stay finite and agree with each "
-                 "other (`first_vs_half` ~1e-16): the D2 NaN is a fixed-row-selection artifact "
-                 "triggered at the accepted transient pin.")
+    lines.append("**Pin evidence (R1-A):** the contaminated-row solve itself always has a "
+                 "machine-epsilon contaminated residual, but the R1 diagnostic records the "
+                 "ORIGINAL unmodified stationary-equation residual `||operator.T @ density||_inf` "
+                 "separately. Pins inside the a=0 closed class (0, 400) recover the unique "
+                 "stationary measure: original residual ~1e-16 at D0/D1/D3 and D2, and the two "
+                 "normalized densities agree (`first_vs_half` ~1e-16). Transient pins (200, 295, "
+                 "600, 799) manufacture NON-solutions of the original equation: their original "
+                 "residual is large (0.055-1.32 at D0/D1/D3) and its argmax sits exactly on the "
+                 "pinned (replaced) row (`max_residual_at_pinned_row=True`). The predecessor "
+                 "observation that the normalized density is 'pin-dependent' is therefore an "
+                 "artifact of mixing true stationary solutions (in-class pins) with manufactured "
+                 "non-solutions (transient pins), not evidence of multiple stationary "
+                 "distributions.")
+    lines.append("")
+    lines.append("### Original stationary-equation residual (R1-A)")
+    lines.append("")
+    lines.append("| case | pin | index | contaminated res | original res | argmax coords (b,a,z) | max at pinned row | residual at pinned row |")
+    lines.append("|---|---|---|---|---|---|---|---|")
+    for cid in ("d0", "d1", "d2", "d3"):
+        pins = cases[cid].get("pins") or {"rows": []}
+        for p in pins["rows"]:
+            coords = p.get("original_residual_argmax_coords")
+            coords_s = tuple(coords) if coords else None
+            cont_r = p.get("contaminated_residual_inf")
+            orig_r = p.get("original_residual_inf")
+            pinned_r = p.get("original_residual_at_pinned_row")
+            cont_s = f"{cont_r:.3e}" if cont_r is not None else "n/a"
+            orig_s = f"{orig_r:.3e}" if orig_r is not None else "n/a"
+            pinned_s = f"{pinned_r:.3e}" if pinned_r is not None else "n/a"
+            lines.append(
+                f"| {cid} | {p['pin_label']} | {p['pin_index']} | "
+                f"{cont_s} | {orig_s} | {coords_s} | {p.get('max_residual_at_pinned_row')} | "
+                f"{pinned_s} |"
+            )
+    lines.append("")
+    lines.append("**Original-residual finding (R1-A):** the contaminated residual is always "
+                 "machine-epsilon and is therefore NOT a test of stationary-equation validity. The "
+                 "original residual cleanly separates the pins: in-class pins (0, 400) satisfy the "
+                 "original equation to machine precision, while transient pins do not, and the "
+                 "largest original residual sits exactly at the replaced/deleted pinned equation "
+                 "for every transient pin. The accepted fixed pin (295) is on a transient state, "
+                 "so the pinned density it produces does not satisfy the accepted stationary "
+                 "equation; at D2 the inconsistent pinned system is additionally singular for the "
+                 "sparse direct solve and returns all-NaN.")
     lines.append("")
     lines.append("## Optional bounded smallest-singular-value attempts (D1/D2)")
     lines.append("")
@@ -1149,8 +1434,46 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
                  "budget returns spurious all-zero values and was not used). The transpose is "
                  "therefore numerically rank-deficient (rank 799, nullspace dimension 1) at both "
                  "states, matching the single SuperLU near-zero pivot. D2 differs from D1 only by "
-                 "the SuperLU exact-pivot event in the accepted-pinned solve (a knife-edge "
-                 "conditioning discontinuity; all 8 interior scan points succeed).")
+                 "the SuperLU exact-pivot event in the accepted-pinned solve; the exact location "
+                 "and width of the failing sub-interval is not resolved by the frozen 9-point scan "
+                 "(endpoint-only failure at the frozen resolution; an unsampled narrower failure "
+                 "interval near D2 is not ruled out).")
+    lines.append("")
+    lines.append("### Smallest-singular-vector diagnostic (R1-C, D1/D2)")
+    lines.append("")
+    lines.append("The smallest right-singular-vector candidate of `operator.T` is a bounded-sparse "
+                 "diagnostic candidate for the null direction of the original stationary equation "
+                 "`operator.T @ g = 0`. It is diagnostic only and never becomes a KFE solver.")
+    lines.append("")
+    lines.append("| case | singular value | conv | vector finite | min | max | positive/negative/zero | original res `||A.T@g||_inf` | mass | abs mass | closed-class L1 fractions | transient L1 proportion |")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
+    for cid in ("d1", "d2"):
+        sv = cases[cid].get("singular_vector") or {}
+        lines.append(
+            f"| {cid} | {sv.get('singular_value'):.3e} | {sv.get('converged')} | "
+            f"{sv.get('vector_finite')} | {sv.get('vector_min'):.4g} | {sv.get('vector_max'):.4g} | "
+            f"{sv.get('positive_count')}/{sv.get('negative_count')}/{sv.get('zero_count')} | "
+            f"{sv.get('original_residual_inf'):.3e} | {sv.get('vector_mass'):.4g} | "
+            f"{sv.get('vector_abs_mass'):.4g} | {sv.get('closed_class_mass_fractions')} | "
+            f"{sv.get('transient_mass_proportion'):.3e} |"
+        )
+    lines.append("")
+    sv1 = cases["d1"].get("singular_vector") or {}
+    sv2 = cases["d2"].get("singular_vector") or {}
+    lines.append("**Singular-vector finding (R1-C):** at both D1 and D2 the smallest singular "
+                 "vector is a near-null vector of the ORIGINAL equation (original residual "
+                 f"~{sv1.get('original_residual_inf'):.2e} at D1, "
+                 f"~{sv2.get('original_residual_inf'):.2e} at D2), is essentially sign-definite "
+                 "(one sign at ~0.25 magnitude with only tiny opposite-sign rounding entries), and "
+                 "concentrates ~100% of its L1 mass on the a=0 borrowing-constrained class "
+                 "(closed-class fractions "
+                 f"{sv1.get('closed_class_mass_fractions')} at D1), i.e. the unique (up to scale) "
+                 "near-null vector of `operator.T` is the stationary measure of the a=0 class, "
+                 "with essentially zero mass on the two size-2 closed classes and on transient "
+                 "states (transient L1 proportion "
+                 f"~{sv1.get('transient_mass_proportion'):.2e} at D1). The stationary "
+                 "distribution is therefore unique (up to scale) and concentrated on the a=0 "
+                 "borrowing-constrained class.")
     lines.append("")
     lines.append("## Conservation / boundary-structure diagnostic (non-conservative operator)")
     lines.append("")
@@ -1166,12 +1489,17 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
         lines.append(f"| {cid} | {op.get('row_sum_min'):.3e} | {op.get('row_sum_max'):.3e} | "
                      f"{op.get('row_sum_maxabs'):.3e} | {op.get('leaky_state_count')} |")
     lines.append("")
-    lines.append("**Conservation finding:** the operator leaks mass at the upper boundary (29-30 "
-                 "leaky states concentrated at a-index 17-19 / b-index 6-19). The three closed "
-                 "classes in the positive-transition graph are therefore *sink* classes (mass can "
-                 "enter, not leave) rather than independent recurrent classes with separate "
-                 "invariant measures; combined with the leaks this yields a 1-dimensional numerical "
-                 "nullspace for the unpinned transpose.")
+    lines.append("**Conservation finding (R1):** the operator leaks mass at the upper boundary "
+                 "(29-30 leaky states concentrated at a-index 17-19 / b-index 6-19), so the "
+                 "operator is non-conservative/sub-generator-like overall. However, the three "
+                 "closed classes in the positive-transition graph are individually conservative "
+                 "within tolerance (sink-component leakage diagnostic R1-B), so they are "
+                 "non-leaky recurrent-class candidates. The a=0 borrowing-constrained class (size "
+                 "40) is the only absorbing recurrent class whose invariant measure is a genuine "
+                 "null vector of the full operator (R1-C); the two size-2 upper-boundary classes "
+                 "are fed sinks whose isolated invariant measures are NOT null vectors because "
+                 "they receive mass flow from transient states. Combined with the boundary leak "
+                 "this yields a 1-dimensional numerical nullspace for the unpinned transpose.")
     lines.append("")
     lines.append("## Reproducibility")
     lines.append("")
@@ -1187,42 +1515,51 @@ def _write_report(root: pathlib.Path, cfg: DLH5CConfig, run: dict, repro: dict) 
     lines.append("")
     lines.append("Layered evidence verdicts (per Issue #26 Section 7 categories):")
     lines.append("")
-    lines.append("- Category 2 `MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE`: **primary**. "
-                 "The positive-transition graph has three closed (sink) classes (a=0 borrowing "
-                 "class size 40; two upper-boundary 2-cycles), and the pinned normalized density "
-                 "is empirically pin-dependent at D0/D1/D3 (e.g. `first_vs_last` max abs diff "
-                 "~2.1), so the accepted single-row pin does not define a unique stationary "
-                 "density.")
-    lines.append("- Category 1 `FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE`: **supported (secondary)**. "
-                 "At D2 the accepted transient pin (295) and the other transient pins (200, 600, "
-                 "799) give an all-NaN solve, while the in-class pins (0, 400) stay finite. Pinning "
-                 "a transient state cannot reduce the transpose nullspace and produces an "
-                 "inconsistent pinned system.")
+    lines.append("- Category 1 `FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE`: **primary**. The R1 "
+                 "original-residual diagnostic (A) shows the accepted fixed pin (row 295, a "
+                 "transient state) is inconsistent with the unique stationary measure: transient "
+                 "pins manufacture densities whose original-equation residual is large and whose "
+                 "argmax sits exactly on the pinned row, while pins inside the a=0 class (0, 400) "
+                 "recover the unique stationary measure with machine-epsilon original residual at "
+                 "D0/D1/D3 and D2. The D2 all-NaN is the sparse direct solve of that inconsistent "
+                 "pinned system (exact LU zero pivot), i.e. a fixed-row-selection artifact.")
+    lines.append("- Category 2 `MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE`: **not supported "
+                 "(R1 refutes it)**. The unpinned transpose has a 1-dimensional nullspace (one "
+                 "near-zero singular value); the two size-2 closed classes are fed sinks whose "
+                 "isolated invariant measures are not null vectors of the full operator; the "
+                 "in-class pins 0/400 recover the SAME normalized density (`first_vs_half` ~1e-16). "
+                 "The predecessor 'pin-dependent densities' were an artifact of mixing true "
+                 "solutions (in-class pins) with manufactured non-solutions (transient pins).")
     lines.append("- Category 3 `NUMERICAL_CONDITIONING_OR_RANK_DEFICIENCY_CANDIDATE`: **supported "
-                 "(secondary)**. Pattern-level structural rank is full (800) but the numerical rank "
-                 "is deficient (one (near-)zero smallest singular value ~1e-13 at D1 and D2; "
-                 "SuperLU exposes a ~1e-15 LU pivot; the accepted-pinned solve hits an exact zero "
-                 "pivot at D2 -> all-NaN). The D2 event is a knife-edge discontinuity (all 8 "
-                 "interior scan points succeed).")
+                 "(mechanism at D2)**. Pattern-level structural rank is full (800) but the "
+                 "numerical rank is deficient (one (near-)zero smallest singular value ~1e-13 at "
+                 "D1 and D2; SuperLU exposes a ~1e-15 LU pivot; the accepted-pinned solve hits an "
+                 "exact zero pivot at D2 -> all-NaN).")
     lines.append("- Category 4 `POST_CONVERGENCE_OPERATOR_CONSERVATION_OR_BOUNDARY_STRUCTURE_"
-                 "CANDIDATE`: **supported (origin)**. The operator is non-conservative (29 boundary "
-                 "states leak mass), and the closed classes are boundary-structure sinks: the a=0 "
-                 "borrowing-constrained class (size 40, all b, both z) and two upper-boundary "
-                 "2-cycles ((b=19,a=1) and (b=0,a=19), each switching z).")
-    lines.append("- Category 5 `UNRESOLVED_WITH_CURRENT_DIAGNOSTICS`: not needed; evidence is "
-                 "bounded and mutually consistent.")
+                 "CANDIDATE`: **supported (origin)**. The operator is non-conservative (29-30 "
+                 "boundary states leak mass); the unique stationary measure is concentrated on the "
+                 "a=0 borrowing-constrained class (size 40), so every other state (including the "
+                 "accepted pin 295) carries ~zero stationary mass and any pin placed there is "
+                 "structurally inconsistent with the stationary equation.")
+    lines.append("- Category 5 `UNRESOLVED_WITH_CURRENT_DIAGNOSTICS`: not needed; R1 evidence "
+                 "cleanly distinguishes the categories above (category 2 is refuted).")
     lines.append("")
-    lines.append("Summary: the accepted stationary KFE becomes non-finite on the preserved path "
-                 "because the accepted post-convergence operator is numerically rank-deficient "
-                 "(transpose nullspace dimension 1; one (near-)zero singular value; SuperLU zero "
-                 "pivot) with a non-conservative boundary-leak structure and multiple closed sink "
-                 "classes, so the accepted single-row pin (on transient state 295) does not define "
-                 "a unique stationary density and yields a pin-dependent / inconsistent pinned "
-                 "system. At the exact D2 state the sparse direct solver's LU hits an exact zero "
-                 "pivot for that pinned system, producing an all-NaN raw vector that the accepted "
-                 "fail-closed check converts into `faithful contaminated-row solve is non-finite`. "
-                 "At D0/D1/D3 the same arbitrary pin happens not to hit the exact pivot, so a "
-                 "finite but pin-dependent (arbitrary) density is returned.")
+    lines.append("Summary (R1): the accepted post-convergence operator has a UNIQUE (up to scale) "
+                 "stationary measure, concentrated on the a=0 borrowing-constrained class "
+                 "(transpose nullspace dimension 1; smallest-singular-vector candidate has ~100% "
+                 "L1 mass on that class and ~1e-12 original residual). The accepted "
+                 "contaminated-row pin fixes a transient state (295), which is inconsistent with "
+                 "that unique stationary measure: the resulting pinned density does not satisfy "
+                 "the original stationary equation (large original residual at exactly the pinned "
+                 "row), and at the exact D2 state the sparse direct solver's LU hits an exact zero "
+                 "pivot, producing the all-NaN raw vector that the accepted fail-closed check "
+                 "converts into `faithful contaminated-row solve is non-finite`. The D2 failure is "
+                 "therefore classified as a FIXED_ROW_SELECTION_ARTIFACT (primary), with the "
+                 "boundary/borrowing-constraint structure (category 4) as its origin and the "
+                 "sparse-solve conditioning at D2 (category 3) as the immediate NaN mechanism. At "
+                 "the frozen 9-point resolution D2 is the only failed sampled point (endpoint-only "
+                 "failure); an unsampled narrower failure interval between t=7/8 and t=1 is not "
+                 "ruled out.")
     lines.append("")
     lines.append("DLH-5C implements NO repair: no solver change, no alternative production row pin, "
                  "no regularization/jitter/pseudoinverse.")
@@ -1252,9 +1589,9 @@ def _append_artifact_hashes(root: pathlib.Path) -> None:
 def _write_forbidden_check(cfg: DLH5CConfig, root: pathlib.Path, repro: dict, run: dict) -> None:
     terminal = _classification(cfg, run, repro) if repro["pass_bool"] else "BLOCKED_DLH_5C_REPRODUCIBILITY_FAILED"
     lines = [
-        "# DLH-5C — Forbidden-Operation / Scope Check (Issue #26)",
+        "# DLH-5C — Forbidden-Operation / Scope Check (Issue #26, R1)",
         "",
-        "DSH did NOT perform any of the following during Issue #26 execution:",
+        "DSH did NOT perform any of the following during Issue #26 R1 execution:",
         "",
         "| Forbidden operation | Status |",
         "|---|---|",
@@ -1264,14 +1601,15 @@ def _write_forbidden_check(cfg: DLH5CConfig, root: pathlib.Path, repro: dict, ru
         "| Adopt an alternative row pin as a fix | NOT performed (diagnostic evidence only) |",
         "| Regularization / jitter / pseudoinverse in production | NOT performed |",
         "| Change asset grids / household parameters / prices / S1 path | NOT performed |",
-        "| Retry / adaptive scan / grid expansion | NOT performed |",
+        "| Retry / adaptive scan / grid expansion / new scan points | NOT performed |",
+        "| Modify predecessor candidate 76de23f or its evidence root | NOT performed (preserved) |",
         "| `B=1`, `GovInv`, learned `W^L/W^K`, neural training, nominal HANK | NOT performed |",
         "| Scale regions / policy / welfare / Results claims | NOT performed |",
         "| Modify prior evidence / roadmap / governance / legacy roots | NOT performed |",
         "| `git add .` / `git add -A` | NOT performed (explicit staging only) |",
         "| Self-accept / merge / close Issue / PR / successor Issue | NOT performed |",
         "",
-        "Diagnostic-only discipline: no-overwrite output root "
+        "Diagnostic-only discipline: no-overwrite R1 output root "
         f"`{cfg.output_root}`; deterministic repeats only; accepted KFE called to "
         "reproduce success and failure exactly.",
         "",

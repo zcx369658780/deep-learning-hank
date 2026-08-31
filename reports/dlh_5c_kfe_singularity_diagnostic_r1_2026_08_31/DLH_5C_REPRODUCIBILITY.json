@@ -1,0 +1,102 @@
+{
+ "identical_classifications": true,
+ "identical_graph": true,
+ "max_numeric_diff": 0.0,
+ "pass_bool": true,
+ "per_case": [
+  {
+   "case_id": "d0",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "d1",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "d2",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "d3",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_0",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_1",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_2",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_3",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_4",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_5",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_6",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_7",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  },
+  {
+   "case_id": "scan_8",
+   "numeric_diff": 0.0,
+   "pass": true,
+   "same_classification": true,
+   "same_graph": true
+  }
+ ],
+ "randomness": "NOT_APPLICABLE",
+ "tol": 1e-12,
+ "within_tol": true
+}

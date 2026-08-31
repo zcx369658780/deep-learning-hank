@@ -14,14 +14,21 @@ KFE solver. The full diagnostic run is cached at module scope.
 
 from __future__ import annotations
 
+import pathlib
+
+import numpy as np
 import pytest
+from scipy import sparse
 
 from deep_learning_hank.two_asset import matlab_contaminated_row_index
 from deep_learning_hank.diagnostics.dlh_5c_kfe_singularity import (
+    DLH5CConfig,
     _pin_indices,
     _root_cause_classification,
+    build_contaminated,
     build_fixture,
     case_sequence,
+    diagnostic_solve,
     load_config,
     reproduce,
 )
@@ -228,7 +235,10 @@ def test_d0_d1_d3_all_pins_finite_but_pin_dependent(cases):
     for cid in ("d0", "d1", "d3"):
         pins = cases[cid]["pins"]
         assert all(p["solve_finite"] for p in pins["rows"])
-        # non-uniqueness evidence: finite pins give different normalized densities
+        # R1: finite pins give different normalized densities, but this is the
+        # signature of mixing true stationary solutions (in-class pins 0/400)
+        # with manufactured NON-solutions (transient pins), NOT evidence of
+        # multiple stationary distributions (see R1 original-residual tests)
         diffs = list(pins["pairwise_density_maxdiff"].values())
         assert any(d > 1e-9 for d in diffs)
         # pins 0 and 400 lie in the same a=0 closed class -> agree
@@ -293,7 +303,7 @@ def test_reproducibility(cfg, repro):
 
 def test_root_cause_classification(cfg, repro):
     cls = _root_cause_classification(cfg, repro["run1"])
-    assert cls == "MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE"
+    assert cls == "FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE"
 
 
 def test_fixture_reuses_accepted_dlh5b(cfg):
@@ -304,3 +314,203 @@ def test_fixture_reuses_accepted_dlh5b(cfg):
     assert (grid.b.size, grid.a.size, grid.z.size) == (20, 20, 2)
     assert params.rho == 0.02
     assert numerics.convergence_tolerance == 1e-7
+
+
+# ---------------------------------------------------------------------------
+# R1-A: original stationary-equation residual
+# ---------------------------------------------------------------------------
+
+
+def _synthetic_cfg(tmp_path):
+    return DLH5CConfig(
+        dlh5b_config_path="x",
+        region_index=0,
+        d0=(1.0, 1.0),
+        d1=(1.0, 1.0),
+        d2=(1.0, 1.0),
+        d3=(1.0, 1.0),
+        scan_start="d1",
+        scan_end="d2",
+        scan_n_points=2,
+        pin_spec=("first",),
+        pin_rhs=0.007,
+        accepted_pin_fraction=0.37,
+        reproducibility_tol=1e-12,
+        numeric_compare_tol=1e-12,
+        singular_value_cases=(),
+        svd_maxiter=100,
+        svd_tol=1e-10,
+        output_root=str(tmp_path),
+    )
+
+
+def test_original_equation_residual_math(tmp_path):
+    """R1-A: the recorded original residual is exactly ||operator.T @ density||_inf
+    computed independently (contaminated and original residuals kept separate)."""
+    n = 6
+    T = sparse.csr_matrix(np.array([
+        [1.0, -0.2, 0.0, 0.0, 0.0, 0.0],
+        [0.0, 0.9, -0.1, 0.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0, -0.3, 0.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0, -0.2, 0.0],
+        [0.0, 0.0, 0.0, 0.0, 1.0, -0.1],
+        [0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+    ]))
+    from deep_learning_hank.diagnostics.dlh_5c_kfe_singularity import pin_diagnostics
+    cfg = _synthetic_cfg(tmp_path)
+    res = pin_diagnostics(T, n, 1.0, 1.0, cfg)
+    p = res["rows"][0]
+    assert p["solve_finite"] is True
+    # independent recomputation of density and residuals
+    index_of, _ = _pin_indices(n, cfg)
+    cont, rhs = build_contaminated(T, index_of["first"], cfg.pin_rhs, n)
+    raw, _exc, _warn = diagnostic_solve(cont, rhs)
+    assert raw is not None and np.isfinite(raw).all()
+    density = raw / float(np.sum(raw))
+    r_orig = T @ density
+    assert p["contaminated_residual_inf"] == pytest.approx(
+        float(np.linalg.norm(cont @ raw - rhs, ord=np.inf)), abs=1e-15
+    )
+    assert p["original_residual_inf"] == pytest.approx(
+        float(np.linalg.norm(r_orig, ord=np.inf)), abs=1e-15
+    )
+    assert p["original_residual_argmax_index"] == int(np.argmax(np.abs(r_orig)))
+    assert p["max_residual_at_pinned_row"] == (p["original_residual_argmax_index"] == p["pin_index"])
+
+
+def test_finite_pin_original_residual_recorded(cases):
+    """R1-A: every finite pin records both the contaminated and the original
+    stationary-equation residual, with argmax index/coords."""
+    for cid in ("d0", "d1", "d3"):
+        for p in cases[cid]["pins"]["rows"]:
+            assert p["solve_finite"] is True
+            assert p["contaminated_residual_inf"] is not None
+            assert p["original_residual_inf"] is not None
+            assert p["original_residual_argmax_index"] is not None
+            assert p["original_residual_argmax_coords"] is not None
+            assert len(p["original_residual_argmax_coords"]) == 3
+            assert p["original_residual_at_pinned_row"] is not None
+
+
+def test_in_class_pins_are_near_solutions_of_original_equation(cases):
+    """R1-A: pins inside the a=0 closed class (0, 400) recover the unique
+    stationary measure -> original residual at machine precision at D0-D3."""
+    for cid in ("d0", "d1", "d2", "d3"):
+        pins = cases[cid]["pins"]["rows"]
+        for label in ("first", "half"):
+            p = next(x for x in pins if x["pin_label"] == label)
+            assert p["solve_finite"] is True
+            assert p["original_residual_inf"] < 1e-9
+            assert p["contaminated_residual_inf"] < 1e-9
+
+
+def test_transient_pins_are_non_solutions_with_max_at_pinned_row(cases):
+    """R1-A: transient pins manufacture NON-solutions of the original equation;
+    the largest original residual sits exactly on the pinned (replaced) row."""
+    for cid in ("d0", "d1", "d3"):
+        pins = cases[cid]["pins"]["rows"]
+        for label in ("quarter", "accepted", "three_quarter", "last"):
+            p = next(x for x in pins if x["pin_label"] == label)
+            assert p["solve_finite"] is True
+            assert p["original_residual_inf"] > 1e-6
+            assert p["max_residual_at_pinned_row"] is True
+
+
+# ---------------------------------------------------------------------------
+# R1-B: sink-component leakage classification
+# ---------------------------------------------------------------------------
+
+
+def test_sink_component_leakage_conservative(cases):
+    """R1-B: every closed/sink SCC is conservative within tolerance (non-leaky
+    recurrent-class candidate) at D0-D3; graph sinks are not leaky."""
+    for cid in ("d0", "d1", "d2", "d3"):
+        g = cases[cid]["graph"]
+        assert g["any_closed_class_leaky"] is False
+        assert g["all_closed_classes_conservative"] is True
+        assert len(g["closed_class_member_indices"]) == len(g["closed_classes"]) == 3
+        for cc in g["closed_classes"]:
+            assert cc["leaky_rows_count"] == 0
+            assert cc["all_rows_conservative_within_tol"] is True
+            assert cc["classification"] == "non_leaky_recurrent_class_candidate"
+            assert cc["row_sum_min"] > -1e-12
+            assert len(cc["member_indices"]) == cc["size"]
+
+
+def test_graph_sink_not_auto_equated_to_stationary_class(cases):
+    """R1-B/C: although all closed classes are conservative, they are NOT three
+    independent stationary classes; the singular vector shows the unique null
+    vector is the a=0 class measure (fed sinks' isolated measures are not null
+    vectors of the full operator)."""
+    for cid in ("d1", "d2"):
+        g = cases[cid]["graph"]
+        sv = cases[cid]["singular_vector"]
+        sizes = [cc["size"] for cc in g["closed_classes"]]
+        fracs = sv["closed_class_mass_fractions"]
+        assert len(fracs) == 3
+        a0_frac = fracs[sizes.index(40)]
+        assert a0_frac > 0.99
+        for frac in (fracs[i] for i, s in enumerate(sizes) if s == 2):
+            assert frac < 1e-3
+
+
+# ---------------------------------------------------------------------------
+# R1-C: smallest-singular-vector diagnostic
+# ---------------------------------------------------------------------------
+
+
+def test_singular_vector_original_residual_and_fields(cases):
+    """R1-C: the smallest-singular-vector candidate is a near-null vector of the
+    ORIGINAL equation with bounded-sparse fields reported."""
+    for cid in ("d1", "d2"):
+        sv = cases[cid]["singular_vector"]
+        assert sv["converged"] is True
+        assert sv["vector_finite"] is True
+        assert sv["singular_value"] < 1e-9
+        assert sv["original_residual_inf"] < 1e-6
+        assert sv["closed_class_mass_fractions"] is not None
+        assert sv["transient_mass_proportion"] is not None
+        assert sv["positive_count"] + sv["negative_count"] + sv["zero_count"] == N
+
+
+def test_category_2_refuted_by_unique_stationary_measure(cases):
+    """R1-D: the stationary measure is unique -> category 2 (multiple/non-unique
+    stationary class) is refuted by the new evidence."""
+    k4 = cases["d2"]["singular_values"]["transpose_k4_smallest"]
+    assert k4["converged"] is True
+    assert sum(1 for v in k4["values_sorted"] if abs(v) < 1e-8) == 1  # nullspace dim 1
+    for cid in ("d0", "d1", "d2", "d3"):
+        pins = cases[cid]["pins"]
+        # in-class pins recover the SAME normalized density
+        assert pins["pairwise_density_maxdiff"]["first_vs_half"] < 1e-9
+
+
+# ---------------------------------------------------------------------------
+# R1-E: conservative scan wording
+# ---------------------------------------------------------------------------
+
+
+def test_scan_wording_conservative_within_frozen_resolution():
+    """R1-E: the diagnostic never claims a mathematical discontinuity; it reports
+    an endpoint-only failure at the frozen 9-point resolution and explicitly
+    leaves an unsampled narrower failure interval open."""
+    src = pathlib.Path("src/deep_learning_hank/diagnostics/dlh_5c_kfe_singularity.py").read_text(encoding="utf-8")
+    assert "endpoint-only failure at the frozen 9-point resolution" in src
+    assert "unsampled narrower failure interval between t=7/8 and t=1" in src
+    assert "single-point" not in src
+    assert "knife-edge" not in src
+    assert "mathematical discontinuity" not in src
+    assert "discontinuity finding" not in src
+
+
+# ---------------------------------------------------------------------------
+# R1-D: classification driven by the new evidence
+# ---------------------------------------------------------------------------
+
+
+def test_root_cause_classification_driven_by_r1_evidence(cfg, repro):
+    """R1-D: the root-cause classification is driven by A-C evidence (not forced
+    to category 2); with a unique stationary measure and transient-pin
+    inconsistencies it must be the fixed-row-selection artifact candidate."""
+    cls = _root_cause_classification(cfg, repro["run1"])
+    assert cls == "FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE"

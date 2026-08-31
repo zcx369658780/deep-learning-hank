@@ -50,4 +50,6 @@ svd_maxiter = 5000
 svd_tol = 1e-10
 
 [output]
-root = "reports/dlh_5c_kfe_singularity_diagnostic_2026_08_31"
+# R1 GPT-review refinement root (predecessor root preserved unchanged at
+# reports/dlh_5c_kfe_singularity_diagnostic_2026_08_31).
+root = "reports/dlh_5c_kfe_singularity_diagnostic_r1_2026_08_31"
