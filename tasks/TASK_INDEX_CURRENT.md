@@ -1,87 +1,107 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_GITHUB_ISSUE_23__DLH_4D_R3_MATLAB_TRANSFER_FOC_PARITY_REPAIR`
+Status: `ROADMAP_REBASE_COMPLETE__NO_ACTIVE_BUILDER_ISSUE`
 
-Last synchronized: 2026-08-30
+Last synchronized: 2026-08-31
 
 Repository: `zcx369658780/deep-learning-hank`
 
-## Sole active Builder authority
+## Builder authority
 
-**GitHub Issue #23 — OPEN**
+There is currently **no active Builder Issue**.
+
+DSH must not execute new scientific/model mutations until a separately published and activated GitHub Issue exists.
+
+## Latest accepted task
+
+Issue #23 — CLOSED / COMPLETED
 
 Title:
 
 `DLH-4D-R3: Repair MATLAB-faithful transfer-FOC liquid-derivative semantics and revalidate frozen GE path`
 
-Task type:
+Accepted candidate commit merged to `main`:
 
-`SCIENTIFIC_REPAIR__MATLAB_FAITHFUL_TRANSFER_FOC_PARITY`
+`b038db800da3760cebee484b1c7a76bf7c1529d0`
 
-Builder:
+Accepted reviewer classification:
 
-DSH bounded scientific repair executor.
+`DLH_4D_R3_MATLAB_TRANSFER_FOC_PARITY_REPAIR_ACCEPTED__OLD_FIXED_BOND_GE_CLOSURE_SUPERSEDED`
 
-Issue URL:
+Accepted scientific meaning:
 
-`https://github.com/zcx369658780/deep-learning-hank/issues/23`
+- MATLAB-faithful raw-liquid-derivative transfer-FOC handling is repaired;
+- post-repair two-asset household identity is recorded as SHA-256 `1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024`;
+- focused parity/regression evidence reports 137 passing tests;
+- frozen 729-point reclassification improves FULL_FINITE 277→499 with zero previously-finite regressions and exact repeat reproducibility;
+- the 8.77h Phase-E nested-Brent run is INCONCLUSIVE runtime evidence only;
+- authoritative Owner clarification supersedes the old arbitrary `B_hh=B_gov=1` / nested-Brent closure as the intended project steady-state route.
 
-Builder must fresh-read Issue #23 body and all authoritative comments before execution.
+## Current scientific route authority
 
-## Accepted Issue #22 diagnosis
+Current roadmap:
 
-Issue #22 accepted commit:
+`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_08_31.md`
 
-`3e623160796ed175244703bb01ad40baa1b23749`
+Core direction:
 
-Accepted classification:
+- hard structural household/HJB/KFE/firm/equilibrium definitions;
+- outer fixed-point HANK equilibrium architecture;
+- hand-specified network-ready small-region prototype first;
+- learned labor-flow network `W^L` as the first Deep Learning object;
+- learned capital network `W^K` later;
+- genuine nominal HANK block separately frozen/validated before policy-HANK claims;
+- staged equilibrium-constrained calibration and later learned regional parameter mapping;
+- long-run target: data + institutional config → automatically calibrated regional HANK model + learned networks + equilibrium diagnostics.
 
-`DLH_4D_R2_NONFINITE_STAGE_MAP_COMPLETE_ACCEPTED`
+Historical MATLAB multi-province code is provenance/reference for HANK outer-iteration architecture and selected structural equations. Its hand-coded interregional mappings are **not** the new model target.
 
-Accepted stage map:
+## Explicitly superseded
 
-- 415/452 non-finite points fail in HJB at the Python transfer-FOC positivity guard;
-- 37/452 reach a converged HJB and fail in the faithful contaminated-row KFE solve;
-- no GE wrapper root cause was found.
+Do not resume as current route:
 
-## New source-level scientific blocker
+- `B_hh = B_gov = 1` validation target;
+- nested cold-start Brent over `(r_a,r_b,L)` as intended HANK steady-state construction;
+- treating the HA conditional stationary problem as an analytic/static DSGE steady-state block.
 
-Owner re-supplied the designated MATLAB household source after Issue #22.
+Historical Issues #19–#22 remain evidence, not forward closure authority.
 
-`HANK_2ASSETS_HJB.m` SHA-256:
+## Recommended next Issue candidate
 
-`049136B769560040BC678F828F5D3EC5338DDCAA2090D6BED4E40732F56C3EAE`
+Tentative task identity:
 
-This exactly matches the designated MATLAB provenance embedded in the canonical Python oracle.
+`DLH-5A — Freeze Network-Ready Two-Region Structural and Outer-Fixed-Point Contract`
 
-The MATLAB source floors `Vb` only for consumption/labor controls, while its four `HANK3_FOC` calls pass raw `VbB/VbF`; domestic `HANK3_FOC.m` evaluates `pa./pb` directly with no `pb>0` guard or derivative floor.
+Expected task type:
 
-The canonical Python oracle currently adds a strict-positive raw-`v_b` transfer-FOC guard absent from MATLAB. This is now treated as a narrow MATLAB-faithfulness blocker requiring explicit repair before any fixture revision.
+`SCIENTIFIC_DESIGN__NETWORK_READY_TWO_REGION_FIXED_POINT_CONTRACT`
 
-## Prior household immutability — narrow Owner override
+Expected scope:
 
-Pre-repair canonical path:
+- design/specification first;
+- no neural training yet;
+- define two-region structural interfaces and hand-specified `W^L` contract;
+- define outer state/update order, convergence/failure trace and conservation gates;
+- consume accepted two-asset HA kernel;
+- use MATLAB handoff only as provenance for iterative architecture, not as a spatial-replication target.
 
-`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
+The next Issue is **not active** until publication + Task Index/Startup synchronization + authoritative activation comment.
 
-Pre-repair Git blob:
+## Scientific ceiling until next Issue
 
-`57e32076f0e11c9a047e1f90f8c2446d4148e457`
+Accepted:
 
-Pre-repair SHA-256:
+- two-asset HA/HJB/KFE/aggregate foundation with Issue #23 FOC repair;
+- scientific rejection of the old fixed-bond nested-Brent closure;
+- current NSR-HANK / data-to-regional-HANK roadmap.
 
-`276D2244B389D6EDE140DAF8B1F9B0BE1F4AA859368941CED1A12BA8A5831AB8`
+Not yet validated:
 
-Issue #23 is the sole narrow exception to previous household immutability. It may alter only transfer-FOC handling of non-positive raw liquid derivatives to restore designated MATLAB semantics.
-
-No other household equation, adjustment cost, bare-`a` scaling, taper, boundary/upwind rule, operator construction, KFE method, aggregation, Option A economics, fixture, or domain is authorized to change.
-
-## Scientific ceiling
-
-Issue #23 may establish only:
-
-- repaired MATLAB-faithful transfer-FOC parity;
-- updated non-finite-region evidence;
-- and, if the unchanged frozen GE path passes all existing gates, the intended minimal single-region real GE validation fixture.
-
-No authority for broader household redesign, KFE redesign, dynamics, NK, regional HANK, Deep Learning, calibration, welfare/policy, or Results.
+- network-ready regional fixed point;
+- learned `W^L`;
+- learned `W^K`;
+- genuine regional nominal HANK block;
+- equilibrium-constrained neural calibration;
+- automatic regional parameter generator;
+- 31-region learned equilibrium panel;
+- policy/welfare/Results claims.
