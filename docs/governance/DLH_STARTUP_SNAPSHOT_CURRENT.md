@@ -21,9 +21,108 @@ Priority:
 
 ## Current Builder state
 
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5C_ACCEPTED__OWNER_KFE_REDESIGN_DECISION_REQUIRED`
+Current published task:
 
-There is currently **no active Builder Issue**. DSH must remain stopped until a new Issue is published, Task Index / Startup Snapshot are synchronized, and an activation comment is present.
+**Issue #27 — DLH-5D: Freeze conservative stationary-KFE boundary law and MATLAB-style contamination contract**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__STATIONARY_KFE_BOUNDARY_AND_CONTAMINATION_CONTRACT`
+
+Builder authority becomes active only when Issue #27 remains open, Task Index/Startup identity is synchronized, and the authoritative activation comment is present.
+
+Dedicated branch:
+
+`dsh/issue-27-dlh-5d-kfe-boundary-contamination-contract-2026-09-01`
+
+Issue #27 is design/provenance only. DSH may add only the two explicit Markdown outputs in the Issue body and may not modify existing production/model/config/test/report/governance files.
+
+## Owner scientific clarification now frozen for DLH-5D
+
+The stationary KFE generator `Q` is expected to be singular. This is normal, not a solver failure.
+
+The scientific stationary object is:
+
+```text
+Q^T g = 0
+sum(g * cell_weight) = 1
+g >= 0 up to tolerance
+```
+
+MATLAB-style contamination / row replacement remains an authorized numerical normalization approach in principle:
+
+```text
+T = Q^T
+T_tilde[n,:] = 0
+T_tilde[n,n] = 1
+rhs[n] = c > 0
+raw = solve(T_tilde, rhs)
+g = raw / (sum(raw) * cell_weight)
+```
+
+The contamination method is not rejected merely because `Q` is singular.
+
+However, a contaminated solution is scientifically valid only if its normalized density also satisfies the ORIGINAL unmodified equation `Q^T g = 0` within the frozen tolerance. Contaminated-system residual alone is insufficient.
+
+For a conservative generator with a unique stationary distribution, future validation must demonstrate bounded pin-row invariance: different deterministic replacement rows recover the same normalized density within tolerance.
+
+## Finite-grid boundary contract to be frozen
+
+DLH-5C established that the current source-axis assembly can omit an outward destination at a finite boundary while retaining the corresponding rate in the diagonal, producing negative row sums / probability leakage.
+
+DLH-5D must freeze:
+
+```text
+sum_j Q[i,j] = 0
+Q[i,j] >= 0 for i != j
+Q[i,i] = -sum_{j != i} Q[i,j]
+```
+
+within numerical tolerance.
+
+At finite asset boundaries the represented process must obey no outward probability flux.
+
+The successor implementation must distinguish:
+
+- economically requested outward drift/rate;
+- admitted finite-grid generator rate.
+
+A conservative assembler may not silently turn a materially outward policy into a scientific PASS. Requested outward boundary flow above the frozen tolerance must surface as `BOUNDARY_POLICY_VIOLATION` and stop acceptance.
+
+## Future acceptance targets to be frozen by Issue #27
+
+Default successor tolerances unless DLH-5D justifies stricter/scaled alternatives:
+
+```text
+generator row-sum max abs              <= 1e-12
+negative off-diagonal magnitude        <= 1e-12
+original stationary residual ||Q^T g|| <= 1e-10
+mass normalization error               <= 1e-12
+minimum density                        >= -1e-12
+multi-pin normalized-density max diff  <= 1e-10
+repeat numeric difference              <= 1e-12
+boundary requested outward rate        <= 1e-10
+```
+
+For the canonical validation fixture, a unique normalized stationary distribution is required. If a repaired conservative generator supports multiple economically valid stationary measures, stop for Owner decision; do not let the contamination row implicitly choose a mixture.
+
+## MATLAB provenance requirement
+
+Issue #27 must use the authorized read-only MATLAB source root:
+
+`D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
+
+to audit, where available:
+
+- HJB generator/transition matrix `A`;
+- KFE use of `A'`;
+- contaminated-row construction;
+- chosen row/RHS conventions;
+- normalization;
+- finite-grid boundary treatment;
+- any implicit matrix assumptions relevant to the contamination method.
+
+Missing provenance must be reported as `NOT LOCATED`, not inferred.
 
 ## Latest accepted gate — Issue #26 / DLH-5C
 
@@ -39,148 +138,64 @@ Acceptance level:
 
 `L3_COMMIT_OR_PR_VERIFIED`
 
-Scientific numerical evidence level:
+Scientific evidence level:
 
 `D2_MACHINE_NUMERICAL_DIAGNOSTIC__NO_STRONG_ECONOMIC_RESULTS_CLAIM`
 
-Accepted evidence roots:
+Accepted key findings:
 
-- `reports/dlh_5c_kfe_singularity_diagnostic_2026_08_31/`
-- `reports/dlh_5c_kfe_singularity_diagnostic_r1_2026_08_31/`
-- `reports/dlh_5c_kfe_singularity_diagnostic_r2_2026_09_01/`
+- correct source-generator orientation is `Q[row,col]>0 : row -> col`;
+- current fixed row 295 can yield finite contaminated-system solutions that violate the original stationary equation at D0/D1/D3;
+- row-295 original residual is approximately `0.126 / 0.123 / 0.127`, with the maximum at the dropped row;
+- at D2 the same pinned system becomes exactly singular/non-finite;
+- pins 0/400 recover the same normalized near-null density on the frozen fixture;
+- the current operator has a conservative `a=0` class and a leaky 546-state sink containing row 295;
+- one near-null direction is concentrated essentially on the conservative `a=0` class;
+- fixed-row selection is the primary diagnosed artifact, with boundary conservation and conditioning as supporting layers.
 
-## Accepted stationary-KFE diagnosis
-
-Canonical household source remains:
-
-`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
-
-Current stationary KFE code authority uses:
-
-```text
-transpose = operator.T
-row = floor(0.37*N)-1
-contaminated[row,:] = 0
-contaminated[row,row] = 1
-rhs[row] = 0.007
-raw = spsolve(contaminated,rhs)
-```
-
-This implementation is now scientifically qualified by DLH-5C.
-
-### Correct operator orientation
-
-For a positive off-diagonal source-operator entry:
-
-`Q[row,col] > 0`
-
-the accepted operator assembly means:
-
-`row -> col`
-
-where row is the current/source state and column is the destination state. `Q V` is the backward/HJB action; `Q.T g` is the forward/KFE action.
-
-### Corrected graph structure on frozen D0-D3 fixture
-
-Two closed sinks:
-
-1. size 40, `a=0` borrowing-constrained class — conservative / non-leaky;
-2. size 546, contains accepted row 295 — leaky at 29-30 upper-boundary states.
-
-The D1/D2 graph structure is unchanged. D2 failure is not caused by an SCC topology change.
-
-### Decisive original-equation residual evidence
-
-Diagnostic pins are `{0,200,295,400,600,799}`.
-
-- Pins 0 and 400 recover the same normalized density and satisfy `Q.T @ g = 0` to machine precision across D0-D3.
-- The accepted pin 295 and other pins inside the leaky 546-state sink can produce finite contaminated-system solutions at D0/D1/D3, but those normalized densities are not solutions of the ORIGINAL stationary equation.
-- Accepted pin 295 original residuals are approximately:
-  - D0: `0.1261148952`
-  - D1: `0.1233636144`
-  - D3: `0.1272057472`
-- In each case the maximum residual occurs exactly at the dropped/pinned equation.
-- At D2 pin 295 becomes exactly singular/non-finite; pins 0/400 remain finite and agree.
-
-### Nullspace / stationary-support evidence
-
-Bounded sparse singular diagnostics at D1/D2 show one near-zero singular direction, with essentially all L1 support on the conservative `a=0` size-40 class and negligible support on the leaky 546-state sink.
-
-Accepted bounded interpretation:
-
-- PRIMARY: `FIXED_ROW_SELECTION_ARTIFACT_CANDIDATE`;
-- direct D2 mechanism: exact sparse-pivot/singularity of the inconsistent fixed-pinned system;
-- structural supporting blocker: upper-boundary non-conservation / leakage in the post-convergence operator;
-- `MULTIPLE_OR_NONUNIQUE_STATIONARY_CLASS_CANDIDATE` is not accepted as primary.
-
-The frozen 9-point D1->D2 scan only establishes that D2 is the failed sampled endpoint at that resolution; it does not rule out an unsampled narrower failure interval between `t=7/8` and `t=1`.
-
-## Consequence for DLH-5B / two-region prototype
+## Consequence for Issue #25
 
 Issue #25 remains accepted for:
 
-- two-region network wiring;
-- synchronous/Jacobi old-state semantics;
-- labor-flow accounting and wage-bill identities;
-- fixed-damping outer-map implementation;
-- trace/reproducibility/fail-closed architecture.
+- network wiring;
+- synchronous/Jacobi semantics;
+- labor accounting/wage-bill identities;
+- fixed-damping outer-map architecture;
+- trace/reproducibility/fail-closed infrastructure.
 
-However, the current row-295 KFE density is not a validated stationary distribution even at the D0 anchor. Therefore the previously reported household aggregates:
+Its row-295-KFE-dependent `C,L,A,B` aggregates and derived `Z,delta` anchor are not validated stationary-equilibrium economic quantities.
 
-`A*, L*, C*, B*`
+After a successor KFE implementation passes the new contract, household aggregates must be recomputed from scratch and `K_i=M_i*A_i` must be revalidated. If corrected `A <= 0` or the firm block becomes invalid, stop for Owner decision rather than retuning the fixture.
 
-and firm-anchor quantities derived from them:
+## Issue #27 allowed outputs
 
-`Z*, delta*`
+Only:
 
-must not be treated as validated stationary-equilibrium economic quantities.
+1. `docs/specifications/DLH_5D_CONSERVATIVE_STATIONARY_KFE_BOUNDARY_AND_CONTAMINATION_CONTRACT_2026_09_01.md`
+2. `docs/audits/DLH_5D_MATLAB_KFE_CONTAMINATION_AND_BOUNDARY_PROVENANCE_AUDIT_2026_09_01.md`
 
-This also means the exploratory closure `K_i=M_i*A_i` has not yet been revalidated against a scientifically accepted stationary KFE.
+No implementation or experiment execution is authorized.
 
-## Current scientific blocker
+## Current scientific route
 
-The project must not proceed to:
+1. accepted HJB/HA foundation;
+2. accepted two-region contract and architecture;
+3. accepted KFE blocker diagnosis;
+4. **current DLH-5D design freeze**;
+5. only after DLH-5D acceptance, publish a bounded KFE/boundary implementation-validation task;
+6. recompute household aggregates and revalidate `K=M*A` / firm anchor;
+7. only after that resume perturbed two-region equilibrium, OD/network and later model tracks.
 
-- perturbed two-region equilibrium acceptance;
-- OD/network training execution;
-- learned `W^L`;
-- 3–5 region equilibrium embedding;
-- `W^K`;
-- nominal HANK integration;
-- calibration / 31-region runs;
-- policy/welfare / Results;
+## DSH startup sequence
 
-until the stationary-KFE / finite-grid boundary problem is scientifically redesigned and revalidated.
-
-## Owner scientific decision required before next Issue
-
-The next Builder task is intentionally **not published**.
-
-Owner must freeze the scientific redesign contract for at least:
-
-1. stationary KFE equation and normalization condition;
-2. finite-grid boundary law and generator conservation requirement;
-3. whether the MATLAB-faithful fixed contaminated-row pin is superseded;
-4. numerical solver class allowed for the stationary equation;
-5. acceptance tolerances for original-equation residual, mass normalization, non-negativity and boundary mass;
-6. required revalidation of household aggregates and the two-region `K_i=M_i*A_i` anchor after the KFE repair.
-
-Until that decision is made, no active Builder authority exists.
-
-## Earlier accepted foundation
-
-### Issue #25 / DLH-5B
-
-Accepted candidate:
-
-`4c97ae30d98c40466af3ff11ce8048e5e5087335`
-
-Architecture accepted, stationary-KFE-dependent economic quantities scientifically qualified by DLH-5C.
-
-### Issue #24 / DLH-5A
-
-Network-ready two-region real structural HA-GE contract accepted.
-
-### Issue #23
-
-MATLAB-faithful two-asset HJB / transfer-FOC parity repair accepted. The household/HJB source remains code authority; the stationary KFE portion now requires a new scientific redesign gate before downstream economic use.
+1. `Set-Location D:\deep-learning-hank`;
+2. verify repo/remote/worktree;
+3. `git fetch origin` and record fresh `origin/main`;
+4. read all CURRENT rules;
+5. read fresh Task Index and this Startup Snapshot;
+6. read Issue #27 latest body/comments and verify activation;
+7. read accepted Issues #23-#26 evidence and canonical household HJB/KFE source read-only;
+8. inspect authorized MATLAB source root read-only for provenance;
+9. create the exact Issue #27 dedicated branch from fresh `origin/main`;
+10. add only the two design/audit Markdown files;
+11. commit/push and STOP for fresh ChatGPT review.
