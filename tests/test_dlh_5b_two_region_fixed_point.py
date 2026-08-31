@@ -5,15 +5,27 @@ perturbed outer iteration, S2 region-order invariance, conservation/accounting
 gates, HJB/KFE/boundary diagnostics, firm validity and deterministic
 reproducibility. Household solves call the accepted oracle; the module under
 test does not reimplement HJB/KFE logic.
+
+R1 (GPT review 2026-08-31): adds S1 per-turn validity-bundle enforcement,
+required trace fields (`P^L`, `lambda`, `Gamma_next`), NaN-aware numeric
+comparison, fail-closed terminal classification on S2/reproducibility, and
+no-regression of the predecessor S0/S1 observed scientific outcome.
 """
 
 from __future__ import annotations
+
+import dataclasses
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 
 from deep_learning_hank.regional.two_region_fixed_point import (
+    S0_TRACE_FIELDS,
     FrozenFirmParams,
+    _is_blocked_stop,
+    _terminal_classification,
+    _trace_row,
     build_fixture,
     canonical_numbers,
     derive_anchor,
@@ -24,6 +36,7 @@ from deep_learning_hank.regional.two_region_fixed_point import (
     run_s0,
     run_s1,
     run_s2,
+    validity_bundle,
 )
 
 CONFIG_PATH = "configs/dlh_5b_two_region_symmetric_anchor.toml"
@@ -244,3 +257,161 @@ def test_reproducibility_s1(cfg, base, firm):
     for a, b in zip(r1.trace, r2.trace):
         max_diff = max(max_diff, max_numeric_diff(canonical_numbers(a), canonical_numbers(b)))
     assert max_diff <= cfg.reproducibility_tol
+
+
+# ---------------------------------------------------------------------------
+# R1-A: S1 per-turn validity-bundle enforcement
+# ---------------------------------------------------------------------------
+
+
+def test_s1_validity_gate_enforcement(cfg, base, firm):
+    """A failing validity gate on a valid turn must stop with VALIDITY_GATE_FAILED."""
+    grid, params, numerics = base
+    # Negative accounting tolerance makes the accounting gate deterministically fail.
+    bad_cfg = dataclasses.replace(cfg, accounting_tol=-1.0)
+    r = run_s1(bad_cfg, grid, params, numerics, firm)
+    assert r.stop_reason.startswith("VALIDITY_GATE_FAILED:")
+    assert r.iterations == 1
+    assert len(r.trace) == 1
+    assert r.trace[-1].valid  # turn preserved in trace
+
+
+def test_s1_valid_turns_pass_validity_bundle(cfg, s1):
+    """All valid S1 turns satisfy the full frozen validity bundle (no regression)."""
+    for rec in s1.trace:
+        if rec.valid:
+            ok, detail, _ = validity_bundle(cfg, rec)
+            assert ok, (rec.gamma, detail)
+
+
+# ---------------------------------------------------------------------------
+# R1-B: required trace fields
+# ---------------------------------------------------------------------------
+
+
+def _field_index():
+    return {f: i for i, f in enumerate(S0_TRACE_FIELDS)}
+
+
+def test_trace_required_fields_valid_turn(cfg, s0):
+    idx = _field_index()
+    for f in ("P11", "P12", "P21", "P22", "lambda",
+              "gamma_next_w1", "gamma_next_w2", "gamma_next_ra1", "gamma_next_ra2"):
+        assert f in idx, f
+    row = _trace_row(s0.record, "PASS", cfg)
+    assert row[idx["P11"]] == 0.9
+    assert row[idx["P12"]] == 0.1
+    assert row[idx["P21"]] == 0.1
+    assert row[idx["P22"]] == 0.9
+    assert row[idx["lambda"]] == 0.5
+    gnext = [row[idx[f]] for f in ("gamma_next_w1", "gamma_next_w2", "gamma_next_ra1", "gamma_next_ra2")]
+    assert all(np.isfinite(x) for x in gnext)
+
+
+def test_trace_required_fields_blocked_terminal_turn(cfg, s1):
+    idx = _field_index()
+    blocked = s1.trace[-1]
+    assert _is_blocked_stop(s1.stop_reason)
+    row = _trace_row(blocked, s1.stop_reason, cfg)
+    gnext = [row[idx[f]] for f in ("gamma_next_w1", "gamma_next_w2", "gamma_next_ra1", "gamma_next_ra2")]
+    assert all(np.isnan(x) for x in gnext)
+    assert row[idx["stop_reason"]] == s1.stop_reason
+
+
+# ---------------------------------------------------------------------------
+# R1-C: NaN-aware numeric comparison
+# ---------------------------------------------------------------------------
+
+
+def test_max_numeric_diff_nan_aware():
+    assert max_numeric_diff([1.0, float("nan")], [1.0, float("nan")]) == 0.0
+    assert max_numeric_diff([1.0, float("nan")], [1.0, 2.0]) == float("inf")
+    assert max_numeric_diff([1.0, 2.0], [1.0, float("nan")]) == float("inf")
+    assert max_numeric_diff([1.0, float("inf")], [1.0, float("inf")]) == 0.0
+    assert max_numeric_diff([1.0, float("inf")], [1.0, float("-inf")]) == float("inf")
+    assert max_numeric_diff([1.0, 2.0], [1.0, 3.0]) == 1.0
+    assert max_numeric_diff([1.0, 2.0, 3.0], [1.0, 2.0]) == float("inf")
+    assert max_numeric_diff([], []) == 0.0
+
+
+# ---------------------------------------------------------------------------
+# R1-D: fail-closed terminal classification
+# ---------------------------------------------------------------------------
+
+
+def _ok_s0():
+    return SimpleNamespace(pass_bool=True)
+
+
+def _ok_repro():
+    return {"pass_bool": True, "within_tol": True}
+
+
+def _ok_s2():
+    return SimpleNamespace(pass_bool=True)
+
+
+def test_terminal_classification_s2_failure_blocks_architecture_class():
+    s1 = SimpleNamespace(stop_reason="ACCEPTED")
+    cls = _terminal_classification(
+        None, _ok_s0(), s1, SimpleNamespace(pass_bool=False), _ok_repro(), _ok_repro()
+    )
+    assert cls == "BLOCKED_DLH_5B_S2_ORDER_INVARIANCE_FAILED"
+    assert "ARCHITECTURE_VALIDATED" not in cls
+
+
+def test_terminal_classification_s0_repro_failure_blocks_architecture_class():
+    s1 = SimpleNamespace(stop_reason="ACCEPTED")
+    cls = _terminal_classification(
+        None, _ok_s0(), s1, _ok_s2(), {"pass_bool": True, "within_tol": False}, _ok_repro()
+    )
+    assert cls == "BLOCKED_DLH_5B_S0_REPRODUCIBILITY_FAILED"
+    assert "ARCHITECTURE_VALIDATED" not in cls
+
+
+def test_terminal_classification_s1_repro_failure_blocks_architecture_class():
+    s1 = SimpleNamespace(stop_reason="ACCEPTED")
+    cls = _terminal_classification(
+        None, _ok_s0(), s1, _ok_s2(), _ok_repro(), {"pass_bool": False, "within_tol": True}
+    )
+    assert cls == "BLOCKED_DLH_5B_S1_REPRODUCIBILITY_FAILED"
+    assert "ARCHITECTURE_VALIDATED" not in cls
+
+
+def test_terminal_classification_accept_and_validity_fail_positive_classes():
+    conv = _terminal_classification(
+        None, _ok_s0(), SimpleNamespace(stop_reason="ACCEPTED"),
+        _ok_s2(), _ok_repro(), _ok_repro(),
+    )
+    assert conv == "DLH_5B_TWO_REGION_ANCHOR_AND_PERTURBED_FIXED_POINT_CONVERGED__READY_FOR_GPT_REVIEW"
+    vgf = _terminal_classification(
+        None, _ok_s0(), SimpleNamespace(stop_reason="VALIDITY_GATE_FAILED:accounting:origin0_conservation=False"),
+        _ok_s2(), _ok_repro(), _ok_repro(),
+    )
+    assert vgf == "DLH_5B_TWO_REGION_ARCHITECTURE_VALIDATED__PERTURBED_PATH_VALIDITY_GATE_FAILED_READY_FOR_GPT_REVIEW"
+    hb = _terminal_classification(
+        None, _ok_s0(), SimpleNamespace(stop_reason="HOUSEHOLD_BLOCK_FAILED:region0:..."),
+        _ok_s2(), _ok_repro(), _ok_repro(),
+    )
+    assert hb == "DLH_5B_TWO_REGION_ARCHITECTURE_VALIDATED__PERTURBED_PATH_HOUSEHOLD_BLOCKED_READY_FOR_GPT_REVIEW"
+
+
+# ---------------------------------------------------------------------------
+# R1-E: no regression of predecessor S0/S1 observed scientific outcome
+# ---------------------------------------------------------------------------
+
+
+def test_s0_s1_predecessor_outcome_no_regression(cfg, s0, s1):
+    # S0 anchor smoke still passes (same as predecessor evidence).
+    assert s0.pass_bool
+    assert s0.record.R_w <= cfg.s0_tol_w
+    assert s0.record.R_ra <= cfg.s0_tol_ra
+    # S1 observed predecessor outcome preserved: region-0 household KFE
+    # fail-closed at iteration 4 after three valid turns (GPT-cited evidence).
+    assert s1.stop_reason.startswith("HOUSEHOLD_BLOCK_FAILED:region0:")
+    assert s1.iterations == 4
+    # Residuals across the valid turns are non-increasing (deterministic trend).
+    valid = [rec for rec in s1.trace if rec.valid]
+    assert len(valid) == 3
+    rws = [rec.R_w for rec in valid]
+    assert all(b <= a for a, b in zip(rws, rws[1:]))

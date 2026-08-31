@@ -21,6 +21,21 @@ Binding contract (unchanged):
 The only frozen derivation is the one-shot anchor construction: ``Z*``/``delta*``
 are derived ONCE from the accepted household solve at ``w*=1, r_a*=0.03``,
 pass the sanity gate, and are then frozen for both regions and all cases.
+
+R1 bounded repair (GPT review 2026-08-31, same Issue #25, no successor):
+- S1 enforces the full frozen validity bundle (accounting/network + KFE + firm)
+  on every valid turn, before residual acceptance and before damping; any
+  failure stops with ``VALIDITY_GATE_FAILED:<deterministic detail>``;
+- every trace row carries full ``P^L``, ``lambda``, and ``Gamma_next``;
+  blocked terminal turns record deterministic NaN/null-equivalent ``Gamma_next``;
+- ``max_numeric_diff`` is non-finite aware (aligned NaN==NaN equal; any
+  NaN-vs-finite, Inf-sign or other nonfinite mismatch -> failure/Inf);
+- terminal classification fail-closes on S2 / reproducibility failure and never
+  emits an ``ARCHITECTURE_VALIDATED`` class when order invariance or
+  reproducibility is false.
+The only config mutation authorized by R1 is ``output.root`` (new R1 evidence
+root); every scientific/numerical fixture field stays value-identical to the
+predecessor.
 """
 
 from __future__ import annotations
@@ -549,6 +564,57 @@ def boundary_warning(cfg: TwoRegionConfig, rec: OneTurnRecord) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Full frozen validity bundle (R1-A) and damping helpers
+# ---------------------------------------------------------------------------
+
+# Frozen stop classes that block the outer iteration before a next state is
+# defined (no damping applied -> deterministic NaN Gamma_next).
+BLOCKED_STOP_PREFIXES = ("HOUSEHOLD_BLOCK_FAILED", "INVALID_FIRM_STATE", "VALIDITY_GATE_FAILED")
+
+
+def _is_blocked_stop(reason: str) -> bool:
+    return any(reason.startswith(p) for p in BLOCKED_STOP_PREFIXES)
+
+
+def validity_bundle(cfg: TwoRegionConfig, rec: OneTurnRecord):
+    """Full frozen accounting/network + KFE + firm validity bundle (R1-A).
+
+    Returns ``(ok, deterministic_failure_detail, checks)``. Every gate must pass
+    before a valid turn may be accepted or damped.
+    """
+    ac_ok, ac_checks = accounting_gate(cfg, rec)
+    kfe_ok, kfe_checks = kfe_gate(cfg, rec)
+    fm_ok, fm_checks = firm_gate(rec)
+    ok = bool(ac_ok and kfe_ok and fm_ok)
+    detail = None
+    if not ok:
+        for name, checks in (("accounting", ac_checks), ("kfe", kfe_checks), ("firm", fm_checks)):
+            for key, val in checks.items():
+                if not val:
+                    detail = f"{name}:{key}=False"
+                    break
+            if detail is not None:
+                break
+    return ok, detail, {"accounting": ac_checks, "kfe": kfe_checks, "firm": fm_checks}
+
+
+def _damp(gamma: Sequence[float], gamma_hat: Sequence[float], lam: float):
+    return tuple((1.0 - lam) * float(g) + lam * float(gh) for g, gh in zip(gamma, gamma_hat))
+
+
+def _gamma_next(rec: OneTurnRecord, stop_reason: str, lam: float):
+    """Deterministic ``Gamma_next`` for a trace row.
+
+    Valid turns (including ACCEPTED / MAX_ITER_REACHED) expose the damped next
+    state. Blocked terminal turns (no next state defined) expose deterministic
+    NaN/null-equivalent fields.
+    """
+    if not rec.valid or _is_blocked_stop(stop_reason):
+        return (float("nan"), float("nan"), float("nan"), float("nan"))
+    return _damp(rec.gamma, rec.gamma_hat, lam)
+
+
+# ---------------------------------------------------------------------------
 # Experiments S0 / S1 / S2
 # ---------------------------------------------------------------------------
 
@@ -598,9 +664,36 @@ def _seq_safe(seq: Sequence, i: int) -> float:
 
 
 def max_numeric_diff(a: Sequence[float], b: Sequence[float]) -> float:
+    """Non-finite-aware elementwise maximum absolute difference (R1-C).
+
+    - aligned ``NaN``/``NaN`` at the same position is treated as equal
+      (structurally identical blocked rows);
+    - ``NaN`` vs any finite value fails (returns ``inf``);
+    - ``+Inf``/``+Inf`` and ``-Inf``/``-Inf`` aligned are equal; any Inf-sign
+      mismatch, Inf-vs-finite, or other nonmatching non-finite pattern fails;
+    - length mismatch fails.
+
+    The result is ``inf`` on any structural non-finite mismatch, so Python's
+    ``max`` ordering can never silently swallow a NaN mismatch.
+    """
     if len(a) != len(b):
         return float("inf")
-    return max(abs(float(x) - float(y)) for x, y in zip(a, b)) if a else 0.0
+    max_d = 0.0
+    for x, y in zip(a, b):
+        x = float(x)
+        y = float(y)
+        if math.isnan(x) and math.isnan(y):
+            continue
+        if math.isnan(x) or math.isnan(y):
+            return float("inf")
+        if math.isinf(x) or math.isinf(y):
+            if math.isinf(x) and math.isinf(y) and math.copysign(1.0, x) == math.copysign(1.0, y):
+                continue
+            return float("inf")
+        d = abs(x - y)
+        if d > max_d:
+            max_d = d
+    return max_d
 
 
 @dataclasses.dataclass
@@ -619,16 +712,17 @@ def run_s0(cfg: TwoRegionConfig, grid, params, numerics, firm: FrozenFirmParams)
     rec = one_turn(gamma0, cfg, grid, params, numerics, firm, region_order=(0, 1))
     if not rec.valid:
         return S0Result(rec, False, rec.invalid_reason, {}, {}, {}, {})
-    ac_ok, ac_checks = accounting_gate(cfg, rec)
-    kfe_ok, kfe_checks = kfe_gate(cfg, rec)
-    fm_ok, fm_checks = firm_gate(rec)
+    vb_ok, vb_detail, vb_checks = validity_bundle(cfg, rec)
     resid_ok = bool(rec.R_w <= cfg.s0_tol_w and rec.R_ra <= cfg.s0_tol_ra)
     boundary = boundary_warning(cfg, rec)
-    ok = ac_ok and kfe_ok and fm_ok and resid_ok
+    ok = bool(vb_ok and resid_ok)
     reason = "PASS" if ok else "FAIL"
-    if not resid_ok:
-        reason = f"FAIL_RESIDUALS (R_w={rec.R_w}, R_ra={rec.R_ra})"
-    return S0Result(rec, ok, reason, ac_checks, kfe_checks, fm_checks, boundary)
+    if not ok:
+        if not vb_ok:
+            reason = f"FAIL_VALIDITY_BUNDLE:{vb_detail}"
+        elif not resid_ok:
+            reason = f"FAIL_RESIDUALS (R_w={rec.R_w}, R_ra={rec.R_ra})"
+    return S0Result(rec, ok, reason, vb_checks["accounting"], vb_checks["kfe"], vb_checks["firm"], boundary)
 
 
 @dataclasses.dataclass
@@ -654,11 +748,15 @@ def run_s1(cfg: TwoRegionConfig, grid, params, numerics, firm: FrozenFirmParams)
             any_warn = any_warn or any(bm[f"region{i}"]["warning"] for i in (0, 1))
         if not rec.valid:
             return S1Result(trace, rec.invalid_reason, n + 1, False, None, any_warn)
+        # R1-A: full frozen validity bundle before residual acceptance and damping.
+        vb_ok, vb_detail, _ = validity_bundle(cfg, rec)
+        if not vb_ok:
+            return S1Result(
+                trace, f"VALIDITY_GATE_FAILED:{vb_detail}", n + 1, False, None, any_warn
+            )
         if rec.R_w <= cfg.tol_w and rec.R_ra <= cfg.tol_ra:
             return S1Result(trace, "ACCEPTED", n + 1, True, (rec.R_w, rec.R_ra), any_warn)
-        gamma = tuple(
-            (1.0 - cfg.lambda_) * g + cfg.lambda_ * gh for g, gh in zip(gamma, rec.gamma_hat)
-        )
+        gamma = _damp(gamma, rec.gamma_hat, cfg.lambda_)
     last = trace[-1]
     return S1Result(
         trace, "MAX_ITER_REACHED", cfg.max_iter, False, (last.R_w, last.R_ra), any_warn
@@ -734,11 +832,13 @@ S0_TRACE_FIELDS = [
     "F11", "F12", "F21", "F22", "Ldest1", "Ldest2", "K1", "K2",
     "Y1", "Y2", "what1", "what2", "rhat1", "rhat2",
     "Rw", "Rra", "gamma_hat_w1", "gamma_hat_w2", "gamma_hat_ra1", "gamma_hat_ra2",
+    "P11", "P12", "P21", "P22", "lambda",
+    "gamma_next_w1", "gamma_next_w2", "gamma_next_ra1", "gamma_next_ra2",
     "stop_reason",
 ]
 
 
-def _trace_row(rec: OneTurnRecord, stop_reason: str) -> list:
+def _trace_row(rec: OneTurnRecord, stop_reason: str, cfg: TwoRegionConfig) -> list:
     r0 = rec.region[0]
     r1 = rec.region[1]
     bm0 = r0.boundary_masses or {}
@@ -759,6 +859,7 @@ def _trace_row(rec: OneTurnRecord, stop_reason: str) -> list:
         except (IndexError, TypeError):
             return float("nan")
 
+    gnext = _gamma_next(rec, stop_reason, cfg.lambda_)
     return [
         rec.gamma[0], rec.gamma[1], rec.gamma[2], rec.gamma[3],
         rec.wbar[0], rec.wbar[1],
@@ -776,6 +877,8 @@ def _trace_row(rec: OneTurnRecord, stop_reason: str) -> list:
         seq("r_hat_a", 0), seq("r_hat_a", 1),
         rec.R_w, rec.R_ra,
         seq("gamma_hat", 0), seq("gamma_hat", 1), seq("gamma_hat", 2), seq("gamma_hat", 3),
+        cfg.P_L[0][0], cfg.P_L[0][1], cfg.P_L[1][0], cfg.P_L[1][1], cfg.lambda_,
+        gnext[0], gnext[1], gnext[2], gnext[3],
         stop_reason,
     ]
 
@@ -796,10 +899,12 @@ def _fmt(x: Any) -> str:
     return str(x)
 
 
-def _write_trace_csv(path: pathlib.Path, trace: list, stop_reason: str) -> None:
+def _write_trace_csv(cfg: TwoRegionConfig, path: pathlib.Path, trace: list, stop_reason: str) -> None:
     rows = []
     for n, rec in enumerate(trace):
-        rows.append([n] + _trace_row(rec, stop_reason if n == len(trace) - 1 else ""))
+        rows.append(
+            [n] + _trace_row(rec, stop_reason if n == len(trace) - 1 else "", cfg)
+        )
     write_csv(path, ["iter"] + S0_TRACE_FIELDS, rows)
 
 
@@ -889,7 +994,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "frozen_for_all_cases": True,
         },
     )
-    _write_trace_csv(root / "DLH_5B_S0_ANCHOR_TRACE.csv", [s0.record], s0.reason)
+    _write_trace_csv(cfg, root / "DLH_5B_S0_ANCHOR_TRACE.csv", [s0.record], s0.reason)
 
     s1 = None
     s2 = None
@@ -898,7 +1003,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         # 3) S1 only if S0 passed.
         s1 = run_s1(cfg, grid, params, numerics, firm)
         s1_repro = _reproduce_s1(cfg, grid, params, numerics, firm)
-        _write_trace_csv(root / "DLH_5B_S1_PERTURBED_TRACE.csv", s1.trace, s1.stop_reason)
+        _write_trace_csv(cfg, root / "DLH_5B_S1_PERTURBED_TRACE.csv", s1.trace, s1.stop_reason)
         # 4) S2 region-order invariance.
         s2 = run_s2(cfg, grid, params, numerics, firm)
         write_json(
@@ -912,7 +1017,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             },
         )
     else:
-        _write_trace_csv(root / "DLH_5B_S1_PERTURBED_TRACE.csv", [s0.record], "S0_FAILED_NOT_RUN")
+        _write_trace_csv(cfg, root / "DLH_5B_S1_PERTURBED_TRACE.csv", [s0.record], "S0_FAILED_NOT_RUN")
         write_json(
             root / "DLH_5B_ORDER_INVARIANCE.json",
             {"max_numeric_difference": None, "pass_bool": False, "skipped": True},
@@ -926,21 +1031,34 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     # execution report + forbidden check (generated inside this allowlisted module)
     _write_execution_report(cfg, root, anchor, s0, s1, s2, s0_repro, s1_repro)
-    _write_forbidden_check(cfg, root, s0, s1)
+    _write_forbidden_check(cfg, root, s0, s1, s2, s0_repro, s1_repro)
     print(f"artifacts written under {root}")
     return 0
 
 
-def _terminal_classification(cfg: TwoRegionConfig, s0, s1) -> str:
-    """Map the frozen experiment outcome to the Issue #25 terminal classes."""
+def _terminal_classification(cfg: TwoRegionConfig, s0, s1, s2, s0_repro, s1_repro) -> str:
+    """Map the frozen experiment outcome to the Issue #25 terminal classes.
+
+    R1-D: fail closed on S2 order-invariance failure and on S0/S1
+    reproducibility failure. An ``ARCHITECTURE_VALIDATED`` class is emitted only
+    when order invariance and both reproducibility checks pass.
+    """
     if s0 is None or not s0.pass_bool:
         return "BLOCKED_DLH_5B_S0_ANCHOR_RESIDUAL_OR_VALIDITY_GATE_FAILED"
+    if s0_repro is None or not s0_repro.get("pass_bool", False) or not s0_repro.get("within_tol", False):
+        return "BLOCKED_DLH_5B_S0_REPRODUCIBILITY_FAILED"
     if s1 is None:
         return "BLOCKED_DLH_5B_S1_NOT_RUN"
+    if s1_repro is None or not s1_repro.get("pass_bool", False) or not s1_repro.get("within_tol", False):
+        return "BLOCKED_DLH_5B_S1_REPRODUCIBILITY_FAILED"
+    if s2 is None or not s2.pass_bool:
+        return "BLOCKED_DLH_5B_S2_ORDER_INVARIANCE_FAILED"
     if s1.stop_reason == "ACCEPTED":
         return "DLH_5B_TWO_REGION_ANCHOR_AND_PERTURBED_FIXED_POINT_CONVERGED__READY_FOR_GPT_REVIEW"
     if s1.stop_reason.startswith("HOUSEHOLD_BLOCK_FAILED"):
         return "DLH_5B_TWO_REGION_ARCHITECTURE_VALIDATED__PERTURBED_PATH_HOUSEHOLD_BLOCKED_READY_FOR_GPT_REVIEW"
+    if s1.stop_reason.startswith("VALIDITY_GATE_FAILED"):
+        return "DLH_5B_TWO_REGION_ARCHITECTURE_VALIDATED__PERTURBED_PATH_VALIDITY_GATE_FAILED_READY_FOR_GPT_REVIEW"
     # MAX_ITER_REACHED or INVALID_FIRM_STATE (fail-closed, preserved negative evidence)
     return "DLH_5B_TWO_REGION_ARCHITECTURE_VALIDATED__PERTURBED_FIXED_POINT_NONCONVERGENT_READY_FOR_GPT_REVIEW"
 
@@ -953,8 +1071,117 @@ def _artifact_hashes(root: pathlib.Path) -> dict:
     return hashes
 
 
+# ---------------------------------------------------------------------------
+# Predecessor vs R1 comparison (R1 report evidence)
+# ---------------------------------------------------------------------------
+
+PREDECESSOR_ROOT = pathlib.Path("reports/dlh_5b_two_region_fixed_point_2026_08_31")
+
+
+def _parse_num(value) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float("nan")
+
+
+def _read_json_file(path: pathlib.Path):
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except FileNotFoundError:
+        return None
+
+
+def _read_csv_rows(path: pathlib.Path):
+    import csv
+
+    try:
+        with open(path, newline="", encoding="utf-8") as fh:
+            return list(csv.DictReader(fh))
+    except FileNotFoundError:
+        return None
+
+
+def _compare_trace_csv(pred_path: pathlib.Path, r1_path: pathlib.Path) -> dict:
+    pr = _read_csv_rows(pred_path)
+    rr = _read_csv_rows(r1_path)
+    if pr is None or rr is None:
+        return {"available": False, "note": "trace file missing in predecessor or R1 root"}
+    if len(pr) != len(rr):
+        return {
+            "available": True, "row_count": (len(pr), len(rr)), "identical": False,
+            "reason": "row count differs",
+        }
+    common_cols = [c for c in pr[0] if c in rr[0] and c not in ("iter", "stop_reason")]
+    max_diff = 0.0
+    for a, b in zip(pr, rr):
+        va = [_parse_num(a[c]) for c in common_cols]
+        vb = [_parse_num(b[c]) for c in common_cols]
+        max_diff = max(max_diff, max_numeric_diff(va, vb))
+    same_stop = pr[-1].get("stop_reason", "") == rr[-1].get("stop_reason", "")
+    return {
+        "available": True, "row_count": (len(pr), len(rr)), "common_cols": len(common_cols),
+        "max_numeric_diff": max_diff, "same_final_stop_reason": same_stop,
+        "identical": bool(max_diff <= 1e-12 and same_stop),
+    }
+
+
+def _compare_anchor_json(pred_path: pathlib.Path, r1_path: pathlib.Path) -> dict:
+    pa = _read_json_file(pred_path)
+    ra = _read_json_file(r1_path)
+    if pa is None or ra is None:
+        return {"available": False, "note": "anchor file missing in predecessor or R1 root"}
+    fields = ["A_star", "L_star", "C_star", "B_star", "K_star", "Ldest_star", "Z_star", "delta_star", "alpha"]
+    differing = {}
+    max_d = 0.0
+    for f in fields:
+        x = _parse_num(pa.get(f))
+        y = _parse_num(ra.get(f))
+        if math.isnan(x) or math.isnan(y):
+            continue
+        d = abs(x - y)
+        max_d = max(max_d, d)
+        if d > 1e-12:
+            differing[f] = d
+    return {"available": True, "max_abs_diff": max_d, "differing_fields": differing, "identical": not differing}
+
+
+def _compare_json_equality(pred_path: pathlib.Path, r1_path: pathlib.Path, fields) -> dict:
+    pa = _read_json_file(pred_path)
+    ra = _read_json_file(r1_path)
+    if pa is None or ra is None:
+        return {"available": False, "note": "json file missing in predecessor or R1 root"}
+    out = {}
+    for f in fields:
+        out[f] = {"pred": pa.get(f), "r1": ra.get(f), "equal": pa.get(f) == ra.get(f)}
+    return {"available": True, "fields": out}
+
+
+def compare_predecessor_r1(pred_root: pathlib.Path, r1_root: pathlib.Path) -> dict:
+    """Deterministic comparison of the preserved predecessor vs the R1 evidence."""
+    anchor = _compare_anchor_json(
+        pred_root / "DLH_5B_ANCHOR_FIXTURE.json", r1_root / "DLH_5B_ANCHOR_FIXTURE.json"
+    )
+    s0 = _compare_trace_csv(
+        pred_root / "DLH_5B_S0_ANCHOR_TRACE.csv", r1_root / "DLH_5B_S0_ANCHOR_TRACE.csv"
+    )
+    s1 = _compare_trace_csv(
+        pred_root / "DLH_5B_S1_PERTURBED_TRACE.csv", r1_root / "DLH_5B_S1_PERTURBED_TRACE.csv"
+    )
+    s2 = _compare_json_equality(
+        pred_root / "DLH_5B_ORDER_INVARIANCE.json", r1_root / "DLH_5B_ORDER_INVARIANCE.json",
+        ["max_numeric_difference", "tol", "pass_bool"],
+    )
+    repro = _compare_json_equality(
+        pred_root / "DLH_5B_REPRODUCIBILITY.json", r1_root / "DLH_5B_REPRODUCIBILITY.json",
+        ["s0", "s1"],
+    )
+    return {"anchor": anchor, "s0": s0, "s1": s1, "s2": s2, "reproducibility": repro}
+
+
 def _write_execution_report(cfg, root, anchor, s0, s1, s2, s0_repro, s1_repro) -> None:
-    terminal = _terminal_classification(cfg, s0, s1)
+    terminal = _terminal_classification(cfg, s0, s1, s2, s0_repro, s1_repro)
     lines: list[str] = []
     lines.append("# DLH-5B — Two-Region Fixed-Point Execution Report (Issue #25)")
     lines.append("")
@@ -976,6 +1203,15 @@ def _write_execution_report(cfg, root, anchor, s0, s1, s2, s0_repro, s1_repro) -
     lines.append("- Household fixture: `VALIDATION_FIXTURE_NOT_CALIBRATION` from `tests/test_dlh_4b_transfer.py`.")
     lines.append(f"- Network: `M={list(cfg.M)}`, `m_L={list(cfg.m_L)}`, `P^L={[list(r) for r in cfg.P_L]}`.")
     lines.append(f"- Anchor: `w*={list(cfg.w_star)}`, `r_a*={list(cfg.r_a_star)}`, `alpha={list(cfg.alpha)}`.")
+    lines.append("")
+    lines.append("## R1 bounded-repair record (GPT review 2026-08-31, same Issue #25)")
+    lines.append("")
+    lines.append("- A: S1 enforces the full frozen validity bundle (accounting/network + KFE + firm) on every valid turn, before residual acceptance and before damping; any failure stops with `VALIDITY_GATE_FAILED:<deterministic detail>` and the turn stays in the trace.")
+    lines.append("- B: every trace row now carries full `P^L` (`P11,P12,P21,P22`), `lambda`, and `Gamma_next={w1,w2,ra1,ra2}`; blocked terminal turns record deterministic NaN/null-equivalent `Gamma_next` and the exact stop reason.")
+    lines.append("- C: `max_numeric_diff` is non-finite aware (aligned NaN/NaN equal; NaN-vs-finite, Inf-sign mismatch or other nonfinite mismatch -> failure/Inf).")
+    lines.append("- D: terminal classification fail-closes on S2 order-invariance failure and on S0/S1 reproducibility failure; an `ARCHITECTURE_VALIDATED` class is emitted only when all of those pass.")
+    lines.append("- E: focused tests added for all of the above plus S0/S1 predecessor-outcome no-regression.")
+    lines.append("- F: exact frozen scientific fixture re-run into the R1 no-overwrite root; the ONLY config mutation is `output.root` -> `reports/dlh_5b_two_region_fixed_point_r1_2026_08_31/`. All household/grid/network/anchor/lambda/tolerance/max_iter fields remain value-identical to the predecessor config.")
     lines.append("")
     lines.append("## Derived anchor (derived once, then frozen for all cases)")
     lines.append("")
@@ -1030,6 +1266,14 @@ def _write_execution_report(cfg, root, anchor, s0, s1, s2, s0_repro, s1_repro) -
     lines.append(f"- S0 repeat: {s0_repro}")
     lines.append(f"- S1 repeat: {s1_repro}")
     lines.append("")
+    lines.append("## Predecessor vs R1 comparison (preserved root vs R1 root)")
+    lines.append("")
+    lines.append(f"Predecessor root: `{PREDECESSOR_ROOT}` (unchanged). R1 root: `{cfg.output_root}`.")
+    lines.append("")
+    lines.append("```json")
+    lines.append(json.dumps(compare_predecessor_r1(PREDECESSOR_ROOT, root), indent=1, default=str))
+    lines.append("```")
+    lines.append("")
     lines.append("## Artifact identities (SHA-256)")
     lines.append("")
     for name, h in sorted(_artifact_hashes(root).items()):
@@ -1047,18 +1291,18 @@ def _write_execution_report(cfg, root, anchor, s0, s1, s2, s0_repro, s1_repro) -
         fh.write("\n".join(lines))
 
 
-def _write_forbidden_check(cfg: TwoRegionConfig, root: pathlib.Path, s0, s1) -> None:
+def _write_forbidden_check(cfg: TwoRegionConfig, root: pathlib.Path, s0, s1, s2, s0_repro, s1_repro) -> None:
     lines = [
         "# DLH-5B — Forbidden-Operation / Scope Check (Issue #25)",
         "",
-        "DSH did NOT perform any of the following during Issue #25 execution:",
+        "DSH did NOT perform any of the following during Issue #25 execution (including R1 repair):",
         "",
         "| Forbidden operation | Status |",
         "|---|---|",
         "| Modify the accepted two-asset household oracle | NOT performed (immutable) |",
         "| Reintroduce `B_hh=B_gov=1` / fixed bond-supply GE root | NOT performed |",
         "| Brent/Newton/fsolve for the outer regional fixed point | NOT performed (fixed damping only; Brent used solely in the accepted household initial-value fixture) |",
-        "| Change fixture values after seeing results | NOT performed (config frozen before runs) |",
+        "| Change scientific/numerical fixture fields after seeing results | NOT performed (config frozen; only `output.root` mutated for the R1 root) |",
         "| Adaptive damping / automatic retry | NOT performed (`NO_AUTOMATIC_RETRY`) |",
         "| Grid expansion | NOT performed |",
         "| `GovInv` / GDP-target controller | NOT performed |",
@@ -1069,14 +1313,18 @@ def _write_forbidden_check(cfg: TwoRegionConfig, root: pathlib.Path, s0, s1) -> 
         "| Policy/welfare/Results claims | NOT performed |",
         "| Modify existing single-region GE code (`src/deep_learning_hank/ge/**`) | NOT performed |",
         "| Modify accepted household source / prior configs/tests/reports / roadmap / governance / legacy roots | NOT performed |",
+        "| Overwrite predecessor evidence root (`reports/dlh_5b_two_region_fixed_point_2026_08_31`) | NOT performed (preserved unchanged) |",
         "| `git add .` / `git add -A` | NOT performed (explicit staging only) |",
         "| Self-accept / merge / close Issue / PR / successor Issue | NOT performed |",
         "",
         "Execution discipline: no-overwrite output root "
         f"`{cfg.output_root}` (STOP if pre-existing), `NO_AUTOMATIC_RETRY`.",
         "",
+        "Fail-closed gates: S0 validity bundle + residuals, S1 per-turn validity "
+        "bundle, S2 order invariance, S0/S1 reproducibility.",
+        "",
         "Terminal classification: "
-        f"`{_terminal_classification(cfg, s0, s1)}`",
+        f"`{_terminal_classification(cfg, s0, s1, s2, s0_repro, s1_repro)}`",
         "",
     ]
     with open(root / "DLH_5B_FORBIDDEN_OPERATION_CHECK.md", "w", encoding="utf-8") as fh:
