@@ -1,9 +1,16 @@
-# DLH-5E (Issue #28) — conservative stationary-KFE validator config.
+# DLH-5E (Issue #28) R1 — conservative stationary-KFE validator config.
 #
 # Implementation-validation candidate gate. The accepted MATLAB-faithful HJB
 # source is immutable; the household/grid/numerical fixture is loaded READ-ONLY
 # from the accepted DLH-5B frozen config via the accepted regional
 # build_fixture(), so no scientific fixture drift is possible.
+#
+# R1 (GPT verdict DLH_5E_BOUNDARY_POLICY_BLOCKER_SCIENTIFICALLY_SUPPORTED__
+# ACCEPTANCE_BLOCKED_PENDING_BOUNDARY_COORDINATE_AND_REPRODUCIBILITY_EVIDENCE_
+# REPAIR): only the output root is repointed to the no-overwrite R1 evidence
+# root; the predecessor root reports/dlh_5e_conservative_stationary_kfe_
+# validation_2026_09_01/ is preserved unchanged. No scientific fixture or
+# tolerance change. All comments here are non-authoritative annotations.
 #
 # This config holds ONLY the frozen validation cases (D0 first; D1-D3 reached
 # only after complete D0 success), the exact deterministic pin spec, the frozen
@@ -50,4 +57,7 @@ zero_support_rel_tol = 1e-6
 svd_maxiter = 5000
 
 [output]
-root = "reports/dlh_5e_conservative_stationary_kfe_validation_2026_09_01"
+# R1 (2026-09-01) no-overwrite evidence root; predecessor root
+# reports/dlh_5e_conservative_stationary_kfe_validation_2026_09_01 is preserved
+# unchanged. Root repointed per the R1 GPT review; nothing else changed.
+root = "reports/dlh_5e_conservative_stationary_kfe_validation_r1_2026_09_01"

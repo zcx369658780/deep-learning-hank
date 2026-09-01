@@ -169,6 +169,71 @@ def test_boundary_policy_violation_classification(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# Boundary coordinate reconstruction (R1 repair)
+# ---------------------------------------------------------------------------
+
+
+def _mk_requested(shape):
+    """Zero requested rates with the given (b,a,z) shape."""
+    return {
+        "b_backward_requested": np.zeros(shape),
+        "b_forward_requested": np.zeros(shape),
+        "a_backward_requested": np.zeros(shape),
+        "a_forward_requested": np.zeros(shape),
+    }
+
+
+def test_boundary_coordinates_b_slice(tmp_path):
+    """b-boundary slices are shaped (a,z); argmax is NOT at the last element and
+    the recovered (b,a,z) matches the hand-placed location exactly (C-order)."""
+    cfg = _cfg(tmp_path)
+    shape = (6, 6, 3)  # (b, a, z)
+    req = _mk_requested(shape)
+    # upper-b: forward outward at (b=5, a=1, z=2); also (b=5, a=3, z=0)
+    req["b_forward_requested"][5, 1, 2] = 0.9
+    req["b_forward_requested"][5, 3, 0] = 0.5
+    # lower-b: backward outward at (b=0, a=2, z=1)
+    req["b_backward_requested"][0, 2, 1] = 0.7
+    bd = boundary_outward_diagnostics(req, shape, cfg.boundary_threshold)
+    rows = {bi["boundary"]: bi for bi in bd["boundaries"]}
+    assert rows["lower_b"]["argmax_coords"] == (0, 2, 1)
+    assert rows["upper_b"]["argmax_coords"] == (5, 1, 2)  # NOT the last slice element
+    assert rows["lower_b"]["count_above_threshold"] == 1
+    assert rows["upper_b"]["count_above_threshold"] == 2
+    ub = [(o["b_index"], o["a_index"], o["z_index"]) for o in rows["upper_b"]["offending_states"]]
+    assert ub == [(5, 1, 2), (5, 3, 0)]
+    rates = [round(o["requested_outward_rate"], 9) for o in rows["upper_b"]["offending_states"]]
+    assert rates == [0.9, 0.5]
+    assert rows["upper_b"]["direction"] == "b_forward"
+    assert rows["lower_b"]["direction"] == "b_backward"
+
+
+def test_boundary_coordinates_a_slice(tmp_path):
+    """a-boundary slices are shaped (b,z); argmax is NOT at the last element and
+    the recovered (b,a,z) matches the hand-placed location exactly (C-order)."""
+    cfg = _cfg(tmp_path)
+    shape = (6, 6, 3)  # (b, a, z)
+    req = _mk_requested(shape)
+    # upper-a: forward outward at (b=2, a=5, z=1); also (b=4, a=5, z=2)
+    req["a_forward_requested"][2, 5, 1] = 0.8
+    req["a_forward_requested"][4, 5, 2] = 0.4
+    # lower-a: backward outward at (b=4, a=0, z=2)
+    req["a_backward_requested"][4, 0, 2] = 0.6
+    bd = boundary_outward_diagnostics(req, shape, cfg.boundary_threshold)
+    rows = {bi["boundary"]: bi for bi in bd["boundaries"]}
+    assert rows["lower_a"]["argmax_coords"] == (4, 0, 2)
+    assert rows["upper_a"]["argmax_coords"] == (2, 5, 1)  # NOT the last slice element
+    assert rows["lower_a"]["count_above_threshold"] == 1
+    assert rows["upper_a"]["count_above_threshold"] == 2
+    ua = [(o["b_index"], o["a_index"], o["z_index"]) for o in rows["upper_a"]["offending_states"]]
+    assert ua == [(2, 5, 1), (4, 5, 2)]
+    rates = [round(o["requested_outward_rate"], 9) for o in rows["upper_a"]["offending_states"]]
+    assert rates == [0.8, 0.4]
+    assert rows["upper_a"]["direction"] == "a_forward"
+    assert rows["lower_a"]["direction"] == "a_backward"
+
+
+# ---------------------------------------------------------------------------
 # Stationary / pin classification
 # ---------------------------------------------------------------------------
 
@@ -252,7 +317,7 @@ def test_nonfinite_aware_deterministic_comparison(tmp_path):
     finite and a non-finite value fails the deterministic comparison."""
     cfg = _cfg(tmp_path)
     base = {"terminal": "T", "hjb_converged": True, "boundary_policy_gate": "VIOLATION",
-            "boundary": {"max_requested_outward": float("nan")},
+            "boundary": {"max_requested_outward": float("nan"), "boundaries": []},
             "generator": {"row_sum_max_abs": float("nan"), "negative_offdiag_max_mag": 0.0,
                           "row_sum_min": float("nan"), "row_sum_max": float("nan")},
             "graph": {}, "nullspace": {}, "pins": {}}
@@ -262,10 +327,57 @@ def test_nonfinite_aware_deterministic_comparison(tmp_path):
     assert cmp["pass_bool"] is True
     assert cmp["aligned_nonfinite_fields"] >= 1
     r3 = dict(base)
-    r3["boundary"] = {"max_requested_outward": 1.0}  # finite vs non-finite -> mismatch
+    r3["boundary"] = {"max_requested_outward": 1.0, "boundaries": []}  # finite vs non-finite -> mismatch
     cmp_bad = compare_records(r1, r3, cfg)
     assert cmp_bad["pass_bool"] is False
     assert cmp_bad["mismatched_fields"] >= 1
+
+
+def _boundary_record(offending):
+    return {
+        "boundary": {"max_requested_outward": 0.9, "boundaries": [
+            {"boundary": "upper_b", "direction": "b_forward",
+             "requested_outward_max": 0.9, "count_above_threshold": len(offending),
+             "argmax_coords": offending[0][:3] if offending else None,
+             "requested_at_max": offending[0][3] if offending else None,
+             "offending_states": [{"boundary": "upper_b", "direction": "b_forward",
+                                   "b_index": b, "a_index": a, "z_index": z,
+                                   "requested_outward_rate": r} for (b, a, z, r) in offending]},
+        ]},
+    }
+
+
+def test_reproducibility_boundary_compare(tmp_path):
+    """Identical boundary evidence passes; a coordinate/count/rate change fails
+    the boundary-specific deterministic repeat comparison."""
+    cfg = _cfg(tmp_path)
+    o1 = [(5, 1, 2, 0.9), (5, 3, 0, 0.5)]
+    base = {"terminal": "T", "hjb_converged": True, "boundary_policy_gate": "VIOLATION",
+            "generator": {"row_sum_max_abs": 0.0, "negative_offdiag_max_mag": 0.0,
+                          "row_sum_min": 0.0, "row_sum_max": 0.0},
+            "graph": {}, "nullspace": {}, "pins": {}}
+    base.update(_boundary_record(o1))
+    r1 = dict(base)
+    r2 = dict(base)
+    cmp = compare_records(r1, r2, cfg)
+    assert cmp["boundary_compare"]["pass_bool"] is True
+    assert cmp["boundary_compare"]["per_boundary"]["upper_b"]["offending_coords_exact"] is True
+
+    # same coordinate set, tiny rate perturbation (<=1e-12 tolerated)
+    o3 = [(5, 1, 2, 0.9 + 1e-13), (5, 3, 0, 0.5)]
+    r3 = dict(base)
+    r3.update(_boundary_record(o3))
+    cmp3 = compare_records(r1, r3, cfg)
+    assert cmp3["boundary_compare"]["pass_bool"] is True
+
+    # different coordinate set -> exact-match failure
+    o4 = [(5, 2, 2, 0.9), (5, 3, 0, 0.5)]
+    r4 = dict(base)
+    r4.update(_boundary_record(o4))
+    cmp4 = compare_records(r1, r4, cfg)
+    assert cmp4["boundary_compare"]["pass_bool"] is False
+    assert cmp4["boundary_compare"]["per_boundary"]["upper_b"]["offending_coords_exact"] is False
+    assert cmp4["pass_bool"] is False
 
 
 # ---------------------------------------------------------------------------

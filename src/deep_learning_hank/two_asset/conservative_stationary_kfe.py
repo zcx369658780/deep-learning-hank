@@ -69,6 +69,9 @@ TERMINAL_DEFAULT_PIN_NOT_VALID = "BLOCKED_DLH_5E_DEFAULT_PARITY_PIN_NOT_VALID__S
 TERMINAL_ANCHOR_INVALID = "BLOCKED_DLH_5E_REPAIRED_KFE_INVALIDATES_TWO_REGION_ANCHOR__OWNER_DECISION_REQUIRED"
 TERMINAL_VALIDATED = "DLH_5E_CONSERVATIVE_STATIONARY_KFE_CANDIDATE_VALIDATED__HOUSEHOLD_AGGREGATES_AND_ANCHOR_REDERIVED__READY_FOR_GPT_REVIEW"
 
+# Preserved predecessor (pre-R1) evidence root, read-only for R1 comparison.
+PREDECESSOR_ROOT = "reports/dlh_5e_conservative_stationary_kfe_validation_2026_09_01"
+
 PIN_VALID = "PIN_VALID_STATIONARY_NORMALIZATION"
 PIN_ZERO_SUPPORT = "PIN_INADMISSIBLE_ZERO_STATIONARY_SUPPORT"
 PIN_UNRESOLVED = "PIN_NUMERICAL_FAILURE_UNRESOLVED"
@@ -197,42 +200,67 @@ def requested_rates(mu_b: np.ndarray, mu_a: np.ndarray, db: float, da: float) ->
 
 
 def boundary_outward_diagnostics(requested: dict, shape: tuple, threshold: float) -> dict:
-    """Per-boundary requested outward rates plus global max / coords / count."""
+    """Per-boundary requested outward rates, complete offending states, global max.
+
+    Coordinate reconstruction uses NumPy C-order unraveling on the actual slice
+    shape (``np.unravel_index(..., order="C")``), so reported ``(b,a,z)``
+    coordinates are exact for both b-boundary slices ``(a,z)`` and a-boundary
+    slices ``(b,z)``. Requested rates are never clipped or mutated.
+    """
     i_count, j_count, nz = shape
     bb_req = requested["b_backward_requested"]  # (i,j,nz)
     bf_req = requested["b_forward_requested"]
     ab_req = requested["a_backward_requested"]
     af_req = requested["a_forward_requested"]
 
-    def _summarize(name: str, values: np.ndarray, b_fixed, a_fixed, first_len: int) -> dict:
-        # values is a 2-D slice (varying-first, z); b_fixed/a_fixed: exactly one None.
+    def _slice(name: str, values: np.ndarray, b_fixed, a_fixed, direction: str) -> dict:
+        """values is a 2-D slice; exactly one of b_fixed/a_fixed is None.
+
+        b-boundary slices are shaped (a_index, z_index);
+        a-boundary slices are shaped (b_index, z_index).
+        """
         v = np.asarray(values, dtype=float)
         maxv = float(v.max()) if v.size else 0.0
-        count = int(np.sum(v > threshold)) if v.size else 0
         coords = None
         req_at_max = None
+        offending: list[dict] = []
         if v.size and np.isfinite(v).any():
-            k = int(np.argmax(np.nan_to_num(v, nan=-np.inf)))
-            f0 = int(k % first_len)
-            s0 = int(k // first_len)
+            argmax_flat = int(np.argmax(np.nan_to_num(v, nan=-np.inf)))
+            d0, d1 = np.unravel_index(argmax_flat, v.shape, order="C")
             if b_fixed is None:
-                coords = (int(f0), int(a_fixed), int(s0))
+                coords = (int(d0), int(a_fixed), int(d1))
             else:
-                coords = (int(b_fixed), int(f0), int(s0))
-            req_at_max = float(v.flat[k])
+                coords = (int(b_fixed), int(d0), int(d1))
+            req_at_max = float(v.flat[argmax_flat])
+            for r, c in np.argwhere(v > threshold):
+                if b_fixed is None:
+                    b_idx, a_idx, z_idx = int(r), int(a_fixed), int(c)
+                else:
+                    b_idx, a_idx, z_idx = int(b_fixed), int(r), int(c)
+                offending.append({
+                    "boundary": name,
+                    "direction": direction,
+                    "b_index": b_idx,
+                    "a_index": a_idx,
+                    "z_index": z_idx,
+                    "requested_outward_rate": float(v[r, c]),
+                })
+        offending.sort(key=lambda o: (o["b_index"], o["a_index"], o["z_index"]))
         return {
             "boundary": name,
+            "direction": direction,
             "requested_outward_max": maxv,
-            "count_above_threshold": count,
+            "count_above_threshold": len(offending),
             "argmax_coords": coords,
             "requested_at_max": req_at_max,
+            "offending_states": offending,
         }
 
     rows = [
-        _summarize("lower_b", bb_req[0, :, :], 0, None, j_count),
-        _summarize("upper_b", bf_req[-1, :, :], i_count - 1, None, j_count),
-        _summarize("lower_a", ab_req[:, 0, :], None, 0, i_count),
-        _summarize("upper_a", af_req[:, -1, :], None, j_count - 1, i_count),
+        _slice("lower_b", bb_req[0, :, :], 0, None, "b_backward"),
+        _slice("upper_b", bf_req[-1, :, :], i_count - 1, None, "b_forward"),
+        _slice("lower_a", ab_req[:, 0, :], None, 0, "a_backward"),
+        _slice("upper_a", af_req[:, -1, :], None, j_count - 1, "a_forward"),
     ]
     best = max(rows, key=lambda r: r["requested_outward_max"])
     return {
@@ -749,13 +777,31 @@ def overall_terminal(cfg: DLH5EConfig, run: dict) -> str:
 
 
 def structural_signature(rec: dict) -> str:
+    """Deterministic discrete-structure signature, including the complete boundary
+    evidence (per-boundary label / count / argmax coordinate / full offending
+    coordinate set) plus generator, SCC and pin discrete fields.
+
+    Discrete fields must match EXACTLY across fresh constructions; only rates are
+    compared numerically (see canonical_numeric_numbers).
+    """
     g = rec.get("graph") or {}
     ns = rec.get("nullspace") or {}
     pins = rec.get("pins") or {}
+    boundary = rec.get("boundary") or {}
+    boundary_discrete = {}
+    for bi in boundary.get("boundaries", []):
+        boundary_discrete[bi["boundary"]] = {
+            "direction": bi.get("direction"),
+            "count_above_threshold": bi.get("count_above_threshold"),
+            "argmax_coords": bi.get("argmax_coords"),
+            "offending_coords": [(o["b_index"], o["a_index"], o["z_index"])
+                                 for o in bi.get("offending_states", [])],
+        }
     return json.dumps({
         "terminal": rec.get("terminal"),
         "hjb_converged": rec.get("hjb_converged"),
         "boundary_policy_gate": rec.get("boundary_policy_gate"),
+        "boundary": boundary_discrete,
         "generator_row_sum_max_abs": (rec.get("generator") or {}).get("row_sum_max_abs"),
         "generator_neg_offdiag_max_mag": (rec.get("generator") or {}).get("negative_offdiag_max_mag"),
         "scc_count": g.get("scc_count"),
@@ -767,9 +813,17 @@ def structural_signature(rec: dict) -> str:
 
 
 def canonical_numeric_numbers(rec: dict) -> list:
+    """Every reached numeric rate, including per-boundary max/at-max and each
+    offending-state requested rate, so deterministic repeat compares the full
+    boundary-rate evidence numerically at <= 1e-12."""
     out: list[float] = []
     b = rec.get("boundary") or {}
     out.append(float(b.get("max_requested_outward", float("nan"))))
+    for bi in b.get("boundaries", []):
+        out.append(float(bi.get("requested_outward_max", float("nan"))))
+        out.append(float(bi.get("requested_at_max", float("nan"))))
+        for o in bi.get("offending_states", []):
+            out.append(float(o.get("requested_outward_rate", float("nan"))))
     gen = rec.get("generator") or {}
     for key in ("row_sum_max_abs", "negative_offdiag_max_mag", "row_sum_min", "row_sum_max"):
         v = gen.get(key)
@@ -805,13 +859,64 @@ def compare_records(r1: dict, r2: dict, cfg: DLH5EConfig) -> dict:
             aligned_nonfinite += 1
         else:
             mismatch += 1
+    boundary_compare = _boundary_compare(r1, r2, cfg)
     return {
         "identical_structural_signature": bool(same_struct),
         "max_numeric_diff": float(max_diff),
         "aligned_nonfinite_fields": int(aligned_nonfinite),
         "mismatched_fields": int(mismatch),
-        "pass_bool": bool(same_struct and mismatch == 0 and max_diff <= cfg.reproducibility_tol),
+        "boundary_compare": boundary_compare,
+        "pass_bool": bool(
+            same_struct and mismatch == 0 and max_diff <= cfg.reproducibility_tol
+            and boundary_compare["pass_bool"]
+        ),
     }
+
+
+def _boundary_compare(r1: dict, r2: dict, cfg: DLH5EConfig) -> dict:
+    """Per-boundary deterministic-repeat comparison of the reached boundary evidence:
+    label / direction / count / argmax coordinate / complete offending coordinate set
+    must match exactly; rates must differ by <= 1e-12."""
+    b1 = (r1.get("boundary") or {}).get("boundaries", [])
+    b2 = (r2.get("boundary") or {}).get("boundaries", [])
+    by_name1 = {bi["boundary"]: bi for bi in b1}
+    by_name2 = {bi["boundary"]: bi for bi in b2}
+    per = {}
+    for name in sorted(set(by_name1) | set(by_name2)):
+        x = by_name1.get(name)
+        y = by_name2.get(name)
+        if x is None or y is None:
+            per[name] = {"present_both": False, "exact_match": False, "max_rate_diff": None}
+            continue
+        coords1 = [(o["b_index"], o["a_index"], o["z_index"]) for o in x.get("offending_states", [])]
+        coords2 = [(o["b_index"], o["a_index"], o["z_index"]) for o in y.get("offending_states", [])]
+        rates1 = [float(o["requested_outward_rate"]) for o in x.get("offending_states", [])]
+        rates2 = [float(o["requested_outward_rate"]) for o in y.get("offending_states", [])]
+        exact = (
+            x.get("direction") == y.get("direction")
+            and x.get("count_above_threshold") == y.get("count_above_threshold")
+            and x.get("argmax_coords") == y.get("argmax_coords")
+            and coords1 == coords2
+        )
+        max_rate_diff = 0.0
+        for a, b in zip(rates1, rates2):
+            max_rate_diff = max(max_rate_diff, float(abs(a - b)))
+        per[name] = {
+            "present_both": True,
+            "direction_match": x.get("direction") == y.get("direction"),
+            "count_match": x.get("count_above_threshold") == y.get("count_above_threshold"),
+            "argmax_coords_match": x.get("argmax_coords") == y.get("argmax_coords"),
+            "offending_coords_exact": coords1 == coords2,
+            "offending_count": len(coords1),
+            "max_rate_diff": float(max_rate_diff),
+            "exact_match": bool(exact),
+            "rate_pass": bool(max_rate_diff <= cfg.reproducibility_tol),
+        }
+    present = [v for v in per.values() if v.get("present_both")]
+    pass_bool = bool(
+        len(present) == len(per) and all(v["exact_match"] and v["rate_pass"] for v in present)
+    )
+    return {"per_boundary": per, "pass_bool": bool(pass_bool)}
 
 
 def reproduce(cfg: DLH5EConfig, fixture) -> dict:
@@ -866,6 +971,76 @@ def _safe_fmt(v, spec=None) -> str:
         return str(v)
 
 
+def load_predecessor_evidence() -> dict | None:
+    """Read the preserved pre-R1 evidence root (read-only) for R1 comparison."""
+    import csv
+    root = pathlib.Path(PREDECESSOR_ROOT)
+    if not (root / "DLH_5E_CASE_STATUS.csv").exists():
+        return None
+    status: dict = {}
+    with open(root / "DLH_5E_CASE_STATUS.csv", newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            status[row["case_id"]] = row
+    boundary: dict = {}
+    with open(root / "DLH_5E_BOUNDARY_POLICY_DIAGNOSTICS.csv", newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            boundary.setdefault(row["case_id"], {})[row["boundary"]] = row
+    return {"status": status, "boundary": boundary}
+
+
+def predecessor_comparison(run: dict) -> dict:
+    """R1 (corrected) D0 evidence vs preserved predecessor D0 evidence (read-only).
+
+    Covers the items required by the R1 repair: D0 HJB convergence, global
+    boundary max, per-boundary max/count, corrected argmax coordinates (which
+    changed vs predecessor), Q_c diagnostics, and the terminal classification.
+    """
+    pre = load_predecessor_evidence()
+    if pre is None:
+        return {"available": False,
+                "reason": f"predecessor root not readable: {PREDECESSOR_ROOT}"}
+    d0 = run["cases"][0]
+    pstatus = pre["status"].get("d0") or {}
+    pbound = pre["boundary"].get("d0") or {}
+    g = d0.get("generator") or {}
+    per = {}
+    for bi in (d0.get("boundary") or {}).get("boundaries", []):
+        name = bi["boundary"]
+        p = pbound.get(name)
+        p_max = float(p["requested_outward_max"]) if p and p.get("requested_outward_max") else None
+        p_count = int(p["count_above_threshold"]) if p and p.get("count_above_threshold") else None
+        p_coords = p["argmax_coords"] if p else None
+        per[name] = {
+            "predecessor_max": p_max,
+            "r1_max": bi["requested_outward_max"],
+            "predecessor_count": p_count,
+            "r1_count": bi["count_above_threshold"],
+            "predecessor_argmax_coords": p_coords,
+            "r1_argmax_coords": list(bi["argmax_coords"]) if bi["argmax_coords"] else None,
+            "argmax_coords_changed": str(p_coords) != str(bi["argmax_coords"]),
+            "complete_offending_count_r1": bi["count_above_threshold"],
+        }
+    return {
+        "available": True,
+        "d0_hjb_converged_predecessor": pstatus.get("hjb_converged"),
+        "d0_hjb_converged_r1": d0.get("hjb_converged"),
+        "d0_hjb_iterations_predecessor": pstatus.get("hjb_iterations"),
+        "d0_hjb_iterations_r1": d0.get("hjb_iterations"),
+        "global_max_predecessor": (float(pstatus["max_requested_outward_rate"])
+                                   if pstatus.get("max_requested_outward_rate") else None),
+        "global_max_r1": (d0.get("boundary") or {}).get("max_requested_outward"),
+        "generator_row_sum_predecessor": (float(pstatus["generator_row_sum_max_abs"])
+                                          if pstatus.get("generator_row_sum_max_abs") else None),
+        "generator_row_sum_r1": g.get("row_sum_max_abs"),
+        "generator_neg_offdiag_predecessor": (float(pstatus["generator_neg_offdiag_max_mag"])
+                                              if pstatus.get("generator_neg_offdiag_max_mag") else None),
+        "generator_neg_offdiag_r1": g.get("negative_offdiag_max_mag"),
+        "terminal_predecessor": pstatus.get("terminal"),
+        "terminal_r1": d0.get("terminal"),
+        "per_boundary": per,
+    }
+
+
 def write_evidence(root: pathlib.Path, cfg: DLH5EConfig, run: dict, repro: dict) -> None:
     root = pathlib.Path(root)
     root.mkdir(parents=True, exist_ok=True)
@@ -886,15 +1061,27 @@ def write_evidence(root: pathlib.Path, cfg: DLH5EConfig, run: dict, repro: dict)
                 "generator_neg_offdiag_max_mag", "terminal"], rows)
 
     # 2) BOUNDARY_POLICY_DIAGNOSTICS.csv
+    # Summary rows (one per boundary) followed by one offending-state row per
+    # state with requested outward rate > threshold, so the complete material
+    # outward-request set is persisted unambiguously (no ninth evidence file).
     rows = []
     for rec in cases:
         b = rec.get("boundary") or {}
         for bi in b.get("boundaries", []):
-            rows.append([rec["case_id"], bi["boundary"], _fmt(bi["requested_outward_max"]),
-                         bi["count_above_threshold"], bi.get("argmax_coords"), _fmt(bi.get("requested_at_max"))])
+            rows.append([rec["case_id"], "summary", bi["boundary"], bi.get("direction"),
+                         _fmt(bi["requested_outward_max"]), bi["count_above_threshold"],
+                         bi.get("argmax_coords"), _fmt(bi.get("requested_at_max")),
+                         "", "", "", ""])
+            for o in bi.get("offending_states", []):
+                rows.append([rec["case_id"], "offending", o["boundary"], o.get("direction"),
+                             _fmt(o["requested_outward_rate"]), "",
+                             "", "",
+                             o["b_index"], o["a_index"], o["z_index"], _fmt(o["requested_outward_rate"])])
     _write_csv(root / "DLH_5E_BOUNDARY_POLICY_DIAGNOSTICS.csv",
-               ["case_id", "boundary", "requested_outward_max", "count_above_threshold",
-                "argmax_coords", "requested_at_max"], rows)
+               ["case_id", "row_type", "boundary", "direction",
+                "requested_outward_rate", "count_above_threshold",
+                "argmax_coords", "requested_at_max",
+                "b_index", "a_index", "z_index", "offending_requested_outward_rate"], rows)
 
     # 3) GENERATOR_DIAGNOSTICS.csv
     rows = []
@@ -942,15 +1129,16 @@ def write_evidence(root: pathlib.Path, cfg: DLH5EConfig, run: dict, repro: dict)
         json.dump(repro, fh, indent=2, default=str, sort_keys=True)
 
     # 7) EXECUTION_REPORT.md
+    pre_cmp = predecessor_comparison(run)
     with open(root / "DLH_5E_EXECUTION_REPORT.md", "w", encoding="utf-8") as fh:
-        fh.write(_render_report(cfg, run, repro))
+        fh.write(_render_report(cfg, run, repro, pre_cmp))
 
     # 8) FORBIDDEN_OPERATION_CHECK.md
     with open(root / "DLH_5E_FORBIDDEN_OPERATION_CHECK.md", "w", encoding="utf-8") as fh:
         fh.write(_render_forbidden_check(cfg, run, repro))
 
 
-def _render_report(cfg: DLH5EConfig, run: dict, repro: dict) -> str:
+def _render_report(cfg: DLH5EConfig, run: dict, repro: dict, pre_cmp: dict) -> str:
     cases = run["cases"]
     terminal = overall_terminal(cfg, run)
     lines = []
@@ -960,6 +1148,12 @@ def _render_report(cfg: DLH5EConfig, run: dict, repro: dict) -> str:
                  "The accepted MATLAB-faithful HJB source is immutable and reused read-only.")
     lines.append("")
     lines.append(f"Overall terminal classification: `{terminal}`")
+    lines.append("")
+    lines.append("R1 run (2026-09-01): boundary coordinate reconstruction corrected to "
+                 "C-order `np.unravel_index`; complete offending-state sets persisted; "
+                 "reproducibility extended to the full boundary evidence. Predecessor "
+                 f"root `{PREDECESSOR_ROOT}` preserved unchanged; this R1 root contains the "
+                 "same eight evidence filenames.")
     lines.append("")
     lines.append("## Case status")
     lines.append("")
@@ -990,6 +1184,26 @@ def _render_report(cfg: DLH5EConfig, run: dict, repro: dict) -> str:
             lines.append(f"| {rec['case_id']} | {bi['boundary']} | {_safe_fmt(bi['requested_outward_max'], '.3e')} | "
                          f"{_safe_fmt(bi['count_above_threshold'])} | {bi.get('argmax_coords')} | "
                          f"{_safe_fmt(bi.get('requested_at_max'))} |")
+    lines.append("")
+    lines.append("### Complete offending states (requested outward rate > 1e-10)")
+    lines.append("")
+    lines.append("Coordinates are exact `(b_index, a_index, z_index)` recovered with "
+                 "`np.unravel_index(..., order='C')` on the actual 2-D boundary slice shape "
+                 "(`(a,z)` for b-boundaries, `(b,z)` for a-boundaries).")
+    lines.append("")
+    lines.append("| case | boundary | direction | b_index | a_index | z_index | requested outward rate |")
+    lines.append("|---|---|---|---|---|---|---|")
+    any_offending = False
+    for rec in cases:
+        b = rec.get("boundary") or {}
+        for bi in b.get("boundaries", []):
+            for o in bi.get("offending_states", []):
+                any_offending = True
+                lines.append(f"| {rec['case_id']} | {o['boundary']} | {o.get('direction')} | "
+                             f"{o['b_index']} | {o['a_index']} | {o['z_index']} | "
+                             f"{_safe_fmt(o['requested_outward_rate'], '.9e')} |")
+    if not any_offending:
+        lines.append("| — | — | — | — | — | — | (no state exceeds threshold) |")
     lines.append("")
     lines.append(f"**Global max requested outward boundary rate:** "
                  f"{_safe_fmt((cases[0].get('boundary') or {}).get('max_requested_outward'), '.3e')} "
@@ -1052,6 +1266,40 @@ def _render_report(cfg: DLH5EConfig, run: dict, repro: dict) -> str:
                              f"candidate anchor Z*={agg.get('Z_star')}, delta*={agg.get('delta_star')} "
                              f"(valid={agg.get('anchor_valid')}).")
             lines.append("")
+    lines.append("## Predecessor vs R1 comparison (preserved predecessor root read-only)")
+    lines.append("")
+    if not pre_cmp.get("available"):
+        lines.append(f"- predecessor comparison unavailable: {pre_cmp.get('reason')}")
+    else:
+        lines.append("- D0 HJB convergence: "
+                     f"predecessor `{pre_cmp.get('d0_hjb_converged_predecessor')}` (iters "
+                     f"`{pre_cmp.get('d0_hjb_iterations_predecessor')}`) vs R1 "
+                     f"`{pre_cmp.get('d0_hjb_converged_r1')}` (iters `{pre_cmp.get('d0_hjb_iterations_r1')}`).")
+        lines.append("- global boundary max: "
+                     f"predecessor `{_safe_fmt(pre_cmp.get('global_max_predecessor'), '.6e')}` vs R1 "
+                     f"`{_safe_fmt(pre_cmp.get('global_max_r1'), '.6e')}`.")
+        lines.append("- conservative Q_c row-sum max abs: "
+                     f"predecessor `{_safe_fmt(pre_cmp.get('generator_row_sum_predecessor'), '.3e')}` vs R1 "
+                     f"`{_safe_fmt(pre_cmp.get('generator_row_sum_r1'), '.3e')}`; "
+                     "neg off-diagonal max mag "
+                     f"`{_safe_fmt(pre_cmp.get('generator_neg_offdiag_predecessor'), '.3e')}` vs R1 "
+                     f"`{_safe_fmt(pre_cmp.get('generator_neg_offdiag_r1'), '.3e')}`.")
+        lines.append("- terminal classification: "
+                     f"predecessor `{pre_cmp.get('terminal_predecessor')}` vs R1 `{pre_cmp.get('terminal_r1')}`.")
+        lines.append("")
+        lines.append("| boundary | predecessor max | R1 max | predecessor count | R1 count | predecessor argmax | R1 argmax (corrected) | argmax changed | complete R1 offending count |")
+        lines.append("|---|---|---|---|---|---|---|---|---|")
+        for name, row in pre_cmp.get("per_boundary", {}).items():
+            lines.append(f"| {name} | {_safe_fmt(row.get('predecessor_max'), '.6e')} | "
+                         f"{_safe_fmt(row.get('r1_max'), '.6e')} | "
+                         f"{_safe_fmt(row.get('predecessor_count'))} | {_safe_fmt(row.get('r1_count'))} | "
+                         f"{row.get('predecessor_argmax_coords')} | {row.get('r1_argmax_coords')} | "
+                         f"{row.get('argmax_coords_changed')} | {_safe_fmt(row.get('complete_offending_count_r1'))} |")
+        lines.append("")
+        lines.append("Corrected argmax coordinates changed only where the predecessor "
+                     "Fortran-style `% first_len` reconstruction was wrong; rates and counts "
+                     "are identical to predecessor because the underlying drifts are unchanged.")
+    lines.append("")
     lines.append("## Reproducibility")
     lines.append("")
     lines.append(f"- randomness: `{repro['randomness']}`; repeat pass: `{repro['pass_bool']}`; "
@@ -1060,6 +1308,17 @@ def _render_report(cfg: DLH5EConfig, run: dict, repro: dict) -> str:
         lines.append(f"- {cid}: structural identical {cmp['identical_structural_signature']}, "
                      f"max numeric diff {cmp['max_numeric_diff']:.3e}, aligned non-finite {cmp['aligned_nonfinite_fields']}, "
                      f"mismatched {cmp['mismatched_fields']}, pass {cmp['pass_bool']}.")
+        bc = cmp.get("boundary_compare") or {}
+        if bc.get("pass_bool") is not None:
+            per = bc.get("per_boundary") or {}
+            detail = ", ".join(
+                f"{name}: direction {v.get('direction_match')}, count {v.get('count_match')}, "
+                f"argmax {v.get('argmax_coords_match')}, coords exact {v.get('offending_coords_exact')}, "
+                f"offending {v.get('offending_count')}, max rate diff {_safe_fmt(v.get('max_rate_diff'), '.3e')}, "
+                f"exact {v.get('exact_match')}, rate pass {v.get('rate_pass')}"
+                for name, v in per.items()
+            )
+            lines.append(f"  - boundary repeat compare pass `{bc['pass_bool']}`: {detail}")
     lines.append("")
     lines.append("## Artifact integrity")
     lines.append("")

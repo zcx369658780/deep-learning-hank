@@ -1,0 +1,825 @@
+{
+  "pass_bool": true,
+  "per_case": {
+    "d0": {
+      "aligned_nonfinite_fields": 0,
+      "boundary_compare": {
+        "pass_bool": true,
+        "per_boundary": {
+          "lower_a": {
+            "argmax_coords_match": true,
+            "count_match": true,
+            "direction_match": true,
+            "exact_match": true,
+            "max_rate_diff": 0.0,
+            "offending_coords_exact": true,
+            "offending_count": 0,
+            "present_both": true,
+            "rate_pass": true
+          },
+          "lower_b": {
+            "argmax_coords_match": true,
+            "count_match": true,
+            "direction_match": true,
+            "exact_match": true,
+            "max_rate_diff": 0.0,
+            "offending_coords_exact": true,
+            "offending_count": 0,
+            "present_both": true,
+            "rate_pass": true
+          },
+          "upper_a": {
+            "argmax_coords_match": true,
+            "count_match": true,
+            "direction_match": true,
+            "exact_match": true,
+            "max_rate_diff": 0.0,
+            "offending_coords_exact": true,
+            "offending_count": 28,
+            "present_both": true,
+            "rate_pass": true
+          },
+          "upper_b": {
+            "argmax_coords_match": true,
+            "count_match": true,
+            "direction_match": true,
+            "exact_match": true,
+            "max_rate_diff": 0.0,
+            "offending_coords_exact": true,
+            "offending_count": 3,
+            "present_both": true,
+            "rate_pass": true
+          }
+        }
+      },
+      "identical_structural_signature": true,
+      "max_numeric_diff": 0.0,
+      "mismatched_fields": 0,
+      "pass_bool": true
+    },
+    "d1": {
+      "aligned_nonfinite_fields": 5,
+      "boundary_compare": {
+        "pass_bool": true,
+        "per_boundary": {}
+      },
+      "identical_structural_signature": true,
+      "max_numeric_diff": 0.0,
+      "mismatched_fields": 0,
+      "pass_bool": true
+    },
+    "d2": {
+      "aligned_nonfinite_fields": 5,
+      "boundary_compare": {
+        "pass_bool": true,
+        "per_boundary": {}
+      },
+      "identical_structural_signature": true,
+      "max_numeric_diff": 0.0,
+      "mismatched_fields": 0,
+      "pass_bool": true
+    },
+    "d3": {
+      "aligned_nonfinite_fields": 5,
+      "boundary_compare": {
+        "pass_bool": true,
+        "per_boundary": {}
+      },
+      "identical_structural_signature": true,
+      "max_numeric_diff": 0.0,
+      "mismatched_fields": 0,
+      "pass_bool": true
+    }
+  },
+  "randomness": "NOT_APPLICABLE",
+  "run1": {
+    "cases": [
+      {
+        "aggregates": null,
+        "anchor": null,
+        "boundary": {
+          "boundaries": [
+            {
+              "argmax_coords": [
+                0,
+                0,
+                0
+              ],
+              "boundary": "lower_b",
+              "count_above_threshold": 0,
+              "direction": "b_backward",
+              "offending_states": [],
+              "requested_at_max": 0.0,
+              "requested_outward_max": 0.0
+            },
+            {
+              "argmax_coords": [
+                19,
+                19,
+                1
+              ],
+              "boundary": "upper_b",
+              "count_above_threshold": 3,
+              "direction": "b_forward",
+              "offending_states": [
+                {
+                  "a_index": 17,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.11576069872877304,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 18,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.27186872359611547,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.3537477040220836,
+                  "z_index": 1
+                }
+              ],
+              "requested_at_max": 0.3537477040220836,
+              "requested_outward_max": 0.3537477040220836
+            },
+            {
+              "argmax_coords": [
+                0,
+                0,
+                0
+              ],
+              "boundary": "lower_a",
+              "count_above_threshold": 0,
+              "direction": "a_backward",
+              "offending_states": [],
+              "requested_at_max": 0.0,
+              "requested_outward_max": 0.0
+            },
+            {
+              "argmax_coords": [
+                14,
+                19,
+                1
+              ],
+              "boundary": "upper_a",
+              "count_above_threshold": 28,
+              "direction": "a_forward",
+              "offending_states": [
+                {
+                  "a_index": 19,
+                  "b_index": 5,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.003175106193693056,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 6,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.10342252177355844,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 7,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.02940147622796381,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 7,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.14606401584683612,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 8,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.09009153815743366,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 8,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.17630170403568876,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 9,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.13671058089698565,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 9,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.20314663240851857,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 10,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.17327062824703413,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 10,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.22537307262511633,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 11,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2021709716356007,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 11,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.24295885518508623,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 12,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2248302109310065,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 12,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2558509866567446,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 13,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2419158557364989,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 13,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2634259007532488,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 14,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.253345540432969,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 14,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2640718827021816,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 15,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.25808269638157066,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 15,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2546689127755113,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 16,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2537143916049814,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 16,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.230553990333037,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 17,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.23528716984386963,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 17,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.1867536784591117,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 18,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.19070377024084392,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 18,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.12068602385195144,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.08783338931174507,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.036357814245416856,
+                  "z_index": 1
+                }
+              ],
+              "requested_at_max": 0.2640718827021816,
+              "requested_outward_max": 0.2640718827021816
+            }
+          ],
+          "max_boundary": "upper_b",
+          "max_coords": [
+            19,
+            19,
+            1
+          ],
+          "max_requested_outward": 0.3537477040220836,
+          "max_requested_value": 0.3537477040220836
+        },
+        "boundary_policy_gate": "VIOLATION",
+        "case_id": "d0",
+        "generator": {
+          "diag_min": -4.188299908101461,
+          "negative_offdiag_count": 0,
+          "negative_offdiag_max_mag": 0.0,
+          "nnz": 3114,
+          "row_sum_max": 2.7755575615628914e-16,
+          "row_sum_max_abs": 6.106226635438361e-16,
+          "row_sum_min": -6.106226635438361e-16
+        },
+        "hjb_converged": true,
+        "hjb_iterations": 11,
+        "hjb_statistic": 1.6735434371639712e-08,
+        "pins": null,
+        "r_a": 0.03,
+        "reached_aggregates": false,
+        "stationary": null,
+        "terminal": "BLOCKED_DLH_5E_BOUNDARY_POLICY_VIOLATION__OWNER_BOUNDARY_POLICY_DECISION_REQUIRED",
+        "wbar": 1.0
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d1",
+        "r_a": 0.0299127630152404,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 0.9977278388290097
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d2",
+        "r_a": 0.029964194758276677,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 0.998807521160338
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d3",
+        "r_a": 0.03003565330704072,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 1.0011941548981047
+      }
+    ],
+    "d0_ok": false
+  },
+  "run2": {
+    "cases": [
+      {
+        "aggregates": null,
+        "anchor": null,
+        "boundary": {
+          "boundaries": [
+            {
+              "argmax_coords": [
+                0,
+                0,
+                0
+              ],
+              "boundary": "lower_b",
+              "count_above_threshold": 0,
+              "direction": "b_backward",
+              "offending_states": [],
+              "requested_at_max": 0.0,
+              "requested_outward_max": 0.0
+            },
+            {
+              "argmax_coords": [
+                19,
+                19,
+                1
+              ],
+              "boundary": "upper_b",
+              "count_above_threshold": 3,
+              "direction": "b_forward",
+              "offending_states": [
+                {
+                  "a_index": 17,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.11576069872877304,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 18,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.27186872359611547,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_b",
+                  "direction": "b_forward",
+                  "requested_outward_rate": 0.3537477040220836,
+                  "z_index": 1
+                }
+              ],
+              "requested_at_max": 0.3537477040220836,
+              "requested_outward_max": 0.3537477040220836
+            },
+            {
+              "argmax_coords": [
+                0,
+                0,
+                0
+              ],
+              "boundary": "lower_a",
+              "count_above_threshold": 0,
+              "direction": "a_backward",
+              "offending_states": [],
+              "requested_at_max": 0.0,
+              "requested_outward_max": 0.0
+            },
+            {
+              "argmax_coords": [
+                14,
+                19,
+                1
+              ],
+              "boundary": "upper_a",
+              "count_above_threshold": 28,
+              "direction": "a_forward",
+              "offending_states": [
+                {
+                  "a_index": 19,
+                  "b_index": 5,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.003175106193693056,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 6,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.10342252177355844,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 7,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.02940147622796381,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 7,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.14606401584683612,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 8,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.09009153815743366,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 8,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.17630170403568876,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 9,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.13671058089698565,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 9,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.20314663240851857,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 10,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.17327062824703413,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 10,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.22537307262511633,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 11,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2021709716356007,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 11,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.24295885518508623,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 12,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2248302109310065,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 12,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2558509866567446,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 13,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2419158557364989,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 13,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2634259007532488,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 14,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.253345540432969,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 14,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2640718827021816,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 15,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.25808269638157066,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 15,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2546689127755113,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 16,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.2537143916049814,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 16,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.230553990333037,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 17,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.23528716984386963,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 17,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.1867536784591117,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 18,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.19070377024084392,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 18,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.12068602385195144,
+                  "z_index": 1
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.08783338931174507,
+                  "z_index": 0
+                },
+                {
+                  "a_index": 19,
+                  "b_index": 19,
+                  "boundary": "upper_a",
+                  "direction": "a_forward",
+                  "requested_outward_rate": 0.036357814245416856,
+                  "z_index": 1
+                }
+              ],
+              "requested_at_max": 0.2640718827021816,
+              "requested_outward_max": 0.2640718827021816
+            }
+          ],
+          "max_boundary": "upper_b",
+          "max_coords": [
+            19,
+            19,
+            1
+          ],
+          "max_requested_outward": 0.3537477040220836,
+          "max_requested_value": 0.3537477040220836
+        },
+        "boundary_policy_gate": "VIOLATION",
+        "case_id": "d0",
+        "generator": {
+          "diag_min": -4.188299908101461,
+          "negative_offdiag_count": 0,
+          "negative_offdiag_max_mag": 0.0,
+          "nnz": 3114,
+          "row_sum_max": 2.7755575615628914e-16,
+          "row_sum_max_abs": 6.106226635438361e-16,
+          "row_sum_min": -6.106226635438361e-16
+        },
+        "hjb_converged": true,
+        "hjb_iterations": 11,
+        "hjb_statistic": 1.6735434371639712e-08,
+        "pins": null,
+        "r_a": 0.03,
+        "reached_aggregates": false,
+        "stationary": null,
+        "terminal": "BLOCKED_DLH_5E_BOUNDARY_POLICY_VIOLATION__OWNER_BOUNDARY_POLICY_DECISION_REQUIRED",
+        "wbar": 1.0
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d1",
+        "r_a": 0.0299127630152404,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 0.9977278388290097
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d2",
+        "r_a": 0.029964194758276677,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 0.998807521160338
+      },
+      {
+        "boundary_policy_gate": "NOT_EVALUATED",
+        "case_id": "d3",
+        "r_a": 0.03003565330704072,
+        "terminal": "NOT_REACHED__D0_BLOCKED",
+        "wbar": 1.0011941548981047
+      }
+    ],
+    "d0_ok": false
+  },
+  "terminal_run1": "BLOCKED_DLH_5E_BOUNDARY_POLICY_VIOLATION__OWNER_BOUNDARY_POLICY_DECISION_REQUIRED",
+  "terminal_run2": "BLOCKED_DLH_5E_BOUNDARY_POLICY_VIOLATION__OWNER_BOUNDARY_POLICY_DECISION_REQUIRED"
+}
