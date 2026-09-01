@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5E_ACCEPTED__DLH_5F_ROUTE_OWNER_APPROVED_PENDING_PUBLICATION`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5F_UPPER_DOMAIN_ADEQUACY_AND_STATIONARY_TAIL`
 
 Last synchronized: 2026-09-01
 
@@ -8,191 +8,131 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-There is currently **NO ACTIVE BUILDER ISSUE**.
+Current Issue:
 
-DSH must not mutate the repository until a new GitHub Issue is explicitly published, this Task Index and the CURRENT Startup Snapshot are synchronized to that Issue, and an authoritative activation comment is present.
+**Issue #29 — OPEN**
 
-Owner has approved the next scientific route, but **no Builder authority has yet been published**.
+Title:
 
-Current scientific roadmap:
+`DLH-5F: Diagnose upper-domain adequacy and stationary-tail behavior on the frozen two-asset household`
 
-`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+Task type:
 
-Current handoff:
+`SCIENTIFIC_DIAGNOSTIC__UPPER_DOMAIN_ADEQUACY_AND_STATIONARY_TAIL`
 
-`docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
+Issue #29 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
 
----
+Dedicated branch:
 
-## Latest accepted task
+`dsh/issue-29-dlh-5f-upper-domain-stationary-tail-2026-09-01`
 
-**Issue #28 — DLH-5E — ACCEPTED / COMPLETED**
+DSH must fresh-fetch `origin/main`, read all CURRENT rules, this Task Index, the CURRENT Startup Snapshot, the current Roadmap/Handoff, Issue #29 full body/latest comments, accepted Issues #27–#28 authority, and the accepted MATLAB-faithful household/HJB source before any mutation.
 
-Accepted candidate integrated to `main`:
+If Issue #29 is not open, activation is absent, or Issue/Task Index/Startup identity differs, DSH must fail closed.
 
-`a49c19bbc3257f62bebecc26fe7d88ddcc143d9c`
+## Issue #29 scientific scope
 
-Accepted reviewer classification:
+DLH-5F is a bounded **diagnostic** task. It does not authorize a new HJB boundary law, a new KFE process, regional GE, calibration, learned networks, or Results.
 
-`DLH_5E_IMPLEMENTATION_VALIDATION_ACCEPTED__D0_BOUNDARY_POLICY_VIOLATION_CONFIRMED__OWNER_HJB_BOUNDARY_DECISION_REQUIRED`
-
-Acceptance level:
-
-`L3_COMMIT_OR_PR_VERIFIED`
-
-Scientific evidence level:
-
-`D2_MACHINE_NUMERICAL_DIAGNOSTIC__HUMAN_REVIEWED_BOUNDARY_POLICY_BLOCKER`
-
-Accepted evidence roots:
-
-- `reports/dlh_5e_conservative_stationary_kfe_validation_2026_09_01/`
-- `reports/dlh_5e_conservative_stationary_kfe_validation_r1_2026_09_01/`
-
-## Accepted DLH-5E evidence
-
-Frozen D0:
+Frozen D0 economics/prices remain:
 
 ```text
 wbar = 1.0
 r_a  = 0.03
 ```
 
-Accepted HJB converges in 11 iterations.
+All non-grid parameters, prices, taxes/transfers, productivity process, HJB numerics, drift tolerance and initialization logic remain exactly the accepted DLH-5B/DLH-5E fixture.
 
-Material upper-boundary requested outward rates:
-
-- upper-b: 3 states above `1e-10`; max about `0.353747704` at `(19,19,1)`;
-- upper-a: 28 states above `1e-10`; max about `0.264071883` at corrected coordinate `(14,19,1)`;
-- lower-b / lower-a: no material outward request.
-
-A mechanically conservative candidate generator satisfies:
-
-```text
-row-sum max abs            = 6.106227e-16
-negative offdiag magnitude = 0.0
-```
-
-This establishes mechanical conservation only. It does not validate the HJB boundary policy, and no clipped stationary density / new `C,L,A,B` / `Z*,delta*` is accepted.
-
----
-
-## Owner-approved next scientific route — DLH-5F candidate
-
-Tentative task class:
-
-`SCIENTIFIC_DIAGNOSTIC__UPPER_DOMAIN_ADEQUACY_AND_STATIONARY_TAIL`
-
-No Issue has yet been published.
-
-The next gate must diagnose whether the upper-boundary problem is primarily:
-
-- finite upper-domain truncation;
-- stationary-tail / high-wealth mean-reversion failure;
-- inadequate finite-domain HJB/KFE boundary closure;
-- or different behavior in liquid vs illiquid asset dimensions.
-
-It must **not** modify the accepted HJB equations or tune the grid to force `max outward drift = 0`.
-
-### Required experimental principles
-
-1. Separate upper-domain extent from grid resolution.
-2. Use a small, pre-frozen set of domain expansions; no adaptive PASS-seeking.
-3. Increase point counts with extent so `db/da` remain approximately comparable.
-4. Add separate fixed-domain resolution checks.
-5. Diagnose convergence of boundary influence, not exact disappearance of every positive boundary drift.
-
-### Required diagnostic families
-
-- upper/lower policy drift maxima, quantiles, counts and complete states;
-- boundary / near-boundary mass when a scientifically admissible stationary process is available;
-- probability-weighted upper outward flux;
-- shared-interior policy stability across domain extents;
-- recurrent-class/nullspace/original-stationary-residual evidence;
-- `C,L,A,B` stability only after stationary validity;
-- liquid and illiquid assets separately where needed.
-
-### Binding consistency law
+Binding consistency law:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-HJB and KFE must represent the same controlled process. Mechanical clipping of KFE after an outward HJB solution is not an accepted scientific repair.
+A mechanically clipped conservative KFE is not accepted as the stationary process of an HJB that requests material outward boundary drift.
 
----
+## Exact six pre-frozen grid variants
 
-## Multi-province cross-project reference status
+No adaptive seventh variant is authorized.
 
-The neighboring multi-province Python project is treated as:
+1. `V0_BASE`: b 20 on `[-2,5]`; a 20 on `[0,10]`.
+2. `V1_A_WIDE`: b baseline; a 40 on `[0,390/19]`.
+3. `V2_B_WIDE`: b 40 on `[-2,235/19]`; a baseline.
+4. `V3_AB_MID`: b 30 on `[-2,165/19]`; a 30 on `[0,290/19]`.
+5. `V4_AB_WIDE`: b 40 on `[-2,235/19]`; a 40 on `[0,390/19]`.
+6. `V5_BASE_FINE`: b 39 on `[-2,5]`; a 39 on `[0,10]`, half baseline spacing.
 
-> a highly mature source-faithful multi-province reconstruction under active MATLAB–Python stationary parity adjudication
+V0–V4 preserve exact baseline spacing on expanded dimensions; V5 contains every V0 node at every second grid point.
 
-It is not yet treated as fully parity-accepted production authority.
+## Required evidence sequence
 
-Preferred future cross-project diagnostic:
+1. Fresh accepted HJB on all six variants; no warm start.
+2. Full upper/lower requested-rate diagnostics: max, positive quantiles, counts/shares, argmax and complete physical/index coordinate sets.
+3. Shared-interior policy comparison at exact aligned nodes using the frozen V0 mask `b_index<=17`, `a_index<=17`, all z.
+4. Mechanical conservative-generator diagnostics only; row sums/off-diagonals do not self-authorize KFE acceptance.
+5. Stationary/nullspace/pin/tail/aggregate validation only for variants with `max requested outward <=1e-10` under the same HJB/KFE controlled process.
+6. Boundary/near-boundary mass and probability-weighted flux only from a scientifically admissible density.
+7. `C,L,A,B` only after stationary validity; no historical row-295 aggregate.
+8. Full six-variant deterministic repeat and applicable repository regression suite.
 
-`31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT`
+## Exact Builder allowlist
 
-using frozen household price/input snapshots and independent household solves before any full 31-province GE grid sweep.
+Builder may create only:
 
-Reuse policy:
+1. `src/deep_learning_hank/two_asset/upper_domain_stationary_tail_diagnostic.py`
+2. `configs/dlh_5f_upper_domain_stationary_tail_diagnostic.toml`
+3. `tests/test_dlh_5f_upper_domain_stationary_tail_diagnostic.py`
+4. `reports/dlh_5f_upper_domain_stationary_tail_diagnostic_2026_09_01/` with exactly:
+   - `DLH_5F_VARIANT_STATUS.csv`
+   - `DLH_5F_BOUNDARY_POLICY_DIAGNOSTICS.csv`
+   - `DLH_5F_INTERIOR_POLICY_STABILITY.csv`
+   - `DLH_5F_STATIONARY_TAIL_DIAGNOSTICS.csv`
+   - `DLH_5F_AGGREGATE_STABILITY.csv`
+   - `DLH_5F_REPRODUCIBILITY.json`
+   - `DLH_5F_EXECUTION_REPORT.md`
+   - `DLH_5F_FORBIDDEN_OPERATION_CHECK.md`
 
-- reuse validated contracts/modules/oracles;
-- do not blindly merge repositories or import the entire neighboring project as an unquestioned production dependency.
+No existing tracked file may be modified by Builder.
 
----
-
-## Permanent validation hierarchy
-
-```text
-2-region unit fixture
--> 3–5 province integration fixture
--> 31-province empirical/source benchmark
-```
-
-The two-region fixture remains permanently because it is the human-auditable accounting/orientation test bed.
-
-Future regional parity must distinguish:
-
-- continuous-state parity;
-- discrete-controller branch / threshold parity.
-
----
-
-## Revised Deep Learning route
-
-No learned-network training is currently authorized.
-
-When the household/regional equilibrium foundation is trusted:
-
-1. `L0`: source spatial-rule surrogate;
-2. `L1`: constrained structural learned spatial rule;
-3. `L2`: empirical OD-flow learning with endogeneity/double-counting safeguards;
-4. later capital-network learning;
-5. nominal-HANK track remains later and separately specified.
-
-The two-stage origin-outflow + conditional-destination architecture is a DeepLearning-HANK redesign candidate, not a claim of unique MATLAB fidelity.
-
----
-
-## Scientific ceiling before DLH-5F resolution
+## Explicit scientific ceiling
 
 Do not:
 
-- mutate the accepted HJB equations to force boundary PASS;
-- accept mechanically clipped `Q_c` as the stationary process of the original HJB;
-- restore historical row-295 KFE aggregates;
-- run validated policy/welfare Results;
-- start learned `W^L` training;
-- scale directly to production learned 31-region equilibrium;
-- claim neighboring multi-province MATLAB–Python stationary parity is already fully accepted;
-- enter nominal-HANK integration.
+- modify accepted HJB/local-policy/KFE/regional source;
+- modify accepted Issues #23–#28 evidence;
+- change economic parameters/prices/tolerances;
+- warm-start across grids;
+- adaptively expand the grid;
+- clip HJB policy to seek PASS;
+- compute economic stationary density from a different boundary process;
+- use old row-295 density as evidence;
+- run D1–D3, two-region outer iteration, 3–5/31-province GE, or the future `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT`;
+- train `W^L` or any neural network;
+- enter nominal HANK / calibration / policy / welfare / Results;
+- create PR / merge / close / successor / self-accept.
 
-## Earlier accepted foundation
+## Latest accepted task
 
-- Issue #27 / DLH-5D: conservative stationary-KFE / MATLAB contamination scientific contract accepted.
-- Issue #26 / DLH-5C: fixed-row contamination artifact diagnosis accepted; old row-295 KFE aggregates not validated.
-- Issue #25 / DLH-5B: two-region synchronous/Jacobi architecture accepted for wiring/accounting/trace semantics.
-- Issue #24 / DLH-5A: network-ready two-region real structural contract accepted.
-- Issue #23: MATLAB-faithful two-asset HJB / transfer-FOC parity repair accepted.
+Issue #28 — DLH-5E — ACCEPTED / COMPLETED.
+
+Accepted candidate integrated to main:
+
+`a49c19bbc3257f62bebecc26fe7d88ddcc143d9c`
+
+Accepted classification:
+
+`DLH_5E_IMPLEMENTATION_VALIDATION_ACCEPTED__D0_BOUNDARY_POLICY_VIOLATION_CONFIRMED__OWNER_HJB_BOUNDARY_DECISION_REQUIRED`
+
+Accepted D0 facts remain:
+
+- HJB converged in 11 iterations;
+- upper-b max about `0.353747704`, 3 material states;
+- upper-a max about `0.264071883`, 28 material states;
+- mechanical `Q_c` row-sum max abs `6.106227e-16`, negative off-diagonal magnitude `0`;
+- no clipped density / new `C,L,A,B` / anchor accepted.
+
+## Current route authority
+
+- Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- Handoff: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
+- Issue #29 full body is the exact experiment authority once activation is complete.
