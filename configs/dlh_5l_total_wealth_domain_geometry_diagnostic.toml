@@ -1,0 +1,129 @@
+# DLH-5L (Issue #38) — Componentwise Liquid Outward Drift vs Total-Wealth
+# Mean Reversion and Boundary Geometry adjudication config.
+#
+# Analytical/source-preserving diagnostic. Reruns exactly the six already accepted
+# DLH-5J/DLH-5K grids (J0-J5) solely to evaluate the total-wealth drift
+# mu_W = mu_a + mu_b and the local W=a+b normal-drift geometry. No new grid, no
+# new b extent, no b>160, no new a resolution, no b-resolution change, no b100
+# rerun, no warm start. Frozen exactly as accepted: wbar=1.0, r_a=0.03, a in
+# [0,10], a_max=10, accepted r_a*(1-0.1*(a/a_max)^9) taper, a in {a77,a153},
+# db=7/19, b extent in {b120,b140,b160}. The inspected state set is the exact
+# union of (variant,b_index,a_index,z_index) coordinates present in the accepted
+# DLH-5K evidence (localization + cross-a CSVs), deduplicated only by exact
+# identity; no post-hoc states. No source/model/domain equation may change.
+# No clipping. Policy-only.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+[frozen_physical_illiquid]
+a_lo = 0.0
+a_hi = 10.0
+a_max = 10.0
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+[liquid_domain]
+b_lo = -2.0
+db = 0.3684210526315789      # 7/19 (frozen; no b-resolution change)
+route_ceiling_note = "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+
+# Two mature illiquid resolutions only (accepted a77/a153).
+[[a_resolutions]]
+id = "a77"
+a_pts = 77
+da = 0.13157894736842105     # (10/19)/4
+
+[[a_resolutions]]
+id = "a153"
+a_pts = 153
+da = 0.06578947368421053     # (10/19)/8
+
+# Three accepted final b extents only (b160 hard ceiling).
+[[b_extents]]
+id = "b120"
+b_pts = 120
+b_hi = 41.84210526315789     # 795/19
+
+[[b_extents]]
+id = "b140"
+b_pts = 140
+b_hi = 49.21052631578947     # 935/19
+
+[[b_extents]]
+id = "b160"
+b_pts = 160
+b_hi = 56.578947368421055    # 1075/19 (HARD ROUTE CEILING)
+
+# Exact six accepted variants (no others).
+[[variants]]
+id = "J0_A77_B120"
+a_res = "a77"
+b_ext = "b120"
+
+[[variants]]
+id = "J1_A77_B140"
+a_res = "a77"
+b_ext = "b140"
+
+[[variants]]
+id = "J2_A77_B160"
+a_res = "a77"
+b_ext = "b160"
+
+[[variants]]
+id = "J3_A153_B120"
+a_res = "a153"
+b_ext = "b120"
+
+[[variants]]
+id = "J4_A153_B140"
+a_res = "a153"
+b_ext = "b140"
+
+[[variants]]
+id = "J5_A153_B160"
+a_res = "a153"
+b_ext = "b160"
+
+[shared_interior]
+top_coarse_layers_excluded = 2
+
+# Pre-frozen inspected state set = exact union of coordinates appearing in the
+# accepted DLH-5K evidence CSVs (read-only reference; deduplicate exact
+# (variant,b_index,a_index,z_index) only; no post-hoc states).
+[state_set]
+dlh5k_localization_csv = "reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_BOUNDARY_INTERIOR_LOCALIZATION.csv"
+dlh5k_cross_a_csv = "reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_CROSS_A_MECHANISM.csv"
+
+[validation]
+# Existing accepted boundary threshold (sign/materiality for raw drifts scaled by
+# db as in the accepted DLH-5K requested-rate convention). No new sign tolerance
+# is invented.
+boundary_threshold = 1e-10
+# Deterministic repeat tolerance (frozen; the accepted HJB path is fully
+# deterministic, so the repeat is expected to be exact).
+reproducibility_tol = 1e-12
+# Accepted-DLH-5J/DLH-5K HJB/boundary reproduction tolerances. Each J rerun must
+# reproduce the accepted HJB statistic, boundary maxima and boundary counts
+# within these frozen tolerances or fail closed (Outcome D).
+accepted_hjb_stat_tol = 1e-12
+accepted_boundary_max_tol = 1e-12
+accepted_count_exact = true
+# Decomposition reconstruction residual tolerance (mu_b - (base_liquid_surplus +
+# transfer_injection) and mu_W - transfer_cancelled_reconstruction); from the
+# accepted budget identities these are exact to floating-point rounding.
+decomposition_residual_tol = 1e-9
+# Pre-registered diagnostic materiality for the cross-a total-wealth comparison
+# (scale-aware relative difference); identical threshold to DLH-5K. Diagnostic
+# only; does not define economic equivalence or production readiness.
+policy_rel_materiality = 1e-2
+# Scale floor for scale-aware relative differences (avoids division by ~0).
+scale_floor = 1e-10
+
+[output]
+root = "reports/dlh_5l_total_wealth_domain_geometry_diagnostic_2026_09_01"
