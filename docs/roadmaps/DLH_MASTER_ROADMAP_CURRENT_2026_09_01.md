@@ -1,6 +1,6 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.7  
+**Version:** V0.8  
 **Date:** 2026-09-01  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
@@ -10,32 +10,26 @@
 
 ## 0. Long-run objective
 
-Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after the underlying household and equilibrium processes pass numerical and scientific validation.
+Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after the household and equilibrium foundations pass scientific and numerical validation.
 
 The first learned object remains the regional labor/spatial rule. Capital-network learning and nominal-HANK integration remain later stages.
 
 ---
 
-## 1. Accepted foundation through DLH-5I
+## 1. Accepted household foundation through DLH-5J
 
 ### Household/HJB — Issue #23
 
-Accepted MATLAB-faithful two-asset household/HJB source:
+Accepted MATLAB-faithful source:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-Accepted source identity:
+Identity:
 
 - Git blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 - SHA-256 `1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024`
 
-### Regional structural fixture — Issues #24–#25
-
-Accepted two-region synchronous/Jacobi architecture remains the permanent human-auditable regional unit fixture.
-
-### Stationary-KFE scientific contract — Issues #26–#27
-
-Accepted density must satisfy the ORIGINAL stationary equation, mass and non-negativity, with conservative-generator, recurrent-class/nullspace and pin-admissibility evidence.
+### Stationary-KFE contract — Issues #26–#27
 
 Binding law:
 
@@ -43,156 +37,145 @@ Binding law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-### D0 boundary diagnosis — Issues #28–#29
+Any eventual stationary density must satisfy the ORIGINAL `Q^T g=0`, mass/non-negativity, conservative-generator/recurrent-class/nullspace evidence, pin admissibility and valid-pin invariance before aggregates are accepted.
 
-DLH-5E established material outward requests at both artificial upper asset bounds. DLH-5F showed that b-only extent strongly attenuates liquid-boundary influence, that a-domain widening is confounded by the accepted `a_max`-normalized taper, and that fixed-domain resolution materially changes the illiquid policy.
+### Boundary diagnosis — Issues #28–#29
 
-### Liquid upper-domain diagnostic — Issue #31 / DLH-5G
+The canonical D0 household converges but originally requests outward motion at artificial upper asset bounds. DLH-5F established strong liquid-boundary attenuation under b expansion, identified the `a_max`-normalized taper confound for a-domain widening, and showed material resolution sensitivity.
 
-Accepted candidate:
+### Liquid and illiquid resolution — Issues #31 and #34
 
-`edbd6e9d4683118e08edb8041609c9af1579883a`
+- DLH-5G showed that with coarse a20 fixed, b expansion can eliminate upper-b requests.
+- DLH-5H showed that refining a resolves upper-a to exact zero but reactivates upper-b on the previously adequate b domain.
+- Therefore the remaining boundary problem is coupled domain/resolution behavior, not two independent one-dimensional blockers.
 
-Integrated to main:
+### Coupled b frontier — Issue #35 / DLH-5I
 
-`809d18a3459b5b8c4d8b142ea4f282a34c3af49f`
+At mature diagnostic a77/a153 and fixed `db=7/19`, upper-b requested policy attenuates monotonically through b60/b80/b100 while upper-a remains zero. No common compatible extent is reached.
 
-Accepted verdict:
-
-`DLH_5G_ISSUE_31_IMPLEMENTATION_ACCEPTED__LIQUID_UPPER_DOMAIN_ADEQUACY_EVIDENCE_CONFIRMED__B_RESOLUTION_SENSITIVITY_RETAINED__ILLIQUID_BOUNDARY_REMAINS_BLOCKER`
-
-Key result: with coarse a20 fixed, upper-b requested policy reaches exact zero by `b_max=19.7368421053`, but that domain is not robust to later illiquid-grid refinement.
-
-### Illiquid-resolution diagnostic — Issue #34 / DLH-5H
+### Final bounded continuation — Issue #36 / DLH-5J
 
 Accepted candidate:
 
-`906c98d107c8dadf6e24d841901d7eb6d53fe0d9`
+`3899e30c7624db08d3588b08b390f8b5bbc5f7c1`
 
 Integrated to main:
 
-`f648ca270a751465ac041a4eee05cee094114ed6`
+`09fcdd66f7d33ccf11a6cc9ec52afed73451568e`
 
 Accepted verdict:
 
-`DLH_5H_ISSUE_34_IMPLEMENTATION_ACCEPTED__ILLIQUID_A_RESOLUTION_ADEQUACY_CONFIRMED__LIQUID_BOUNDARY_REACTIVATION_CONFIRMED__COUPLED_RESOLUTION_BLOCKER_ESTABLISHED`
+`DLH_5J_ISSUE_36_IMPLEMENTATION_ACCEPTED__A77_B160_COMPATIBILITY_CONFIRMED__A153_B160_REMAINS_OUTWARD__CROSS_A_ROBUSTNESS_FAILED__GRID_CONTINUATION_CLOSED__ASYMPTOTIC_CLOSURE_ADJUDICATION_REQUIRED`
 
-Accepted interpretation:
+Accepted result:
 
-- upper-a is material on a20 but exact zero on a39/a77/a153 when physical `a in [0,10]`, `a_max=10` and taper are fixed;
-- the former b60 liquid-safe domain is not robust to a refinement because upper-b reactivates;
-- the remaining issue is therefore coupled domain/resolution behavior.
-
-### Coupled liquid-extent frontier — Issue #35 / DLH-5I
-
-Accepted candidate:
-
-`d8837e04db940b1f71b8ff1fe7e181d1bf9644a3`
-
-Integrated to main:
-
-`53d0ff7b0fe9bd73cfbd8c6d27c98bbc4b0423d1`
-
-Accepted verdict:
-
-`DLH_5I_ISSUE_35_IMPLEMENTATION_ACCEPTED__COUPLED_B_EXTENT_ATTENUATION_CONFIRMED__COMMON_THRESHOLD_NOT_REACHED__UPPER_A_COMPATIBILITY_STABLE__FURTHER_BOUNDED_EXTENT_GATE_REQUIRED`
-
-Accepted scientific interpretation:
-
-1. At both mature a resolutions a77/a153, upper-a/lower-a/lower-b requested policy is exact zero through b60/b80/b100.
-2. With `db=7/19`, upper-b requested policy strictly attenuates with liquid extent:
-   - a77: `0.3915648627 -> 0.2808185297 -> 0.1925385153`;
-   - a153: `0.4449370735 -> 0.3356027946 -> 0.2481811687`.
-3. Offending upper-b states remain localized to the top-liquid/top-illiquid/high-productivity corner and decline in count/share with extent.
-4. No b60/b80/b100 extent reaches the `1e-10` joint compatibility threshold at either mature a resolution.
-5. Cross-a value/consumption/labor differences are small, while transfer/`mu_a`/`mu_b` remain about 1.9–2.4% apart.
-6. The evidence supports continued finite-b-domain attenuation, not a claim of non-existent stationary liquid tails.
-7. Stationary KFE remains NOT AUTHORIZED.
+1. Upper-a/lower-a/lower-b requested policy is exact zero on J0–J5.
+2. Upper-b continues to attenuate strongly with b extent.
+3. a77/b160 reaches exact joint upper-boundary compatibility.
+4. a153/b160 remains outward: raw `1.491625647e-02`, requested `4.048698186e-02`, 2 material states at the high-wealth/high-z corner.
+5. Cross-a value/consumption/labor differences are small, while transfer/`mu_a`/`mu_b` remain approximately 2.20% / 2.43% / 1.91% apart.
+6. No cross-a jointly compatible extent exists through b160.
+7. The pure larger-grid route is now CLOSED. No b180/b200, adaptive root-seeking or PASS-seeking extent continuation is authorized.
+8. Stationary KFE remains NOT AUTHORIZED.
 
 ---
 
-## 2. Immediate scientific gate — DLH-5J / Issue #36
+## 2. Immediate scientific gate — DLH-5K / Issue #37
 
 ### Name
 
-**Final Bounded Coupled Liquid-Extent Continuation Before Asymptotic Adjudication**
+**High-Wealth Liquid Drift vs Joint Upper-Corner HJB Closure Adjudication**
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__FINAL_BOUNDED_COUPLED_B_EXTENT_CONTINUATION`
+`SCIENTIFIC_ANALYTICAL_DIAGNOSTIC__HIGH_WEALTH_LIQUID_DRIFT_AND_UPPER_CORNER_CLOSURE`
 
 ### Purpose
 
-DLH-5I still leaves b100 materially outward at both mature a resolutions, but the attenuation trend is clean. DLH-5J is therefore the **last pre-frozen larger-b grid experiment** before the project must switch to high-wealth/asymptotic or finite-domain-closure analysis if compatibility is still not reached.
+The remaining question is now mechanistic rather than grid-search based:
 
-Scientific question:
+> Is the residual mature-a153 upper-b outward request genuine high-wealth economic non-mean-reversion, or is it primarily generated by the finite-domain joint upper-corner HJB closure and transfer-policy ordering in the accepted MATLAB-faithful source?
 
-> With the accepted household process, mature a resolutions and `db=7/19` frozen, does one of b120/b140/b160 reach joint upper-boundary compatibility at both a77 and a153? If not, does clean attenuation persist through the final bounded frontier?
+DLH-5K is source-preserving and does not redesign the model.
 
 ### Frozen design
 
+Rerun exactly the accepted J0–J5 grids only for local diagnostic extraction:
+
 ```text
-wbar = 1.0
-r_a  = 0.03
 a in [0,10]
 a_max = 10
-accepted taper = r_a*(1-0.1*(a/a_max)^9)
-a resolutions = {a77,a153}
+accepted taper unchanged
+a resolution in {a77,a153}
 db = 7/19
+b extent in {b120,b140,b160}
+D0 economics unchanged
 ```
 
-Final extents:
+No new grid, extent, resolution or parameter is allowed.
+
+### Central implemented-source decomposition
+
+Audit and numerically verify:
 
 ```text
-b120 [-2,795/19]
-b140 [-2,935/19]
-b160 [-2,1075/19]
+mu_b = base_liquid_surplus + transfer_injection
+base_liquid_surplus = r_b*b + labor_income - (consumption - transfer_income)
+transfer_injection = -transfer - adjustment_cost
 ```
 
-Exact six variants are `{a77,a153} × {b120,b140,b160}`.
+The accepted source ordering to investigate is:
 
-Accepted DLH-5I b100 results are read-only scalar anchors for the continuation trend; b100 is not rerun as a seventh/eighth variant.
+1. upper-b derivative closure from liquid resources;
+2. liquid branch selection;
+3. transfer candidate construction from `V_a/V_b`;
+4. upper-a inward transfer restriction;
+5. upper-b backward-transfer override;
+6. final drift evaluation.
 
-No b extent beyond b160 is authorized.
+This ordering is a diagnostic hypothesis, not yet a defect designation.
 
-DLH-5J remains policy-only: no stationary KFE, density, tail metrics or aggregates.
+### Required scientific evidence
+
+- complete offender mechanism decomposition;
+- boundary vs interior localization at `n-1`, `n-2`, `n-3`, `n-5` b layers;
+- joint-corner feasibility algebra under the accepted adjustment cost;
+- exact a77/a153 high-wealth mechanism comparison;
+- deterministic reproduction of accepted J evidence.
 
 ---
 
-## 3. Decision tree after DLH-5J
+## 3. Decision tree after DLH-5K
 
-### Route J1 — a common final extent reaches joint compatibility at both a77 and a153
+### Route K1 — boundary/corner-transfer closure dominated
 
-Freeze the **smallest common compatible extent as a provisional coupled-domain candidate only**.
+If accepted evidence shows all material upper-b offenders are boundary-only and their positive drift is dominated by the transfer-injection term under the joint upper-corner ordering:
 
-Then publish exactly one bounded **b-resolution confirmation gate** at that same physical extent. Stationary KFE remains blocked until that confirmation passes.
+- do not patch source immediately;
+- publish a **scientific design freeze for a joint upper-corner HJB/KKT boundary law**;
+- only after that design is accepted may an implementation task change the controlled process.
 
-### Route J2 — only one mature a resolution reaches compatibility
+### Route K2 — genuine high-wealth interior outward drift persists
 
-Do not promote the domain. Treat this as unresolved cross-a resolution robustness and move to scientific numerical/asymptotic review rather than adaptive extent search.
+If material positive liquid drift persists inside the high-b interior layers:
 
-### Route J3 — clean attenuation persists through b160 but no common threshold is reached
+- do not resume larger-grid PASS seeking;
+- move to economic high-wealth asymptotics / mean-reversion analysis;
+- review whether the frozen D0 economics admits sufficient liquid mean reversion.
 
-**Stop larger-grid continuation.** Do not publish b180/b200 or root-seeking adaptive extent tasks.
+### Route K3 — mixed mechanism
 
-The next scientific gate must adjudicate high-wealth liquid drift / economic mean reversion / finite-domain HJB closure analytically or semi-analytically under the accepted household process.
+If both boundary/corner closure and interior outward drift are material, resolve the mechanisms separately before any HJB redesign or stationary re-entry.
 
-### Route J4 — behavior becomes persistent, plateaued or non-monotonic
-
-Also escalate immediately to high-wealth/asymptotic or finite-domain HJB-closure adjudication.
-
-No HJB or taper rewrite may occur without a later explicit scientific-design gate.
+No DLH-5K result by itself authorizes source mutation.
 
 ---
 
 ## 4. Stationary household revalidation remains blocked
 
-Stationary validation requires BOTH:
+Stationary KFE remains blocked throughout DLH-5K.
 
-1. joint HJB upper-boundary compatibility in both assets on a candidate grid;
-2. b-resolution confirmation of that compatibility at the same physical extent.
-
-Only then may the project re-enter Issue #27:
+Only after the HJB controlled process has a scientifically coherent and numerically robust upper-boundary treatment may the project re-enter Issue #27:
 
 1. conservative generator;
 2. recurrent-class/nullspace evidence;
@@ -200,9 +183,9 @@ Only then may the project re-enter Issue #27:
 4. ORIGINAL `Q^T g` residual;
 5. mass/non-negativity;
 6. stationary tail diagnostics;
-7. then recompute `C,L,A,B` and the two-region anchor from scratch.
+7. recompute `C,L,A,B` and the two-region anchor from scratch.
 
-No historical row-295 aggregate is grandfathered.
+No historical aggregate is grandfathered.
 
 ---
 
@@ -216,7 +199,7 @@ Permanent hierarchy:
 -> 31-province empirical/source benchmark
 ```
 
-The planned `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until household boundary/stationary validation is usable.
+The `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until household boundary/stationary validation is usable.
 
 No neural training is currently authorized. Later sequence remains:
 
@@ -230,13 +213,13 @@ No neural training is currently authorized. Later sequence remains:
 
 ## 6. Scientific ceiling
 
-Until household boundary/stationary evidence is resolved, do not:
+Until the DLH-5K mechanism is adjudicated, do not:
 
-- modify accepted HJB/taper merely to obtain PASS;
-- keep enlarging b adaptively beyond the DLH-5J b160 ceiling;
+- enlarge the b grid beyond b160;
+- add adaptive/root-seeking grids;
+- modify accepted HJB/taper/transfer FOC/adjustment cost/boundary law merely to obtain PASS;
 - accept a KFE density from a different controlled process;
-- restore historical aggregates;
-- run validated policy/welfare Results;
+- run stationary aggregates or policy/welfare Results;
 - train regional networks;
 - scale to production 31-region learned equilibrium;
 - enter nominal-HANK integration.
@@ -245,7 +228,7 @@ Until household boundary/stationary evidence is resolved, do not:
 
 ## 7. Governance status
 
-Issue #36 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
+Issue #37 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
 
 Routine bounded scientific-route decisions are delegated by Owner to ChatGPT unless Owner intervenes or raises a new concern.
 
