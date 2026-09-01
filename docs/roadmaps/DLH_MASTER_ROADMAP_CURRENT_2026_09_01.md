@@ -1,6 +1,6 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.8  
+**Version:** V0.9  
 **Date:** 2026-09-01  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
@@ -10,15 +10,15 @@
 
 ## 0. Long-run objective
 
-Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after the household and equilibrium foundations pass scientific and numerical validation.
+Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after household and equilibrium foundations pass scientific and numerical validation.
 
 The first learned object remains the regional labor/spatial rule. Capital-network learning and nominal-HANK integration remain later stages.
 
 ---
 
-## 1. Accepted household foundation through DLH-5J
+## 1. Accepted household foundation through DLH-5K
 
-### Household/HJB — Issue #23
+### Household source — Issue #23
 
 Accepted MATLAB-faithful source:
 
@@ -26,7 +26,7 @@ Accepted MATLAB-faithful source:
 
 Identity:
 
-- Git blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+- Git blob `76ae5b149993a7edeeb337f1b02b3fe33c51e`
 - SHA-256 `1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024`
 
 ### Stationary-KFE contract — Issues #26–#27
@@ -39,143 +39,136 @@ HJB boundary policy <=> KFE boundary transition law
 
 Any eventual stationary density must satisfy the ORIGINAL `Q^T g=0`, mass/non-negativity, conservative-generator/recurrent-class/nullspace evidence, pin admissibility and valid-pin invariance before aggregates are accepted.
 
-### Boundary diagnosis — Issues #28–#29
+### Boundary/domain sequence — Issues #28–#36
 
-The canonical D0 household converges but originally requests outward motion at artificial upper asset bounds. DLH-5F established strong liquid-boundary attenuation under b expansion, identified the `a_max`-normalized taper confound for a-domain widening, and showed material resolution sensitivity.
+Accepted findings:
 
-### Liquid and illiquid resolution — Issues #31 and #34
+- canonical D0 HJB converges but artificial upper asset bounds initially receive outward requests;
+- b-only extent strongly attenuates liquid-boundary influence;
+- widening `a_max` is confounded by the accepted normalized illiquid-return taper;
+- refining the fixed physical a domain resolves upper-a but reactivates upper-b, establishing a coupled domain-resolution problem;
+- at mature a77/a153, upper-b attenuates monotonically with b extent;
+- a77 reaches joint compatibility at b160, while a153 remains outward at b160;
+- no cross-a jointly compatible extent exists through the hard b160 ceiling;
+- the pure larger-b-grid route is CLOSED: no b180/b200/adaptive/root-seeking PASS search.
 
-- DLH-5G showed that with coarse a20 fixed, b expansion can eliminate upper-b requests.
-- DLH-5H showed that refining a resolves upper-a to exact zero but reactivates upper-b on the previously adequate b domain.
-- Therefore the remaining boundary problem is coupled domain/resolution behavior, not two independent one-dimensional blockers.
+Stationary KFE remains NOT AUTHORIZED.
 
-### Coupled b frontier — Issue #35 / DLH-5I
-
-At mature diagnostic a77/a153 and fixed `db=7/19`, upper-b requested policy attenuates monotonically through b60/b80/b100 while upper-a remains zero. No common compatible extent is reached.
-
-### Final bounded continuation — Issue #36 / DLH-5J
+### High-wealth / upper-corner mechanism adjudication — Issue #37 / DLH-5K
 
 Accepted candidate:
 
-`3899e30c7624db08d3588b08b390f8b5bbc5f7c1`
+`aaead4a1368ec061ac1e380c3af33d93c0f31161`
 
 Integrated to main:
 
-`09fcdd66f7d33ccf11a6cc9ec52afed73451568e`
+`d26b2b8c8d69d2afa2cb9806f120d03ebe973752`
 
 Accepted verdict:
 
-`DLH_5J_ISSUE_36_IMPLEMENTATION_ACCEPTED__A77_B160_COMPATIBILITY_CONFIRMED__A153_B160_REMAINS_OUTWARD__CROSS_A_ROBUSTNESS_FAILED__GRID_CONTINUATION_CLOSED__ASYMPTOTIC_CLOSURE_ADJUDICATION_REQUIRED`
+`DLH_5K_ISSUE_37_IMPLEMENTATION_ACCEPTED__MIXED_LOCALIZATION_CONFIRMED__TRANSFER_DERIVATIVE_CHANNEL_DOMINATES_CROSS_A_DIVERGENCE__INTERPRETATION_NARROWED__NEXT_GATE_REQUIRED`
 
-Accepted result:
+Accepted scientific interpretation:
 
-1. Upper-a/lower-a/lower-b requested policy is exact zero on J0–J5.
-2. Upper-b continues to attenuate strongly with b extent.
-3. a77/b160 reaches exact joint upper-boundary compatibility.
-4. a153/b160 remains outward: raw `1.491625647e-02`, requested `4.048698186e-02`, 2 material states at the high-wealth/high-z corner.
-5. Cross-a value/consumption/labor differences are small, while transfer/`mu_a`/`mu_b` remain approximately 2.20% / 2.43% / 1.91% apart.
-6. No cross-a jointly compatible extent exists through b160.
-7. The pure larger-grid route is now CLOSED. No b180/b200, adaptive root-seeking or PASS-seeking extent continuation is authorized.
-8. Stationary KFE remains NOT AUTHORIZED.
+1. 5/17 material upper-b offenders are boundary-only within the required `n-1/n-2/n-3/n-5` window; 12/17 retain positive full-policy `mu_b` in at least one inspected interior layer.
+2. The evidence establishes **local** liquid-drift persistence only. It does not establish an infinite-domain high-wealth asymptotic failure.
+3. At material offenders, `base_liquid_surplus<0` while `transfer_injection>0`; positive `mu_b` occurs when transfer injection dominates the negative base surplus.
+4. a77/a153 divergence is primarily transfer/derivative-channel driven.
+5. The accepted selected transfer candidate fails joint inwardness at inspected offender states, but the algebra admits much larger transfer-flow roots; no mathematical no-feasible-transfer theorem is accepted.
+6. Transfer `d` is a continuous-time flow/rate, not an asset stock; no liquidation interpretation is accepted.
+7. No source defect, HJB redesign, domain redesign or stationary re-entry is authorized by DLH-5K.
 
 ---
 
-## 2. Immediate scientific gate — DLH-5K / Issue #37
+## 2. Immediate scientific gate — DLH-5L / Issue #38
 
 ### Name
 
-**High-Wealth Liquid Drift vs Joint Upper-Corner HJB Closure Adjudication**
+**Componentwise Liquid Drift vs Total-Wealth Mean Reversion and Boundary Geometry**
 
 Task type:
 
-`SCIENTIFIC_ANALYTICAL_DIAGNOSTIC__HIGH_WEALTH_LIQUID_DRIFT_AND_UPPER_CORNER_CLOSURE`
+`SCIENTIFIC_ANALYTICAL_DIAGNOSTIC__TOTAL_WEALTH_DRIFT_AND_DOMAIN_GEOMETRY`
 
 ### Purpose
 
-The remaining question is now mechanistic rather than grid-search based:
-
-> Is the residual mature-a153 upper-b outward request genuine high-wealth economic non-mean-reversion, or is it primarily generated by the finite-domain joint upper-corner HJB closure and transfer-policy ordering in the accepted MATLAB-faithful source?
-
-DLH-5K is source-preserving and does not redesign the model.
-
-### Frozen design
-
-Rerun exactly the accepted J0–J5 grids only for local diagnostic extraction:
+The accepted household law transfers wealth one-for-one between the two asset coordinates, apart from adjustment cost:
 
 ```text
-a in [0,10]
-a_max = 10
-accepted taper unchanged
-a resolution in {a77,a153}
-db = 7/19
-b extent in {b120,b140,b160}
-D0 economics unchanged
+mu_a = r_a_eff(a)*a + d
+mu_b = r_b*b + labor_income - d - adjustment_cost
+       - (consumption - transfer_income)
 ```
 
-No new grid, extent, resolution or parameter is allowed.
-
-### Central implemented-source decomposition
-
-Audit and numerically verify:
+Therefore:
 
 ```text
-mu_b = base_liquid_surplus + transfer_injection
-base_liquid_surplus = r_b*b + labor_income - (consumption - transfer_income)
-transfer_injection = -transfer - adjustment_cost
+mu_W = mu_a + mu_b
+     = r_a_eff(a)*a + r_b*b + labor_income
+       - adjustment_cost - (consumption - transfer_income)
 ```
 
-The accepted source ordering to investigate is:
+The linear transfer `d` cancels from total-wealth drift.
 
-1. upper-b derivative closure from liquid resources;
-2. liquid branch selection;
-3. transfer candidate construction from `V_a/V_b`;
-4. upper-a inward transfer restriction;
-5. upper-b backward-transfer override;
-6. final drift evaluation.
+Scientific question:
 
-This ordering is a diagnostic hypothesis, not yet a defect designation.
+> When the accepted policy gives positive liquid-coordinate `mu_b` in the high-a/high-b region, does total wealth `W=a+b` nevertheless drift inward because illiquid wealth is falling? If so, the unresolved issue may be componentwise rectangular-domain geometry / portfolio reallocation rather than total-wealth mean-reversion failure. If total wealth is also outward, genuine high-wealth economic asymptotics remain unresolved.
 
-### Required scientific evidence
+### Frozen numerical evidence set
 
-- complete offender mechanism decomposition;
-- boundary vs interior localization at `n-1`, `n-2`, `n-3`, `n-5` b layers;
-- joint-corner feasibility algebra under the accepted adjustment cost;
-- exact a77/a153 high-wealth mechanism comparison;
-- deterministic reproduction of accepted J evidence.
+Rerun exactly accepted J0–J5 only; no new grid, extent or resolution.
+
+The inspected state set is the exact union of coordinates already present in accepted DLH-5K:
+
+- `DLH_5K_BOUNDARY_INTERIOR_LOCALIZATION.csv`
+- `DLH_5K_CROSS_A_MECHANISM.csv`
+
+No post-hoc state additions.
+
+### Required evidence
+
+- exact J reproduction and accepted source identity;
+- exact `mu_W=mu_a+mu_b` reconstruction and transfer cancellation;
+- pre-registered four-way component-liquid / total-wealth classification;
+- explicit total-wealth sign for every DLH-5K interior-positive state;
+- analytical comparison of rectangular component constraints with local `W=a+b` normal drift;
+- exact a77/a153 total-wealth comparison;
+- deterministic repeat and applicable full regression suite.
+
+DLH-5L is source-preserving. It does not authorize replacing the production domain with a total-wealth contour.
 
 ---
 
-## 3. Decision tree after DLH-5K
+## 3. Decision tree after DLH-5L
 
-### Route K1 — boundary/corner-transfer closure dominated
+### Route L1 — liquid outward, total wealth inward on all accepted positive states
 
-If accepted evidence shows all material upper-b offenders are boundary-only and their positive drift is dominated by the transfer-injection term under the joint upper-corner ordering:
+If every inherited material positive-`mu_b` state, including every DLH-5K interior-positive state, has `mu_W<=0`:
 
-- do not patch source immediately;
-- publish a **scientific design freeze for a joint upper-corner HJB/KKT boundary law**;
-- only after that design is accepted may an implementation task change the controlled process.
+- accept only a **pre-frozen-state total-wealth mean-reversion result**, not an infinite-domain theorem;
+- next gate = scientific design freeze comparing rectangular componentwise state constraints with economically justified joint-domain / joint-KKT alternatives;
+- no implementation patch before design acceptance.
 
-### Route K2 — genuine high-wealth interior outward drift persists
+### Route L2 — total wealth outward in accepted high-wealth interior
 
-If material positive liquid drift persists inside the high-b interior layers:
+If material total-wealth outwardness occurs in inherited interior-positive states:
 
 - do not resume larger-grid PASS seeking;
-- move to economic high-wealth asymptotics / mean-reversion analysis;
-- review whether the frozen D0 economics admits sufficient liquid mean reversion.
+- next gate = genuine high-wealth total-wealth asymptotics / economic mean-reversion analysis under the accepted model.
 
-### Route K3 — mixed mechanism
+### Route L3 — mixed total-wealth behavior
 
-If both boundary/corner closure and interior outward drift are material, resolve the mechanisms separately before any HJB redesign or stationary re-entry.
+Resolve both the portfolio-reallocation/domain-geometry channel and genuine total-wealth outward channel before any boundary redesign or stationary re-entry.
 
-No DLH-5K result by itself authorizes source mutation.
+No DLH-5L terminal automatically authorizes source/domain mutation.
 
 ---
 
 ## 4. Stationary household revalidation remains blocked
 
-Stationary KFE remains blocked throughout DLH-5K.
+Stationary KFE remains NOT AUTHORIZED throughout DLH-5L.
 
-Only after the HJB controlled process has a scientifically coherent and numerically robust upper-boundary treatment may the project re-enter Issue #27:
+Only after a scientifically coherent controlled process and boundary/domain design has been accepted and numerically validated may the project re-enter Issue #27:
 
 1. conservative generator;
 2. recurrent-class/nullspace evidence;
@@ -199,7 +192,7 @@ Permanent hierarchy:
 -> 31-province empirical/source benchmark
 ```
 
-The `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until household boundary/stationary validation is usable.
+`31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until household boundary/stationary validation is usable.
 
 No neural training is currently authorized. Later sequence remains:
 
@@ -213,11 +206,12 @@ No neural training is currently authorized. Later sequence remains:
 
 ## 6. Scientific ceiling
 
-Until the DLH-5K mechanism is adjudicated, do not:
+Until DLH-5L is adjudicated, do not:
 
-- enlarge the b grid beyond b160;
-- add adaptive/root-seeking grids;
-- modify accepted HJB/taper/transfer FOC/adjustment cost/boundary law merely to obtain PASS;
+- enlarge b beyond b160 or add adaptive/root-seeking grids;
+- add any new a/b resolution;
+- modify accepted HJB/KFE source, taper, transfer FOC, adjustment cost or boundary law;
+- replace the rectangular production domain from an analytical geometry diagnostic alone;
 - accept a KFE density from a different controlled process;
 - run stationary aggregates or policy/welfare Results;
 - train regional networks;
@@ -228,7 +222,7 @@ Until the DLH-5K mechanism is adjudicated, do not:
 
 ## 7. Governance status
 
-Issue #37 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
+Issue #38 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
 
 Routine bounded scientific-route decisions are delegated by Owner to ChatGPT unless Owner intervenes or raises a new concern.
 
