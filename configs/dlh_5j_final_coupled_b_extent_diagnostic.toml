@@ -1,0 +1,114 @@
+# DLH-5J (Issue #36) — Final Bounded Coupled Liquid-Extent Continuation config.
+#
+# Completes the last pre-frozen larger-b grid experiment before asymptotic
+# adjudication. Frozen: D0 economics (wbar=1.0, r_a=0.03); physical illiquid
+# domain a in [0,10], a_max=10, accepted r_a*(1-0.1*(a/a_max)^9) taper
+# unchanged; only the two mature a resolutions a77/a153; liquid spacing db=7/19
+# unchanged; only the three final pre-frozen b extents b120/b140/b160; b160 is
+# the HARD ROUTE CEILING (no b180/b200). Exact six variants J0-J5, fresh
+# initialization each, no warm-start, no adaptive/root-seeking seventh grid, no
+# b-resolution change, no a-domain widening, no clipping. Accepted DLH-5I b100
+# results are used ONLY as read-only scalar anchors (b100 is NOT rerun as an
+# extra variant). Policy-only: no stationary KFE / nullspace / pin / density /
+# tail / C-L-A-B execution.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+[frozen_physical_illiquid]
+a_lo = 0.0
+a_hi = 10.0
+a_max = 10.0
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+[liquid_domain]
+b_lo = -2.0
+db = 0.3684210526315789      # 7/19 (frozen; no b-resolution change in this gate)
+# b160 [-2,1075/19] is the hard route ceiling: no b extent beyond b160 is
+# authorized by this task.
+route_ceiling_note = "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200"
+
+# Two mature illiquid resolutions only (Issue #36 section 3): a77 = (10/19)/4,
+# a153 = (10/19)/8. a77 nodes are exactly every second a153 node.
+[[a_resolutions]]
+id = "a77"
+a_pts = 77
+da = 0.13157894736842105     # (10/19)/4
+
+[[a_resolutions]]
+id = "a153"
+a_pts = 153
+da = 0.06578947368421053     # (10/19)/8
+
+# Three final pre-frozen b extents (Issue #36 section 4), all at db=7/19 and
+# exactly nested: b120 in b140 in b160 on common nodes.
+[[b_extents]]
+id = "b120"
+b_pts = 120
+b_hi = 41.84210526315789     # 795/19
+
+[[b_extents]]
+id = "b140"
+b_pts = 140
+b_hi = 49.21052631578947     # 935/19
+
+[[b_extents]]
+id = "b160"
+b_pts = 160
+b_hi = 56.578947368421055    # 1075/19 (HARD ROUTE CEILING)
+
+# Exact six final pre-frozen variants (Issue #36 section 4): Cartesian
+# {a77,a153} x {b120,b140,b160}. Accepted DLH-5I b100 results are read-only
+# scalar anchors for the continuation trends and are NOT rerun here.
+[[variants]]
+id = "J0_A77_B120"
+a_res = "a77"
+b_ext = "b120"
+
+[[variants]]
+id = "J1_A77_B140"
+a_res = "a77"
+b_ext = "b140"
+
+[[variants]]
+id = "J2_A77_B160"
+a_res = "a77"
+b_ext = "b160"
+
+[[variants]]
+id = "J3_A153_B120"
+a_res = "a153"
+b_ext = "b120"
+
+[[variants]]
+id = "J4_A153_B140"
+a_res = "a153"
+b_ext = "b140"
+
+[[variants]]
+id = "J5_A153_B160"
+a_res = "a153"
+b_ext = "b160"
+
+[shared_interior]
+# Primary shared-interior mask excludes the top two coarse layers in EACH asset
+# dimension and includes all z states.
+top_coarse_layers_excluded = 2
+
+[validation]
+boundary_threshold = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# Secondary-annotation materiality criterion (pre-registered): a scale-aware
+# aligned-node cross-a policy relative difference above this on any required
+# pair marks
+# DLH_5J_CROSS_A_POLICY_RESOLUTION_SENSITIVITY_REMAINS_MATERIAL__NUMERICAL_REVIEW_REQUIRED.
+policy_rel_materiality = 1e-2
+
+[output]
+root = "reports/dlh_5j_final_coupled_b_extent_diagnostic_2026_09_01"
