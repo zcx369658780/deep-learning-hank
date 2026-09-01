@@ -1,0 +1,79 @@
+# DLH-5H (Issue #34) — Illiquid Upper-Boundary Resolution Diagnostic config.
+#
+# Isolates illiquid-grid resolution on the provisional liquid-safe domain while
+# preserving the accepted household process. Frozen: D0 economics
+# (wbar=1.0, r_a=0.03); physical illiquid domain a in [0,10], a_max=10, accepted
+# r_a*(1-0.1*(a/a_max)^9) taper unchanged; core liquid-safe b60 [-2,375/19],
+# db=7/19 for H0-H3. H4/H5 are the exact pre-frozen half-db b-resolution
+# cross-checks. No a-domain widening, no warm-start, no adaptive seventh grid,
+# no retuning, no clipping. Policy-only: no stationary KFE / nullspace / pin /
+# density / tail / C-L-A-B execution.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+[frozen_physical_illiquid]
+a_lo = 0.0
+a_hi = 10.0
+a_max = 10.0
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+[liquid_safe_domain]
+b_lo = -2.0
+b_hi = 19.736842105263158    # 375/19
+db = 0.3684210526315789      # 7/19
+domain_note = "PROVISIONAL_LIQUID_SAFE_DIAGNOSTIC_DOMAIN_NOT_FINAL_PRODUCTION_GRID"
+
+# Exact six pre-frozen variants (Issue #34 section 4). Only a_pts/da vary on the
+# core b60 domain for H0-H3; H4/H5 are the half-db b cross-checks.
+[[variants]]
+id = "H0_A20_BASE"
+b_pts = 60
+a_pts = 20
+
+[[variants]]
+id = "H1_A39_FINE"
+b_pts = 60
+a_pts = 39
+
+[[variants]]
+id = "H2_A77_FINER"
+b_pts = 60
+a_pts = 77
+
+[[variants]]
+id = "H3_A153_FINEST"
+b_pts = 60
+a_pts = 153
+
+[[variants]]
+id = "H4_B119_A39"
+b_pts = 119
+a_pts = 39
+
+[[variants]]
+id = "H5_B119_A77"
+b_pts = 119
+a_pts = 77
+
+[shared_interior]
+# Primary coarse-grid shared-interior mask excludes the top two coarse layers in
+# BOTH asset dimensions and includes all z states.
+top_coarse_layers_excluded = 2
+
+[validation]
+boundary_threshold = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# Secondary-annotation materiality criterion (pre-registered): a scale-aware
+# aligned-node policy relative difference above this on any required pair marks
+# DLH_5H_POLICY_RESOLUTION_SENSITIVITY_REMAINS_MATERIAL__NUMERICAL_REVIEW_REQUIRED.
+policy_rel_materiality = 1e-2
+
+[output]
+root = "reports/dlh_5h_illiquid_upper_boundary_resolution_diagnostic_2026_09_01"
