@@ -1,0 +1,1310 @@
+{
+  "accepted_j_reproduction": {
+    "pass_bool": true,
+    "per_variant": {
+      "J0_A77_B120": {
+        "accepted_hjb_statistic": 6.566175159150589e-08,
+        "accepted_raw_upper_b": 0.04291614197305571,
+        "accepted_requested_upper_b": 0.11648667106972263,
+        "accepted_upper_b_count": 3,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.566175159150589e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.04291614197305571,
+        "max_requested_upper_b": 0.11648667106972263,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 3
+      },
+      "J1_A77_B140": {
+        "accepted_hjb_statistic": 6.566185817291625e-08,
+        "accepted_raw_upper_b": 0.01758505362781082,
+        "accepted_requested_upper_b": 0.04773085984691508,
+        "accepted_upper_b_count": 2,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.566185817291625e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.01758505362781082,
+        "max_requested_upper_b": 0.04773085984691508,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 2
+      },
+      "J2_A77_B160": {
+        "accepted_hjb_statistic": 6.56618013294974e-08,
+        "accepted_raw_upper_b": 0.0,
+        "accepted_requested_upper_b": 0.0,
+        "accepted_upper_b_count": 0,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.56618013294974e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.0,
+        "max_requested_upper_b": 0.0,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 0
+      },
+      "J3_A153_B120": {
+        "accepted_hjb_statistic": 2.057089432128123e-08,
+        "accepted_raw_upper_b": 0.063625946244114,
+        "accepted_requested_upper_b": 0.1726989969483094,
+        "accepted_upper_b_count": 6,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.057089432128123e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.063625946244114,
+        "max_requested_upper_b": 0.1726989969483094,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 6
+      },
+      "J4_A153_B140": {
+        "accepted_hjb_statistic": 2.0598477590283437e-08,
+        "accepted_raw_upper_b": 0.03844034000754548,
+        "accepted_requested_upper_b": 0.1043380657347663,
+        "accepted_upper_b_count": 4,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.0598477590283437e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.03844034000754548,
+        "max_requested_upper_b": 0.1043380657347663,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 4
+      },
+      "J5_A153_B160": {
+        "accepted_hjb_statistic": 2.059856285541173e-08,
+        "accepted_raw_upper_b": 0.014916256474337253,
+        "accepted_requested_upper_b": 0.040486981858915395,
+        "accepted_upper_b_count": 2,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.059856285541173e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.014916256474337253,
+        "max_requested_upper_b": 0.040486981858915395,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 2
+      }
+    }
+  },
+  "cross_a_summary": {
+    "delta_mu_W_max": 0.00615668808385228,
+    "delta_mu_W_min": 0.00292361024686999,
+    "delta_mu_b_max": -0.007351777573816554,
+    "delta_mu_b_min": -0.021785688317127683,
+    "determination": "mu_b is cross-a material on every aligned state; after the one-for-one transfer cancellation, delta_mu_W (abs ~1e-3..6e-3) is substantially smaller than delta_mu_b (abs ~8e-3..2.3e-2), i.e. the cross-a liquid divergence is portfolio-reallocation-dominated. However, relative to mu_W's own (small) magnitude, rel_diff_mu_W exceeds the diagnostic threshold on most z=1 aligned states, so the total-wealth cross-a difference does not fully vanish and the pre-registered portfolio-reallocation annotation does not fire.",
+    "mu_W_below_threshold_count": 8,
+    "mu_W_below_threshold_on_all": false,
+    "mu_b_cross_a_material_any": true,
+    "mu_b_cross_a_material_count": 24,
+    "n_pairs": 24,
+    "rel_diff_mu_W_max": 0.046833681189513234,
+    "rel_diff_mu_W_min": 0.005772870990092756,
+    "rel_diff_mu_b_max": 1.405023962934826,
+    "rel_diff_mu_b_min": 0.019055511215361247
+  },
+  "deterministic_repeat": {
+    "pass_bool": true,
+    "per_variant": {
+      "J0_A77_B120": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J1_A77_B140": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J2_A77_B160": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J3_A153_B120": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J4_A153_B140": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J5_A153_B160": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      }
+    },
+    "randomness": "NOT_APPLICABLE",
+    "run1": {
+      "variants": [
+        {
+          "a_res": "a77",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566175159150589e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.04291614197305571,
+          "max_requested_upper_b": 0.11648667106972263,
+          "upper_b_offender_count": 3,
+          "variant": "J0_A77_B120"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566185817291625e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.01758505362781082,
+          "max_requested_upper_b": 0.04773085984691508,
+          "upper_b_offender_count": 2,
+          "variant": "J1_A77_B140"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.56618013294974e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.0,
+          "max_requested_upper_b": 0.0,
+          "upper_b_offender_count": 0,
+          "variant": "J2_A77_B160"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.057089432128123e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.063625946244114,
+          "max_requested_upper_b": 0.1726989969483094,
+          "upper_b_offender_count": 6,
+          "variant": "J3_A153_B120"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.0598477590283437e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.03844034000754548,
+          "max_requested_upper_b": 0.1043380657347663,
+          "upper_b_offender_count": 4,
+          "variant": "J4_A153_B140"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.059856285541173e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.014916256474337253,
+          "max_requested_upper_b": 0.040486981858915395,
+          "upper_b_offender_count": 2,
+          "variant": "J5_A153_B160"
+        }
+      ]
+    },
+    "run2": {
+      "variants": [
+        {
+          "a_res": "a77",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566175159150589e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.04291614197305571,
+          "max_requested_upper_b": 0.11648667106972263,
+          "upper_b_offender_count": 3,
+          "variant": "J0_A77_B120"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566185817291625e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.01758505362781082,
+          "max_requested_upper_b": 0.04773085984691508,
+          "upper_b_offender_count": 2,
+          "variant": "J1_A77_B140"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.56618013294974e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.0,
+          "max_requested_upper_b": 0.0,
+          "upper_b_offender_count": 0,
+          "variant": "J2_A77_B160"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.057089432128123e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.063625946244114,
+          "max_requested_upper_b": 0.1726989969483094,
+          "upper_b_offender_count": 6,
+          "variant": "J3_A153_B120"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.0598477590283437e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.03844034000754548,
+          "max_requested_upper_b": 0.1043380657347663,
+          "upper_b_offender_count": 4,
+          "variant": "J4_A153_B140"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.059856285541173e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.014916256474337253,
+          "max_requested_upper_b": 0.040486981858915395,
+          "upper_b_offender_count": 2,
+          "variant": "J5_A153_B160"
+        }
+      ]
+    }
+  },
+  "inherited_state_set": {
+    "count": 105,
+    "sources": [
+      "reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_BOUNDARY_INTERIOR_LOCALIZATION.csv",
+      "reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_CROSS_A_MECHANISM.csv"
+    ],
+    "states": [
+      [
+        "J0_A77_B120",
+        115,
+        74,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        115,
+        75,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        115,
+        76,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        117,
+        74,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        117,
+        75,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        117,
+        76,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        118,
+        74,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        118,
+        75,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        118,
+        76,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        73,
+        0
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        73,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        74,
+        0
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        74,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        75,
+        0
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        75,
+        1
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        76,
+        0
+      ],
+      [
+        "J0_A77_B120",
+        119,
+        76,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        135,
+        75,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        135,
+        76,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        137,
+        75,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        137,
+        76,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        138,
+        75,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        138,
+        76,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        73,
+        0
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        73,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        74,
+        0
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        74,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        75,
+        0
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        75,
+        1
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        76,
+        0
+      ],
+      [
+        "J1_A77_B140",
+        139,
+        76,
+        1
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        73,
+        0
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        73,
+        1
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        74,
+        0
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        74,
+        1
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        75,
+        0
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        75,
+        1
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        76,
+        0
+      ],
+      [
+        "J2_A77_B160",
+        159,
+        76,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        147,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        148,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        149,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        150,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        151,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        115,
+        152,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        147,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        148,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        149,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        150,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        151,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        117,
+        152,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        147,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        148,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        149,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        150,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        151,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        118,
+        152,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        146,
+        0
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        146,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        147,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        148,
+        0
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        148,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        149,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        150,
+        0
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        150,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        151,
+        1
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        152,
+        0
+      ],
+      [
+        "J3_A153_B120",
+        119,
+        152,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        135,
+        149,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        135,
+        150,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        135,
+        151,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        135,
+        152,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        137,
+        149,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        137,
+        150,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        137,
+        151,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        137,
+        152,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        138,
+        149,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        138,
+        150,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        138,
+        151,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        138,
+        152,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        146,
+        0
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        146,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        148,
+        0
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        148,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        149,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        150,
+        0
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        150,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        151,
+        1
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        152,
+        0
+      ],
+      [
+        "J4_A153_B140",
+        139,
+        152,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        155,
+        151,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        155,
+        152,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        157,
+        151,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        157,
+        152,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        158,
+        151,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        158,
+        152,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        146,
+        0
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        146,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        148,
+        0
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        148,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        150,
+        0
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        150,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        151,
+        1
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        152,
+        0
+      ],
+      [
+        "J5_A153_B160",
+        159,
+        152,
+        1
+      ]
+    ]
+  },
+  "terminal": {
+    "annotations": [],
+    "terminal": "DLH_5L_COMPONENTWISE_LIQUID_OUTWARD_DRIFT_WITH_TOTAL_WEALTH_MEAN_REVERSION_CONFIRMED__DOMAIN_GEOMETRY_DESIGN_REVIEW_REQUIRED"
+  }
+}
