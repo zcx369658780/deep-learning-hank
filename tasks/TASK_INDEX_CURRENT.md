@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5F_UPPER_DOMAIN_ADEQUACY_AND_STATIONARY_TAIL`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5G_LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
 
 Last synchronized: 2026-09-01
 
@@ -10,129 +10,121 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Current Issue:
 
-**Issue #29 — OPEN**
+**Issue #31 — OPEN**
 
 Title:
 
-`DLH-5F: Diagnose upper-domain adequacy and stationary-tail behavior on the frozen two-asset household`
+`DLH-5G: Isolate liquid upper-domain asymptotics under fixed illiquid domain and taper`
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__UPPER_DOMAIN_ADEQUACY_AND_STATIONARY_TAIL`
-
-Issue #29 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
+`SCIENTIFIC_DIAGNOSTIC__LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
 
 Dedicated branch:
 
-`dsh/issue-29-dlh-5f-upper-domain-stationary-tail-2026-09-01`
+`dsh/issue-31-dlh-5g-liquid-upper-domain-asymptotic-2026-09-01`
 
-DSH must fresh-fetch `origin/main`, read all CURRENT rules, this Task Index, the CURRENT Startup Snapshot, the current Roadmap/Handoff, Issue #29 full body/latest comments, accepted Issues #27–#28 authority, and the accepted MATLAB-faithful household/HJB source before any mutation.
+Issue #31 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
 
-If Issue #29 is not open, activation is absent, or Issue/Task Index/Startup identity differs, DSH must fail closed.
+If Issue #31 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
 
-## Issue #29 scientific scope
+## Latest accepted task — Issue #29 / DLH-5F
 
-DLH-5F is a bounded **diagnostic** task. It does not authorize a new HJB boundary law, a new KFE process, regional GE, calibration, learned networks, or Results.
+Accepted candidate:
 
-Frozen D0 economics/prices remain:
+`7f4e489154115c9c91cf8c3fccbb3a1d114fbc3f`
+
+Integrated to `main` by acceptance merge commit:
+
+`8eaac27472e3f902d0ff3e8044027f95913155ba`
+
+Accepted reviewer verdict:
+
+`DLH_5F_ISSUE_29_IMPLEMENTATION_ACCEPTED__OUTCOME_B_CONFIRMED__OUTCOME_D_SUPPORTED_WITH_INTERPRETATION_CORRECTION__STATIONARY_TAIL_NOT_REACHED`
+
+Accepted reviewer annotation:
+
+`B_EXTENT_EVIDENCE_SHOWS_STRONG_ATTENUATION_NOT_GROWTH__A_EXTENT_CONFOUNDED_BY_AMAX_NORMALIZED_RETURN_TAPER__RESOLUTION_NOT_YET_STABLE`
+
+Controlling scientific interpretation:
+
+- clean b-only `V0 -> V2` holds `a_max=10`, a-grid/taper and `db` fixed; upper-b requested rate falls from about `0.353747704` to `0.010203356` with highly stable shared-interior policy;
+- changing `a_max` changes the accepted MATLAB-faithful effective illiquid return `r_a*(1-0.1*(a/a_max)^9)`, so V1/V3/V4 are not pure a-domain extent experiments;
+- V5 keeps `a_max=10` and removes upper-a outward requests, showing strong upper-a resolution/local-discretization sensitivity;
+- no DLH-5F variant reached full HJB/KFE same-process stationary validation, so stationary-tail existence/non-existence and new `C,L,A,B` remain NOT REACHED.
+
+## Issue #31 scientific scope
+
+DLH-5G isolates the liquid upper boundary only. It preserves the accepted household HJB and freezes the entire illiquid side:
 
 ```text
 wbar = 1.0
 r_a  = 0.03
+a = 20 points on [0,10]
+a_max = 10
+da = 10/19
+accepted illiquid-return taper unchanged
 ```
 
-All non-grid parameters, prices, taxes/transfers, productivity process, HJB numerics, drift tolerance and initialization logic remain exactly the accepted DLH-5B/DLH-5E fixture.
+Primary question:
 
-Binding consistency law:
+> With fixed illiquid domain/taper and fixed economics, does raw upper-b outward drift `max(mu_b,0)` attenuate toward zero as `b_max` is extended, and how sensitive is that conclusion to an independent b-resolution refinement?
 
-```text
-HJB boundary policy <=> KFE boundary transition law
-```
+Raw `mu_b` is the primary cross-resolution quantity. Requested generator rate `max(mu_b,0)/db` remains the HJB/KFE boundary-compatibility quantity.
 
-A mechanically clipped conservative KFE is not accepted as the stationary process of an HJB that requests material outward boundary drift.
+DLH-5G is policy-only. It does **not** authorize stationary KFE, nullspace/pin, density, tail mass, stationary flux, `C,L,A,B`, HJB boundary redesign or a-taper redesign.
 
-## Exact six pre-frozen grid variants
+## Exact six pre-frozen variants
 
-No adaptive seventh variant is authorized.
+All use the same a20 `[0,10]` grid and `a_max=10` taper.
 
-1. `V0_BASE`: b 20 on `[-2,5]`; a 20 on `[0,10]`.
-2. `V1_A_WIDE`: b baseline; a 40 on `[0,390/19]`.
-3. `V2_B_WIDE`: b 40 on `[-2,235/19]`; a baseline.
-4. `V3_AB_MID`: b 30 on `[-2,165/19]`; a 30 on `[0,290/19]`.
-5. `V4_AB_WIDE`: b 40 on `[-2,235/19]`; a 40 on `[0,390/19]`.
-6. `V5_BASE_FINE`: b 39 on `[-2,5]`; a 39 on `[0,10]`, half baseline spacing.
+1. `G0_BASE`: b20 `[-2,5]`, `db=7/19`.
+2. `G1_B_WIDE_1`: b40 `[-2,235/19]`, same `db`.
+3. `G2_B_WIDE_2`: b60 `[-2,375/19]`, same `db`.
+4. `G3_B_WIDE_3`: b80 `[-2,515/19]`, same `db`.
+5. `G4_BASE_B_FINE`: b39 `[-2,5]`, `db=(7/19)/2`.
+6. `G5_WIDE1_B_FINE`: b79 `[-2,235/19]`, `db=(7/19)/2`.
 
-V0–V4 preserve exact baseline spacing on expanded dimensions; V5 contains every V0 node at every second grid point.
+No seventh/adaptive grid or PASS-seeking search is authorized.
 
-## Required evidence sequence
+## Required evidence
 
 1. Fresh accepted HJB on all six variants; no warm start.
-2. Full upper/lower requested-rate diagnostics: max, positive quantiles, counts/shares, argmax and complete physical/index coordinate sets.
-3. Shared-interior policy comparison at exact aligned nodes using the frozen V0 mask `b_index<=17`, `a_index<=17`, all z.
-4. Mechanical conservative-generator diagnostics only; row sums/off-diagonals do not self-authorize KFE acceptance.
-5. Stationary/nullspace/pin/tail/aggregate validation only for variants with `max requested outward <=1e-10` under the same HJB/KFE controlled process.
-6. Boundary/near-boundary mass and probability-weighted flux only from a scientifically admissible density.
-7. `C,L,A,B` only after stationary validity; no historical row-295 aggregate.
-8. Full six-variant deterministic repeat and applicable repository regression suite.
+2. Upper/lower b raw-drift diagnostics and requested-rate diagnostics, with max, quantiles, counts/shares, argmax and complete offending states.
+3. Upper/lower a requested-rate regression evidence with a-grid/taper identity frozen.
+4. Same-spacing extent trend `G0 -> G1 -> G2 -> G3`, including raw/requested maxima and attenuation ratios.
+5. Exact aligned resolution comparisons `G0 vs G4` and `G1 vs G5` for value, consumption, labor, transfer, `mu_a`, `mu_b`, and direction-label mismatches.
+6. Deterministic repeat and applicable full repository regression suite.
+7. No stationary/KFE/aggregate execution path.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `src/deep_learning_hank/two_asset/upper_domain_stationary_tail_diagnostic.py`
-2. `configs/dlh_5f_upper_domain_stationary_tail_diagnostic.toml`
-3. `tests/test_dlh_5f_upper_domain_stationary_tail_diagnostic.py`
-4. `reports/dlh_5f_upper_domain_stationary_tail_diagnostic_2026_09_01/` with exactly:
-   - `DLH_5F_VARIANT_STATUS.csv`
-   - `DLH_5F_BOUNDARY_POLICY_DIAGNOSTICS.csv`
-   - `DLH_5F_INTERIOR_POLICY_STABILITY.csv`
-   - `DLH_5F_STATIONARY_TAIL_DIAGNOSTICS.csv`
-   - `DLH_5F_AGGREGATE_STABILITY.csv`
-   - `DLH_5F_REPRODUCIBILITY.json`
-   - `DLH_5F_EXECUTION_REPORT.md`
-   - `DLH_5F_FORBIDDEN_OPERATION_CHECK.md`
+1. `src/deep_learning_hank/two_asset/liquid_upper_domain_asymptotic_diagnostic.py`
+2. `configs/dlh_5g_liquid_upper_domain_asymptotic_diagnostic.toml`
+3. `tests/test_dlh_5g_liquid_upper_domain_asymptotic_diagnostic.py`
+4. `reports/dlh_5g_liquid_upper_domain_asymptotic_diagnostic_2026_09_01/` with exactly:
+   - `DLH_5G_VARIANT_STATUS.csv`
+   - `DLH_5G_LIQUID_BOUNDARY_DIAGNOSTICS.csv`
+   - `DLH_5G_ILLIQUID_REGRESSION_DIAGNOSTICS.csv`
+   - `DLH_5G_EXTENT_TREND.csv`
+   - `DLH_5G_RESOLUTION_STABILITY.csv`
+   - `DLH_5G_REPRODUCIBILITY.json`
+   - `DLH_5G_EXECUTION_REPORT.md`
+   - `DLH_5G_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
-## Explicit scientific ceiling
+## Scientific ceiling
 
-Do not:
+Do not modify accepted source/evidence, `a_max`, a-grid, taper, economics/prices/parameters/tolerances/initialization; do not warm-start, adapt grids, clip policy, run stationary KFE/density/tail/aggregates, D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
 
-- modify accepted HJB/local-policy/KFE/regional source;
-- modify accepted Issues #23–#28 evidence;
-- change economic parameters/prices/tolerances;
-- warm-start across grids;
-- adaptively expand the grid;
-- clip HJB policy to seek PASS;
-- compute economic stationary density from a different boundary process;
-- use old row-295 density as evidence;
-- run D1–D3, two-region outer iteration, 3–5/31-province GE, or the future `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT`;
-- train `W^L` or any neural network;
-- enter nominal HANK / calibration / policy / welfare / Results;
-- create PR / merge / close / successor / self-accept.
-
-## Latest accepted task
-
-Issue #28 — DLH-5E — ACCEPTED / COMPLETED.
-
-Accepted candidate integrated to main:
-
-`a49c19bbc3257f62bebecc26fe7d88ddcc143d9c`
-
-Accepted classification:
-
-`DLH_5E_IMPLEMENTATION_VALIDATION_ACCEPTED__D0_BOUNDARY_POLICY_VIOLATION_CONFIRMED__OWNER_HJB_BOUNDARY_DECISION_REQUIRED`
-
-Accepted D0 facts remain:
-
-- HJB converged in 11 iterations;
-- upper-b max about `0.353747704`, 3 material states;
-- upper-a max about `0.264071883`, 28 material states;
-- mechanical `Q_c` row-sum max abs `6.106227e-16`, negative off-diagonal magnitude `0`;
-- no clipped density / new `C,L,A,B` / anchor accepted.
+No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
+- Issue #31 full body + authoritative activation comment = exact Builder experiment authority.
+- Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Handoff: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
-- Issue #29 full body is the exact experiment authority once activation is complete.
+- Earlier handoff remains historical scientific context: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
