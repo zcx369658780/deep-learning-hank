@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5I_COUPLED_BOUNDARY_DOMAIN_RESOLUTION_FRONTIER`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5J_FINAL_BOUNDED_COUPLED_B_EXTENT_CONTINUATION`
 
 Last synchronized: 2026-09-01
 
@@ -10,51 +10,54 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Current Issue:
 
-**Issue #35 — OPEN**
+**Issue #36 — OPEN**
 
 Title:
 
-`DLH-5I: Map the coupled liquid-domain frontier across mature illiquid resolutions`
+`DLH-5J: Complete the final bounded coupled liquid-extent continuation before asymptotic adjudication`
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__COUPLED_BOUNDARY_DOMAIN_RESOLUTION_FRONTIER`
+`SCIENTIFIC_DIAGNOSTIC__FINAL_BOUNDED_COUPLED_B_EXTENT_CONTINUATION`
 
 Dedicated branch:
 
-`dsh/issue-35-dlh-5i-coupled-boundary-frontier-2026-09-01`
+`dsh/issue-36-dlh-5j-final-coupled-b-extent-2026-09-01`
 
-Issue #35 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
+Issue #36 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
 
-If Issue #35 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
+If Issue #36 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
 
-## Latest accepted task — Issue #34 / DLH-5H
+## Latest accepted task — Issue #35 / DLH-5I
 
 Accepted candidate:
 
-`906c98d107c8dadf6e24d841901d7eb6d53fe0d9`
+`d8837e04db940b1f71b8ff1fe7e181d1bf9644a3`
 
 Integrated to `main` by acceptance merge commit:
 
-`f648ca270a751465ac041a4eee05cee094114ed6`
+`53d0ff7b0fe9bd73cfbd8c6d27c98bbc4b0423d1`
 
 Accepted reviewer verdict:
 
-`DLH_5H_ISSUE_34_IMPLEMENTATION_ACCEPTED__ILLIQUID_A_RESOLUTION_ADEQUACY_CONFIRMED__LIQUID_BOUNDARY_REACTIVATION_CONFIRMED__COUPLED_RESOLUTION_BLOCKER_ESTABLISHED`
+`DLH_5I_ISSUE_35_IMPLEMENTATION_ACCEPTED__COUPLED_B_EXTENT_ATTENUATION_CONFIRMED__COMMON_THRESHOLD_NOT_REACHED__UPPER_A_COMPATIBILITY_STABLE__FURTHER_BOUNDED_EXTENT_GATE_REQUIRED`
 
 Accepted interpretation:
 
-- with physical `a in [0,10]`, `a_max=10` and taper fixed, upper-a is material on a20 but exact zero on a39/a77/a153;
-- the former provisional b60 liquid-safe domain is not robust to a refinement: upper-b requested rate reactivates to about `0.2713`, `0.3916`, `0.4449` on a39/a77/a153;
-- half-db cross-checks at the same b extent remain material;
-- the blocker is therefore coupled domain/resolution behavior rather than an isolated one-asset boundary problem;
-- no pre-frozen grid is jointly HJB-boundary compatible; stationary KFE remains NOT AUTHORIZED.
+- upper-a/lower-a/lower-b requested policy is exact zero for all a77/a153 × b60/b80/b100 variants;
+- with `db=7/19` fixed, upper-b requested policy strictly attenuates with b extent:
+  - a77: `0.3915648627 -> 0.2808185297 -> 0.1925385153`;
+  - a153: `0.4449370735 -> 0.3356027946 -> 0.2481811687`;
+- offending upper-b states remain localized to the top-liquid/top-illiquid/high-z corner and counts/shares decline with extent;
+- no b60/b80/b100 extent is jointly compatible at either mature a resolution;
+- cross-a value/consumption/labor differences are small, while transfer/`mu_a`/`mu_b` remain about 1.9–2.4% apart;
+- stationary KFE remains NOT AUTHORIZED.
 
-## Issue #35 scientific scope
+## Issue #36 scientific scope
 
-DLH-5I maps a coupled liquid-extent frontier at two mature illiquid diagnostic resolutions while preserving the accepted household process.
+DLH-5J is the **final bounded grid-extent continuation** before asymptotic/high-wealth or finite-domain-closure adjudication.
 
-Frozen for all variants:
+Frozen on all variants:
 
 ```text
 wbar = 1.0
@@ -65,71 +68,78 @@ accepted taper = r_a*(1-0.1*(a/a_max)^9)
 db = 7/19
 ```
 
-Only two a resolutions are authorized:
+Only mature a resolutions are authorized:
 
 ```text
 a77
 a153
 ```
 
-Exact b extents:
+Final pre-frozen b extents:
 
 ```text
-b60  [-2,375/19]
-b80  [-2,515/19]
-b100 [-2,655/19]
+b120 [-2,795/19]
+b140 [-2,935/19]
+b160 [-2,1075/19]
 ```
 
-Exact variants:
+Exact six variants:
 
-1. `I0_A77_B60`
-2. `I1_A77_B80`
-3. `I2_A77_B100`
-4. `I3_A153_B60`
-5. `I4_A153_B80`
-6. `I5_A153_B100`
+1. `J0_A77_B120`
+2. `J1_A77_B140`
+3. `J2_A77_B160`
+4. `J3_A153_B120`
+5. `J4_A153_B140`
+6. `J5_A153_B160`
 
-No seventh/adaptive grid, no a-domain widening, no new a resolution and no b-resolution change are authorized.
+No seventh/adaptive grid, no b extent beyond b160, no new a resolution, no a-domain widening and no b-resolution change are authorized.
 
 ## Required evidence
 
 1. Fresh accepted HJB on all six variants; no warm start.
-2. Raw + requested diagnostics on upper/lower a and b with complete offending-state evidence.
-3. Separate same-a b-extent trends `I0->I1->I2` and `I3->I4->I5`.
-4. Exact cross-a aligned policy comparisons at b60, b80 and b100.
+2. Complete raw + requested diagnostics on all four asset boundaries with full offending-state evidence.
+3. Final continuation trends using accepted DLH-5I b100 scalars as read-only anchors:
+   - a77: b100 -> b120 -> b140 -> b160;
+   - a153: b100 -> b120 -> b140 -> b160.
+4. Exact cross-a aligned policy comparisons at b120/b140/b160.
 5. Per-variant joint HJB boundary compatibility marker.
-6. Per-b-extent cross-a joint-compatibility frontier marker.
+6. Per-final-extent cross-a joint-compatibility frontier marker.
 7. Deterministic repeat and applicable full repository regression suite.
 8. Stop without stationary KFE / density / tail / aggregate execution.
+
+Binding route rule:
+
+- if a common extent reaches cross-a joint compatibility, next gate is bounded **b-resolution confirmation at the smallest compatible extent**;
+- if no common extent reaches compatibility by b160, do **not** publish another larger-grid continuation task; next gate must be high-wealth/asymptotic or finite-domain HJB-closure scientific adjudication.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `src/deep_learning_hank/two_asset/coupled_boundary_frontier_diagnostic.py`
-2. `configs/dlh_5i_coupled_boundary_frontier_diagnostic.toml`
-3. `tests/test_dlh_5i_coupled_boundary_frontier_diagnostic.py`
-4. `reports/dlh_5i_coupled_boundary_frontier_diagnostic_2026_09_01/` with exactly:
-   - `DLH_5I_VARIANT_STATUS.csv`
-   - `DLH_5I_BOUNDARY_DIAGNOSTICS.csv`
-   - `DLH_5I_EXTENT_TRENDS.csv`
-   - `DLH_5I_CROSS_A_POLICY_STABILITY.csv`
-   - `DLH_5I_JOINT_COMPATIBILITY_FRONTIER.csv`
-   - `DLH_5I_REPRODUCIBILITY.json`
-   - `DLH_5I_EXECUTION_REPORT.md`
-   - `DLH_5I_FORBIDDEN_OPERATION_CHECK.md`
+1. `src/deep_learning_hank/two_asset/final_coupled_b_extent_diagnostic.py`
+2. `configs/dlh_5j_final_coupled_b_extent_diagnostic.toml`
+3. `tests/test_dlh_5j_final_coupled_b_extent_diagnostic.py`
+4. `reports/dlh_5j_final_coupled_b_extent_diagnostic_2026_09_01/` with exactly:
+   - `DLH_5J_VARIANT_STATUS.csv`
+   - `DLH_5J_BOUNDARY_DIAGNOSTICS.csv`
+   - `DLH_5J_FINAL_EXTENT_TRENDS.csv`
+   - `DLH_5J_CROSS_A_POLICY_STABILITY.csv`
+   - `DLH_5J_JOINT_COMPATIBILITY_FRONTIER.csv`
+   - `DLH_5J_REPRODUCIBILITY.json`
+   - `DLH_5J_EXECUTION_REPORT.md`
+   - `DLH_5J_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
 ## Scientific ceiling
 
-Do not modify accepted HJB/KFE/regional source or Issues #23–#34 evidence; do not change physical a-domain, `a_max=10`, taper, economics/prices/parameters/tolerances/initialization; do not use a resolution outside a77/a153 or change `db=7/19`; no warm-start, adaptive grid or clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
+Do not modify accepted HJB/KFE/regional source or Issues #23–#35 evidence; do not change physical a-domain, `a_max`, taper, economics/prices/parameters/tolerances/initialization; do not use a resolution outside a77/a153 or change `db=7/19`; do not rerun b100 as an extra variant; no b extent beyond b160; no warm-start, adaptive/root-seeking grid or clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
 
 No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
-- Issue #35 full body + authoritative activation comment = exact Builder experiment authority once activation is posted.
+- Issue #36 full body + authoritative activation comment = exact Builder experiment authority once activation is posted.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 - Earlier handoff remains historical context: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
