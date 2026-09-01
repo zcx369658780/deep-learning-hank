@@ -1,0 +1,657 @@
+{
+  "accepted_j_reproduction": {
+    "pass_bool": true,
+    "per_variant": {
+      "J0_A77_B120": {
+        "accepted_hjb_statistic": 6.566175159150589e-08,
+        "accepted_raw_upper_b": 0.04291614197305571,
+        "accepted_requested_upper_b": 0.11648667106972263,
+        "accepted_upper_b_count": 3,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.566175159150589e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.04291614197305571,
+        "max_requested_upper_b": 0.11648667106972263,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 3
+      },
+      "J1_A77_B140": {
+        "accepted_hjb_statistic": 6.566185817291625e-08,
+        "accepted_raw_upper_b": 0.01758505362781082,
+        "accepted_requested_upper_b": 0.04773085984691508,
+        "accepted_upper_b_count": 2,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.566185817291625e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.01758505362781082,
+        "max_requested_upper_b": 0.04773085984691508,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 2
+      },
+      "J2_A77_B160": {
+        "accepted_hjb_statistic": 6.56618013294974e-08,
+        "accepted_raw_upper_b": 0.0,
+        "accepted_requested_upper_b": 0.0,
+        "accepted_upper_b_count": 0,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 6.56618013294974e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.0,
+        "max_requested_upper_b": 0.0,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 0
+      },
+      "J3_A153_B120": {
+        "accepted_hjb_statistic": 2.057089432128123e-08,
+        "accepted_raw_upper_b": 0.063625946244114,
+        "accepted_requested_upper_b": 0.1726989969483094,
+        "accepted_upper_b_count": 6,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.057089432128123e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.063625946244114,
+        "max_requested_upper_b": 0.1726989969483094,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 6
+      },
+      "J4_A153_B140": {
+        "accepted_hjb_statistic": 2.0598477590283437e-08,
+        "accepted_raw_upper_b": 0.03844034000754548,
+        "accepted_requested_upper_b": 0.1043380657347663,
+        "accepted_upper_b_count": 4,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.0598477590283437e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.03844034000754548,
+        "max_requested_upper_b": 0.1043380657347663,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 4
+      },
+      "J5_A153_B160": {
+        "accepted_hjb_statistic": 2.059856285541173e-08,
+        "accepted_raw_upper_b": 0.014916256474337253,
+        "accepted_requested_upper_b": 0.040486981858915395,
+        "accepted_upper_b_count": 2,
+        "boundary_max_ok": true,
+        "count_ok": true,
+        "hjb_converged": true,
+        "hjb_iterations": 10,
+        "hjb_stat_diff": 0.0,
+        "hjb_stat_ok": true,
+        "hjb_statistic": 2.059856285541173e-08,
+        "lower_a_raw_ok": true,
+        "lower_b_raw_ok": true,
+        "max_raw_upper_b": 0.014916256474337253,
+        "max_requested_upper_b": 0.040486981858915395,
+        "pass": true,
+        "raw_upper_b_diff": 0.0,
+        "requested_upper_b_diff": 0.0,
+        "upper_a_raw_ok": true,
+        "upper_b_offender_count": 2
+      }
+    }
+  },
+  "deterministic_repeat": {
+    "pass_bool": true,
+    "per_variant": {
+      "J0_A77_B120": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J1_A77_B140": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J2_A77_B160": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J3_A153_B120": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J4_A153_B140": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      },
+      "J5_A153_B160": {
+        "aligned_nonfinite": 0,
+        "counts_identical": true,
+        "max_numeric_diff": 0.0,
+        "mismatched": 0,
+        "pass_bool": true
+      }
+    },
+    "randomness": "NOT_APPLICABLE",
+    "run1": {
+      "variants": [
+        {
+          "a_res": "a77",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566175159150589e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.04291614197305571,
+          "max_requested_upper_b": 0.11648667106972263,
+          "upper_b_offender_count": 3,
+          "variant": "J0_A77_B120"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566185817291625e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.01758505362781082,
+          "max_requested_upper_b": 0.04773085984691508,
+          "upper_b_offender_count": 2,
+          "variant": "J1_A77_B140"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.56618013294974e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.0,
+          "max_requested_upper_b": 0.0,
+          "upper_b_offender_count": 0,
+          "variant": "J2_A77_B160"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.057089432128123e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.063625946244114,
+          "max_requested_upper_b": 0.1726989969483094,
+          "upper_b_offender_count": 6,
+          "variant": "J3_A153_B120"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.0598477590283437e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.03844034000754548,
+          "max_requested_upper_b": 0.1043380657347663,
+          "upper_b_offender_count": 4,
+          "variant": "J4_A153_B140"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.059856285541173e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.014916256474337253,
+          "max_requested_upper_b": 0.040486981858915395,
+          "upper_b_offender_count": 2,
+          "variant": "J5_A153_B160"
+        }
+      ]
+    },
+    "run2": {
+      "variants": [
+        {
+          "a_res": "a77",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566175159150589e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.04291614197305571,
+          "max_requested_upper_b": 0.11648667106972263,
+          "upper_b_offender_count": 3,
+          "variant": "J0_A77_B120"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.566185817291625e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.01758505362781082,
+          "max_requested_upper_b": 0.04773085984691508,
+          "upper_b_offender_count": 2,
+          "variant": "J1_A77_B140"
+        },
+        {
+          "a_res": "a77",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 77,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.13157894736842105,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 6.56618013294974e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.0,
+          "max_requested_upper_b": 0.0,
+          "upper_b_offender_count": 0,
+          "variant": "J2_A77_B160"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b120",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 41.84210526315789,
+            "b_lo": -2.0,
+            "b_pts": 120,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.057089432128123e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.063625946244114,
+          "max_requested_upper_b": 0.1726989969483094,
+          "upper_b_offender_count": 6,
+          "variant": "J3_A153_B120"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b140",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 49.21052631578947,
+            "b_lo": -2.0,
+            "b_pts": 140,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.0598477590283437e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.03844034000754548,
+          "max_requested_upper_b": 0.1043380657347663,
+          "upper_b_offender_count": 4,
+          "variant": "J4_A153_B140"
+        },
+        {
+          "a_res": "a153",
+          "b_ext": "b160",
+          "frozen_prices_identity": {
+            "dlh5b_config": "configs/dlh_5b_two_region_symmetric_anchor.toml",
+            "liquid_domain": {
+              "b_lo": -2.0,
+              "db": 0.3684210526315789,
+              "route_ceiling_note": "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200__NO_NEW_GRID"
+            },
+            "r_a": 0.03,
+            "region_index": 0,
+            "taper_identity": "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED",
+            "wbar": 1.0
+          },
+          "grid": {
+            "a_hi": 10.0,
+            "a_lo": 0.0,
+            "a_max": 10.0,
+            "a_pts": 153,
+            "b_hi": 56.578947368421055,
+            "b_lo": -2.0,
+            "b_pts": 160,
+            "da": 0.06578947368421052,
+            "db": 0.368421052631579,
+            "z_pts": 2
+          },
+          "hjb_converged": true,
+          "hjb_iterations": 10,
+          "hjb_statistic": 2.059856285541173e-08,
+          "max_raw_lower_a": 0.0,
+          "max_raw_lower_b": 0.0,
+          "max_raw_upper_a": 0.0,
+          "max_raw_upper_b": 0.014916256474337253,
+          "max_requested_upper_b": 0.040486981858915395,
+          "upper_b_offender_count": 2,
+          "variant": "J5_A153_B160"
+        }
+      ]
+    }
+  },
+  "terminal": {
+    "annotations": [
+      "DLH_5K_CROSS_A_DIVERGENCE_PRIMARILY_TRANSFER_DERIVATIVE_CHANNEL__SCIENTIFIC_REVIEW_REQUIRED"
+    ],
+    "terminal": "DLH_5K_MIXED_HIGH_WEALTH_AND_BOUNDARY_CLOSURE_MECHANISM__SCIENTIFIC_REVIEW_REQUIRED"
+  }
+}
