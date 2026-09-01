@@ -12,6 +12,18 @@ state-constraint HJB/KKT laws generically, maps the accepted DLH-5K/DLH-5L evide
 both candidates, and produces an explicit Owner decision packet. No recommendation
 freezes or changes the model.
 
+**Revision (2026-09-02, reviewer comment `5501914968`):** this candidate applies the
+bounded corrections requested by the fresh review: (1) upper-face KKT multiplier sign
+corrected to the maximization convention `L = H - lambda*g` (effective gradients
+`V - lambda`, not `V + lambda`); (2) `lambda_W` cancellation from the linear transfer
+term preserved, with its effect retained through the adjustment cost, and `d` is not
+described as fully free because `chi(d,a)` keeps the W constraint dependent on `d`;
+(3) W-face activity recorded only as the `W_max`-conditional (`W_s = a+b` per state);
+(4) intersections, the W2 trapezoid and the taper effect qualified as conditional on
+`W_max` / dependent only on `a`; (5) a finite rectangular state constraint
+distinguished from an economic asset cap (numerical closure whose influence must be
+shown to vanish with truncation). No accepted DLH-5K/5L numerical evidence is changed.
+
 ---
 
 ## 0. Controlling accepted evidence and identities
@@ -73,10 +85,15 @@ Summary:
 | `b <= b_max` (route ceiling, b160 = 1075/19) | **Computational truncation (pure)** | No economic reason bars liquid wealth above `b_max`; the outward liquid drift at this face is a truncation response. This is the face at issue. |
 | accepted `a_max`-normalized illiquid-return taper | **Numerical stabilization / modeling normalization** | Anchors return decay on `a`; it is not itself a state constraint and does not stabilize the `b`-or `W`-face. |
 
-The distinction matters: under the current rectangle the upper-`b` face is a
-truncation, so a rectangular tangent-cone law `mu_b <= 0` would convert a
-computational truncation into an economic constraint. That is the central tension the
-design review must resolve, not assume away.
+The distinction matters — with a precise caveat: a finite rectangular
+state-constraint condition need **not** be interpreted as an economic law if it is
+treated as a numerical boundary closure at a computational truncation whose influence
+is shown to vanish as the truncation recedes. Under the current rectangle the
+upper-`b` face is a truncation, so a rectangular tangent-cone law `mu_b <= 0` would
+either be a numerical closure (legitimate only if its influence is shown to vanish
+with truncation) or an economic constraint (only if the Owner accepts the rectangle as
+the true state domain). The accepted evidence establishes neither. That is the central
+tension the design review must resolve, not assume away.
 
 ---
 
@@ -116,17 +133,20 @@ Which controls enter each drift:
 Joint control feasibility / KKT at the upper-b face: at `b = b_max`, `mu_b <= 0`
 is the active constraint. The unconstrained interior FOCs
 (`u'(c) = V_b`; transfer FOC `V_a - V_b = marginal adjustment cost`) are modified at
-the face by a KKT multiplier `lambda_b >= 0` on the drift constraint
-`mu_b <= 0`, so that the boundary Hamiltonian is
+the face by a KKT multiplier `lambda_b >= 0` on the drift constraint `mu_b <= 0`.
+Because this is a maximization problem with an upper constraint `g = mu_b <= 0`, the
+consistent KKT Lagrangian subtracts the multiplier times the constraint,
+`L = H - lambda_b*mu_b`, so the boundary Hamiltonian is
 
 ```text
-H = sup_{c,l,d} { u(c) - v_l*l + V_a*mu_a + V_b*mu_b + lambda_b*mu_b }   (b=b_max active)
-  = sup_{c,l,d} { u(c) - v_l*l + V_a*mu_a + (V_b + lambda_b)*mu_b }
+H = sup_{c,l,d} { u(c) - v_l*l + V_a*mu_a + V_b*mu_b - lambda_b*mu_b }   (b=b_max active)
+  = sup_{c,l,d} { u(c) - v_l*l + V_a*mu_a + (V_b - lambda_b)*mu_b }
 ```
 
 with complementarity `lambda_b * mu_b = 0`. Equivalently, on the face the effective
-value-gradient along `b` is `V_b + lambda_b >= V_b`; the constraint binds exactly when
-the unconstrained drift would exit the domain.
+value-gradient along `b` is `V_b - lambda_b <= V_b` (the shadow price of `b` is reduced
+at the cap, since further `b` accumulation is inadmissible); the constraint binds
+exactly when the unconstrained drift would exit the domain.
 
 Is the current MATLAB-faithful upper-b/upper-a ordering equivalent to this constrained
 problem? **No.** The accepted DLH-5K evidence (`joint_corner_feasibility`, Phase D)
@@ -169,10 +189,13 @@ lower-a face:  mu_a >= 0
 ```
 
 Source facts supporting `W = a + b` as an accounting coordinate: the accepted
-accounting gives `mu_W = mu_a + mu_b` with the transfer `d` cancelling one-for-one,
-so the total-wealth drift is independent of the instantaneous reallocation `d` (only
-consumption net of transfer income, labor income, and adjustment cost enter). This is a
-genuine accounting additivity fact about the drift decomposition.
+accounting gives `mu_W = mu_a + mu_b` with the *linear* part of the transfer `d`
+cancelling one-for-one, so the total-wealth drift does not depend on the linear
+reallocation component; it still depends on `d` through the adjustment cost
+`chi(d,a)` (and on consumption net of transfer income and on labor income). This is a
+genuine accounting-additivity fact about the drift decomposition — and it is exactly
+why at a W face `lambda_W` cancels from the linear transfer FOC but survives in the
+adjustment-cost term.
 
 Mandatory distinction: accounting additivity is **not** the economic claim that `W`
 must be the production truncation variable. The accepted evidence shows `mu_W < 0` on
@@ -184,25 +207,31 @@ decision.
 
 Compatibility with the accepted `a_max`-normalized taper: in `D_W` the illiquid
 support `a <= a_max` is retained as a separate face, so the taper is unchanged on the
-`a` coordinate. The `W` cap adds a slanted (45°) face in `(a,b)` that the
-`a`-normalized taper does not stabilize; at the `W` face (away from `a_max`) the
-illiquid return is taper-unaffected and `mu_W <= 0` must be enforced by the
-constraint itself. No conflict with the taper, but no stabilization help from it.
+`a` coordinate. The taper `r_a_eff(a) = r_a*(1 - 0.1*(a/a_max)^9)` depends **only on
+`a`** and does not strengthen as `b` or `W` increases; it therefore does not stabilize
+the slanted `W` face, and `mu_W <= 0` on that face must be enforced by the constraint
+itself. No conflict with the taper, but no stabilization help from it.
 
 Geometry of the slanted W boundary: in `(a,b)`, `a + b = W_max` is the line of slope
-`-1`. Active-constraint intersections: `W` ∩ `{a=0}` at `b = W_max`;
-`W` ∩ `{a=a_max}` at `b = W_max - a_max` (upper-right corner, where `mu_a <= 0` and
-`mu_W <= 0` are both active); `W` ∩ `{b=b_min}` at `a = W_max - b_min`. At each
-intersection two constraints are active and both KKT multipliers enter the boundary
+`-1`. Which active-constraint intersections exist depends on the (here symbolic) value
+of `W_max`; without choosing `W_max` they are stated as conditions, not asserted to all
+exist: `W` ∩ `{b=b_min}` at `a = W_max - b_min` (on the `b=b_min` face for the
+`W_max`-range that keeps it inside `D_W`); `W` ∩ `{a=a_max}` at `b = W_max - a_max`
+(the upper-right corner, where `mu_a <= 0` and `mu_W <= 0` are both active, only for
+`W_max >= a_max + b_min`); `W` ∩ `{a=0}` at `b = W_max`. Wherever an intersection
+exists, two constraints are active and both KKT multipliers enter the boundary
 Hamiltonian.
 
 Generic constrained HJB/KKT at the W face: at `a + b = W_max`, the household
-maximizes subject to `mu_W <= 0`. Because `d` cancels from `mu_W`, the `W`-face
-constraint binds only consumption, labor and adjustment cost, and the transfer `d`
-remains free to reallocate `b -> a` at the cap. This is the key economic difference
-from Design R: at the corner the rectangular law `mu_b <= 0` forbids net `b`
-accumulation even when financed by `a` drawdown, whereas the `W`-face law permits
-internal rebalancing as long as total wealth does not grow.
+maximizes subject to `mu_W <= 0`. Because the *linear* part of `d` cancels from
+`mu_W`, the W-face constraint does not tax the linear transfer directly; `d` still
+enters `mu_W` through the adjustment cost `chi(d,a)`, so the reallocation is **not
+fully free** — the transfer FOC governs `d` with the adjustment-cost term scaled by
+`(V_b - lambda_W)` (see `DLH_5M_JOINT_KKT_BOUNDARY_LAWS.md` §3.1). This is the key
+economic difference from Design R: at the corner the rectangular tangent cone
+`mu_b <= 0` forbids net `b` accumulation even when financed by `a` drawdown, whereas
+the `W`-face law does not tax the linear transfer and limits only total-wealth growth
+via `mu_W <= 0` (up to adjustment cost).
 
 KFE generator/tangent-flow requirements if `W` were selected later (design only, not
 implemented): the generator on `D_W` must be conservative, with the flux through the
@@ -308,12 +337,16 @@ Key facts reproduced from accepted evidence:
 - **All 17 top-layer upper-b offenders:** `mu_a < 0` (rectangular upper-a satisfied),
   `mu_b > 0` (rectangular upper-b violated), `mu_W < 0` (joint-W satisfied). Under R
   the active constraint is the upper-b face (upper-b+upper-a at the joint corner,
-  e.g. J3_A153_B120 b=119 a=152). Under W the former b-cap state becomes interior in
-  `W` (the cap is removed); the upper-a face and a symbolic `W`-face condition apply
-  only at the `a_max`/`W` intersection.
+  e.g. J3_A153_B120 b=119 a=152).
 - **All 48 aligned cross-a states:** `mu_W < 0` (joint-W satisfied on both a77 and
   a153 legs). Under R the active face is upper-b (upper-b+upper-a at the corner
-  a=10). Under W they are interior-in-`W` states whose former b-cap is removed.
+  a=10).
+- **Under W, activity is unresolved** because `W_max` is not chosen. For each state
+  only `W_s = a + b` is recorded, with the conditional: `W_max > W_s` ⇒ W face
+  inactive; `W_max = W_s` ⇒ W face active; `W_max < W_s` ⇒ state outside `D_W`.
+  `mu_W < 0` is reported as W-face inwardness *if active*, not as a determination of
+  activity. (For `a = a_max` states the upper-a face is active regardless of `W_max`;
+  the W face joins it only when `W_max = W_s`.)
 - The 16/24 aligned pairs where `rel_diff_mu_W > 1e-2` (cross-a total-drift
   sensitivity remains) are preserved in the mapping; this is a robustness gap that
   must be closed before W (or R) can be frozen.
@@ -333,13 +366,16 @@ The 12 criteria of Issue #39 §9 are scored for Design R and Design W in
 (each with a one-line evidence-based rationale). Highlights:
 
 1. **Economic interpretation:** W is economically more coherent (the upper-b cap is a
-   truncation, not a constraint); R would enshrine a truncation as an economic law.
+   truncation, not an established economic constraint); R's componentwise law at the
+   truncation face is unestablished (its influence as a numerical closure is not shown
+   to vanish with truncation, and its economic status is unresolved).
 2. **Consistency with accepted accounting:** both are consistent; W exploits the
    `d`-cancellation more directly.
-3. **Consistency with transfer/rebalancing economics:** W allows rebalancing at the
-   cap (d free when `mu_W <= 0`); R's corner `mu_b <= 0` forbids b-accumulation even
-   when a-financed — in tension with the reallocation interpretation accepted in
-   DLH-5L.
+3. **Consistency with transfer/rebalancing economics:** W does not tax the linear
+   rebalancing at the cap (`lambda_W` cancels from the linear transfer FOC; the
+   adjustment cost keeps `mu_W` dependent on `d`); R's corner `mu_b <= 0` makes net
+   b-accumulation inadmissible even when a-financed — in tension with the
+   reallocation interpretation accepted in DLH-5L.
 4. **Consistency with the accepted `a_max` taper:** both retain `a_max`; W's cap is
    not taper-stabilized.
 5. **HJB state-constraint/KKT correctness:** both require a genuine KKT formulation;
@@ -377,12 +413,14 @@ Exact recommendation:
 
 Rationale (also persisted in `DLH_5M_SCIENTIFIC_RECOMMENDATION.md`):
 
-- **Design R is not recommended:** the upper-b cap is a computational truncation, not
-  an economic constraint; a rectangular KKT law `mu_b <= 0` would convert a
-  truncation artifact into economic law. The accepted evidence already shows the
-  current solver is not equivalent to the rectangular KKT problem, and R leaves the
-  accepted offenders as genuine KKT violations at a face whose economic status is
-  unresolved. Freezing R would entrench a geometry whose economic basis is missing.
+- **Design R is not recommended:** the upper-b cap is a computational truncation. A
+  finite rectangular state constraint need not be interpreted as an economic law if
+  treated as a numerical closure whose influence vanishes with truncation — but the
+  accepted evidence provides no such truncation-vanishing argument, and it shows the
+  offenders violate R's componentwise law while satisfying total-wealth inwardness.
+  The current solver is also not equivalent to the rectangular KKT problem, and R
+  leaves the accepted offenders as genuine KKT violations at a face whose economic
+  status is unresolved. Freezing R is not justified by the accepted evidence.
 - **Design W is the more economically coherent hypothesis but cannot be frozen yet:**
   (i) `mu_W <= 0` is established only on a pre-frozen finite state set, not as an
   infinite-domain theorem; (ii) no principled `W_max` selection exists (and none may
@@ -411,7 +449,9 @@ Summary:
   consistent with rebalancing economics.
 - **Strongest argument against freezing anything:** finite-state evidence only; no
   infinite-domain theorem; `W_max` undefined; cross-a `mu_W` sensitivity remains;
-  R would formalize a truncation as a constraint.
+  R's componentwise law is unestablished at the truncation face (no
+  vanishing-influence argument, and offenders satisfy total-wealth inwardness
+  instead).
 - **Equations/state constraints that would become controlling if Owner accepts W**
   (illustrative, not selected): `D_W = {a>=0, b>=b_min, a<=a_max, a+b<=W_max}` with
   `mu_W <= 0` on the W face, `mu_a <= 0` on `a=a_max`, and joint conditions at

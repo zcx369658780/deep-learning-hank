@@ -3,6 +3,13 @@
 **Issue #39 §11.** A concise decision packet for the Owner. No recommendation freezes
 or changes the model. The Builder stops after producing this packet.
 
+**Revision (2026-09-02, reviewer comment `5501914968`):** KKT statements use the
+maximization convention `L = H - lambda*g` (effective gradients `V - lambda`);
+`lambda_W` cancellation from the linear transfer term is preserved with its effect
+retained through the adjustment cost; W-face activity is recorded only as the
+`W_max`-conditional; a finite rectangular state constraint is distinguished from an
+economic asset cap. Recommendation U is unchanged.
+
 ---
 
 ## 1. Exact recommended design
@@ -22,13 +29,15 @@ additional theoretical work in §6 must be performed.
   `mu_W = mu_a + mu_b <= 0`; no inspected state has positive `mu_W`; all 44 material
   positive-`mu_b` states are `B_OUTWARD__TOTAL_INWARD`; all 17 top-layer offenders
   satisfy `mu_a <= 0` and `mu_W <= 0`.
-- **Accounting additivity:** `mu_W` is independent of the linear transfer `d`
-  (cancels one-for-one), so `W = a + b` is a genuine accounting coordinate in which
-  the reallocation control does not appear.
+- **Accounting additivity:** the *linear* part of the transfer `d` cancels one-for-one
+  from `mu_W`, so `W = a + b` is a genuine accounting coordinate in which the linear
+  reallocation control does not appear (the adjustment cost `chi(d,a)` remains, so `d`
+  is not fully absent from `mu_W`).
 - **KKT structure:** at a W face the constraint multiplier enters both value
-  gradients symmetrically and cancels from the linear transfer FOC; at an R corner it
-  taxes `b` accumulation even when `a`-financed. W is therefore more consistent with
-  the accepted portfolio-reallocation interpretation.
+  gradients symmetrically and cancels from the linear transfer FOC (surviving only in
+  the adjustment-cost resource term); at an R corner the componentwise tangent cone
+  makes net `b` accumulation inadmissible even when `a`-financed. W is therefore more
+  consistent with the accepted portfolio-reallocation interpretation.
 - These facts support W as the more economically coherent *hypothesis*.
 
 ## 3. Strongest argument against (freezing anything now)
@@ -44,8 +53,10 @@ additional theoretical work in §6 must be performed.
   stencil/conservation problems; W2 transformed `(a,W)` moves them to a slanted
   borrowing floor; conservative generator and exact HJB↔KFE process matching on the
   slanted face are undeveloped.
-- **Design R would formalize a truncation as an economic constraint** whose
-  economic status is unresolved.
+- **Design R is unestablished at the truncation face:** a finite rectangular state
+  constraint need not be an economic law if treated as a numerical closure whose
+  influence vanishes with truncation, but no such vanishing argument exists and the
+  offenders satisfy total-wealth inwardness instead.
 
 ## 4. Equations / state constraints that would become controlling if Owner accepts
 
@@ -55,7 +66,8 @@ additional theoretical work in §6 must be performed.
 a in [0, a_max],  b in [b_min, b_max]
 upper-a: mu_a <= 0 ;  upper-b: mu_b <= 0 ;  corner: mu_a <= 0 AND mu_b <= 0
 constrained HJB: sup over controls admissible to the active tangent cone
-  with KKT multipliers (lambda_a, lambda_b) and complementarity
+  with KKT multipliers (lambda_a, lambda_b), complementarity, and the maximization
+  convention L = H - lambda_a*mu_a - lambda_b*mu_b (effective gradients V - lambda)
 ```
 
 ### If Owner accepts Design W
@@ -63,9 +75,12 @@ constrained HJB: sup over controls admissible to the active tangent cone
 ```text
 D_W = { a >= 0,  b >= b_min,  a <= a_max,  a + b <= W_max }
 W face: mu_W = mu_a + mu_b <= 0 ;  upper-a: mu_a <= 0
-intersection a=a_max, W=W_max: mu_a <= 0 AND mu_W <= 0
-constrained HJB: sup with KKT multipliers (lambda_W on mu_W, lambda_a on mu_a)
-  - lambda_W cancels from the linear transfer FOC (free rebalancing at the cap)
+intersection a=a_max, W=W_max: mu_a <= 0 AND mu_W <= 0 (exists only for W_max >= a_max+b_min)
+constrained HJB: sup with KKT multipliers (lambda_W on mu_W, lambda_a on mu_a),
+  maximization convention L = H - lambda_W*mu_W - lambda_a*mu_a
+  - lambda_W cancels from the linear transfer FOC; survives through the adjustment-cost term
+  - W-face activity conditional on symbolic W_max: inactive if W_max > W,
+    active if W_max = W, state outside D_W if W_max < W
 KFE generator on D_W conservative, normal flux = mu_W on the slanted W face,
   sharing the same controlled process as the HJB
 ```

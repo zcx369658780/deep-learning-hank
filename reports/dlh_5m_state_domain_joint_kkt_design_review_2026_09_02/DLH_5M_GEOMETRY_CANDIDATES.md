@@ -3,6 +3,12 @@
 **Issue #39 §4, §5, §6.** Analytical comparison only. No implementation, no grid, no
 `W_max` selection.
 
+**Revision (2026-09-02, reviewer comment `5501914968`):** taper statements qualified
+(taper depends only on `a`, does not strengthen as `b`/`W` increases); W-face
+intersections and the W2 trapezoid are stated conditional on the symbolic `W_max`;
+W-face activity is left unresolved (only `W_s = a+b` and the `W_max`-conditional are
+recorded); the W face no longer claims `d` is fully free.
+
 Accepted accounting (immutable):
 
 ```text
@@ -76,8 +82,9 @@ lower-a face:                    mu_a >= 0
 ```
 
 **Source facts supporting `W = a + b` as an accounting coordinate:** the accepted
-accounting gives `mu_W = mu_a + mu_b` with `d` cancelling one-for-one, so the
-total-wealth drift is independent of the instantaneous reallocation `d`. This is a
+accounting gives `mu_W = mu_a + mu_b` with the *linear* part of `d` cancelling
+one-for-one, so the total-wealth drift is independent of the linear reallocation
+component; `d` still enters `mu_W` through the adjustment cost `chi(d,a)`. This is a
 genuine accounting-additivity fact about the drift decomposition.
 
 **Mandatory distinction:** accounting additivity is **not** the economic claim that
@@ -87,23 +94,37 @@ truncation coordinate but is not an infinite-domain theorem and does not by itse
 authorize `W` as the production truncation variable.
 
 **Compatibility with the accepted `a_max`-normalized taper:** the illiquid support
-`a <= a_max` is retained as a separate face, so the taper is unchanged on `a`. The `W`
-cap adds a slanted (45° in `(a,b)`) face that the `a`-normalized taper does not
-stabilize; at the `W` face (away from `a_max`) the illiquid return is taper-unaffected
-and `mu_W <= 0` must be enforced by the constraint itself. No conflict, no help.
+`a <= a_max` is retained as a separate face, so the taper is unchanged on `a`. The
+taper `r_a_eff(a) = r_a*(1 - 0.1*(a/a_max)^9)` depends **only on `a`** and does not
+strengthen as `b` or `W` increases; it therefore does not stabilize the slanted
+`W` face, and `mu_W <= 0` on that face must be enforced by the constraint itself. No
+conflict with the taper, but no stabilization help from it.
 
 **Geometry of the slanted W boundary:** `a + b = W_max` is the line of slope `-1`.
-Active-constraint intersections: `W` ∩ `{a=0}` at `b = W_max`; `W` ∩ `{a=a_max}` at
-`b = W_max - a_max` (joint corner, `mu_a <= 0` and `mu_W <= 0` both active);
-`W` ∩ `{b=b_min}` at `a = W_max - b_min`. Two multipliers are active at each
-intersection.
+Which active-constraint intersections exist depends on the (here symbolic) value of
+`W_max`; without choosing `W_max` the intersections are stated as conditions, not
+asserted to all exist:
 
-**Generic constrained HJB/KKT at the W face:** maximize subject to `mu_W <= 0`. Since
-`d` cancels from `mu_W`, the `W`-face constraint binds only consumption, labor and
-adjustment cost; the transfer `d` remains free to reallocate `b -> a` at the cap. This
-is the key economic contrast with Design R: at the corner, R forbids net `b`
-accumulation even when financed by `a` drawdown, while W permits internal rebalancing
-as long as total wealth does not grow.
+- `W` ∩ `{b = b_min}` at `a = W_max - b_min`, on the `b = b_min` face only for the
+  `W_max`-range that keeps `a = W_max - b_min` in `[0, a_max]`;
+- `W` ∩ `{a = a_max}` at `b = W_max - a_max`, on the `a = a_max` face only for
+  `W_max >= a_max + b_min` (the upper-right joint corner, `mu_a <= 0` and `mu_W <= 0`
+  both active);
+- `W` ∩ `{a = 0}` at `b = W_max`, on the `a = 0` face for `W_max` in the domain's
+  `b`-range.
+
+Wherever an intersection exists, two constraints are active and both KKT multipliers
+enter the boundary Hamiltonian.
+
+**Generic constrained HJB/KKT at the W face:** maximize subject to `mu_W <= 0`. The
+*linear* part of `d` cancels one-for-one from `mu_W`, so the constraint does not tax
+the linear transfer directly; `d` still enters `mu_W` through the adjustment cost
+`chi(d,a)`, so the reallocation is **not fully free** — the transfer FOC
+(`DLH_5M_JOINT_KKT_BOUNDARY_LAWS.md` §3.1) determines `d` with the adjustment-cost
+term scaled by `(V_b - lambda_W)`. This is the key economic contrast with Design R: at
+the corner, R's tangent cone forbids net `b` accumulation even when financed by `a`
+drawdown, while W does not tax the linear transfer and limits only total-wealth growth
+via `mu_W <= 0` (up to adjustment cost).
 
 **KFE generator/tangent-flow requirements (design statement only):** a conservative
 generator on `D_W` with the flux through the slanted `W` face matched to the
@@ -137,9 +158,9 @@ faces: a=0, a=a_max, W=W_max (flat, coordinate-aligned), W = a + b_min (slanted)
 
 | Aspect | Assessment |
 |---|---|
-| Transformed drift identities | `mu_W = mu_a + mu_b` becomes the coordinate drift; `d` appears only in `mu_a`. |
+| Transformed drift identities | `mu_W = mu_a + mu_b` becomes the coordinate drift; the linear part of `d` cancels from it (the adjustment cost `chi(d,a)` remains), so `d` enters `mu_a` linearly and `mu_W` only through the adjustment cost. |
 | Transformed lower-b constraint | `b >= b_min` becomes `W >= a + b_min`, a slanted face in `(a,W)`. |
-| Is the transformed domain simpler? | Not unambiguously: the `W` cap becomes flat (good) but the borrowing floor becomes slanted (the difficulty moves, it does not disappear). Domain is a trapezoid with two vertical sides, a flat top, a slanted bottom. |
+| Is the transformed domain simpler? | Not unambiguously: the `W` cap becomes flat (good) but the borrowing floor becomes slanted (the difficulty moves, it does not disappear). Conditional on `W_max >= a_max + b_min` the `(a,W)` domain is a trapezoid with two vertical sides, a flat top and a slanted bottom; for `W_max < a_max + b_min` the top edge intersects the slanted floor at `a = W_max - b_min < a_max` and the geometry changes (the `a = a_max` face is not reached). |
 | Implications for the accepted taper and transfer FOC | Taper is `a`-based and survives unchanged; the transfer FOC couples `a` and `W` (since `d` moves `a` but not `W`). |
 
 Neither W1 nor W2 is selected in DLH-5M; both require additional design work before
@@ -174,7 +195,7 @@ law requires componentwise inwardness on each active face.
 | Upper-b face | constrained face `mu_b <= 0` | removed; replaced by `W` cap |
 | Upper-a face | `mu_a <= 0` | `mu_a <= 0` |
 | Joint corner | `mu_a <= 0 AND mu_b <= 0` | `mu_a <= 0 AND mu_W <= 0` |
-| Transfer at cap | restricted (`mu_b <= 0` binds even a-financed b-accumulation) | free reallocation (`d` cancels in `mu_W`) |
-| Economic status of cap | treats truncation as constraint | cap is a truncation; economic status of `W` as production variable unresolved |
+| Transfer at cap | restricted (`mu_b <= 0` makes net b-accumulation inadmissible even when a-financed) | no direct tax on linear reallocation (`lambda_W` cancels from linear FOC); governed by adjustment cost (`chi(d,a)` keeps `mu_W` dependent on `d`) |
+| Economic status of cap | treats truncation as a constrained face (numerical closure or economic law, both unestablished) | cap is a truncation; economic status of `W` as production variable unresolved |
 | Numerical standardness | standard rectangle lattice | slanted face / transformed coordinates |
 | Freezability on accepted evidence | not freezable (truncation-as-constraint) | not freezable (W_max undefined, finite-state evidence only) |

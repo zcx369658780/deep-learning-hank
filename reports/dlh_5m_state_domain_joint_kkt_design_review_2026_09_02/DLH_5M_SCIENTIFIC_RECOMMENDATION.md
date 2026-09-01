@@ -2,6 +2,14 @@
 
 **Issue #39 §10.** The Builder must recommend exactly one of:
 
+**Revision (2026-09-02, reviewer comment `5501914968`):** Recommendation U is
+retained, with the argument against freezing R restated on the accepted evidence (a
+finite rectangular state constraint need not be interpreted as an economic law if it
+is a numerical closure whose influence vanishes with truncation, but no such
+vanishing-influence argument exists, and the offenders satisfy total-wealth
+inwardness). The KKT multiplier sign convention referenced here is the maximization
+convention `L = H - lambda*g`.
+
 - `DLH_5M_RECTANGULAR_COMPONENTWISE_STATE_CONSTRAINT_KKT_RECOMMENDED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
 - `DLH_5M_HYBRID_JOINT_WEALTH_DOMAIN_AND_JOINT_KKT_RECOMMENDED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
 - `DLH_5M_DOMAIN_GEOMETRY_DESIGN_EVIDENCE_INSUFFICIENT__OWNER_SCIENTIFIC_DECISION_REQUIRED`
@@ -21,11 +29,13 @@ the model.
 
 ## Why not Design R
 
-1. **The upper-b cap is a computational truncation, not an economic constraint.**
-   The classification (`DLH_5M_CONSTRAINT_CLASSIFICATION.md`) labels `b <= b_max`
-   a pure computational truncation: no economic reason bars liquid wealth above the
-   route ceiling. A rectangular KKT law `mu_b <= 0` would convert this truncation
-   into economic law.
+1. **The upper-b cap is a computational truncation, not an established economic
+   constraint.** The classification (`DLH_5M_CONSTRAINT_CLASSIFICATION.md`) labels
+   `b <= b_max` a pure computational truncation: no economic reason bars liquid
+   wealth above the route ceiling. A finite rectangular state constraint could
+   legitimately be a numerical closure at that truncation — but only if its influence
+   is shown to vanish as the truncation recedes; the accepted evidence provides no
+   such argument and instead shows the offenders satisfy total-wealth inwardness.
 2. **The accepted evidence does not justify R.** All 17 top-layer offenders violate
    rectangular `mu_b <= 0` while satisfying `mu_a <= 0` and `mu_W <= 0`. Under R
    these remain genuine KKT violations at a face whose economic status is unresolved —
@@ -35,8 +45,9 @@ the model.
    17 offenders under the selected transfer candidate, and the current boundary
    closure is a finite-difference convention, not a KKT multiplier. R would require a
    large boundary-value reformulation whose economic premise is missing.
-4. **Corner economics are inconsistent with rebalancing.** The R corner law taxes net
-   `b` accumulation even when financed by `a` drawdown
+4. **Corner economics are inconsistent with rebalancing.** The R corner tangent cone
+   requires componentwise inwardness `mu_a <= 0 AND mu_b <= 0`, making net `b`
+   accumulation inadmissible even when financed by `a` drawdown
    (`DLH_5M_JOINT_KKT_BOUNDARY_LAWS.md` §2.3), in tension with the accepted
    portfolio-reallocation interpretation.
 

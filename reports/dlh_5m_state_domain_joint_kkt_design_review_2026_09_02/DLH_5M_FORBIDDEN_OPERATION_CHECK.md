@@ -3,6 +3,16 @@
 DSH performed NONE of the following during DLH-5M. This design review is
 documentation + evidence mapping only.
 
+**Revision (2026-09-02, reviewer comment `5501914968`):** this candidate is the
+bounded same-Issue revision requested by the fresh review. The revision touched only
+the nine Issue #39 allowlist-added files, corrected the upper-face KKT multiplier sign
+to the maximization convention `L = H - lambda*g`, preserved `lambda_W` cancellation
+from the linear transfer term (retained through the adjustment cost), made W-face
+activity conditional on the symbolic `W_max` (recording only `W_s = a+b` per accepted
+state), and qualified the taper / intersection / trapezoid statements. No accepted
+DLH-5K/5L numerical evidence was changed, no HJB/KFE/grid was run, and no `W_max` was
+chosen.
+
 | Forbidden operation | Status |
 |---|---|
 | Modify any existing tracked file | NOT PERFORMED (all DLH-5M paths are new, allowlisted) |
