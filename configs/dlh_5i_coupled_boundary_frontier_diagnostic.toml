@@ -1,0 +1,111 @@
+# DLH-5I (Issue #35) — Coupled Liquid-Extent Frontier Across Mature Illiquid
+# Resolutions diagnostic config.
+#
+# Maps the coupled b-extent x a-resolution frontier on the accepted household
+# process. Frozen: D0 economics (wbar=1.0, r_a=0.03); physical illiquid domain
+# a in [0,10], a_max=10, accepted r_a*(1-0.1*(a/a_max)^9) taper unchanged; only
+# the two mature a resolutions a77/a153; liquid spacing db=7/19 unchanged; only
+# the three pre-frozen b extents b60/b80/b100. Exact six variants I0-I5, fresh
+# initialization each, no warm-start, no adaptive seventh grid, no b-resolution
+# change, no a-domain widening, no clipping. Policy-only: no stationary KFE /
+# nullspace / pin / density / tail / C-L-A-B execution.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+[frozen_physical_illiquid]
+a_lo = 0.0
+a_hi = 10.0
+a_max = 10.0
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+[liquid_domain]
+b_lo = -2.0
+db = 0.3684210526315789      # 7/19 (frozen; no b-resolution change in this gate)
+
+# Two mature illiquid resolutions only (Issue #35 section 3): a77 = (10/19)/4,
+# a153 = (10/19)/8. a77 nodes are exactly every second a153 node.
+[[a_resolutions]]
+id = "a77"
+a_pts = 77
+da = 0.13157894736842105     # (10/19)/4
+
+[[a_resolutions]]
+id = "a153"
+a_pts = 153
+da = 0.06578947368421053     # (10/19)/8
+
+# Three pre-frozen b extents (Issue #35 section 4), all at db=7/19 and exactly
+# nested: b60 in b80 in b100 on common nodes.
+[[b_extents]]
+id = "b60"
+b_pts = 60
+b_hi = 19.736842105263158    # 375/19
+
+[[b_extents]]
+id = "b80"
+b_pts = 80
+b_hi = 27.105263157894736    # 515/19
+
+[[b_extents]]
+id = "b100"
+b_pts = 100
+b_hi = 34.473684210526315    # 655/19
+
+# Exact six pre-frozen variants (Issue #35 section 4): Cartesian {a77,a153} x
+# {b60,b80,b100}.
+[[variants]]
+id = "I0_A77_B60"
+a_res = "a77"
+b_ext = "b60"
+
+[[variants]]
+id = "I1_A77_B80"
+a_res = "a77"
+b_ext = "b80"
+
+[[variants]]
+id = "I2_A77_B100"
+a_res = "a77"
+b_ext = "b100"
+
+[[variants]]
+id = "I3_A153_B60"
+a_res = "a153"
+b_ext = "b60"
+
+[[variants]]
+id = "I4_A153_B80"
+a_res = "a153"
+b_ext = "b80"
+
+[[variants]]
+id = "I5_A153_B100"
+a_res = "a153"
+b_ext = "b100"
+
+[shared_interior]
+# Primary shared-interior mask excludes the top two coarse layers in BOTH asset
+# dimensions and includes all z states.
+top_coarse_layers_excluded = 2
+
+[validation]
+boundary_threshold = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# Secondary-annotation materiality criterion (pre-registered): a scale-aware
+# aligned-node cross-a policy relative difference above this on any required
+# pair marks
+# DLH_5I_CROSS_A_POLICY_RESOLUTION_SENSITIVITY_REMAINS_MATERIAL__NUMERICAL_REVIEW_REQUIRED.
+policy_rel_materiality = 1e-2
+# Frozen numerical tolerance for the I0 -> DLH-5H H2 and I3 -> DLH-5H H3
+# reproduction checks on requested upper-b max.
+h2_h3_repro_tol = 2e-9
+
+[output]
+root = "reports/dlh_5i_coupled_boundary_frontier_diagnostic_2026_09_01"
