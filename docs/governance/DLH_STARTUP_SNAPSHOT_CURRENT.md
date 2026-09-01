@@ -12,7 +12,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - GitHub Issue = sole DSH Builder authority only after publication + Task Index / Startup synchronization + authoritative activation comment;
 - DSH = bounded Builder/executor;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route advisor / task issuer / governance operator;
-- Owner = final scientific-direction authority; routine route decisions are delegated to ChatGPT unless Owner intervenes;
+- Owner = final scientific-direction authority; routine bounded route decisions are delegated to ChatGPT unless Owner intervenes;
 - Builder completion is not acceptance.
 
 Priority:
@@ -23,17 +23,17 @@ Priority:
 
 Current published task:
 
-**Issue #31 — DLH-5G: Isolate liquid upper-domain asymptotics under fixed illiquid domain and taper**
+**Issue #34 — DLH-5H: Isolate illiquid upper-boundary resolution on the provisional liquid-safe domain**
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
+`SCIENTIFIC_DIAGNOSTIC__ILLIQUID_UPPER_BOUNDARY_RESOLUTION`
 
 Dedicated branch:
 
-`dsh/issue-31-dlh-5g-liquid-upper-domain-asymptotic-2026-09-01`
+`dsh/issue-34-dlh-5h-illiquid-resolution-2026-09-01`
 
-Builder authority is active only while Issue #31 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+Builder authority becomes active only while Issue #34 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -43,31 +43,33 @@ Historical scientific handoff:
 
 `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
 
-## Latest accepted gate — Issue #29 / DLH-5F
+## Latest accepted gate — Issue #31 / DLH-5G
 
 Accepted candidate:
 
-`7f4e489154115c9c91cf8c3fccbb3a1d114fbc3f`
+`edbd6e9d4683118e08edb8041609c9af1579883a`
 
 Integrated to `main` by acceptance merge commit:
 
-`8eaac27472e3f902d0ff3e8044027f95913155ba`
+`809d18a3459b5b8c4d8b142ea4f282a34c3af49f`
 
 Accepted reviewer verdict:
 
-`DLH_5F_ISSUE_29_IMPLEMENTATION_ACCEPTED__OUTCOME_B_CONFIRMED__OUTCOME_D_SUPPORTED_WITH_INTERPRETATION_CORRECTION__STATIONARY_TAIL_NOT_REACHED`
+`DLH_5G_ISSUE_31_IMPLEMENTATION_ACCEPTED__LIQUID_UPPER_DOMAIN_ADEQUACY_EVIDENCE_CONFIRMED__B_RESOLUTION_SENSITIVITY_RETAINED__ILLIQUID_BOUNDARY_REMAINS_BLOCKER`
 
-Accepted reviewer annotation:
+Acceptance level:
 
-`B_EXTENT_EVIDENCE_SHOWS_STRONG_ATTENUATION_NOT_GROWTH__A_EXTENT_CONFOUNDED_BY_AMAX_NORMALIZED_RETURN_TAPER__RESOLUTION_NOT_YET_STABLE`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DIAGNOSTIC_ACCEPTED`
 
 Key accepted interpretation:
 
-- clean b-only `V0_BASE -> V2_B_WIDE`, with a20 `[0,10]`, `a_max=10`, taper and `db` fixed, reduces upper-b requested rate from about `0.353747704` to about `0.010203356`;
-- shared-interior policy on that comparison is highly stable;
-- changing `a_max` changes the accepted MATLAB-faithful effective illiquid return `r_a*(1-0.1*(a/a_max)^9)`, so a-extent comparisons from DLH-5F are confounded;
-- V5 keeps `a_max=10` and removes upper-a requested motion, showing strong resolution/local-discretization sensitivity in the illiquid dimension;
-- no DLH-5F variant reached full HJB/KFE same-process stationary validation, so stationary-tail existence/non-existence and new `C,L,A,B` remain NOT REACHED.
+- the same-spacing liquid sequence gives upper-b raw/requested maxima `0.1303281015/0.3537477040 -> 0.003759131181/0.01020335606 -> 0/0 -> 0/0`;
+- the requested upper-b policy is exactly zero by `b_max=19.7368421053` and stays zero at the wider same-spacing extent;
+- finer b-resolution reaches zero already at `b_max=12.3684210526`, so liquid-domain adequacy is supported but b-resolution sensitivity remains material;
+- no final production grid is frozen;
+- `b60 [-2,375/19]`, `db=7/19` is a **provisional liquid-safe diagnostic domain** for isolating the remaining illiquid boundary problem;
+- on that state upper-a remains material: requested max about `0.3094730854`, 108 material states / share `0.90`;
+- stationary KFE remains NOT AUTHORIZED.
 
 ## Controlling HJB/KFE rule
 
@@ -75,76 +77,85 @@ Key accepted interpretation:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-A mechanically conservative KFE cannot be treated as the stationary process of an HJB that requests a different material boundary policy.
+Issue #27 stationary-KFE contract remains controlling for any later stationary validation. No stationary re-entry is authorized until a candidate household grid satisfies coherent upper-boundary HJB policy in both asset dimensions.
 
-Issue #27 stationary-KFE contract remains controlling for any later stationary validation, but DLH-5G does not execute stationary KFE.
+## DLH-5H exact scientific scope
 
-## DLH-5G exact scientific scope
+DLH-5H isolates illiquid-grid resolution without changing the accepted household controlled process.
 
-DLH-5G isolates the liquid upper boundary while freezing the entire illiquid side and all economics:
+Frozen economics:
 
 ```text
 wbar = 1.0
 r_a  = 0.03
-a: 20 points on [0,10]
+```
+
+Frozen physical illiquid domain and taper:
+
+```text
+a_lo = 0
+a_hi = 10
 a_max = 10
-da = 10/19
-accepted illiquid-return taper unchanged
+accepted taper = r_a*(1-0.1*(a/a_max)^9)
+```
+
+Core liquid-safe domain:
+
+```text
+b: 60 points on [-2,375/19]
+b_max = 19.736842105263158
+db = 7/19
 ```
 
 Primary question:
 
-> With fixed illiquid domain/taper and fixed economics, does raw upper-b outward drift `max(mu_b,0)` attenuate toward zero as `b_max` is extended, and is the conclusion robust to independent b-resolution refinement?
+> With physical a-domain, a_max, taper, economics and the provisional liquid-safe domain fixed, does upper-a raw outward drift attenuate to the HJB/KFE compatibility threshold as only a-grid resolution is refined?
 
-Raw `mu_b` is the primary cross-resolution asymptotic quantity. Requested generator rate `max(mu_b,0)/db` remains the boundary-compatibility quantity.
-
-DLH-5G is policy-only. It does not authorize stationary KFE, nullspace/pin, density, tail mass, stationary flux, `C,L,A,B`, HJB redesign or a-taper redesign.
+DLH-5H is policy-only. It does not authorize stationary KFE, nullspace/pin, density, tail metrics, stationary flux or `C,L,A,B`.
 
 ## Exact six pre-frozen variants
 
-All six use identical a20 `[0,10]`, `a_max=10`, `da=10/19`, taper and non-grid economics.
-
-1. `G0_BASE`: b20 `[-2,5]`, `db=7/19`.
-2. `G1_B_WIDE_1`: b40 `[-2,235/19]`, same `db`.
-3. `G2_B_WIDE_2`: b60 `[-2,375/19]`, same `db`.
-4. `G3_B_WIDE_3`: b80 `[-2,515/19]`, same `db`.
-5. `G4_BASE_B_FINE`: b39 `[-2,5]`, half `db`.
-6. `G5_WIDE1_B_FINE`: b79 `[-2,235/19]`, half `db`.
+1. `H0_A20_BASE`: b60 core domain; a20 `[0,10]`, `da=10/19`.
+2. `H1_A39_FINE`: same b60; a39 `[0,10]`, half baseline `da`.
+3. `H2_A77_FINER`: same b60; a77 `[0,10]`, quarter baseline `da`.
+4. `H3_A153_FINEST`: same b60; a153 `[0,10]`, eighth baseline `da`.
+5. `H4_B119_A39`: same physical b-domain, b119 half `db`; a39.
+6. `H5_B119_A77`: same physical b-domain, b119 half `db`; a77.
 
 No additional/adaptive grid is authorized.
 
-## DLH-5G required diagnostic order
+## DLH-5H required diagnostic order
 
 1. Fresh accepted HJB on all six variants; no warm start.
-2. Upper/lower b raw-drift diagnostics and requested-rate diagnostics with complete offending-state evidence.
-3. Upper/lower a requested-rate regression diagnostics only, with a-grid/taper frozen.
-4. Same-spacing extent trend `G0 -> G1 -> G2 -> G3` including attenuation ratios.
-5. Exact aligned resolution comparisons `G0 vs G4` and `G1 vs G5` for value, consumption, labor, transfer, `mu_a`, `mu_b`, and policy labels.
-6. Deterministic repeat and applicable full repository regression suite.
-7. Stop without stationary/KFE/aggregate execution.
+2. Upper/lower a raw-drift and requested-rate diagnostics with complete offending-state evidence.
+3. Upper/lower b raw/requested regression diagnostics on every variant; fail closed if liquid boundary materially reactivates.
+4. Primary a-resolution trend `H0 -> H1 -> H2 -> H3`, including attenuation ratios and first threshold-reaching variant if any.
+5. Exact aligned policy comparisons `H0/H1`, `H1/H2`, `H2/H3`, `H1/H4`, `H2/H5`.
+6. Per-variant joint upper-boundary HJB policy compatibility marker only; do not run stationary KFE.
+7. Deterministic repeat and applicable full repository regression suite.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `src/deep_learning_hank/two_asset/liquid_upper_domain_asymptotic_diagnostic.py`
-2. `configs/dlh_5g_liquid_upper_domain_asymptotic_diagnostic.toml`
-3. `tests/test_dlh_5g_liquid_upper_domain_asymptotic_diagnostic.py`
-4. `reports/dlh_5g_liquid_upper_domain_asymptotic_diagnostic_2026_09_01/` with exactly eight files:
-   - `DLH_5G_VARIANT_STATUS.csv`
-   - `DLH_5G_LIQUID_BOUNDARY_DIAGNOSTICS.csv`
-   - `DLH_5G_ILLIQUID_REGRESSION_DIAGNOSTICS.csv`
-   - `DLH_5G_EXTENT_TREND.csv`
-   - `DLH_5G_RESOLUTION_STABILITY.csv`
-   - `DLH_5G_REPRODUCIBILITY.json`
-   - `DLH_5G_EXECUTION_REPORT.md`
-   - `DLH_5G_FORBIDDEN_OPERATION_CHECK.md`
+1. `src/deep_learning_hank/two_asset/illiquid_upper_boundary_resolution_diagnostic.py`
+2. `configs/dlh_5h_illiquid_upper_boundary_resolution_diagnostic.toml`
+3. `tests/test_dlh_5h_illiquid_upper_boundary_resolution_diagnostic.py`
+4. `reports/dlh_5h_illiquid_upper_boundary_resolution_diagnostic_2026_09_01/` with exactly eight files:
+   - `DLH_5H_VARIANT_STATUS.csv`
+   - `DLH_5H_ILLIQUID_BOUNDARY_DIAGNOSTICS.csv`
+   - `DLH_5H_LIQUID_REGRESSION_DIAGNOSTICS.csv`
+   - `DLH_5H_RESOLUTION_TREND.csv`
+   - `DLH_5H_POLICY_STABILITY.csv`
+   - `DLH_5H_REPRODUCIBILITY.json`
+   - `DLH_5H_EXECUTION_REPORT.md`
+   - `DLH_5H_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
-## Scientific ceiling during Issue #31
+## Scientific ceiling during Issue #34
 
-Do not modify accepted HJB/KFE/regional source or Issues #23–#29 evidence; do not change `a_max`, a-grid, taper, economics/prices/parameters/tolerances/initialization; no warm-start, adaptive/seventh grid or clipping; no stationary KFE/density/tail/aggregates; no D1-D3, two-region/multi-province GE, `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT`, neural training, nominal HANK, calibration, policy/welfare or Results.
+Do not modify accepted HJB/KFE/regional source or Issues #23–#31 evidence; do not change physical a-domain, `a_max=10`, taper, economics/prices/parameters/tolerances/initialization; no a-domain widening, warm-start, adaptive/seventh grid or clipping; no stationary KFE/density/tail/aggregates; no D1-D3, two-region/multi-province GE, `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT`, neural training, nominal HANK, calibration, policy/welfare or Results.
 
 No PR / merge / close / successor / self-accept from Builder.
 
@@ -156,11 +167,11 @@ No PR / merge / close / successor / self-accept from Builder.
 4. read all CURRENT project rules;
 5. read `tasks/TASK_INDEX_CURRENT.md` and this Startup Snapshot;
 6. read current Roadmap and historical Handoff;
-7. read Issue #31 full body and latest comments, including activation;
-8. read accepted Issue #29 review/outputs, Issue #27 contract, Issue #28 evidence, and accepted MATLAB-faithful HJB source read-only;
+7. read Issue #34 full body and latest comments, including activation;
+8. read accepted Issue #31 review/evidence, Issue #29 evidence, Issue #27 contract, Issue #28 evidence, and accepted MATLAB-faithful HJB source read-only;
 9. verify Issue / Task Index / Startup identity exactly;
 10. create the exact dedicated branch from fresh `origin/main`;
-11. operate only inside the Issue #31 allowlist;
+11. operate only inside the Issue #34 allowlist;
 12. run focused and applicable full regression tests;
 13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
@@ -168,6 +179,6 @@ Chat text is not Builder authority.
 
 ## Governance tooling audit note
 
-During reviewer-side governance synchronization, a temporary file named `NONEXISTENT` was accidentally created on `main` and immediately deleted; the delete restored the prior tree before the accepted DLH-5F merge. The no-op audit commits are `84cc3894829881d81e6232bb510e4612700a9bc0` and `cb4bd714771593b435978f9ebfc9fd7eaf0b68a0`.
+During an earlier reviewer-side governance synchronization, a temporary file named `NONEXISTENT` was accidentally created on `main` and immediately deleted; the delete restored the prior tree before the accepted DLH-5F merge. The no-op audit commits are `84cc3894829881d81e6232bb510e4612700a9bc0` and `cb4bd714771593b435978f9ebfc9fd7eaf0b68a0`.
 
-Issues #30, #32 and #33 were accidental tooling issues and were immediately closed as `not_planned`; they carry no scientific or Builder authority. Issue #31 is the intended DLH-5G task.
+Issues #30, #32 and #33 were accidental tooling issues and were immediately closed as `not_planned`; they carry no scientific or Builder authority.
