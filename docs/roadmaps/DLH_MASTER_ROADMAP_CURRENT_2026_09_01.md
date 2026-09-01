@@ -1,26 +1,22 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.4  
+**Version:** V0.5  
 **Date:** 2026-09-01  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-APPROVED SCIENTIFIC ROUTE  
+**Status:** CURRENT OWNER-APPROVED SCIENTIFIC ROUTE
 
 ---
 
 ## 0. Long-run objective
 
-Build a data-to-structural-model calibration and regional-network HANK platform in which:
-
-- household optimization, HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics;
-- difficult cross-regional mappings are the first objects eligible for learning;
-- learned mappings remain inside transparent equilibrium/accounting constraints and must pass reproducibility, perturbation and out-of-sample validation.
+Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after the underlying household and equilibrium processes pass numerical and scientific validation.
 
 The first learned object remains the regional labor/spatial rule. Capital-network learning and nominal-HANK integration remain later stages.
 
 ---
 
-## 1. Accepted foundation through DLH-5F
+## 1. Accepted foundation through DLH-5G
 
 ### Household/HJB — Issue #23
 
@@ -35,19 +31,11 @@ Accepted source identity:
 
 ### Regional structural fixture — Issues #24–#25
 
-Accepted two-region synchronous/Jacobi architecture with conditional household blocks, labor-flow accounting, destination aggregation, composite wage interface, regional firm block, fixed damping, deterministic trace semantics and region-order invariance.
-
-The two-region fixture remains a permanent human-auditable unit fixture.
+Accepted two-region synchronous/Jacobi architecture remains the permanent human-auditable regional unit fixture.
 
 ### Stationary-KFE scientific contract — Issues #26–#27
 
-Accepted principles:
-
-- singular `Q/Q^T` is expected for a stationary generator;
-- accepted density must satisfy ORIGINAL `Q^T g=0`, mass normalization and non-negativity;
-- stationary uniqueness, pin admissibility and pin invariance are distinct;
-- conservative generator and recurrent-class/nullspace evidence are required;
-- HJB and KFE must represent the same controlled process.
+Accepted density must satisfy the ORIGINAL stationary equation, mass and non-negativity, with conservative-generator, recurrent-class/nullspace and pin-admissibility evidence.
 
 Binding law:
 
@@ -55,147 +43,139 @@ Binding law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-### D0 boundary blocker — Issue #28 / DLH-5E
+### D0 boundary diagnosis — Issues #28–#29
 
-Frozen D0:
+DLH-5E established material outward requests at both artificial upper asset bounds on the canonical D0 household. DLH-5F established that:
 
-```text
-wbar = 1.0
-r_a  = 0.03
-```
+- b-only domain expansion strongly attenuates the liquid boundary;
+- a-domain widening is confounded by the accepted `a_max`-normalized illiquid-return taper;
+- fixed-domain refinement materially changes the illiquid upper-boundary policy;
+- no full same-process stationary validation had yet been reached.
 
-Accepted HJB converges but requests material outward motion at both artificial upper asset boundaries. Mechanical KFE conservation alone does not repair the HJB/KFE process mismatch.
-
-### Upper-domain diagnostic — Issue #29 / DLH-5F
+### Liquid upper-domain diagnostic — Issue #31 / DLH-5G
 
 Accepted candidate:
 
-`7f4e489154115c9c91cf8c3fccbb3a1d114fbc3f`
+`edbd6e9d4683118e08edb8041609c9af1579883a`
 
 Integrated to main:
 
-`8eaac27472e3f902d0ff3e8044027f95913155ba`
+`809d18a3459b5b8c4d8b142ea4f282a34c3af49f`
 
 Accepted verdict:
 
-`DLH_5F_ISSUE_29_IMPLEMENTATION_ACCEPTED__OUTCOME_B_CONFIRMED__OUTCOME_D_SUPPORTED_WITH_INTERPRETATION_CORRECTION__STATIONARY_TAIL_NOT_REACHED`
+`DLH_5G_ISSUE_31_IMPLEMENTATION_ACCEPTED__LIQUID_UPPER_DOMAIN_ADEQUACY_EVIDENCE_CONFIRMED__B_RESOLUTION_SENSITIVITY_RETAINED__ILLIQUID_BOUNDARY_REMAINS_BLOCKER`
 
-Accepted interpretation:
+Accepted scientific interpretation:
 
-1. Clean b-only `V0 -> V2`, with a20 `[0,10]`, `a_max=10`, taper and `db` fixed, reduces upper-b requested rate from about `0.353747704` to about `0.010203356`; shared-interior policy is highly stable. This is evidence of strong liquid-boundary attenuation with b-domain expansion, not growth with extent.
-2. Cross-resolution requested rates must be separated from raw `mu_b` because generator rates scale by `1/db`; DLH-5F resolution evidence is not yet policy-converged.
-3. a-extent experiments are confounded by the accepted MATLAB-faithful taper
-   `r_a_eff(a)=r_a*(1-0.1*(a/a_max)^9)`; changing `a_max` changes effective returns at existing physical nodes.
-4. V5 keeps `a_max=10` and removes upper-a outward requests, so the illiquid upper-boundary blocker is strongly resolution/local-discretization sensitive.
-5. No variant passes the full HJB/KFE same-process boundary gate. Stationary-tail existence/non-existence and new `C,L,A,B` remain NOT REACHED.
+1. Holding the complete illiquid side fixed, the same-spacing b sequence gives upper-b raw/requested maxima
+   `0.1303281015/0.3537477040 -> 0.003759131181/0.01020335606 -> 0/0 -> 0/0`.
+2. Exact zero is reached at `b_max=19.7368421053` and remains zero at a wider same-spacing domain.
+3. Finer b-resolution reaches zero already at `b_max=12.3684210526`; therefore liquid-domain adequacy is supported, but resolution sensitivity remains material and no final production grid is frozen.
+4. `b60 [-2,375/19]`, `db=7/19` is designated a **provisional liquid-safe diagnostic domain** for isolating the remaining illiquid problem.
+5. On that liquid-safe state, upper-a remains material: requested max about `0.3094730854`, 108 material states / 90% of the upper-a boundary.
+6. Stationary KFE remains NOT AUTHORIZED.
 
 ---
 
-## 2. Immediate scientific gate — DLH-5G / Issue #31
+## 2. Immediate scientific gate — DLH-5H / Issue #34
 
 ### Name
 
-**Liquid Upper-Domain Asymptotic and Resolution Diagnostic under Fixed Illiquid Domain/Taper**
+**Illiquid Upper-Boundary Resolution Diagnostic on the Provisional Liquid-Safe Domain**
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
+`SCIENTIFIC_DIAGNOSTIC__ILLIQUID_UPPER_BOUNDARY_RESOLUTION`
 
 ### Purpose
 
-Isolate the clean liquid-domain question before any HJB or a-taper redesign:
+Resolve the remaining clean question before any taper or HJB boundary-law redesign:
 
-> With the entire illiquid side fixed at `a in [0,10]`, `a_max=10`, baseline `da` and the accepted taper, does raw upper-b outward drift `max(mu_b,0)` attenuate toward zero as `b_max` is extended, and is that conclusion robust to independent b-resolution refinement?
+> With physical illiquid domain `[0,10]`, `a_max=10`, the accepted taper, D0 economics and a liquid-safe b domain held fixed, does upper-a raw outward drift attenuate to the compatibility threshold as only a-grid resolution is refined?
 
 ### Frozen design
 
-All variants preserve canonical D0 economics and exactly the same illiquid grid/taper.
-
-Same-spacing extent sequence:
+Core liquid domain:
 
 ```text
-G0: b20 [-2,5]
-G1: b40 [-2,235/19]
-G2: b60 [-2,375/19]
-G3: b80 [-2,515/19]
+b60 [-2,375/19]
+db=7/19
 ```
 
-with `db=7/19`.
-
-Resolution pairs:
+Physical illiquid domain and taper remain:
 
 ```text
-G0 vs G4: baseline b-domain, coarse vs half db
-G1 vs G5: first wide b-domain, coarse vs half db
+a in [0,10]
+a_max=10
+r_a_eff(a)=r_a*(1-0.1*(a/a_max)^9)
 ```
 
-No adaptive seventh grid.
+Primary a-resolution sequence:
 
-### Required interpretation discipline
+```text
+H0: a20
+H1: a39
+H2: a77
+H3: a153
+```
 
-- raw `mu_b` is primary for cross-resolution asymptotic interpretation;
-- requested rate `max(mu_b,0)/db` remains the boundary/generator compatibility measure;
-- upper/lower a diagnostics are regression evidence only;
-- DLH-5G does not execute stationary KFE, density, tail metrics or aggregates because the illiquid boundary remains unresolved.
+Independent b-resolution cross-checks:
 
----
+```text
+H4: b119 / a39
+H5: b119 / a77
+```
 
-## 3. Decision tree after DLH-5G
+No adaptive seventh grid, no domain widening and no PASS-seeking search.
 
-### Route B1 — liquid boundary attenuation reaches compatibility threshold
-
-If a pre-frozen b extent reaches the requested-rate threshold with stable interior policy, freeze that as evidence for liquid-domain adequacy only. Do **not** resume stationary KFE until the illiquid boundary is separately resolved.
-
-### Route B2 — clean attenuation continues but threshold is not reached
-
-Do not blindly add adaptive grids. Review the pre-frozen trend and decide between one further bounded asymptotic experiment and analytical/high-wealth liquid-tail interpretation.
-
-### Route B3 — liquid behavior is non-monotonic/persistent
-
-Investigate high-liquid-wealth asymptotics / mean reversion / finite-domain HJB closure before any boundary-law rewrite.
-
-### Route B4 — resolution instability dominates
-
-Resolve liquid HJB discretization sensitivity before promoting a larger b-domain.
+DLH-5H remains policy-only: no stationary KFE, density, tail metrics or aggregates.
 
 ---
 
-## 4. Separate illiquid-a route
+## 3. Decision tree after DLH-5H
 
-The illiquid direction is intentionally deferred while DLH-5G runs.
+### Route H1 — joint upper-boundary HJB policy compatibility reached
 
-Current facts:
+If at least one pre-frozen candidate has both upper-b and upper-a requested outward rates `<=1e-10`, review policy/interior stability and then publish a separate stationary-KFE re-entry gate under the Issue #27 contract.
 
-- changing `a_max` also changes the accepted MATLAB-faithful effective return profile, so a-domain extent and return-profile effects are not separable under the current faithful taper;
-- fixed-domain refinement can materially change upper-a policy.
+The candidate grid is not automatically a final production grid; stationary uniqueness/residual/mass/non-negativity and aggregate stability must still be established.
 
-Before any new a-domain adequacy claim, a separate scientific-design gate must decide whether the `a_max`-normalized taper is:
+### Route H2 — upper-a cleanly attenuates but threshold not reached
 
-1. a MATLAB-parity numerical device retained only for source-faithful reproduction; or
-2. part of the intended new DeepLearning-HANK household specification.
+Do not add adaptive grids. Review the pre-frozen trend and decide whether one further bounded resolution/asymptotic diagnostic is justified.
 
-Any change to the taper/HJB controlled process is a scientific change and must be explicitly frozen before implementation.
+### Route H3 — upper-a remains persistent / plateau / non-monotonic
+
+Escalate to a separate scientific-design gate for the illiquid upper-boundary/taper interpretation. Do not silently modify the `a_max`-normalized taper or HJB boundary law.
+
+### Route H4 — liquid boundary reactivates under a refinement
+
+Treat this as a coupled numerical-resolution blocker. Revisit the provisional liquid-safe grid choice before any stationary re-entry.
 
 ---
 
-## 5. Stationary household revalidation remains blocked
+## 4. Stationary household revalidation
 
-Do not compute or accept new household stationary `C,L,A,B` until both liquid and illiquid boundary treatments are coherent under the same HJB/KFE process.
+Stationary validation remains blocked until a candidate grid satisfies coherent HJB upper-boundary policy in both asset dimensions.
 
-When boundary coherence is restored, re-enter the Issue #27 stationary contract:
+When that prerequisite is met, re-enter Issue #27:
 
 1. conservative generator;
 2. recurrent-class/nullspace evidence;
 3. pin admissibility and valid-pin invariance;
 4. ORIGINAL `Q^T g` residual;
 5. mass/non-negativity;
-6. then `C,L,A,B` and anchor revalidation.
+6. tail diagnostics;
+7. then recompute `C,L,A,B` and the two-region anchor from scratch.
+
+No historical row-295 aggregate is grandfathered.
 
 ---
 
-## 6. Regional scale hierarchy
+## 5. Regional and Deep Learning sequence
 
-Retain permanently:
+Permanent hierarchy:
 
 ```text
 2-region unit fixture
@@ -203,65 +183,36 @@ Retain permanently:
 -> 31-province empirical/source benchmark
 ```
 
-The planned `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until the household boundary/stationary foundation is scientifically usable. When eventually run, prefer frozen household price/input snapshots over repeated full 31-province GE grid sweeps.
+The planned `31_PROVINCE_HOUSEHOLD_UPPER_DOMAIN_AUDIT` remains deferred until household boundary/stationary validation is usable.
 
-Future regional parity must separately inspect continuous-state parity and discrete controller/threshold branch parity.
+No neural training is currently authorized. Later sequence remains:
 
----
-
-## 7. Deep Learning route
-
-No neural training is authorized while the household stationary foundation is unresolved.
-
-Later sequence remains:
-
-1. `L0` — source spatial-rule surrogate;
-2. `L1` — constrained structural learned spatial rule;
-3. `L2` — empirical OD-flow learning with endogeneity/double-counting safeguards;
+1. `L0` source spatial-rule surrogate;
+2. `L1` constrained structural learned spatial rule;
+3. `L2` empirical OD-flow learning with endogeneity/double-counting safeguards;
 4. later capital-network learning;
-5. separate nominal-HANK integration after a minimal nominal block is scientifically frozen.
+5. separate nominal-HANK integration after its structural block is frozen.
 
 ---
 
-## 8. Current sequencing
-
-Immediate:
-
-1. preserve Issues #23–#29 accepted evidence;
-2. execute Issue #31 / DLH-5G exactly as published and activated;
-3. review liquid extent/resolution evidence;
-4. then decide the next liquid route and the separate illiquid-taper scientific-design route.
-
-After household boundary resolution:
-
-1. stationary KFE / `C,L,A,B` revalidation;
-2. `K=M*A` and two-region anchor revalidation;
-3. two-region S0/S1 + order invariance;
-4. 3–5 province integration fixture;
-5. 31-province frozen-price household/source benchmark;
-6. only then resume learned spatial-module work.
-
----
-
-## 9. Scientific ceiling
+## 6. Scientific ceiling
 
 Until household boundary/stationary evidence is resolved, do not:
 
-- change accepted HJB/taper merely to obtain a PASS;
-- accept a clipped KFE density from a different controlled process;
-- restore historical row-295 aggregates;
+- modify accepted HJB/taper merely to obtain PASS;
+- accept a KFE density from a different controlled process;
+- restore historical aggregates;
 - run validated policy/welfare Results;
-- train learned regional networks;
+- train regional networks;
 - scale to production 31-region learned equilibrium;
-- enter nominal-HANK integration;
-- claim the neighboring multi-province reconstruction is already unquestioned full stationary-parity production authority.
+- enter nominal-HANK integration.
 
 ---
 
-## 10. Governance status
+## 7. Governance status
 
-Issue #31 is the intended next Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
+Issue #34 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
 
-Routine scientific route decisions are delegated by Owner to ChatGPT unless Owner intervenes or raises a new concern.
+Routine bounded scientific-route decisions are delegated by Owner to ChatGPT unless Owner intervenes or raises a new concern.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
