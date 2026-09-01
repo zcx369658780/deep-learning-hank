@@ -1,0 +1,82 @@
+# DLH-5G (Issue #31) — Liquid Upper-Domain Asymptotic and Resolution Diagnostic config.
+#
+# Isolates the liquid (b) upper boundary while freezing the ENTIRE illiquid side
+# and all economics: a20 [0,10], a_max=10, da=10/19, accepted
+# r_a*(1-0.1*(a/a_max)^9) taper unchanged; wbar=1.0, r_a=0.03. All non-grid
+# objects come from the accepted DLH-5B/DLH-5E canonical fixture (region_index=0)
+# reused read-only. Exactly the six pre-frozen b variants G0-G5; no adaptive
+# seventh grid, no warm-start, no parameter/price/tolerance/initialization change,
+# no clipping. Policy-only: no stationary KFE / nullspace / pin / density / tail /
+# C-L-A-B execution.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+[frozen_illiquid]
+# Entire illiquid side frozen on every variant.
+a_pts = 20
+a_lo = 0.0
+a_hi = 10.0
+a_max = 10.0
+da = 0.5263157894736842   # 10/19
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+# Exact six pre-frozen b variants (Issue #31 section 4).
+# Baseline liquid spacing db0 = 7/19.
+[[variants]]
+id = "G0_BASE"
+b_pts = 20
+b_lo = -2.0
+b_hi = 5.0
+
+[[variants]]
+id = "G1_B_WIDE_1"
+b_pts = 40
+b_lo = -2.0
+b_hi = 12.368421052631579    # 235/19
+
+[[variants]]
+id = "G2_B_WIDE_2"
+b_pts = 60
+b_lo = -2.0
+b_hi = 19.736842105263158    # 375/19
+
+[[variants]]
+id = "G3_B_WIDE_3"
+b_pts = 80
+b_lo = -2.0
+b_hi = 27.105263157894736    # 515/19
+
+[[variants]]
+id = "G4_BASE_B_FINE"
+b_pts = 39
+b_lo = -2.0
+b_hi = 5.0
+
+[[variants]]
+id = "G5_WIDE1_B_FINE"
+b_pts = 79
+b_lo = -2.0
+b_hi = 12.368421052631579    # 235/19
+
+[shared_interior]
+# Frozen primary shared-interior mask on the illiquid side for all pairs:
+# a_index <= 17, all z. The liquid mask is per-pair b_index <= coarse_b_pts-3.
+a_index_max = 17
+
+[validation]
+boundary_threshold = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# Secondary annotation materiality criterion (pre-registered): an aligned-pair
+# scale-aware mu_b relative difference above this marks
+# DLH_5G_B_RESOLUTION_SENSITIVITY_REMAINS_MATERIAL__SEPARATE_NUMERICAL_REVIEW_REQUIRED.
+resolution_rel_materiality = 1e-2
+
+[output]
+root = "reports/dlh_5g_liquid_upper_domain_asymptotic_diagnostic_2026_09_01"
