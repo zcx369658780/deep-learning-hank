@@ -1,0 +1,5 @@
+case_id,row_sum_max_abs,negative_offdiag_max_mag,negative_offdiag_count,row_sum_min,row_sum_max,nnz,scc_count,closed_component_count,closed_component_sizes,nullspace_dimension
+d0,6.106227e-16,0.000000e+00,0,-6.106227e-16,2.775558e-16,3114,,,,
+d1,,,,,,,,,,
+d2,,,,,,,,,,
+d3,,,,,,,,,,

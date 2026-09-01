@@ -1,0 +1,53 @@
+# DLH-5E (Issue #28) — conservative stationary-KFE validator config.
+#
+# Implementation-validation candidate gate. The accepted MATLAB-faithful HJB
+# source is immutable; the household/grid/numerical fixture is loaded READ-ONLY
+# from the accepted DLH-5B frozen config via the accepted regional
+# build_fixture(), so no scientific fixture drift is possible.
+#
+# This config holds ONLY the frozen validation cases (D0 first; D1-D3 reached
+# only after complete D0 success), the exact deterministic pin spec, the frozen
+# tolerances from the accepted DLH-5D contract, and the no-overwrite output root.
+#
+# No solver/household/regional code is modified; the conservative candidate Q_c
+# is diagnostic/candidate only and never routed into production.
+
+[household_fixture]
+# accepted DLH-5B frozen config path (read-only reference)
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+# region-0 conditional household state (the preserved failing region)
+region_index = 0
+
+[cases]
+# frozen exact states from preserved DLH-5B R1 S1 evidence (do not change)
+d0_wbar = 1.0
+d0_r_a = 0.03
+d1_wbar = 0.9977278388290097
+d1_r_a = 0.0299127630152404
+d2_wbar = 0.998807521160338
+d2_r_a = 0.029964194758276677
+d3_wbar = 1.0011941548981047
+d3_r_a = 0.03003565330704072
+
+[validation]
+# exact deterministic pin spec {first, floor(N/4), accepted, floor(N/2),
+# floor(3N/4), N-1}; indices computed from N at runtime.
+pin_spec = ["first", "quarter", "accepted", "half", "three_quarter", "last"]
+pin_rhs = 0.007
+# frozen DLH-5D tolerances
+boundary_threshold = 1e-10
+generator_row_sum_tol = 1e-12
+generator_neg_offdiag_tol = 1e-12
+original_residual_tol = 1e-10
+mass_tol = 1e-12
+min_density_tol = -1e-12
+multi_pin_diff_tol = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+# bounded sparse nullspace / zero-support evidence tolerances
+nullspace_tol = 1e-8
+zero_support_rel_tol = 1e-6
+svd_maxiter = 5000
+
+[output]
+root = "reports/dlh_5e_conservative_stationary_kfe_validation_2026_09_01"
