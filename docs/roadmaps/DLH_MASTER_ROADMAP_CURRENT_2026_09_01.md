@@ -1,6 +1,6 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.6  
+**Version:** V0.7  
 **Date:** 2026-09-01  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
@@ -16,7 +16,7 @@ The first learned object remains the regional labor/spatial rule. Capital-networ
 
 ---
 
-## 1. Accepted foundation through DLH-5H
+## 1. Accepted foundation through DLH-5I
 
 ### Household/HJB — Issue #23
 
@@ -61,7 +61,7 @@ Accepted verdict:
 
 `DLH_5G_ISSUE_31_IMPLEMENTATION_ACCEPTED__LIQUID_UPPER_DOMAIN_ADEQUACY_EVIDENCE_CONFIRMED__B_RESOLUTION_SENSITIVITY_RETAINED__ILLIQUID_BOUNDARY_REMAINS_BLOCKER`
 
-Key result: with coarse a20 fixed, upper-b requested policy reaches exact zero by `b_max=19.7368421053` and remains zero at a wider same-spacing extent. However, b-resolution sensitivity remains material and no production grid is frozen.
+Key result: with coarse a20 fixed, upper-b requested policy reaches exact zero by `b_max=19.7368421053`, but that domain is not robust to later illiquid-grid refinement.
 
 ### Illiquid-resolution diagnostic — Issue #34 / DLH-5H
 
@@ -77,109 +77,129 @@ Accepted verdict:
 
 `DLH_5H_ISSUE_34_IMPLEMENTATION_ACCEPTED__ILLIQUID_A_RESOLUTION_ADEQUACY_CONFIRMED__LIQUID_BOUNDARY_REACTIVATION_CONFIRMED__COUPLED_RESOLUTION_BLOCKER_ESTABLISHED`
 
+Accepted interpretation:
+
+- upper-a is material on a20 but exact zero on a39/a77/a153 when physical `a in [0,10]`, `a_max=10` and taper are fixed;
+- the former b60 liquid-safe domain is not robust to a refinement because upper-b reactivates;
+- the remaining issue is therefore coupled domain/resolution behavior.
+
+### Coupled liquid-extent frontier — Issue #35 / DLH-5I
+
+Accepted candidate:
+
+`d8837e04db940b1f71b8ff1fe7e181d1bf9644a3`
+
+Integrated to main:
+
+`53d0ff7b0fe9bd73cfbd8c6d27c98bbc4b0423d1`
+
+Accepted verdict:
+
+`DLH_5I_ISSUE_35_IMPLEMENTATION_ACCEPTED__COUPLED_B_EXTENT_ATTENUATION_CONFIRMED__COMMON_THRESHOLD_NOT_REACHED__UPPER_A_COMPATIBILITY_STABLE__FURTHER_BOUNDED_EXTENT_GATE_REQUIRED`
+
 Accepted scientific interpretation:
 
-1. With physical `a in [0,10]`, `a_max=10`, taper and D0 economics fixed, upper-a requested outward policy is material on a20 but becomes exact zero on a39 and remains zero on a77/a153.
-2. Therefore the illiquid upper-boundary problem is strongly resolution-driven on the fixed physical domain; no taper/HJB rewrite is currently justified by the evidence.
-3. The b60 domain previously considered liquid-safe under a20 is **not robust to a refinement**. Upper-b requested policy reactivates to about `0.2713`, `0.3916`, `0.4449` on a39/a77/a153.
-4. Half-db b cross-checks at the same extent remain material, confirming that the remaining blocker is a coupled domain-resolution problem.
-5. a-resolution aligned policy differences decline across a39/a77/a153, but transfer/mu differences remain material; a77 and a153 are mature diagnostic resolutions, not final production resolutions.
-6. No pre-frozen grid reaches joint HJB upper-boundary policy compatibility. Stationary KFE remains NOT AUTHORIZED.
+1. At both mature a resolutions a77/a153, upper-a/lower-a/lower-b requested policy is exact zero through b60/b80/b100.
+2. With `db=7/19`, upper-b requested policy strictly attenuates with liquid extent:
+   - a77: `0.3915648627 -> 0.2808185297 -> 0.1925385153`;
+   - a153: `0.4449370735 -> 0.3356027946 -> 0.2481811687`.
+3. Offending upper-b states remain localized to the top-liquid/top-illiquid/high-productivity corner and decline in count/share with extent.
+4. No b60/b80/b100 extent reaches the `1e-10` joint compatibility threshold at either mature a resolution.
+5. Cross-a value/consumption/labor differences are small, while transfer/`mu_a`/`mu_b` remain about 1.9–2.4% apart.
+6. The evidence supports continued finite-b-domain attenuation, not a claim of non-existent stationary liquid tails.
+7. Stationary KFE remains NOT AUTHORIZED.
 
 ---
 
-## 2. Immediate scientific gate — DLH-5I / Issue #35
+## 2. Immediate scientific gate — DLH-5J / Issue #36
 
 ### Name
 
-**Coupled Liquid-Extent Frontier Across Mature Illiquid Resolutions**
+**Final Bounded Coupled Liquid-Extent Continuation Before Asymptotic Adjudication**
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__COUPLED_BOUNDARY_DOMAIN_RESOLUTION_FRONTIER`
+`SCIENTIFIC_DIAGNOSTIC__FINAL_BOUNDED_COUPLED_B_EXTENT_CONTINUATION`
 
 ### Purpose
 
-Treat the remaining numerical boundary problem jointly rather than sequentially:
+DLH-5I still leaves b100 materially outward at both mature a resolutions, but the attenuation trend is clean. DLH-5J is therefore the **last pre-frozen larger-b grid experiment** before the project must switch to high-wealth/asymptotic or finite-domain-closure analysis if compatibility is still not reached.
 
-> With the physical illiquid domain, `a_max`, taper, economics and accepted HJB frozen, how far must the liquid upper domain be extended at a77 and a153 before joint upper-boundary policy compatibility is reached, and is that result robust across both mature a resolutions?
+Scientific question:
+
+> With the accepted household process, mature a resolutions and `db=7/19` frozen, does one of b120/b140/b160 reach joint upper-boundary compatibility at both a77 and a153? If not, does clean attenuation persist through the final bounded frontier?
 
 ### Frozen design
-
-Economics and household law remain:
 
 ```text
 wbar = 1.0
 r_a  = 0.03
 a in [0,10]
 a_max = 10
-r_a_eff(a)=r_a*(1-0.1*(a/a_max)^9)
+accepted taper = r_a*(1-0.1*(a/a_max)^9)
+a resolutions = {a77,a153}
+db = 7/19
 ```
 
-Mature diagnostic a resolutions:
+Final extents:
 
 ```text
-a77
-a153
+b120 [-2,795/19]
+b140 [-2,935/19]
+b160 [-2,1075/19]
 ```
 
-Liquid spacing remains:
+Exact six variants are `{a77,a153} × {b120,b140,b160}`.
 
-```text
-db=7/19
-```
+Accepted DLH-5I b100 results are read-only scalar anchors for the continuation trend; b100 is not rerun as a seventh/eighth variant.
 
-Pre-frozen b extents:
+No b extent beyond b160 is authorized.
 
-```text
-b60  [-2,375/19]
-b80  [-2,515/19]
-b100 [-2,655/19]
-```
-
-Exact six variants are the Cartesian 2×3 set of `{a77,a153}` × `{b60,b80,b100}`.
-
-No adaptive seventh grid, no new a resolution and no b-resolution change are allowed in DLH-5I.
-
-DLH-5I remains policy-only: no stationary KFE, density, tail metrics or aggregates.
+DLH-5J remains policy-only: no stationary KFE, density, tail metrics or aggregates.
 
 ---
 
-## 3. Decision tree after DLH-5I
+## 3. Decision tree after DLH-5J
 
-### Route I1 — a common b extent is jointly compatible at both a77 and a153
+### Route J1 — a common final extent reaches joint compatibility at both a77 and a153
 
-Freeze the **smallest common compatible b extent as a provisional coupled-domain candidate only**. Then run a separate bounded b-resolution confirmation at that extent before any stationary-KFE re-entry.
+Freeze the **smallest common compatible extent as a provisional coupled-domain candidate only**.
 
-### Route I2 — only one a resolution reaches joint compatibility
+Then publish exactly one bounded **b-resolution confirmation gate** at that same physical extent. Stationary KFE remains blocked until that confirmation passes.
 
-Do not promote the domain. Treat this as lack of resolution robustness and continue bounded numerical-convergence review.
+### Route J2 — only one mature a resolution reaches compatibility
 
-### Route I3 — both a-resolution extent sequences attenuate but common threshold is not reached
+Do not promote the domain. Treat this as unresolved cross-a resolution robustness and move to scientific numerical/asymptotic review rather than adaptive extent search.
 
-Do not adaptively add grids inside the task. Review the frozen trend and decide whether one further bounded extent gate is justified.
+### Route J3 — clean attenuation persists through b160 but no common threshold is reached
 
-### Route I4 — coupled behavior is persistent or non-monotonic
+**Stop larger-grid continuation.** Do not publish b180/b200 or root-seeking adaptive extent tasks.
 
-Escalate to analytical/high-wealth or finite-domain HJB-closure review before any taper/boundary-law rewrite.
+The next scientific gate must adjudicate high-wealth liquid drift / economic mean reversion / finite-domain HJB closure analytically or semi-analytically under the accepted household process.
+
+### Route J4 — behavior becomes persistent, plateaued or non-monotonic
+
+Also escalate immediately to high-wealth/asymptotic or finite-domain HJB-closure adjudication.
+
+No HJB or taper rewrite may occur without a later explicit scientific-design gate.
 
 ---
 
 ## 4. Stationary household revalidation remains blocked
 
-Stationary validation remains blocked until:
+Stationary validation requires BOTH:
 
-1. a candidate grid is jointly HJB upper-boundary compatible in both assets;
-2. that compatibility is robust to the required resolution confirmation.
+1. joint HJB upper-boundary compatibility in both assets on a candidate grid;
+2. b-resolution confirmation of that compatibility at the same physical extent.
 
-Only after those prerequisites may the project re-enter Issue #27:
+Only then may the project re-enter Issue #27:
 
 1. conservative generator;
 2. recurrent-class/nullspace evidence;
 3. pin admissibility and valid-pin invariance;
 4. ORIGINAL `Q^T g` residual;
 5. mass/non-negativity;
-6. tail diagnostics;
+6. stationary tail diagnostics;
 7. then recompute `C,L,A,B` and the two-region anchor from scratch.
 
 No historical row-295 aggregate is grandfathered.
@@ -213,6 +233,7 @@ No neural training is currently authorized. Later sequence remains:
 Until household boundary/stationary evidence is resolved, do not:
 
 - modify accepted HJB/taper merely to obtain PASS;
+- keep enlarging b adaptively beyond the DLH-5J b160 ceiling;
 - accept a KFE density from a different controlled process;
 - restore historical aggregates;
 - run validated policy/welfare Results;
@@ -224,7 +245,7 @@ Until household boundary/stationary evidence is resolved, do not:
 
 ## 7. Governance status
 
-Issue #35 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
+Issue #36 is the current intended Builder task. Builder authority requires synchronized Task Index / Startup Snapshot plus an authoritative activation comment.
 
 Routine bounded scientific-route decisions are delegated by Owner to ChatGPT unless Owner intervenes or raises a new concern.
 
