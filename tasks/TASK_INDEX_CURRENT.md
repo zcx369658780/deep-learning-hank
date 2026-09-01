@@ -1,8 +1,8 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5L_TOTAL_WEALTH_DRIFT_AND_DOMAIN_GEOMETRY`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5M_STATE_DOMAIN_GEOMETRY_AND_JOINT_KKT_DESIGN_REVIEW`
 
-Last synchronized: 2026-09-01
+Last synchronized: 2026-09-02
 
 Repository: `zcx369658780/deep-learning-hank`
 
@@ -10,35 +10,35 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Current Issue:
 
-**Issue #38 — OPEN**
+**Issue #39 — OPEN**
 
 Title:
 
-`DLH-5L: Adjudicate componentwise liquid outward drift versus total-wealth mean reversion and boundary geometry`
+`DLH-5M: Design-review state-domain geometry and joint HJB/KKT boundary law`
 
 Task type:
 
-`SCIENTIFIC_ANALYTICAL_DIAGNOSTIC__TOTAL_WEALTH_DRIFT_AND_DOMAIN_GEOMETRY`
+`SCIENTIFIC_DESIGN_REVIEW__STATE_DOMAIN_GEOMETRY_AND_JOINT_KKT`
 
 Dedicated branch:
 
-`dsh/issue-38-dlh-5l-total-wealth-domain-geometry-2026-09-01`
+`dsh/issue-39-dlh-5m-domain-kkt-design-review-2026-09-02`
 
-Issue #38 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #38 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
+Issue #39 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #39 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
 
-## Latest accepted task — Issue #37 / DLH-5K
+## Latest accepted task — Issue #38 / DLH-5L
 
 Accepted candidate:
 
-`aaead4a1368ec061ac1e380c3af33d93c0f31161`
+`3df43fe4da552e19aa7cd3486e06a7e5042d97df`
 
 Integrated to `main` by acceptance merge commit:
 
-`d26b2b8c8d69d2afa2cb9806f120d03ebe973752`
+`b20e23e28d2f9969df06cb725b3ca23a6fecc2fe`
 
 Accepted reviewer verdict:
 
-`DLH_5K_ISSUE_37_IMPLEMENTATION_ACCEPTED__MIXED_LOCALIZATION_CONFIRMED__TRANSFER_DERIVATIVE_CHANNEL_DOMINATES_CROSS_A_DIVERGENCE__INTERPRETATION_NARROWED__NEXT_GATE_REQUIRED`
+`DLH_5L_ISSUE_38_IMPLEMENTATION_ACCEPTED__TOTAL_ASSET_DRIFT_INWARD_ON_PREFROZEN_HIGH_WEALTH_STATE_SET__RECTANGULAR_B_VIOLATION_REINTERPRETED_AS_COMPONENTWISE_REALLOCATION__CROSS_A_TOTAL_DRIFT_SENSITIVITY_REMAINS__DOMAIN_KKT_DESIGN_REVIEW_REQUIRED`
 
 Acceptance level:
 
@@ -46,80 +46,58 @@ Acceptance level:
 
 Accepted interpretation:
 
-- 5/17 material upper-b offenders are boundary-only within the required `n-1/n-2/n-3/n-5` window; 12/17 retain positive full-policy `mu_b` in at least one inspected interior layer;
-- this is local persistence, not proof of infinite-domain/high-wealth non-mean-reversion;
-- at inspected offenders, `base_liquid_surplus<0` while `transfer_injection>0`, and the transfer-injection channel dominates enough to make `mu_b>0`;
-- a77/a153 divergence is primarily transfer/derivative-channel driven;
-- the current selected transfer-FOC candidate fails joint inwardness at the inspected joint-corner states, but the algebra does not prove that no feasible transfer exists;
-- transfer `d` is a continuous-time flow/rate, not an asset stock; no liquidation interpretation is accepted;
-- no source defect or redesign is accepted; pure larger-b-grid continuation remains CLOSED;
-- stationary KFE remains NOT AUTHORIZED.
+- accepted J0–J5 evidence reproduces exactly and the deterministic repeat is exact;
+- the pre-frozen DLH-5K/DLH-5L evidence set contains 105 unique states;
+- every one of the 44 material positive-`mu_b` states has `mu_W=mu_a+mu_b<=0`;
+- all 17 top-layer upper-b offenders violate rectangular `mu_b<=0` while satisfying `mu_a<=0` and `mu_W<=0`;
+- the linear transfer control cancels one-for-one in total-asset drift while adjustment cost remains;
+- this is finite-state/source-accounting evidence only, not an infinite-domain mean-reversion theorem or stationary-tail proof;
+- cross-a absolute total-drift differences are smaller than liquid-drift differences, but `rel_diff_mu_W` still exceeds the pre-registered 1e-2 diagnostic threshold on 16/24 aligned pairs;
+- no production-domain replacement, HJB/KFE mutation, taper/FOC/adjustment-cost change, or stationary re-entry is accepted;
+- pure larger-b-grid continuation remains CLOSED;
+- stationary KFE remains NOT AUTHORIZED under Issue #27.
 
-## Issue #38 scientific scope
+Reviewer note: the stale DLH-5K stationary marker in the DLH-5L forbidden-operation report is a non-scientific labeling typo only.
 
-DLH-5L distinguishes componentwise liquid outward drift from total-wealth outward drift under the accepted household law.
+## Issue #39 scientific scope
 
-Accepted accounting identities to test:
+DLH-5M is a **model-design review**, not an implementation task.
 
-```text
-mu_a = r_a_eff(a)*a + d
-mu_b = r_b*b + labor_income - d - adjustment_cost - (consumption - transfer_income)
-mu_W = mu_a + mu_b
-     = r_a_eff(a)*a + r_b*b + labor_income
-       - adjustment_cost - (consumption - transfer_income)
-```
+It must distinguish structural/economic constraints from computational truncations, and compare two coherent candidate designs:
 
-The linear transfer term cancels from `mu_W`.
+1. **Design R — rectangular componentwise state constraints** with tangent-cone/KKT conditions on active faces, including `mu_a<=0`, `mu_b<=0`, and both at the upper corner.
+2. **Design W — hybrid joint-wealth truncation** `a>=0`, `b>=b_min`, `a<=a_max`, `a+b<=W_max`, with normal-drift condition `mu_W<=0` on the joint-wealth face and joint constraints at active intersections.
 
-Rerun exactly accepted J0–J5 only. No new grid, extent, resolution, warm start, b100 rerun, b-resolution change or source mutation.
+The task must also compare W1 masked `(a,b)` and W2 transformed `(a,W)` representations, reject geometry-inconsistent shortcuts, map accepted DLH-5K/5L evidence to both designs, and produce an explicit Owner decision packet.
 
-The inspected state set is frozen as the exact union of row coordinates from accepted:
-
-- `reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_BOUNDARY_INTERIOR_LOCALIZATION.csv`
-- `reports/dlh_5k_high_wealth_corner_closure_diagnostic_2026_09_01/DLH_5K_CROSS_A_MECHANISM.csv`
-
-Deduplicate exact `(variant,b_index,a_index,z_index)` only; do not add post-hoc states.
-
-Required evidence:
-
-1. exact accepted J0–J5 reproduction;
-2. exact `mu_W=mu_a+mu_b` and transfer-cancelled budget reconstruction;
-3. four-way component-liquid / total-wealth drift classification;
-4. explicit coverage of every accepted DLH-5K interior-positive state;
-5. transfer-cancellation / portfolio-reallocation decomposition;
-6. analytical comparison of rectangular component bounds with local `W=a+b` normal drift, without changing the production domain;
-7. exact a77/a153 aligned total-wealth comparison;
-8. deterministic repeat and applicable full regression suite;
-9. stop without source/domain redesign or stationary KFE.
+No Builder recommendation freezes or changes the model. Owner decision is mandatory before any implementation authority exists.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `src/deep_learning_hank/two_asset/total_wealth_domain_geometry_diagnostic.py`
-2. `configs/dlh_5l_total_wealth_domain_geometry_diagnostic.toml`
-3. `tests/test_dlh_5l_total_wealth_domain_geometry_diagnostic.py`
-4. `reports/dlh_5l_total_wealth_domain_geometry_diagnostic_2026_09_01/` with exactly:
-   - `DLH_5L_SOURCE_ACCOUNTING_AUDIT.md`
-   - `DLH_5L_STATE_DRIFT_DECOMPOSITION.csv`
-   - `DLH_5L_COORDINATE_TOTAL_CLASSIFICATION.csv`
-   - `DLH_5L_BOUNDARY_GEOMETRY.csv`
-   - `DLH_5L_CROSS_A_TOTAL_WEALTH.csv`
-   - `DLH_5L_REPRODUCIBILITY.json`
-   - `DLH_5L_EXECUTION_REPORT.md`
-   - `DLH_5L_FORBIDDEN_OPERATION_CHECK.md`
+1. `docs/design/DLH_5M_STATE_DOMAIN_AND_JOINT_KKT_DESIGN_REVIEW.md`
+2. `reports/dlh_5m_state_domain_joint_kkt_design_review_2026_09_02/` with exactly:
+   - `DLH_5M_CONSTRAINT_CLASSIFICATION.md`
+   - `DLH_5M_GEOMETRY_CANDIDATES.md`
+   - `DLH_5M_JOINT_KKT_BOUNDARY_LAWS.md`
+   - `DLH_5M_ACCEPTED_EVIDENCE_MAPPING.csv`
+   - `DLH_5M_IMPLEMENTATION_IMPACT_MATRIX.csv`
+   - `DLH_5M_SCIENTIFIC_RECOMMENDATION.md`
+   - `DLH_5M_OWNER_DECISION_PACKET.md`
+   - `DLH_5M_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
 ## Scientific ceiling
 
-Do not add any grid/extent/resolution or use `b>b160`; do not modify accepted HJB/KFE/regional source, taper, transfer FOC, adjustment cost, boundary law, economics/prices/parameters/tolerances/initialization; no clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
+No source/model/domain mutation; no numerical `W_max`; no new or rerun grid; no HJB/KFE/taper/FOC/adjustment-cost/economic-price mutation; no boundary-KKT implementation; no clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
 
 No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
-- Issue #38 full body + authoritative activation comment = exact Builder experiment authority once activation is posted.
+- Issue #39 full body + authoritative activation comment = exact Builder design-review authority once activation is posted.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Historical handoff: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
+- Historical handoff remains context only: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
