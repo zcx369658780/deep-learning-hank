@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5G_LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5H_ILLIQUID_UPPER_BOUNDARY_RESOLUTION`
 
 Last synchronized: 2026-09-01
 
@@ -10,121 +10,123 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Current Issue:
 
-**Issue #31 — OPEN**
+**Issue #34 — OPEN**
 
 Title:
 
-`DLH-5G: Isolate liquid upper-domain asymptotics under fixed illiquid domain and taper`
+`DLH-5H: Isolate illiquid upper-boundary resolution on the provisional liquid-safe domain`
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__LIQUID_UPPER_DOMAIN_ASYMPTOTIC_AND_RESOLUTION`
+`SCIENTIFIC_DIAGNOSTIC__ILLIQUID_UPPER_BOUNDARY_RESOLUTION`
 
 Dedicated branch:
 
-`dsh/issue-31-dlh-5g-liquid-upper-domain-asymptotic-2026-09-01`
+`dsh/issue-34-dlh-5h-illiquid-resolution-2026-09-01`
 
-Issue #31 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
+Issue #34 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue.
 
-If Issue #31 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
+If Issue #34 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
 
-## Latest accepted task — Issue #29 / DLH-5F
+## Latest accepted task — Issue #31 / DLH-5G
 
 Accepted candidate:
 
-`7f4e489154115c9c91cf8c3fccbb3a1d114fbc3f`
+`edbd6e9d4683118e08edb8041609c9af1579883a`
 
 Integrated to `main` by acceptance merge commit:
 
-`8eaac27472e3f902d0ff3e8044027f95913155ba`
+`809d18a3459b5b8c4d8b142ea4f282a34c3af49f`
 
 Accepted reviewer verdict:
 
-`DLH_5F_ISSUE_29_IMPLEMENTATION_ACCEPTED__OUTCOME_B_CONFIRMED__OUTCOME_D_SUPPORTED_WITH_INTERPRETATION_CORRECTION__STATIONARY_TAIL_NOT_REACHED`
+`DLH_5G_ISSUE_31_IMPLEMENTATION_ACCEPTED__LIQUID_UPPER_DOMAIN_ADEQUACY_EVIDENCE_CONFIRMED__B_RESOLUTION_SENSITIVITY_RETAINED__ILLIQUID_BOUNDARY_REMAINS_BLOCKER`
 
-Accepted reviewer annotation:
+Accepted interpretation:
 
-`B_EXTENT_EVIDENCE_SHOWS_STRONG_ATTENUATION_NOT_GROWTH__A_EXTENT_CONFOUNDED_BY_AMAX_NORMALIZED_RETURN_TAPER__RESOLUTION_NOT_YET_STABLE`
+- same-spacing liquid sequence drives upper-b raw/requested drift from `0.1303281015/0.3537477040` to `0.003759131181/0.01020335606`, then to exact `0/0` at `b_max=19.7368421053`, remaining zero at the wider same-spacing extent;
+- a finer b-grid reaches zero already at `b_max=12.3684210526`, so liquid behavior is resolution-sensitive but consistent with finite-domain adequacy rather than persistent outward liquid drift;
+- `b60 [-2,375/19]`, `db=7/19` is designated a **provisional liquid-safe diagnostic domain**, not a final production-grid freeze;
+- upper-a remains material on that state: requested max about `0.3094730854`, 108 states, share `0.90`;
+- stationary KFE remains NOT AUTHORIZED.
 
-Controlling scientific interpretation:
+## Issue #34 scientific scope
 
-- clean b-only `V0 -> V2` holds `a_max=10`, a-grid/taper and `db` fixed; upper-b requested rate falls from about `0.353747704` to `0.010203356` with highly stable shared-interior policy;
-- changing `a_max` changes the accepted MATLAB-faithful effective illiquid return `r_a*(1-0.1*(a/a_max)^9)`, so V1/V3/V4 are not pure a-domain extent experiments;
-- V5 keeps `a_max=10` and removes upper-a outward requests, showing strong upper-a resolution/local-discretization sensitivity;
-- no DLH-5F variant reached full HJB/KFE same-process stationary validation, so stationary-tail existence/non-existence and new `C,L,A,B` remain NOT REACHED.
+DLH-5H isolates **illiquid-grid resolution** while preserving the accepted household process.
 
-## Issue #31 scientific scope
-
-DLH-5G isolates the liquid upper boundary only. It preserves the accepted household HJB and freezes the entire illiquid side:
+Frozen for all variants:
 
 ```text
 wbar = 1.0
-r_a  = 0.03
-a = 20 points on [0,10]
+r_a = 0.03
+a_lo = 0
+a_hi = 10
 a_max = 10
-da = 10/19
-accepted illiquid-return taper unchanged
+accepted taper = r_a*(1-0.1*(a/a_max)^9)
+```
+
+Core liquid-safe domain:
+
+```text
+b: 60 points on [-2,375/19]
+db = 7/19
 ```
 
 Primary question:
 
-> With fixed illiquid domain/taper and fixed economics, does raw upper-b outward drift `max(mu_b,0)` attenuate toward zero as `b_max` is extended, and how sensitive is that conclusion to an independent b-resolution refinement?
+> With the physical a-domain, a_max, taper, economics and liquid-safe domain fixed, does upper-a raw outward drift attenuate to the HJB/KFE compatibility threshold when only a-grid resolution is refined?
 
-Raw `mu_b` is the primary cross-resolution quantity. Requested generator rate `max(mu_b,0)/db` remains the HJB/KFE boundary-compatibility quantity.
-
-DLH-5G is policy-only. It does **not** authorize stationary KFE, nullspace/pin, density, tail mass, stationary flux, `C,L,A,B`, HJB boundary redesign or a-taper redesign.
+DLH-5H is policy-only. It does not authorize stationary KFE, nullspace/pin, density, tail metrics or `C,L,A,B`.
 
 ## Exact six pre-frozen variants
 
-All use the same a20 `[0,10]` grid and `a_max=10` taper.
-
-1. `G0_BASE`: b20 `[-2,5]`, `db=7/19`.
-2. `G1_B_WIDE_1`: b40 `[-2,235/19]`, same `db`.
-3. `G2_B_WIDE_2`: b60 `[-2,375/19]`, same `db`.
-4. `G3_B_WIDE_3`: b80 `[-2,515/19]`, same `db`.
-5. `G4_BASE_B_FINE`: b39 `[-2,5]`, `db=(7/19)/2`.
-6. `G5_WIDE1_B_FINE`: b79 `[-2,235/19]`, `db=(7/19)/2`.
+1. `H0_A20_BASE`: b60 core domain; a20 `[0,10]`, `da=10/19`.
+2. `H1_A39_FINE`: same b60; a39 `[0,10]`, half `da`.
+3. `H2_A77_FINER`: same b60; a77 `[0,10]`, quarter baseline `da`.
+4. `H3_A153_FINEST`: same b60; a153 `[0,10]`, eighth baseline `da`.
+5. `H4_B119_A39`: b119 on same b-domain, half `db`; a39.
+6. `H5_B119_A77`: b119 on same b-domain, half `db`; a77.
 
 No seventh/adaptive grid or PASS-seeking search is authorized.
 
 ## Required evidence
 
 1. Fresh accepted HJB on all six variants; no warm start.
-2. Upper/lower b raw-drift diagnostics and requested-rate diagnostics, with max, quantiles, counts/shares, argmax and complete offending states.
-3. Upper/lower a requested-rate regression evidence with a-grid/taper identity frozen.
-4. Same-spacing extent trend `G0 -> G1 -> G2 -> G3`, including raw/requested maxima and attenuation ratios.
-5. Exact aligned resolution comparisons `G0 vs G4` and `G1 vs G5` for value, consumption, labor, transfer, `mu_a`, `mu_b`, and direction-label mismatches.
-6. Deterministic repeat and applicable full repository regression suite.
-7. No stationary/KFE/aggregate execution path.
+2. Upper/lower a raw-drift and requested-rate diagnostics with max, quantiles, counts/shares, argmax and complete offending states.
+3. Upper/lower b regression diagnostics on every variant; fail closed if liquid boundary materially reactivates.
+4. Primary a-resolution trend `H0 -> H1 -> H2 -> H3` with raw/requested maxima and attenuation ratios.
+5. Exact aligned policy comparisons: `H0/H1`, `H1/H2`, `H2/H3`, `H1/H4`, `H2/H5`.
+6. Per-variant joint HJB upper-boundary policy compatibility marker only; no stationary solve.
+7. Deterministic repeat and applicable full repository regression suite.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `src/deep_learning_hank/two_asset/liquid_upper_domain_asymptotic_diagnostic.py`
-2. `configs/dlh_5g_liquid_upper_domain_asymptotic_diagnostic.toml`
-3. `tests/test_dlh_5g_liquid_upper_domain_asymptotic_diagnostic.py`
-4. `reports/dlh_5g_liquid_upper_domain_asymptotic_diagnostic_2026_09_01/` with exactly:
-   - `DLH_5G_VARIANT_STATUS.csv`
-   - `DLH_5G_LIQUID_BOUNDARY_DIAGNOSTICS.csv`
-   - `DLH_5G_ILLIQUID_REGRESSION_DIAGNOSTICS.csv`
-   - `DLH_5G_EXTENT_TREND.csv`
-   - `DLH_5G_RESOLUTION_STABILITY.csv`
-   - `DLH_5G_REPRODUCIBILITY.json`
-   - `DLH_5G_EXECUTION_REPORT.md`
-   - `DLH_5G_FORBIDDEN_OPERATION_CHECK.md`
+1. `src/deep_learning_hank/two_asset/illiquid_upper_boundary_resolution_diagnostic.py`
+2. `configs/dlh_5h_illiquid_upper_boundary_resolution_diagnostic.toml`
+3. `tests/test_dlh_5h_illiquid_upper_boundary_resolution_diagnostic.py`
+4. `reports/dlh_5h_illiquid_upper_boundary_resolution_diagnostic_2026_09_01/` with exactly:
+   - `DLH_5H_VARIANT_STATUS.csv`
+   - `DLH_5H_ILLIQUID_BOUNDARY_DIAGNOSTICS.csv`
+   - `DLH_5H_LIQUID_REGRESSION_DIAGNOSTICS.csv`
+   - `DLH_5H_RESOLUTION_TREND.csv`
+   - `DLH_5H_POLICY_STABILITY.csv`
+   - `DLH_5H_REPRODUCIBILITY.json`
+   - `DLH_5H_EXECUTION_REPORT.md`
+   - `DLH_5H_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
 ## Scientific ceiling
 
-Do not modify accepted source/evidence, `a_max`, a-grid, taper, economics/prices/parameters/tolerances/initialization; do not warm-start, adapt grids, clip policy, run stationary KFE/density/tail/aggregates, D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
+Do not modify accepted HJB/KFE/regional source or Issues #23–#31 evidence; do not change physical a-domain, `a_max=10`, taper, economics/prices/parameters/tolerances/initialization; no a-domain widening, warm-start, adaptive grid or clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
 
 No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
-- Issue #31 full body + authoritative activation comment = exact Builder experiment authority.
+- Issue #34 full body + authoritative activation comment = exact Builder experiment authority once activation is posted.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Earlier handoff remains historical scientific context: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
+- Earlier handoff remains historical context: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
