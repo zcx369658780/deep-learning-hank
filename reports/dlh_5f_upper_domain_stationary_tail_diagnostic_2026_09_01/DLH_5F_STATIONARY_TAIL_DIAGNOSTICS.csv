@@ -1,0 +1,7 @@
+variant,phase_e_reached,status,mass_a_max,mass_b_max,pr_a_ge_0.9_amax,pr_b_near_upper,top2_a_layer_mass,top2_b_layer_mass,phi_a_upper_flux,phi_b_upper_flux,note
+V0_BASE,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,
+V1_A_WIDE,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,
+V2_B_WIDE,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,
+V3_AB_MID,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,
+V4_AB_WIDE,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,
+V5_BASE_FINE,False,NOT_REACHED__HJB_KFE_SAME_PROCESS_BOUNDARY_GATE_FAILED,,,,,,,,,

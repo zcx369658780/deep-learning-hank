@@ -1,0 +1,99 @@
+# DLH-5F (Issue #29) — Upper-Domain Adequacy and Stationary-Tail Diagnostic config.
+#
+# Frozen economics/prices and ALL non-grid objects (params, numerics, taxes,
+# transfers, shocks, HJB numerics, initialization logic) come from the accepted
+# DLH-5B / DLH-5E canonical fixture (region_index=0), reused read-only. Only the
+# exact six pre-frozen grid variants are defined here. No adaptive seventh grid,
+# no warm-start, no parameter/price/tolerance retuning, no clipping.
+
+[household_fixture]
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+
+[frozen_prices]
+wbar = 1.0
+r_a = 0.03
+
+# Exact six pre-frozen grid variants (Issue #29 section 5).
+# Baseline spacings: db0 = 7/19, da0 = 10/19.
+# V0-V4 preserve exact baseline spacing on expanded dimensions;
+# V5 = fixed baseline domain with half baseline spacing and contains every V0
+# node at every second grid point.
+[[variants]]
+id = "V0_BASE"
+b_pts = 20
+b_lo = -2.0
+b_hi = 5.0
+a_pts = 20
+a_lo = 0.0
+a_hi = 10.0
+
+[[variants]]
+id = "V1_A_WIDE"
+b_pts = 20
+b_lo = -2.0
+b_hi = 5.0
+a_pts = 40
+a_lo = 0.0
+a_hi = 20.526315789473685   # 390/19
+
+[[variants]]
+id = "V2_B_WIDE"
+b_pts = 40
+b_lo = -2.0
+b_hi = 12.368421052631579    # 235/19
+a_pts = 20
+a_lo = 0.0
+a_hi = 10.0
+
+[[variants]]
+id = "V3_AB_MID"
+b_pts = 30
+b_lo = -2.0
+b_hi = 8.68421052631579      # 165/19
+a_pts = 30
+a_lo = 0.0
+a_hi = 15.263157894736842    # 290/19
+
+[[variants]]
+id = "V4_AB_WIDE"
+b_pts = 40
+b_lo = -2.0
+b_hi = 12.368421052631579    # 235/19
+a_pts = 40
+a_lo = 0.0
+a_hi = 20.526315789473685    # 390/19
+
+[[variants]]
+id = "V5_BASE_FINE"
+b_pts = 39
+b_lo = -2.0
+b_hi = 5.0
+a_pts = 39
+a_lo = 0.0
+a_hi = 10.0
+
+[shared_interior]
+# Frozen V0-based shared-interior mask (Issue #29 section 8): the top two
+# baseline layers in each asset dimension are excluded.
+b_index_max = 17
+a_index_max = 17
+
+[validation]
+boundary_threshold = 1e-10
+generator_row_sum_tol = 1e-12
+generator_neg_offdiag_tol = 1e-12
+original_residual_tol = 1e-10
+mass_tol = 1e-12
+min_density_tol = -1e-12
+multi_pin_diff_tol = 1e-10
+reproducibility_tol = 1e-12
+numeric_compare_tol = 1e-12
+nullspace_tol = 1e-8
+zero_support_rel_tol = 1e-6
+svd_maxiter = 5000
+pin_rhs = 0.007
+pin_spec = ["first", "quarter", "accepted", "half", "three_quarter", "last"]
+
+[output]
+root = "reports/dlh_5f_upper_domain_stationary_tail_diagnostic_2026_09_01"
