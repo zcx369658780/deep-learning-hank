@@ -1,0 +1,13 @@
+item,kind,value1,value2,value3,count1,count2,share1,share2,argmax_b_z,note,extra
+H0_A20_BASE,REACHED,1.628805713e-01,3.094730854e-01,108,108,9.000000000e-01,9.000000000e-01,"(6.105263157894736, 0.8)",,,
+H1_A39_FINE,REACHED,0.000000000e+00,0.000000000e+00,0,0,0.000000000e+00,0.000000000e+00,"(-2.0, 0.8)",,,
+H2_A77_FINER,REACHED,0.000000000e+00,0.000000000e+00,0,0,0.000000000e+00,0.000000000e+00,"(-2.0, 0.8)",,,
+H3_A153_FINEST,REACHED,0.000000000e+00,0.000000000e+00,0,0,0.000000000e+00,0.000000000e+00,"(-2.0, 0.8)",,,
+adjacent_raw_ratio,RATIO,inf,,,,,,,,,
+adjacent_requested_ratio,RATIO,inf,,,,,,,,,
+vs_H0_raw_ratio,RATIO,0.000000000e+00,0.000000000e+00,0.000000000e+00,,,,,,,
+vs_H0_requested_ratio,RATIO,0.000000000e+00,0.000000000e+00,0.000000000e+00,,,,,,,
+strictly_decreasing_raw,FLAG,False,,,,,,,,,
+strictly_decreasing_requested,FLAG,False,,,,,,,,,
+plateau,FLAG,False,,,,,,,,,
+first_requested_below_threshold,FLAG,H1_A39_FINE,,,,,,,,,
