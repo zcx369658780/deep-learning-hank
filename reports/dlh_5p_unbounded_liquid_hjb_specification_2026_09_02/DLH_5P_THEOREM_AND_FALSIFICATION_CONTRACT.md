@@ -1,17 +1,17 @@
-# DLH-5P Phase F — Theorem and Falsification Contract (Rev 3)
+# DLH-5P Phase F — Theorem and Falsification Contract (Rev 4)
 
-**Issue #42 Phase F (Rev 3).** States exactly what a future theorem would need to
+**Issue #42 Phase F (Rev 4).** States exactly what a future theorem would need to
 establish before the DLH-5O `p=2` result could be promoted from conditional evidence to
 a theorem, for each candidate S1/S2/S3. Rev 2 established that the `m=1/2` branch must
-be **resolved** (not assumed away). Rev 3 additionally: (i) uses the corrected S1
-(admissible V is globally bounded and monotone in `b`; `V_inf` exists), (ii) uses the
-corrected S2 (discounted-value condition is vacuous under S1; replaced by the explicit
-tail-value selection `V_inf = 0`, whose necessity is unproved), (iii) states that S3's
-P-TR primitive does **not** by itself prove the realized tail is `p=2` (the `p=2`
-coefficient remains conditional on the full DLH-5O premise set), and (iv) records the
-critical family's total-wealth drift `mu_W/b = -0.0025 - C/(4 chi_1) < 0` as a
-falsifiable sign statement (inward; no mean-reversion reversal claim). No theorem is
-claimed in this task.
+be **resolved** (not assumed away). Rev 3 added: corrected S1 (admissible V is
+globally bounded and monotone in `b`; `V_inf` exists), corrected S2 (discounted-value
+condition is vacuous under S1; replaced by the explicit tail-value selection
+`V_inf = 0`, whose necessity is unproved), and the statement that S3's P-TR primitive
+does **not** by itself prove the realized tail is `p=2`. **Rev 4 corrects the sign** of
+the critical-branch `O(1/b)` equation (the optimized transfer Hamiltonian enters the
+HJB positively), so the alternative family gives `c/b = (rho+r_b + 0.5 C/chi_1)/2` and
+`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward; no mean-reversion reversal claim). No
+theorem is claimed in this task.
 
 ## F0. Target theorem (conditional, from DLH-5O, under an adopted P-TR primitive)
 
@@ -24,9 +24,9 @@ c/b -> (rho+r_b)/2 = 0.0175,   mu_W/b -> r_b - 0.0175 = -0.0025 < 0   (fixed-a l
 ```
 
 The alternative `m=1/2` family (compact interior-`a`, `a >= a_bar`, `C = aL^2 >= 0`)
-would give `c/b = (rho+r_b - 0.5 C/chi_1)/2`, `chi/b = 0.5 C/chi_1`, and
-`mu_W/b = -0.0025 - C/(4 chi_1) < 0` (inward) — so any theorem must either resolve that
-family or rest on the adopted primitive.
+would give `c/b = (rho+r_b + 0.5 C/chi_1)/2` (sign corrected in Rev 4), `chi/b =
+0.5 C/chi_1`, and `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward) — so any theorem must
+either resolve that family or rest on the adopted primitive.
 
 ## F1. Required theorem gates (per candidate)
 
@@ -41,7 +41,7 @@ family or rest on the adopted primitive.
 | **Asymptotic realization / no exotic competing regime** (the actual HJB solution realizes the `p=2` ansatz; no non-power/non-smooth tail) | required | required | required — P-TR alone does NOT establish this |
 | **`V_b ~ K/b^2` coefficient convergence** (rate of `V_b b^2 -> K`) | required | required | required |
 | **`c/b -> 0.0175`** and **`mu_W/b -> -0.0025`** (with `a`-independence and endpoint conventions) | required | required | required |
-| **Critical-family drift sign** (`mu_W/b = -0.0025 - C/(4 chi_1) < 0` for the `m=1/2` family, `a>=a_bar`) | report as falsifiable sign statement | report as falsifiable sign statement | report as falsifiable sign statement (no mean-reversion reversal claim) |
+| **Critical-family drift sign** (`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` for the `m=1/2` family, `a>=a_bar`) | report as falsifiable sign statement | report as falsifiable sign statement | report as falsifiable sign statement (no mean-reversion reversal claim) |
 
 ## F2. Falsification conditions (would reject the candidate analytic specification)
 
@@ -71,12 +71,12 @@ family or rest on the adopted primitive.
    value not equal to the `rho`-perturbations that DLH-5O rules out would be a red
    flag. NOTE: the `m=1/2` family does NOT trigger this at its leading order (its
    altered system has positive interior solutions), so it is not excluded by this test.
-6. **Drift-sign falsification (Rev 3):** any demonstrated smooth, balance-consistent
-   branch with `mu_W/b >= 0` would falsify the claim that all admissible smooth
-   dominant balances are inward; the `m=1/2` family has `mu_W/b = -0.0025 -
-   C/(4 chi_1) < 0` for `C >= 0`, so it does not provide such a branch. A claim that
-   the critical branch "reverses mean reversion" is falsified by the explicit drift
-   accounting (Phase E E4).
+6. **Drift-sign falsification (Rev 3; formula corrected in Rev 4):** any demonstrated
+   smooth, balance-consistent branch with `mu_W/b >= 0` would falsify the claim that
+   all admissible smooth dominant balances are inward; the `m=1/2` family has
+   `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` for `C >= 0`, so it does not provide such a
+   branch. A claim that the critical branch "reverses mean reversion" is falsified by
+   the explicit drift accounting (Phase E E4).
 
 ## F3. What counts as "promoted to a theorem"
 
@@ -102,13 +102,13 @@ Until then, the DLH-5O statement `(rho+r_b)K - 2 sqrt(K) = S*K` and its conseque
 remain a **conditional dominant balance** (valid only within the adopted P-TR class and
 the full DLH-5O premise set), not a theorem.
 
-## F4. Summary (Rev 3)
+## F4. Summary (Rev 4)
 
 The contract now requires resolving the `m=1/2` branch rather than relying on its
 exclusion. Under S1/S2 the branch is admissible/unresolved (its `V_inf=0` family passes
 S2), so uniqueness of the `p=2` tail is NOT available; under S3 it is excluded only by
 the Owner-adopted primitive, whose exclusionary cost must be made explicit and whose
 realized-tail claim remains to be proved. The critical family's total-wealth drift is a
-falsifiable sign statement (`mu_W/b = -0.0025 - C/(4 chi_1) < 0`, inward). Falsification
-conditions F2.1-F2.6 are concrete and testable by future analytic or (authorized)
-numerical work.
+falsifiable sign statement (`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, inward; Rev 4
+corrects the `3/4` coefficient from the Rev 3 `1/4`). Falsification conditions
+F2.1-F2.6 are concrete and testable by future analytic or (authorized) numerical work.

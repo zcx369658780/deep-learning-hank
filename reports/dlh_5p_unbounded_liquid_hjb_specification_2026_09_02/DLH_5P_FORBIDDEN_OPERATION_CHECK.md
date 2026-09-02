@@ -1,10 +1,11 @@
-# DLH-5P — Forbidden-Operation / Scope Check (Issue #42 §12) — Rev 3
+# DLH-5P — Forbidden-Operation / Scope Check (Issue #42 §12) — Rev 4
 
 DLH-5P is a **theory/design specification gate only** (bounded same-Issue revision:
 rev 1 `3fde31a5…` reviewed at `5504929967`; rev 2 `4ec70095…` reviewed at
-`5505175722`; rev 3 is the corrected package on the same dedicated branch). DSH
-performed NONE of the following during DLH-5P (rev 1, rev 2, or rev 3); no source,
-model, domain, or numerical object was touched.
+`5505175722`; rev 3 `6e1f175d…` reviewed at `5505516566`; rev 4 is the corrected
+package on the same dedicated branch). DSH performed NONE of the following during
+DLH-5P (rev 1 through rev 4); no source, model, domain, or numerical object was
+touched.
 
 | Forbidden operation | Status |
 |---|---|
@@ -22,8 +23,8 @@ model, domain, or numerical object was touched.
 | Create PR / merge / close Issue / successor Issue / self-accept | NOT PERFORMED |
 | Promote the finite-grid upper-`b` marginal-utility closure into an infinite-domain boundary/transversality condition | NOT PERFORMED (explicitly refused; Phase A A2, Issue #42 §5) |
 | Label P-TR "proved" merely because it was assumed in DLH-5O | NOT PERFORMED (Phase D Rev 2: P-TR is an Owner-adopted admissibility primitive, not a theorem) |
-| Claim the critical `m=1/2` branch is "ruled out" | NOT PERFORMED (withdrawn in Rev 2/3; the branch is UNRESOLVED/ADMISSIBLE — Phase E Rev 3) |
-| Claim the critical branch reverses mean reversion (`mu_W/b >= 0`) | NOT PERFORMED (Phase E Rev 3: the demonstrated compact-interior family has `mu_W/b = -0.0025 - C/(4 chi_1) < 0`, inward) |
+| Claim the critical `m=1/2` branch is "ruled out" | NOT PERFORMED (withdrawn in Rev 2/3; the branch is UNRESOLVED/ADMISSIBLE — Phase E Rev 4) |
+| Claim the critical branch reverses mean reversion (`mu_W/b >= 0`) | NOT PERFORMED (Phase E Rev 4: the demonstrated compact-interior family has `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, inward) |
 | `git add .` / `git add -A` | NOT PERFORMED (explicit staging of allowlist paths only) |
 
 ## Stationary marker
@@ -34,7 +35,7 @@ NOT_AUTHORIZED__DLH_5P_THEORY_DESIGN_SPECIFICATION_ONLY__NO_HJB_KFE_GRID_RUN__NO
 
 ## Scope confirmation
 
-DLH-5P (rev 1, rev 2, and rev 3) created/modified only the Issue #42 allowlist paths:
+DLH-5P (rev 1 through rev 4) created/modified only the Issue #42 allowlist paths:
 
 1. `docs/design/DLH_5P_UNBOUNDED_LIQUID_HJB_ANALYTIC_SPECIFICATION_REVIEW.md`
 2. `reports/dlh_5p_unbounded_liquid_hjb_specification_2026_09_02/` with exactly the

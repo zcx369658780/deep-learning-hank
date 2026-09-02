@@ -1,14 +1,16 @@
-# DLH-5P Phase B — Analytic HJB Specification Candidates (S1/S2/S3) (Rev 3)
+# DLH-5P Phase B — Analytic HJB Specification Candidates (S1/S2/S3) (Rev 4)
 
-**Issue #42 Phase B (Rev 3).** Formulates three candidate specification packages for
+**Issue #42 Phase B (Rev 4).** Formulates three candidate specification packages for
 the unbounded-positive-`b` analytic HJB problem. They share the same inherited interior
 economics (Phase A A1-A8, A12-A13) and differ in how they select/admit the tail
-solution. Rev 3 corrects S1 (derived global boundedness from `V_b>0, V<0` + finite
-`b_lo` + compact `a,z`; removes the invalid `-2K sqrt(b)` example), corrects S2 (the
+solution. Rev 3 corrected S1 (derived global boundedness from `V_b>0, V<0` + finite
+`b_lo` + compact `a,z`; removes the invalid `-2K sqrt(b)` example), corrected S2 (the
 discounted-value condition is vacuous under S1 and is replaced by an explicit
 tail-value selection `V_inf = 0`, marked as new model definition, no necessity claim),
-and corrects S3 (P-TR excludes the `m=1/2` branch by class but does not by itself
-prove the realized tail is `p=2`).
+and corrected S3 (P-TR excludes the `m=1/2` branch by class but does not by itself
+prove the realized tail is `p=2`). **Rev 4** carries the S1/S2/S3 logic unchanged and
+updates only the critical-branch `O(1/b)` coefficient/`mu_W/b` formulas to the
+corrected transfer-Hamiltonian sign (see Phase E Rev 4; B1 table).
 
 ## B0. Shared interior problem (all candidates)
 
@@ -205,7 +207,7 @@ inherited borrowing-gap economics.
 | uniqueness of tail | no (family) | no (`m=1/2` admissible; level selected only) | `m=1/2` excluded by primitive; **actual tail uniqueness remains to be proved** |
 | circularity risk | none | low (assumption, not necessity) | explicit (excludes the branch by class, not balance) |
 | critical `m=1/2` branch | admissible/unresolved | admissible/unresolved | excluded only by the adopted class |
-| `mu_W/b` sign for the critical family | n/a (S1 has no tail law) | n/a (level selection only) | n/a (class excludes it); outside the class, `mu_W/b = -0.0025 - C/(4 chi_1) < 0` (inward) |
+| `mu_W/b` sign for the critical family | n/a (S1 has no tail law) | n/a (level selection only) | n/a (class excludes it); outside the class, `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward) |
 | new model authority | state space + class | + `V_inf = 0` tail-value selection (needs Owner) | + derivative-control class (needs Owner) |
 | economic faithfulness | high (interior only) | high (value-level tail selection; necessity unproved) | high (bounded-transfer rationale is motivation only) |
 | mathematical tractability | high (underdetermined) | medium (level selection; `R` uncontrolled) | medium-high (class control; still needs Phase F gates) |

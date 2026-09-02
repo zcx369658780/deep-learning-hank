@@ -1,6 +1,6 @@
-# DLH-5P Phase A — Authority-Extension Map (Rev 3)
+# DLH-5P Phase A — Authority-Extension Map (Rev 4)
 
-**Issue #42 Phase A (Rev 3).** Exact map of what is inherited from accepted authority
+**Issue #42 Phase A (Rev 4).** Exact map of what is inherited from accepted authority
 versus what is newly model-defining for the fixed-`a`, unbounded-positive-`b` analytic
 HJB problem. Labels are exactly those required by Issue #42. Rev 3: (i) the critical
 `m=1/2` branch status is `UNRESOLVED/ADMISSIBLE` (the Rev 1 ruling-out is withdrawn —
@@ -10,7 +10,9 @@ includes explicit derivative-remainder control (no term-by-term differentiation 
 leading equivalences); (iv) the admissible value class is noted to imply global
 boundedness (`V_b>0, V<0`, finite `b_lo`, compact `a,z`); (v) the S2 selection content
 is the explicit tail-value condition `V_inf = 0` (the discounted-value condition is
-vacuous under S1).
+vacuous under S1). **Rev 4** carries the A-map unchanged except the critical-branch
+entries (A21/A23), which now use the corrected transfer-Hamiltonian sign:
+`c/b = (rho+r_b + 0.5 C/chi_1)/2`, `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward).
 
 - `INHERITED_ACCEPTED_ECONOMICS`
 - `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY`
@@ -45,9 +47,9 @@ No new specification is accepted merely by appearing in this table.
 | A18 | Admissible value-function class (`V in C(D̄) cap C^1(D)`, `V_b>0`, `V<0`, continuity to finite `b_lo`, compact `a`, finite `z`) — **derives global boundedness** (V monotone in `b`, bounded above by 0, bounded below by `min V(b_lo,·,·)`) and existence of `V_inf(a,z) in [-C,0]` | none | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` (the class); the derived boundedness is a mathematical consequence, not new authority |
 | A19 | Regularity (smooth-continuum convergence of the upwind finite-difference solution; `C^1`/`C^2` tail) **with an explicit derivative-remainder expansion** (leading equivalences are NOT differentiated term-by-term; e.g. `V_b = K b^{-p} + M b^{-p-1/2} + ...` must be carried when differentiating) | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
 | A20 | Uniformity of rates over `(a,z)` (full `[0,10]` vs compact interior-`a` kept separate) | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
-| A21 | Derivative-control condition `P-TR: R = V_a/V_b = o(sqrt(b))` uniformly (or `R=O(1)`) | assumed in DLH-5O as a theorem premise | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` unless the Owner elevates it; NOT independently justified by a ruling-out (withdrawn — Phase E Rev 3); excludes the `m=1/2` branch by class but does NOT by itself prove the realized tail is `p=2` (conditional on the full DLH-5O premise set) |
+| A21 | Derivative-control condition `P-TR: R = V_a/V_b = o(sqrt(b))` uniformly (or `R=O(1)`) | assumed in DLH-5O as a theorem premise | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` unless the Owner elevates it; NOT independently justified by a ruling-out (withdrawn — Phase E Rev 4); excludes the `m=1/2` branch by class but does NOT by itself prove the realized tail is `p=2` (conditional on the full DLH-5O premise set) |
 | A22 | Uniqueness/comparison principle selecting the value solution | none | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` / `UNRESOLVED`; S2's discounted-value condition is VACUOUS under S1 (bounded V) and is replaced by the explicit tail-value selection `V_inf = 0` (new model definition; necessity unproved) |
-| A23 | Critical `m=1/2` branch (`R ~ Theta(sqrt(b))`) status | left unresolved in DLH-5O | `UNRESOLVED/ADMISSIBLE` (compact interior-`a`) after Rev 2/3; Rev 1's "ruled out" claim withdrawn (Phase E). Full-`[0,10]` uniform smooth realization not established; `a=0` governed by the bare-`a` degeneracy; the compact-interior family has inward `mu_W/b = -0.0025 - C/(4 chi_1) < 0` (no mean-reversion reversal) |
+| A23 | Critical `m=1/2` branch (`R ~ Theta(sqrt(b))`) status | left unresolved in DLH-5O | `UNRESOLVED/ADMISSIBLE` (compact interior-`a`) after Rev 2/3; Rev 1's "ruled out" claim withdrawn (Phase E). Full-`[0,10]` uniform smooth realization not established; `a=0` governed by the bare-`a` degeneracy; the compact-interior family has `c/b = (rho+r_b + 0.5 C/chi_1)/2` (Rev 4 sign) and inward `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (no mean-reversion reversal) |
 
 ## A1. Inheritance boundary (what is fixed)
 

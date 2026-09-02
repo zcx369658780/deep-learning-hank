@@ -1,6 +1,6 @@
-# DLH-5P Phase D — P-TR Derivability Audit (Rev 3)
+# DLH-5P Phase D — P-TR Derivability Audit (Rev 4)
 
-**Issue #42 Phase D (Rev 3).** Determines, separately for each candidate S1/S2/S3,
+**Issue #42 Phase D (Rev 4).** Determines, separately for each candidate S1/S2/S3,
 whether the central derivative-control object
 
 ```text
@@ -23,9 +23,10 @@ DLH-5O theorem premise set).
   `d=O(1)`, `chi=O(1)`, `mu_a=O(1)`.)
 - The `O(1/b)` balance `(rho+r_b)K - 2 sqrt(K) = S*K` and the coefficient
   `c/b = (rho+r_b)/2` hold only under P-TR (or a stronger control).
-- Conversely, WITHOUT P-TR the `m=1/2` branch (Phase E Rev 2) is admissible on the
-  compact interior and alters the coefficient to `(rho+r_b - 0.5 C(z)/chi_1)/2`
-  (a continuum). P-TR is therefore precisely the restriction that removes that family.
+- Conversely, WITHOUT P-TR the `m=1/2` branch (Phase E Rev 4) is admissible on the
+  compact interior and alters the coefficient to `(rho+r_b + 0.5 C(z)/chi_1)/2`
+  (a continuum; the PLUS sign is the Rev 4 correction of the transfer-Hamiltonian
+  sign). P-TR is therefore precisely the restriction that removes that family.
 
 ## D1. Under S1 (minimal growth/admissibility)
 
@@ -111,6 +112,6 @@ NOT a derived theorem under any candidate and NOT independently justified by any
 critical-branch exclusion (withdrawn). It excludes the `m=1/2` branch by class but does
 NOT prove the realized HJB tail is `p=2` (conditional on the full DLH-5O premise set,
 Phase F). The `m=1/2` family is a live, balance-consistent alternative on the compact
-interior (with inward `mu_W/b = -0.0025 - C/(4 chi_1) < 0`) that P-TR excludes by
-class. The Owner may adopt `R=O(1)` (stronger, cleaner) or P-TR (weaker) as the
+interior (with inward `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, Rev 4) that P-TR excludes
+by class. The Owner may adopt `R=O(1)` (stronger, cleaner) or P-TR (weaker) as the
 primitive; both are falsifiable, and the exclusionary cost is explicit.

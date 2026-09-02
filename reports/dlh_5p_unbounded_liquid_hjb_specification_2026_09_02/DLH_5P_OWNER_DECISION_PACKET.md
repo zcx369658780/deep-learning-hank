@@ -1,16 +1,16 @@
-# DLH-5P Phase G — Owner Decision Packet (Rev 3)
+# DLH-5P Phase G — Owner Decision Packet (Rev 4)
 
-**Issue #42 Phase G (Rev 3).** Compares S1/S2/S3 for the Owner decision. Builder may
+**Issue #42 Phase G (Rev 4).** Compares S1/S2/S3 for the Owner decision. Builder may
 recommend a candidate, but the recommendation is **not a model freeze**; the Owner
 remains final authority for any model-defining analytic specification. No
-recommendation creates accepted analytic-model authority. Rev 3 reflects the corrected
-S1 (derived global boundedness), the replaced S2 (tail-value selection `V_inf = 0`;
-the discounted-value condition is vacuous under S1), the corrected S3 (primitive
-excludes `m=1/2` by class but does not prove the realized tail is `p=2`), and the
-explicit total-wealth drift of the critical branch (`mu_W/b = -0.0025 - C/(4 chi_1) <
-0`, inward).
+recommendation creates accepted analytic-model authority. Rev 4 reflects the Rev 3
+corrections (S1 derived global boundedness, S2 tail-value selection `V_inf = 0` with
+the discounted-value condition vacuous under S1, S3 excluding `m=1/2` by class without
+proving the realized tail is `p=2`) plus the **Rev 4 sign correction** of the
+critical-branch `O(1/b)` equation (transfer Hamiltonian enters the HJB positively;
+`c/b = (rho+r_b + 0.5 C/chi_1)/2`; `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, inward).
 
-## G1. Comparison across the required axes (Rev 3)
+## G1. Comparison across the required axes (Rev 4)
 
 | Axis | S1 (minimal) | S2 (tail-value selection) | S3 (derivative-controlled) |
 |---|---|---|---|
@@ -23,12 +23,12 @@ explicit total-wealth drift of the critical branch (`mu_W/b = -0.0025 - C/(4 chi
 | **Treatment of P-TR** | not assumed, not derived | not derived (tail-value selection does not control `R`) | Owner-adopted primitive; preferred `R=O(1)`; excludes `m=1/2` by class; does NOT prove realized tail is `p=2` |
 | **Treatment of critical `m=1/2` branch** | admissible/unresolved | admissible/unresolved (`V_inf=0` family passes) | excluded only by the adopted class |
 | **Uniqueness of the tail coefficient** | NOT unique (family; `m=1/2` admissible) | NOT unique (branch admissible) | `m=1/2` excluded by primitive; **actual tail uniqueness remains to be proved** |
-| **`mu_W/b` sign of the critical family** | n/a (no tail law) | n/a (level selection only) | n/a (class excludes it); outside the class, `mu_W/b = -0.0025 - C/(4 chi_1) < 0` (inward; no mean-reversion reversal) |
+| **`mu_W/b` sign of the critical family** | n/a (no tail law) | n/a (level selection only) | n/a (class excludes it); outside the class, `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward; no mean-reversion reversal) |
 | **Compatibility with later HJB<->KFE same-process requirements** | compatible (same interior process) | compatible (same-process value-selection) | compatible (same-process; the class restricts the value gradient, not the process) |
 | **Compatibility with eventual R/W domain design** | neutral (no domain authority) | neutral | neutral (a tail admissibility class does not select R/W/`W_max`) |
 | **Falsifiability and reproducibility** | falsifiable (m=1/2 family is a live counterexample class) | falsifiable | falsifiable (Phase F F2.1-F2.5); exclusionary cost is explicit |
 
-## G2. Builder recommendation (Rev 3)
+## G2. Builder recommendation (Rev 4)
 
 **Recommendation B — the critical transfer branch remains admissible, so the tail /
 analytic coefficient specification is not unique under S1/S2; uniqueness is only
@@ -45,9 +45,10 @@ Rationale:
 1. The Rev 1 ruling-out of the `m=1/2` branch is **withdrawn** (reviewer
    `5504929967`); the branch is realizable by the remainder-derivative mechanism with
    Clairaut satisfied for arbitrary `p`, and for the `p=2` base yields the altered
-   system `(rho+r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K/chi_1` (`L = -(2/3)M_a/K`),
-   coherent on the compact interior with `L ~ a^{-1/2}` families and a continuum of
-   consumption ratios.
+   system `(rho+r_b)K - 2 sqrt(K) = S*K - 0.5*C*K/chi_1` (sign corrected in Rev 4:
+   `L = -(2/3)M_a/K`, `C = aL^2`), coherent on the compact interior with
+   `L ~ a^{-1/2}` families and a continuum of consumption ratios
+   `c/b = (rho+r_b + 0.5 C/chi_1)/2`.
 2. Under S1 and S2 the branch is **admissible/unresolved**; neither candidate selects a
    unique tail coefficient. (S2's `V_inf = 0` selection is genuine for the level but
    does not control `R`; the family passes it.)
@@ -57,7 +58,7 @@ Rationale:
    **if the Owner adopts the primitive knowingly**, but it is not an independent
    derivation.
 4. **Mean-reversion sign is NOT unresolved:** the demonstrated compact-interior critical
-   family has `mu_W/b = -0.0025 - C/(4 chi_1) < 0` (inward) for `C >= 0` because the
+   family has `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward) for `C >= 0` because the
    adjustment cost is `O(b)` (`chi/b = 0.5 C/chi_1`). Recommendation B therefore means
    "tail coefficient / analytic specification non-unique" — it does **NOT** mean
    "mean-reversion sign unresolved." No branch with `mu_W/b >= 0` is demonstrated.

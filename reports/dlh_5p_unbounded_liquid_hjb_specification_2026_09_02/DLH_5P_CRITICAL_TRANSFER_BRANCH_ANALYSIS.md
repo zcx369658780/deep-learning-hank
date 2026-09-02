@@ -1,6 +1,6 @@
-# DLH-5P Phase E — Critical `m = 1/2` Transfer Branch Analysis (Rev 3)
+# DLH-5P Phase E — Critical `m = 1/2` Transfer Branch Analysis (Rev 4)
 
-**Issue #42 Phase E (Rev 3).** Analyzes the branch
+**Issue #42 Phase E (Rev 4).** Analyzes the branch
 
 ```text
 R = V_a/V_b ~ L(a,z) * sqrt(b),   L != 0,
@@ -9,10 +9,13 @@ R = V_a/V_b ~ L(a,z) * sqrt(b),   L != 0,
 using the accepted transfer FOC and the **combined transfer Hamiltonian**
 `V_b * [ d*(R-1) - chi(d,a) ]` (never adjustment cost alone). Rev 1's "ruled out"
 conclusion is withdrawn; Rev 2 established the remainder-derivative mechanism and left
-the branch **UNRESOLVED/ADMISSIBLE** (compact interior-`a`); Rev 3 preserves that
-status (step 18) and adds the explicit **total-wealth drift accounting** (steps 19-22):
-with `C = a L^2` (`a >= a_bar`), `c/b = (rho+r_b - 0.5 C/chi_1)/2`,
-`chi/b = 0.5 C/chi_1`, so `mu_W/b = -0.0025 - C/(4 chi_1) < 0` for `C >= 0` — the
+the branch **UNRESOLVED/ADMISSIBLE** (compact interior-`a`); Rev 3 added the
+total-wealth drift accounting but with a **sign error** in the `O(1/b)` coefficient
+equation; **Rev 4 corrects the sign** (Blocking corrections of `5505516566`): the
+optimized transfer Hamiltonian enters the HJB **positively**, so the altered equation
+is `(rho+r_b)K - 2 sqrt(K) = S*K - 0.5*C*K/chi_1` (MINUS on the right), giving
+`c/b = (rho+r_b + 0.5 C/chi_1)/2` (PLUS in the denominator), `chi/b = 0.5 C/chi_1`,
+and `mu_W/b = r_b - c/b - chi/b = -0.0025 - 3C/(4 chi_1) < 0` for `C >= 0` — the
 critical family changes the consumption ratio but does **not** reverse total-wealth
 mean reversion. `max(a,a_bar)` is retained explicitly for `0<a<a_bar`.
 
@@ -85,12 +88,26 @@ Collecting the `O(1/b)` balance of the source-faithful interior HJB (combined fo
 | `u = -1/c` | `-sqrt(K)` |
 | `(r_b b + labor - c)V_b` | `(r_b - 1/sqrt(K))K` |
 | `r_a_eff(a) a V_a` | `0` (this is `O(b^{-3/2})`) |
-| combined transfer | `0.5 a L^2 K / chi_1` (a-dependent) |
+| combined transfer `H_tr = V_b*[d(R-1)-chi]` | `+0.5 a L^2 K / chi_1` (enters the HJB POSITIVELY; `H_tr ~ +0.5 C K/(chi_1 b)` with `C = aL^2`) |
 | `S*V` | `-S*K` |
 
+The `O(1/b)` balance of `rho*V = u + (r_b b - c)V_b + r_a_eff a V_a + H_tr + S*V` is
+therefore
+
 ```text
-(rho + r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K / chi_1,   L = -(2/3)M_a/K.     (E*)
+-rho*K = r_b*K - 2 sqrt(K) + 0.5*C*K/chi_1 - S*K,     (H_tr enters positively)
 ```
+
+and the correct rearrangement is
+
+```text
+(rho + r_b)K - 2 sqrt(K) = S*K - 0.5*C*K/chi_1,   L = -(2/3)M_a/K,   C = a L^2.     (E*)
+```
+
+(The sign is fixed by the accepted source: `mu_a V_a + mu_b V_b` contains
+`d V_a + (-d-chi)V_b = V_b[d(R-1)-chi]`, and the transfer FOC maximizes that object.
+Rev 3's `S*K + 0.5 a L^2 K/chi_1` on the right-hand side was the sign error corrected
+here.)
 
 ## E3. Audit of the `a`-dependence: `L ~ a^{-1/2}` interior family
 
@@ -102,26 +119,30 @@ a L(a,z)^2 = C(z)  (a-independent),   i.e.   L(a,z) ~ C(z)^{1/2} a^{-1/2}.
 ```
 
 - **Compact interior-`a` (e.g. `[a_min, a_max - eps]`, `a_min > 0`):** `L ~ a^{-1/2}`
-  (equivalently `M ~ -3/2 K sqrt(a)`, smooth away from `a=0`) makes (E*) hold with a
-  z-dependent constant, giving the modified coefficient system
+  (equivalently `M ~ -3 K sqrt(C a)` up to the sign branch, smooth away from `a=0`;
+  from `L = -(2/3)M_a/K` and `L = ±sqrt(C/a)` we get `M_a = -(3/2)K L`, hence
+  `M(a,z) = -3 K sqrt(C a) + const` up to the sign branch — NOT `-(3/2)K sqrt(a)`)
+  makes (E*) hold with a z-dependent constant, giving the modified coefficient system
 
   ```text
-  (rho + r_b - 0.5 C(z)/chi_1)K - 2 sqrt(K) = S*K.
+  (rho + r_b + 0.5 C(z)/chi_1)K - 2 sqrt(K) = S*K.
   ```
 
-  For z-constant `K` this has the positive solution
-  `sqrt(K) = 2/(rho + r_b - 0.5 C/chi_1)` whenever
-  `rho + r_b > 0.5 C/chi_1`, yielding a **continuum** of consumption ratios
-  `c/b = 1/sqrt(K) = (rho + r_b - 0.5 C/chi_1)/2`, which equals `(rho+r_b)/2` only for
-  `C = 0` (trivial remainder). So the critical branch is a **coherent altered dominant
-  balance on the compact interior**, one-parameter family indexed by `C(z)`; it is
-  **admissible**, not ruled out. Completing it to a full asymptotic series / actual
-  solution (lower orders, z-coupling, transversality, endpoints) is **UNRESOLVED**.
+  For z-constant `K` (`S*K = 0`) this has the positive solution
+  `sqrt(K) = 2/(rho + r_b + 0.5 C/chi_1)`. **Positivity is automatic for `C >= 0`**
+  (the denominator `rho + r_b + 0.5 C/chi_1 > 0` is strictly positive), so the Rev 3
+  restriction `rho + r_b > 0.5 C/chi_1` is **removed**. This yields a **continuum** of
+  consumption ratios `c/b = 1/sqrt(K) = (rho + r_b + 0.5 C/chi_1)/2`, which equals
+  `(rho+r_b)/2` only for `C = 0` (trivial remainder). So the critical branch is a
+  **coherent altered dominant balance on the compact interior**, one-parameter family
+  indexed by `C(z)`; it is **admissible**, not ruled out. Completing it to a full
+  asymptotic series / actual solution (lower orders, z-coupling, transversality,
+  endpoints) is **UNRESOLVED**.
 - **Full-`[0,10]` uniform smooth realization:** the `L ~ a^{-1/2}` family is singular
-  at `a = 0` (`M ~ sqrt(a)` is `C^0` but not `C^1` at `a = 0`; `M_a` diverges). Hence
-  no **full-support smooth uniform** critical branch is established by this mechanism.
-  This failure at `a=0` does NOT imply global impossibility because the specification
-  itself allows an interior-`a` theorem (Phase C).
+  at `a = 0` (`M ~ -3 K sqrt(C a)`, which is `C^0` but not `C^1` at `a = 0`; `M_a`
+  diverges). Hence no **full-support smooth uniform** critical branch is established by
+  this mechanism. This failure at `a=0` does NOT imply global impossibility because the
+  specification itself allows an interior-`a` theorem (Phase C).
 - **`a -> 0` bare-`a` endpoint:** at `a = 0`, `d = 0` for any `R` (bare-`a`), `chi = 0`,
   `mu_a = 0`; `R` is vacuous, and the transfer term `0.5 a L^2 K/chi_1` vanishes. With
   no transfer term, (E*) reduces to the P-TR form `(rho+r_b)K - 2 sqrt(K) = S*K`. The
@@ -146,29 +167,31 @@ For the compact-interior critical family with `a >= a_bar` and `C = a L^2`
 (a-independent):
 
 ```text
-c/b   = (rho + r_b - 0.5 C/chi_1)/2,          (from E3)
+c/b   = (rho + r_b + 0.5 C/chi_1)/2,          (from E3, corrected sign)
 chi/b = 0.5 C/chi_1,                           (chi ~ 0.5 a L^2 b/(chi_1 a) = 0.5 C b/chi_1)
 mu_W/b = r_b - c/b - chi/b
-       = r_b - (rho + r_b - 0.5 C/chi_1)/2 - 0.5 C/chi_1
-       = (r_b - rho)/2 - C/(4 chi_1)
-       = (0.015 - 0.02)/2 - C/(4 chi_1)
-       = -0.0025 - C/(4 chi_1) < 0    for C >= 0.
+       = r_b - (rho + r_b + 0.5 C/chi_1)/2 - 0.5 C/chi_1
+       = (r_b - rho)/2 - 3C/(4 chi_1)
+       = (0.015 - 0.02)/2 - 3C/(4 chi_1)
+       = -0.0025 - 3C/(4 chi_1) < 0    for C >= 0.
 ```
 
 **Key consequence (steps 20-21):**
 - **Tail-coefficient / consumption-ratio non-uniqueness:** the critical family gives
-  `c/b = (rho+r_b - 0.5 C/chi_1)/2`, a continuum different from the P-TR value
-  `(rho+r_b)/2 = 0.0175` whenever `C != 0`. So the consumption ratio is non-unique.
-- **Total-wealth-drift-sign implications:** `mu_W/b = -0.0025 - C/(4 chi_1) < 0` for
+  `c/b = (rho+r_b + 0.5 C/chi_1)/2`, a continuum different from the P-TR value
+  `(rho+r_b)/2 = 0.0175` whenever `C != 0` (with the corrected sign, `c/b` is LARGER
+  than `0.0175` for `C > 0`). So the consumption ratio is non-unique.
+- **Total-wealth-drift-sign implications:** `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` for
   `C >= 0`. The adjustment cost is `O(b)` (`chi/b = 0.5 C/chi_1`), which makes the
-  total drift **even more inward** than the P-TR value `-0.0025`. **DLH-5P does NOT
-  claim the critical branch reverses mean reversion** (no branch with `mu_W/b >= 0` is
-  demonstrated): the demonstrated compact-interior critical family has inward
-  `mu_W/b < 0`.
+  total drift **even more inward** than the P-TR value `-0.0025` (with the corrected
+  sign the linear adjustment-cost contribution `-3C/(4 chi_1)` is more negative than
+  Rev 3's `-C/(4 chi_1)`). **DLH-5P does NOT claim the critical branch reverses mean
+  reversion** (no branch with `mu_W/b >= 0` is demonstrated): the demonstrated
+  compact-interior critical family has inward `mu_W/b < 0`.
 - The distinction is explicit: coefficient non-uniqueness (yes) vs
   total-drift-sign non-uniqueness (no, in this family).
 
-## E5. Status of the critical branch under each candidate (Rev 3)
+## E5. Status of the critical branch under each candidate (Rev 4)
 
 - **Under S1:** the `m=1/2` branch is **admissible/unresolved** at the dominant-balance
   level on the compact interior (S1 does not restrict `R`; the family's value satisfies
@@ -182,12 +205,12 @@ mu_W/b = r_b - c/b - chi/b
   argument. This is the only mechanism that removes it; it does NOT by itself prove the
   realized tail is `p=2` (Phase F gates remain).
 
-**Result (Rev 3):** the critical `m=1/2` branch is **not** ruled out; it is a coherent
+**Result (Rev 4):** the critical `m=1/2` branch is **not** ruled out; it is a coherent
 altered dominant balance on the compact interior (with `L ~ a^{-1/2}` families and a
-continuum of consumption ratios), with inward `mu_W/b = -0.0025 - C/(4 chi_1) < 0`,
-and is left **UNRESOLVED/ADMISSIBLE**. Tail uniqueness (the `p=2` coefficient) holds
-only under an explicit S3/P-TR admissibility primitive (and remains to be proved as a
-realized-tail statement, Phase F).
+continuum of consumption ratios `c/b = (rho+r_b + 0.5 C/chi_1)/2`), with inward
+`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, and is left **UNRESOLVED/ADMISSIBLE**. Tail
+uniqueness (the `p=2` coefficient) holds only under an explicit S3/P-TR admissibility
+primitive (and remains to be proved as a realized-tail statement, Phase F).
 
 ## E6. Formal dominant balance vs actual admissible HJB solution
 
@@ -197,7 +220,7 @@ realized by an actual admissible HJB solution (completion of the series, compari
 transversality, endpoint laws) is **UNRESOLVED** and must be treated as an open item in
 the Phase F contract, not assumed away.
 
-## E7. Conclusion (Rev 3)
+## E7. Conclusion (Rev 4)
 
 The critical `V_a/V_b ~ Theta(sqrt(b))` branch is **UNRESOLVED/ADMISSIBLE** (compact
 interior-`a`, preserved from Rev 2):
@@ -205,11 +228,11 @@ interior-`a`, preserved from Rev 2):
 - the remainder-derivative mechanism `V_b = K b^{-p} + M b^{-p-1/2} + ...` satisfies
   Clairaut for arbitrary `p` and realizes `R ~ L sqrt(b)`;
 - for the `p=2` base the altered `O(1/b)` system is
-  `(rho+r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K/chi_1` (`L = -(2/3)M_a/K`), coherent on
-  the compact interior with `L ~ a^{-1/2}` families and a continuum of consumption
-  ratios;
-- **total-wealth drift (a >= a_bar, C = aL^2):** `c/b = (rho+r_b - 0.5 C/chi_1)/2`,
-  `chi/b = 0.5 C/chi_1`, `mu_W/b = -0.0025 - C/(4 chi_1) < 0` — the family changes the
+  `(rho+r_b)K - 2 sqrt(K) = S*K - 0.5*C*K/chi_1` (corrected sign; `L = -(2/3)M_a/K`,
+  `C = aL^2`), coherent on the compact interior with `L ~ a^{-1/2}` families and a
+  continuum of consumption ratios `c/b = (rho+r_b + 0.5 C/chi_1)/2`;
+- **total-wealth drift (a >= a_bar, C = aL^2):** `c/b = (rho+r_b + 0.5 C/chi_1)/2`,
+  `chi/b = 0.5 C/chi_1`, `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` — the family changes the
   consumption ratio but does **NOT** reverse mean reversion (no `mu_W/b >= 0` branch is
   demonstrated; step 21);
 - `max(a,a_bar)` is retained for `0 < a < a_bar`; the `a>=a_bar` formulas are not

@@ -1,15 +1,16 @@
-# DLH-5P Phase C — Boundary and Endpoint Consistency (Rev 3)
+# DLH-5P Phase C — Boundary and Endpoint Consistency (Rev 4)
 
-**Issue #42 Phase C (Rev 3).** Audits whether the desired tail theorem can be uniform
+**Issue #42 Phase C (Rev 4).** Audits whether the desired tail theorem can be uniform
 over the finite `a` support `[0,10]`, examining `a=0`, `a=a_max=10`, and `b=b_lo=-2`,
 and whether any theorem must be restricted to an interior compact `a` subset. Rev 2
 separated the three cases the reviewer required (step 17): **full `[0,10]` uniform**,
 **compact interior-`a`**, and **`a -> 0` bare-`a` endpoint behavior**, and retained
 `max(a,a_bar)` explicitly in all critical-transfer coefficients near `a=0` (step 23).
-Rev 3 additionally records the total-wealth drift of the critical family
-(`mu_W/b = -0.0025 - C/(4 chi_1) < 0`, inward) and confirms that the `a>=a_bar`
-formulas are not extended through the `0<a<a_bar` layer. No new upper-`a` economic law
-is created by convenience.
+Rev 3 added the total-wealth drift of the critical family; **Rev 4 corrects its
+coefficient** to `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` (inward, from the corrected
+transfer-Hamiltonian sign) and confirms that the `a>=a_bar` formulas are not extended
+through the `0<a<a_bar` layer. No new upper-`a` economic law is created by
+convenience.
 
 ## C1. `a = 0` — bare-`a` transfer degeneracy
 
@@ -82,15 +83,15 @@ cost, `mu_a`) are `O(1)` or `O(1/b^2)` under P-TR/`R=O(1)` and do not enter the
    HJB, the adopted P-TR class, and regularity. This is also the domain on which the
    `m=1/2` alternative family (Phase E, `L ~ a^{-1/2}`) is **admissible** — so on the
    interior the P-TR coefficient is NOT unique without the adopted primitive. Its
-   total-wealth drift is `mu_W/b = -0.0025 - C/(4 chi_1) < 0` for `C = aL^2 >= 0`
+   total-wealth drift is `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0` for `C = aL^2 >= 0`
    (`a >= a_bar`), i.e. inward (no mean-reversion reversal).
 2. **Full `[0,10]` uniform theorem (requires endpoints):** holds with explicit endpoint
    conventions: `a=0` is a trivial corner (no transfer, no illiquid drift; the result
    is trivially valid there), and `a_max=10` uses the Owner-chosen upper-`a` law (C2).
    For the `m=1/2` family, full-`[0,10]` uniform smooth realizations are **not
-   established** (the `L ~ a^{-1/2}` form is singular at `a=0`, `M ~ sqrt(a)` is not
-   `C^1` at `a=0`). This does NOT imply the branch is globally impossible, because the
-   specification itself allows an interior-`a` theorem.
+   established** (the `L ~ a^{-1/2}` form is singular at `a=0`: `M ~ -3 K sqrt(C a)`
+   is not `C^1` at `a=0`). This does NOT imply the branch is globally impossible,
+   because the specification itself allows an interior-`a` theorem.
 3. **`a -> 0` bare-`a` endpoint:** governed by the bare-`a` degeneracy (C1): `d=0`,
    `R` vacuous, `mu_a=0`, transfer term vanishes; the balance at `a=0` is the P-TR form.
    The critical branch's interior family does not extend smoothly to `a=0`; for
@@ -119,7 +120,7 @@ The P-TR `p=2` theorem can be stated uniformly on the full `[0,10]` support prov
 chosen by the Owner (new model definition), (iii) the `a=0` corner is treated as
 trivial (bare-`a`), and (iv) rates are uniform **and the P-TR primitive is adopted**.
 The `m=1/2` family is an interior-admissible alternative (full-`[0,10]` uniform smooth
-realization not established; `a=0` bare-`a`; `mu_W/b = -0.0025 - C/(4 chi_1) < 0`,
+realization not established; `a=0` bare-`a`; `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`,
 inward), so coefficient uniqueness requires the adopted primitive, not the balance.
 `max(a,a_bar)` is retained explicitly near `a=0`, and the `a>=a_bar` formulas are not
 extended through the `0<a<a_bar` layer. No new upper-`a` economic law is created.
