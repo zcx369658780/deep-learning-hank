@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.15  
+**Version:** V0.16  
 **Date:** 2026-09-02  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-DECISION CHECKPOINT — DLH-5P ACCEPTED / NO ACTIVE BUILDER ISSUE
+**Status:** CURRENT OWNER-APPROVED SCIENTIFIC ROUTE — DLH-5Q ACTIVE
 
 ---
 
@@ -46,8 +46,7 @@ Controlling accepted facts remain:
 - artificial upper asset truncations can receive outward policy requests;
 - pure larger-grid PASS seeking is CLOSED;
 - high-wealth positive liquid drift is substantially a portfolio-transfer/reallocation phenomenon;
-- on the pre-frozen 105-state evidence set, all 44 material positive-`mu_b` states have `mu_W<=0`;
-- all 17 top-layer upper-b offenders violate rectangular `mu_b<=0` while satisfying `mu_a<=0` and `mu_W<=0`;
+- the accepted finite-state evidence favors inward total-wealth drift even when rectangular upper-b drift is outward;
 - `W=a+b` is an accepted source-accounting coordinate, not production-domain authority;
 - Design R and Design W remain unfrozen under Owner decision `ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`;
 - no numerical `W_max` is authorized.
@@ -58,27 +57,19 @@ Accepted terminal:
 
 `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`
 
-Source accounting alone does not determine the asymptotic sign of `mu_W` as `b->+infinity`; the missing object is the HJB/value-gradient tail.
+Source accounting alone does not determine the asymptotic sign of `mu_W`; the missing object is the HJB/value-gradient tail.
 
-### HJB value-function liquid-tail asymptotics — Issue #41 / DLH-5O
+### HJB value-function tail asymptotics — Issue #41 / DLH-5O
 
 Accepted candidate:
 
 `25645d2dd1963e8fc17176a7fadc16d914811221`
 
-Reviewer acceptance comment:
-
-`5504453148`
-
-Acceptance integration commit:
-
-`540b16ebd3a577a55ccd92a8d74ced373798557e`
-
 Accepted terminal:
 
 `DLH_5O_HJB_LIQUID_TAIL_DOMINANT_BALANCE_CONDITIONAL__MISSING_ANALYTIC_ASSUMPTIONS_IDENTIFIED`
 
-Controlling result under the full conditional p=2/P-TR premise set:
+Under the full conditional p=2/P-TR premise set:
 
 ```text
 (rho+r_b)K - 2*sqrt(K) = S*K
@@ -87,7 +78,7 @@ c/b = 0.0175
 mu_W/b -> -0.0025
 ```
 
-This is a conditional fixed-a liquid-tail result, not an unconditional theorem or domain choice.
+This is a conditional dominant balance, not a theorem or domain choice.
 
 ### Analytic HJB specification review — Issue #42 / DLH-5P
 
@@ -99,93 +90,109 @@ Reviewer acceptance comment:
 
 `5505979616`
 
-Acceptance integration commit:
+Acceptance integration:
 
 `156d8d092839668b18ab52a6a9d0e12023f248bd`
 
-Accepted verdict:
-
-`DLH_5P_REV4_ACCEPTED__RECOMMENDATION_B_SUPPORTED__CRITICAL_TRANSFER_BRANCH_REMAINS_FORMALLY_ADMISSIBLE__TAIL_COEFFICIENT_NONUNIQUE__DEMONSTRATED_TOTAL_WEALTH_DRIFT_REMAINS_INWARD__OWNER_DECISION_REQUIRED`
-
-Accepted recommendation terminal:
+Accepted terminal:
 
 `DLH_5P_CRITICAL_TRANSFER_BRANCH_REMAINS_ADMISSIBLE__TAIL_SPECIFICATION_NOT_UNIQUE__OWNER_DECISION_REQUIRED`
 
-Controlling interpretation:
+Controlling accepted interpretation:
 
-1. **S1 minimal analytic extension:** with `V_b>0`, `V<0`, finite lower `b`, compact `a in [0,10]`, finite z and continuity, admissible V is bounded and has a finite tail limit `V_inf(a,z)<=0`.
-2. **S2 tail-value selection:** `V_inf(a,z)=0` is a proposed new analytic-model definition / theorem assumption. It is not a proved necessity, not an asset no-Ponzi theorem, and not by itself a uniqueness/comparison result.
-3. **S3 derivative-control admissibility:** `R=V_a/V_b=O(1)` uniformly (preferred) or P-TR `R=o(sqrt(b))` may be adopted by the Owner as an explicit admissibility primitive. It excludes the critical transfer branch by class but does not prove that the actual HJB tail is `p=2`.
-4. The critical branch
-
-   `R~L(a,z)*sqrt(b)`
-
-   remains an **UNRESOLVED/ADMISSIBLE formal dominant balance on compact interior-a sets** through an a-dependent subleading remainder.
-5. For `p=2`, `a>=a_bar`, and the scalar symmetric subfamily with constant `C=aL^2>=0` across productivity states:
+1. **S1 base:** fixed-a-support unbounded-positive-b analytic extension; with `V_b>0`, `V<0`, finite lower b and compact a/z, admissible V is bounded with finite `V_inf(a,z)<=0`.
+2. **S2 selection:** `V_inf(a,z)=0` is a candidate new analytic selection assumption, not a proved necessity or comparison theorem.
+3. **S3 derivative control:** `R=V_a/V_b=O(1)` uniformly (preferred) or weaker P-TR `R=o(sqrt(b))`; this excludes the critical branch by class but does not prove actual p=2 realization.
+4. Critical `R~Theta(sqrt(b))` remains an unresolved/admissible formal dominant balance on compact interior-a sets outside S3.
+5. For the constant-across-z scalar critical subfamily with `C=aL^2>=0`, `a>=a_bar`:
 
    ```text
-   (rho+r_b)K - 2*sqrt(K) = -0.5*C*K/chi_1
    c/b = (rho+r_b+0.5*C/chi_1)/2
-   chi/b = 0.5*C/chi_1
    mu_W/b = -0.0025 - 3*C/(4*chi_1) < 0
    ```
 
-   Thus the demonstrated critical family gives a continuum of consumption/tail coefficients but remains total-wealth inward.
-6. If `C(z)` differs across productivity states, the coupled switch system must be solved; the scalar formula is only for the constant-across-z subfamily.
-7. No actual admissible critical HJB solution, full asymptotic-series completion, full `[0,10]` smooth realization, endpoint-compatible theorem, existence/comparison result or realized-tail uniqueness is established.
-8. Recommendation B therefore concerns **analytic-tail/coefficient non-uniqueness**, not a demonstrated failure of total-wealth mean reversion.
-9. R/W remain unfrozen. No `W_max`. Stationary KFE remains NOT AUTHORIZED.
+   so the tail coefficient is non-unique outside S3 while the demonstrated family remains total-wealth inward.
+6. No actual admissible critical HJB solution, full-support smooth realization, existence/comparison theorem or realized-tail uniqueness has been established.
 
 ---
 
-## 2. Current checkpoint — Owner analytic-model decision after DLH-5P
+## 2. Owner decision — Option C adopted
 
-There is **no active Builder Issue**.
+Owner selected:
 
-The scientific question is now explicit:
+`PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
 
-> Should the project adopt derivative-control S3 as an analytic admissibility primitive, continue working on the critical `m=1/2` remainder branch without imposing S3, or use S3 provisionally while separately testing/falsifying it?
+Owner-decision comment:
 
-### Owner option A — adopt S3 explicitly
+`5506138177`
 
-Adopt the analytic specification:
+### Provisional working analytic authority
 
-- S1 continuous base;
-- S2 `V_inf=0` tail-value selection;
-- S3 derivative control `R=O(1)` uniformly (preferred), with P-TR `R=o(sqrt(b))` as weaker fallback.
+For theorem analysis going forward:
+
+- retain S1 as the continuous analytic base;
+- provisionally adopt S2 `V_inf=0` as the tail-value selection assumption;
+- provisionally adopt **primary S3 `R=O(1)` uniformly** as the working derivative-control class;
+- retain P-TR `R=o(sqrt(b))` only as a weaker sensitivity envelope;
+- keep the critical `R~Theta(sqrt(b))` family outside S3 as a parallel falsification/exclusion-cost benchmark.
 
 Scientific meaning:
 
-- the critical `m=1/2` branch is excluded by a transparent Owner-adopted model primitive;
-- the p=2 coefficient remains only a theorem candidate;
-- a successor theorem/verification gate must still prove existence, comparison/uniqueness, endpoint consistency, asymptotic realization, derivative-remainder regularity and `V_b b^2 -> K` convergence.
-
-### Owner option B — keep S1/S2, resolve critical branch first
-
-Do not impose derivative control yet. Open a research gate to determine whether the formal `m=1/2` remainder family can be completed to an actual admissible HJB solution, including:
-
-- lower-order asymptotic completion;
-- z-state coupling;
-- `a=0` / `a=10` endpoint consistency;
-- S2 `V_inf=0` compatibility;
-- existence/comparison and realized coefficient selection.
-
-### Owner option C — provisional S3 + parallel falsification
-
-Provisionally adopt S3 as a tractable theorem class while simultaneously keeping a separate falsification route for the critical branch / actual finite-grid value-gradient behavior. This makes the exclusionary model choice explicit rather than pretending it was derived.
-
-No option is selected automatically by accepted DLH-5P.
+- the project may now pursue a tractable theorem inside S3;
+- the exclusion of the critical branch is explicit model-class selection, not a derived theorem;
+- the project must simultaneously preserve a route capable of falsifying S3 analytically or, later under separate authority, numerically;
+- no R/W/domain/KFE implementation follows from this provisional choice.
 
 ---
 
-## 3. Route after Owner decision
+## 3. Immediate theorem/falsification gate — DLH-5Q / Issue #43
 
-### If S3 is adopted
+### Name
+
+**Provisional S3 Tail-Theorem Verification and Parallel Falsification**
+
+Task type:
+
+`SCIENTIFIC_THEOREM_VERIFICATION__PROVISIONAL_S3_LIQUID_TAIL_AND_PARALLEL_FALSIFICATION`
+
+### Purpose
+
+DLH-5Q asks:
+
+> Within the provisional S1+S2+S3 class, can the actual admissible HJB tail be shown to realize the p=2 asymptotics and coefficient, while an independent falsification route remains capable of rejecting the provisional class?
+
+### Required logic
+
+DLH-5Q must:
+
+1. freeze the exact provisional class for theorem work;
+2. audit existence, comparison/uniqueness and endpoint well-posedness;
+3. attempt p=2 asymptotic realization under primary `R=O(1)` rather than assuming it;
+4. derive the p=2 coefficient/drift only if realization is justified;
+5. search analytically for S3-internal alternative tails, non-power regimes, derivative-remainder counterexamples, z-coupling failures and any inward-sign reversal;
+6. preserve the out-of-class critical family as an exclusion-cost benchmark;
+7. design but not execute a future numerical falsification protocol using `V_a/V_b`, `b^2V_b`, `c/b`, transfer/cost orders and boundary-influence diagnostics;
+8. separate compact-interior theorem scope from `a=0`, `a=10` and lower-liquid endpoint authority.
+
+### Exact terminals
+
+- `DLH_5Q_PROVISIONAL_S3_FIXED_A_LIQUID_TAIL_THEOREM_VERIFIED__PARALLEL_FALSIFICATION_PROTOCOL_READY`
+- `DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY`
+- `DLH_5Q_PROVISIONAL_S3_ANALYTIC_CLASS_FALSIFIED__OWNER_REDEFINITION_REQUIRED`
+- `DLH_5Q_INTERIOR_A_TAIL_THEOREM_SUPPORTED__FULL_SUPPORT_ENDPOINT_AUTHORITY_OWNER_DECISION_REQUIRED`
+- `BLOCKED_DLH_5Q_ACCEPTED_HJB_OR_PROVISIONAL_S3_AUTHORITY_INCONSISTENCY`
+
+No terminal authorizes R/W/domain implementation or stationary KFE.
+
+---
+
+## 4. Route after DLH-5Q
+
+### Route Q-A — theorem verified within provisional S3
 
 ```text
-Owner analytic-model definition
--> theorem/verification gate
-   (existence, comparison, regularity, endpoint laws, asymptotic realization, coefficient convergence)
+accepted S3 theorem/falsification package
+-> Owner decides whether provisional S3 graduates to accepted analytic authority
 -> return to R/W domain-design decision
 -> boundary-law implementation authority
 -> HJB boundary validation
@@ -198,21 +205,23 @@ Owner analytic-model definition
 -> rebuild two-region anchor
 ```
 
-### If critical branch is pursued first
+### Route Q-B — theorem not closed
 
-```text
-critical-branch analytic resolution
--> Owner analytic-model definition
--> theorem/verification gate
--> return to R/W domain design
--> same downstream household re-entry sequence
-```
+Continue only the sharply identified missing analytic gate; do not silently promote provisional assumptions to theorem status.
 
-No route skips HJB/KFE same-controlled-process validation.
+### Route Q-C — S3 analytically falsified
+
+Return immediately to Owner model-definition review; do not continue domain design under S3.
+
+### Route Q-D — interior theorem only
+
+Resolve the model-defining endpoint law before any full-support claim or domain implementation.
+
+No route skips later HJB/KFE same-controlled-process validation.
 
 ---
 
-## 4. Regional / Deep Learning sequence remains deferred
+## 5. Regional / Deep Learning sequence remains deferred
 
 Permanent hierarchy:
 
@@ -231,31 +240,26 @@ Only after the household controlled process and stationary foundation are accept
 - later capital-network learning;
 - later nominal HANK, calibration, policy and welfare.
 
-No neural training is authorized at the current checkpoint.
+No neural training is authorized during DLH-5Q.
 
 ---
 
-## 5. Scientific ceiling at the current checkpoint
+## 6. Scientific ceiling during DLH-5Q
 
-Until Owner decision and successor activation, do not:
+Do not:
 
 - mutate accepted HJB/KFE/regional source or household economics;
-- freeze an analytic specification by Builder recommendation alone;
-- choose/implement R, W, W1, W2 or `W_max`;
+- choose/implement R/W/W1/W2 or `W_max`;
 - create new numerical `b_max`/`a_max` or extrapolate taper beyond `a_max=10`;
-- run/extend HJB grids or previous numerical fixtures;
-- run stationary KFE/density/tail/aggregates;
-- implement boundary KKT law;
+- run HJB/KFE/grid/resolution/stationary experiments;
+- rerun previous numerical fixtures;
+- implement endpoint KKT/state-domain law;
 - run regional GE, multi-province audit, network training, nominal HANK, calibration, policy/welfare or Results.
 
 ---
 
-## 6. Governance status
+## 7. Governance status
 
-Issue #42 / DLH-5P is accepted and CLOSED completed.
-
-Current governance status:
-
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5P_ACCEPTED__OWNER_MODEL_DEFINITION_DECISION_PENDING`
+Issue #43 / DLH-5Q is the current intended Builder theorem/falsification task. Builder authority requires synchronized Task Index / Startup Snapshot plus authoritative activation comment.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
