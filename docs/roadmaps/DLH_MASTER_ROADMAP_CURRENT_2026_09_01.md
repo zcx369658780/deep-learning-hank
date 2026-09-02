@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.17  
+**Version:** V0.18  
 **Date:** 2026-09-02  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-DECISION CHECKPOINT — DLH-5Q ACCEPTED / NO ACTIVE BUILDER ISSUE
+**Status:** CURRENT OWNER-APPROVED SCIENTIFIC ROUTE — DLH-5R HJB-ONLY NUMERICAL FALSIFICATION ACTIVE
 
 ---
 
@@ -18,8 +18,6 @@ The first learned object remains the regional labor/spatial rule. Capital-networ
 
 ## 1. Accepted household foundation through DLH-5Q
 
-### Household source
-
 Accepted MATLAB-faithful source:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
@@ -28,25 +26,21 @@ Git blob:
 
 `76ae5b149993a7edeeb337f1b02b3fe33c51e`
 
-The source remains finite-grid numerical authority. It does not itself create unbounded-liquid endpoint/transversality authority.
+The source remains finite-grid numerical authority.
 
-### HJB/KFE same-process contract
-
-Binding law from Issue #27:
+Binding Issue #27 law:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains NOT AUTHORIZED until the household controlled process, domain and boundary law are separately selected, implemented and validated.
+Stationary KFE remains NOT AUTHORIZED until a controlled household domain/boundary process is separately selected, implemented and validated.
 
-### Accepted domain/tail theory before DLH-5Q
+R/W domain designs remain unfrozen. `W=a+b` remains an accounting coordinate, not production-domain authority. No `W_max` is authorized.
 
-- R/W domain designs remain unfrozen.
-- `W=a+b` is an accounting coordinate, not production-domain authority.
-- No `W_max` is authorized.
-- DLH-5N: source accounting alone does not determine the high-liquid-tail sign; value-gradient asymptotics are the missing object.
-- DLH-5O: under the complete conditional p=2 / derivative-control premise set,
+### Accepted tail-theory sequence
+
+DLH-5O conditional p=2 / derivative-control candidate:
 
 ```text
 (rho+r_b)K - 2*sqrt(K) = S*K
@@ -55,12 +49,9 @@ c/b = 0.0175
 mu_W/b -> -0.0025
 ```
 
-but this is a conditional dominant balance, not an unconditional theorem.
-- DLH-5P: the critical out-of-S3 branch `R~Theta(sqrt(b))` remains a formal admissible benchmark on compact interior-a sets and can alter the consumption coefficient; the demonstrated family remains total-wealth inward.
+DLH-5P established that the critical out-of-S3 formal branch `R~Theta(sqrt(b))` can alter the tail coefficient on compact interior-a sets while the demonstrated family remains total-wealth inward.
 
-### Owner provisional analytic choice after DLH-5P
-
-Owner selected:
+Owner then selected provisional S3 + parallel falsification:
 
 `PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
 
@@ -70,17 +61,15 @@ Working class:
 - S2 `V_inf=0` provisional tail/boundary selection;
 - primary S3 `R=V_a/V_b=O(1)` uniformly;
 - P-TR `R=o(sqrt(b))` sensitivity only;
-- critical `R~Theta(sqrt(b))` kept outside S3 as an exclusion-cost/falsification benchmark.
+- critical `R~Theta(sqrt(b))` retained outside S3 as an exclusion-cost/falsification benchmark.
 
----
-
-## 2. Accepted DLH-5Q / Issue #43
+### Accepted DLH-5Q / Issue #43
 
 Accepted candidate:
 
 `dd39385b6cf4fcf8fed382d69683ab907747cfe3`
 
-Reviewer acceptance comment:
+Reviewer acceptance:
 
 `5507534903`
 
@@ -88,84 +77,159 @@ Acceptance integration:
 
 `570d858aea3029e1a30c286b5c683a8efdb836bd`
 
-Accepted verdict:
-
-`DLH_5Q_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__PROVISIONAL_S3_SURVIVES_ANALYZED_FAMILIES__THEOREM_NOT_CLOSED__FALSIFICATION_PROTOCOL_READY`
-
 Accepted terminal:
 
 `DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY`
 
-### Controlling scientific interpretation
+Controlling interpretation:
 
-1. **Existence / comparison:** NOT ESTABLISHED for the continuous unbounded-b first-order regime-switching HJB. `V_inf=0` is tail/boundary selection content, not gauge normalization or uniqueness theorem.
-2. **Power-tail realization:** among correctly analyzed power families inside S3, p=2 is the unique self-consistent formal balance.
-   - `1<p<2`: rho/r_b/S block dominates and `[rho+(p-1)r_b]K=S K`; the required positive eigenvalue is absent from `{0,-2/3}`.
-   - `p>2`: consumption block dominates and is unbalanced.
-   - `p<=1`/log violates S1 boundedness.
-3. **Explicit slow families:** `b^-alpha` and `1/log b` examples are formally excluded by corrected order/switch-spectrum arguments, including the z-dependent `1/log b` equation `S A=rho A`.
-4. **Non-exhaustive scope:** broader exotic/non-power and monotone-preserving oscillatory tails remain open under `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`.
-5. **Derivative-remainder contract:** the accepted conditional S3-compatible expansion is
+1. Existence/comparison for the continuous unbounded-b first-order regime-switching HJB is NOT ESTABLISHED.
+2. Among correctly analyzed power/explicit slow families inside S3, p=2 is the unique self-consistent formal balance.
+3. Broader exotic/non-power and monotone-preserving oscillatory tails remain open.
+4. Conditional on actual p=2 realization plus the accepted derivative-remainder contract (E), the coefficient/drift targets above follow.
+5. No in-class counterexample was found among the correctly analyzed families, but this is not an exhaustive theorem.
+6. Full `[0,10]` endpoint authority remains absent.
+7. The numerical falsification protocol is accepted as design only and was not executed under DLH-5Q.
 
-```text
-V   = -K(z)/b + H(a,z)/b^2 + r0
-V_b =  K(z)/b^2 - 2H(a,z)/b^3 + r_b
-V_a =  H_a(a,z)/b^2 + r_a
-```
+Reviewer execution annotations:
 
-with uniform small-o controls. A nonzero a-derivative in a b^-3/2 coefficient would generate `R~sqrt(b)` and leave S3.
-6. **Coefficient/drift:** conditional on actual p=2 realization, the derivative-remainder contract, no exotic regime and uniformity:
-
-```text
-(rho+r_b)K - 2*sqrt(K) = S*K
-K = 4/(rho+r_b)^2       (z-constant candidate)
-c/b -> 0.0175
-mu_W/b -> -0.0025
-```
-
-These remain conditional, not theorem-level.
-7. **Falsification search:** no S3-internal counterexample was found among the correctly analyzed families. This is not an exhaustive exclusion theorem.
-8. **Endpoint scope:** full `[0,10]` theorem authority remains absent; `a=10` analytic law and continuous `b_lo` adoption remain model-defining decisions.
-9. **Numerical falsification protocol:** accepted as design only; NOT executed.
-
-### Reviewer execution annotations
-
-Future numerical falsification must obey:
-
-- measure analytic `R=V_a/V_b` with the raw accepted value gradients consistent with the transfer FOC; do not silently substitute the consumption/labor derivative floor into `R_hat`;
-- treat activation of derivative floors in the tail as a numerical-semantic limitation / possible boundary artifact;
-- any `b_max` / `b_lo` sensitivity variants require explicit future Owner/Issue authorization;
-- “no in-class counterexample found” remains limited to the correctly analyzed families.
+- numerical `R_hat` must use raw accepted value gradients consistent with the transfer FOC;
+- consumption/labor derivative floors must not silently redefine `R_hat`;
+- floor activation is numerical-semantic evidence;
+- any truncation-sensitivity variants require explicit Issue authority.
 
 ---
 
-## 3. Current checkpoint after DLH-5Q
+## 2. Owner route decision after DLH-5Q — Q-B2
 
-There is **no active Builder Issue**.
+Owner selected:
 
-DLH-5Q returned Outcome B: provisional S3 has not been analytically falsified by the tested families, but the theorem is not closed because existence/comparison and actual asymptotic realization remain unresolved.
+`APPROVE_Q_B2_HJB_ONLY_NUMERICAL_FALSIFICATION__NO_KFE`
 
-The current scientifically defensible next routes are:
+Owner-decision comment on Issue #43:
 
-### Q-B1 — continue analytic closure
+`5507666206`
 
-Open a bounded theory gate targeting the first-order regime-switching HJB existence/comparison framework and/or a more rigorous asymptotic-realization argument. Do not import endpoint laws silently.
+Scientific rationale:
 
-### Q-B2 — execute the parallel numerical falsification protocol
+Before investing further in difficult infinite-domain existence/comparison work, test whether the accepted finite-grid household HJB solution actually exhibits a stable interior signature compatible with provisional S3 / p=2. If the finite-grid evidence instead shows a robust critical-type or non-p=2 signature, return to Owner model-definition review rather than proving a class that the realized model does not approach.
 
-Open a separate Owner-authorized HJB-only diagnostic Issue. It may test raw `V_a/V_b`, `b^2V_b`, `c/b`, transfer/cost orders and boundary influence. Any bounded `b_max`/`b_lo` comparison variants must be explicitly authorized. No stationary KFE.
-
-### Q-B3 — endpoint model-definition review
-
-Resolve analytic `a=10` and continuous `b_lo` authority before any full-support theorem or domain implementation. This is model-defining and requires Owner choice.
-
-No successor is automatically active at this checkpoint.
+This is a bounded falsification experiment, not production-domain selection.
 
 ---
 
-## 4. Household route after analytic closure
+## 3. Immediate active gate — DLH-5R / Issue #44
 
-The downstream sequence remains:
+### Name
+
+**HJB-Only Provisional-S3 Liquid-Tail Numerical Falsification**
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_FALSIFICATION__PROVISIONAL_S3_HJB_TAIL_DIAGNOSTIC`
+
+Dedicated branch:
+
+`dsh/issue-44-dlh-5r-hjb-tail-falsification-2026-09-02`
+
+### Exact numerical authority
+
+Reuse only the mature pre-existing DLH-5J grids from:
+
+`configs/dlh_5j_final_coupled_b_extent_diagnostic.toml`
+
+Fresh HJB-only runs authorized:
+
+```text
+J0_A77_B120
+J1_A77_B140
+J2_A77_B160
+J3_A153_B120
+J4_A153_B140
+J5_A153_B160
+```
+
+Frozen:
+
+```text
+a in [0,10]
+a_max = 10
+b_lo = -2
+db = 7/19
+b_hi in {795/19, 935/19, 1075/19}
+```
+
+`b160` remains the hard route ceiling.
+
+No b180/b200, no new b_lo, no new a extent, no b-resolution change, no adaptive seventh grid.
+
+### Primary observables
+
+- raw transfer-FOC-consistent `V_a`, `V_b`, and `R=V_a/V_b`;
+- `R/sqrt(b)`;
+- `b^2 V_b`;
+- accepted `c/b`;
+- transfer `d/sqrt(b)`;
+- adjustment cost `chi/b`;
+- `mu_W/b`;
+- derivative-floor activation;
+- log-log scaling slope;
+- b-extent and a-resolution stability.
+
+### Frozen primary windows
+
+```text
+W1_COMMON      = [20,35]
+W2_COMMON_HIGH = (35,40]
+W3_EXTENDED    = [42,48]   # b140/b160
+W4_B160_ONLY   = [50,55]   # descriptive only
+```
+
+Primary interior-a evidence excludes `a=0` and top two a77 coarse layers; a77/a153 comparisons use aligned nodes. `a=0` is reported separately; `a=10` is not primary theorem evidence.
+
+### Scientific outcomes
+
+Possible terminals:
+
+- numerical evidence supports provisional S3/p=2, while analytic theorem remains open;
+- stable multi-grid evidence falsifies promotion of S3 as the realized model and returns to Owner redefinition;
+- evidence is inconclusive because of boundary/resolution/semantic sensitivity;
+- raw-gradient provenance or required HJB execution is blocked.
+
+A numerical support result does NOT prove existence/comparison or promote the theorem automatically.
+
+---
+
+## 4. Route after DLH-5R
+
+### Route R-A — numerical support for provisional S3 / p=2
+
+Do not call the theorem proved. Owner chooses between:
+
+- return to bounded analytic existence/comparison/asymptotic-realization closure with stronger empirical motivation;
+- or, if evidence is sufficiently robust, consider a separate analytic-authority/domain-design decision gate.
+
+No automatic R/W implementation.
+
+### Route R-B — stable falsification of S3 promotion
+
+Return immediately to Owner model-definition review. Re-open the critical/exotic tail route or revise the admissibility class. Do not continue domain design under S3.
+
+### Route R-C — inconclusive
+
+Resolve the identified numerical-semantic or truncation/resolution blocker in a separate bounded gate. Do not search for a PASS by uncontrolled grid expansion.
+
+### Blocked
+
+Resolve raw-gradient provenance or scientific execution validity before interpretation.
+
+No route bypasses HJB/KFE same-controlled-process validation.
+
+---
+
+## 5. Household route after adequate analytic/numerical tail evidence
+
+Downstream sequence remains:
 
 ```text
 accepted analytic authority / adequate falsification evidence
@@ -185,7 +249,7 @@ No historical aggregate is grandfathered.
 
 ---
 
-## 5. Regional / Deep Learning sequence remains deferred
+## 6. Regional / Deep Learning sequence remains deferred
 
 Permanent hierarchy:
 
@@ -195,29 +259,27 @@ Permanent hierarchy:
 -> 31-province empirical/source benchmark
 ```
 
-Only after the household controlled process and stationary foundation are accepted does the project resume regional GE, learned regional labor/spatial rules, later capital-network learning, nominal HANK, calibration, policy and welfare.
+Regional GE, learned regional labor/spatial rules, capital-network learning, nominal HANK, calibration, policy and welfare remain deferred until the household controlled process and stationary foundation are accepted.
 
 ---
 
-## 6. Scientific ceiling at the current checkpoint
+## 7. Scientific ceiling during DLH-5R
 
-Until the next Owner/route decision and successor activation, do not:
+Do not:
 
 - mutate accepted HJB/KFE/regional source or household economics;
+- create any new b extent beyond existing b160, new b_lo, new a_max, or new b resolution;
 - choose/implement R/W/W1/W2 or `W_max`;
-- choose new numerical `b_max`/`a_max`;
-- run HJB/KFE/grid/stationary experiments;
 - implement endpoint KKT/state-domain law;
+- run stationary KFE/nullspace/pin/density/tail mass/aggregates;
 - run regional GE, multi-province audit, network training, nominal HANK, calibration, policy/welfare or Results.
+
+DLH-5R is HJB-only numerical falsification.
 
 ---
 
-## 7. Governance status
+## 8. Governance status
 
-Issue #43 / DLH-5Q is accepted and CLOSED completed.
-
-Current governance status:
-
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5Q_ACCEPTED__NEXT_ROUTE_OWNER_DECISION_PENDING`
+Issue #44 / DLH-5R is the current intended Builder numerical-diagnostic task. Builder authority requires synchronized Task Index / Startup Snapshot plus authoritative activation comment.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
