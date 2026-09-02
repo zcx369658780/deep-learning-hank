@@ -1,13 +1,16 @@
-# DLH-5Q Phase E — Analytic Falsification Search (Rev 2)
+# DLH-5Q Phase E — Analytic Falsification Search (Rev 3)
 
 **Issue #43 Phase E (steps 32-37).** Treats the provisional S3 class
 (`R=V_a/V_b=O(1)` uniformly, `V_inf=0`) as falsifiable. Executes **analytic
 falsification search only** (no numerical HJB/KFE/grid execution). Searches for
 S3-internal alternatives and preserves the accepted critical `m=1/2` family outside S3
-as an exclusion-cost benchmark (NOT an in-class counterexample). **Rev 2 corrects the
+as an exclusion-cost benchmark (NOT an in-class counterexample). **Rev 2 corrected the
 `1<p<2` dominant-order argument (rho/r_b/S block dominates; switch-spectrum
-exclusion), corrects the slow-tail order accounting, and narrows "no in-class
-counterexample" to the correctly analyzed families** (reviewer `5506978886`).
+exclusion), corrected the slow-tail order accounting, and narrowed "no in-class
+counterexample" to the correctly analyzed families** (reviewer `5506978886`). **Rev 3
+adds the z-dependent `1/log b` switch-spectrum case and narrows the oscillatory-tail
+statement to exclude only sign-changing-derivative constructions** (reviewer
+`5507222546`).
 
 ---
 
@@ -63,14 +66,22 @@ It is a negative result for the falsification search, not an in-class counterexa
     z-constant/eigenvalue-0 case; the `-2/3` case is also negative). `alpha > 1` is
     separately excluded by the unbalanced dominant consumption term. (Rev 1's
     `alpha = rho/r_b = 4/3` had the sign wrong; corrected in Phase C C2.)
-  - explicit example `C = 1/log b`: `rho*C = O(1/log b)` dominates
-    (`r_b*b*V_b = O(1/log^2 b)`, consumption `O(1/(sqrt(b) log b))`) and is
-    unbalanced — excluded.
+  - explicit example `C = 1/log b` (Rev 3 includes the z-dependent case):
+    `rho*C = O(1/log b)` dominates (`r_b*b*V_b = O(1/log^2 b)`, consumption
+    `O(1/(sqrt(b) log b))`);
+    - z-constant amplitude: the dominant `rho*V` has no `O(1/log b)` partner —
+      unmatched rho term, excluded;
+    - z-dependent amplitude `A(z)`: `S*V = -(S A)/log b` is also `O(1/log b)`, giving
+      `S A = rho A`; since `rho = 0.02` is not in `{0,-2/3}`, no nonzero `A(z)`
+      survives — switch-spectrum exclusion.
 - **Broader non-power/exotic families** (general slowly-varying `C`, oscillatory-
   envelope constructions keeping `V_b>0`, etc.): **NOT claimed excluded**; they remain
   part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate (step 18).
-- **Oscillatory tails:** violate S1 `V_b > 0` on monotone intervals; not coherent in
-  S3.
+- **Oscillatory tails (Rev 3 narrowed):** constructions whose derivative changes sign
+  infinitely often violate S1 `V_b > 0` and are not coherent S3 candidates; but
+  **sufficiently small oscillatory remainders around a monotone leading tail may keep
+  `V_b > 0`** and are NOT exhaustively ruled out — they remain in the open
+  `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate unless separately shown harmless.
 
 **Caveat:** the tested-family exclusions are formal order-accounting statements
 (Phase C C2/C3), not theorems.
@@ -165,7 +176,7 @@ counterexample.
 | Search | Target | Result |
 |---|---|---|
 | 1 | `p != 2` power tail in S3 | NONE FOUND among power families (`1<p<2` via switch-spectrum argument; `p>2` via unbalanced consumption; `p<=1` via S1 boundedness) |
-| 2 | log / non-power / slowly-varying tail in S3 | NONE FOUND among explicitly tested families (log via S1; `C=b^(-alpha)` via switch-spectrum / unbalanced consumption; `C=1/log b` via unbalanced `rho*C`); broader non-power/exotic classes remain OPEN gates |
+| 2 | log / non-power / slowly-varying tail in S3 | NONE FOUND among explicitly tested families (log via S1; `C=b^(-alpha)` via switch-spectrum / unbalanced consumption; `C=1/log b` via unmatched rho term (z-constant) or switch-spectrum `S A = rho A` (z-dependent)); broader non-power/exotic classes (incl. monotone-preserving oscillatory remainders) remain OPEN gates |
 | 3 | remainder construction changing p=2 coefficient in S3 | NONE FOUND (H_tr subleading; contract (E) required) |
 | 4 | z-coupling / endpoint uniformity violation in S3 | NO first-order z-deformation (spectral obstruction `0.0175 notin {0,-2/3}`); endpoint uniformity = authority gap, not in-class |
 | 5 | `mu_W/b >= 0` branch in S3 | NONE FOUND — CONDITIONAL on the realized `p=2` balance (would need `K >= 1/r_b^2`, outside the S3 balance); not a general theorem over all S3 non-power tails |

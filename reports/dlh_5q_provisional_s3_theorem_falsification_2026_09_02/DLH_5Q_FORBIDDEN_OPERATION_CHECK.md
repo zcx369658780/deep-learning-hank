@@ -1,8 +1,9 @@
-# DLH-5Q — Forbidden-Operation / Scope Check (Issue #43 §11) — Rev 2
+# DLH-5Q — Forbidden-Operation / Scope Check (Issue #43 §11) — Rev 3
 
 DLH-5Q is a **theorem-verification + falsification-design gate only**. DSH performed
-NONE of the following during DLH-5Q (Rev 1 `9f5774d` and Rev 2 on the same dedicated
-branch); no source, model, domain, numerical, or endpoint object was touched.
+NONE of the following during DLH-5Q (Rev 1 `9f5774d`, Rev 2 `593f569`, Rev 3 on the
+same dedicated branch); no source, model, domain, numerical, or endpoint object was
+touched.
 
 | Forbidden operation | Status |
 |---|---|
@@ -27,6 +28,10 @@ branch); no source, model, domain, numerical, or endpoint object was touched.
 | Claim consumption dominates for `1<p<2` (reversed-inequality error) | NOT RETAINED — withdrawn in Rev 2; `1<p<2` is excluded by the switch-spectrum argument on the dominant rho/r_b/S block (reviewer `5506978886`) |
 | Claim all non-power/exotic S3 tails are formally excluded | NOT PERFORMED — Rev 2 excludes only power families and explicitly tested log/slow families; broader classes remain open (step 18) |
 | Use a degenerate derivative-remainder term `|b^2(V_a - R V_b)|` or `M_a = O(K b^(-1/2))` | NOT RETAINED — removed in Rev 2; replaced by the explicit derivative-remainder contract (E) (Phase C C4) |
+| Reproduce the S3-incompatible `a`-dependent `M(a,z) b^(-3/2)` value remainder in Phase D alongside `R=O(1)` | NOT RETAINED — removed in Rev 3; Phase D D1 uses the exact contract (E) with all `a`-dependence at `H/b^2` order or smaller; `M_a` forced to 0 at that order (reviewer `5507222546`) |
+| Claim the `1/log b` slow tail is excluded merely as "unmatched" for all amplitudes | NOT RETAINED — Rev 3 gives the z-dependent case via the switch-spectrum equation `S A = rho A` (no nonzero `A` since `rho=0.02 notin {0,-2/3}`); z-constant reduces to the unmatched rho term |
+| Claim every oscillatory-envelope tail makes `V_b` change sign (categorical) | NOT RETAINED — Rev 3 excludes only sign-changing-derivative constructions; monotone-preserving oscillatory remainders remain in the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate |
+| State that second derivatives "enter the HJB" | NOT RETAINED — Rev 3: second/mixed partials, if used, are auxiliary regularity for differentiating (E), not HJB terms (first-order HJB in `(a,b)`) |
 | Call the frozen analytic problem a second-order HJB | NOT RETAINED — corrected to the first-order regime-switching HJB (Phase B B1) |
 | `git add .` / `git add -A` | NOT PERFORMED (explicit staging of allowlist paths only) |
 

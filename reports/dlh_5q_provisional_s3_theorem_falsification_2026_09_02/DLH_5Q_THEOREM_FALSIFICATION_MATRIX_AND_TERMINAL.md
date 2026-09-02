@@ -1,10 +1,12 @@
-# DLH-5Q Phase G — Theorem / Falsification Matrix and Terminal (Rev 2)
+# DLH-5Q Phase G — Theorem / Falsification Matrix and Terminal (Rev 3)
 
 **Issue #43 Phase G (step 39).** Produces the theorem/falsification matrix and the
-exact single terminal. **Rev 2 reflects the corrected `1<p<2` and slow-tail
+exact single terminal. **Rev 2 reflected the corrected `1<p<2` and slow-tail
 arguments (switch-spectrum-based exclusions), the narrowed (non-exhaustive)
 falsification-search conclusion, and the requalified `mu_W/b>=0` search** (reviewer
-`5506978886`); terminal B is retained.
+`5506978886`). **Rev 3 reflects the z-dependent `1/log b` switch-spectrum case, the
+narrowed oscillatory-tail statement, and the Phase D cleanup to the exact contract
+(E)** (reviewer `5507222546`); terminal B is retained.
 
 ---
 

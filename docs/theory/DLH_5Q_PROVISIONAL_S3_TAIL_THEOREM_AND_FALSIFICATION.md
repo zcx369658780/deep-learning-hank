@@ -1,4 +1,4 @@
-# DLH-5Q / Issue #43 — Provisional S3 Liquid-Tail Theorem Verification and Parallel Falsification (Rev 2)
+# DLH-5Q / Issue #43 — Provisional S3 Liquid-Tail Theorem Verification and Parallel Falsification (Rev 3)
 
 **Task type:** `SCIENTIFIC_THEOREM_VERIFICATION__PROVISIONAL_S3_LIQUID_TAIL_AND_PARALLEL_FALSIFICATION`
 **Date:** 2026-09-02
@@ -7,7 +7,7 @@
 **Authoritative activation comment (Issue #43):** `5506167630`
 **Owner decision:** `PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
 **Owner-decision comment (Issue #42):** `5506138177`
-**Rev 2 review comment (Issue #43):** `5506978886` — bounded same-Issue revision.
+**Review comments (Issue #43):** `5506978886` (Rev 2 corrections), `5507222546` (Rev 3 corrections) — bounded same-Issue revisions.
 
 This is a **theorem-verification + falsification-design gate only**. It does NOT freeze
 or implement any analytic specification, does NOT select R/W/W1/W2/`W_max`, does NOT
@@ -116,9 +116,9 @@ switch rate `1/3` (spectrum `{0,-2/3}`).
    `u - c V_b = -2 sqrt(V_b) ~ -2 sqrt(K)/b^(p/2)` dominates and is unbalanced. The
    `p=1` log tail is excluded by S1 boundedness; explicitly tested slow families
    (`C = b^(-alpha)` via the switch-spectrum equation `(rho + r_b alpha) C = S*C`, no
-   positive `alpha`; `C = 1/log b` via unbalanced dominant `rho*C`) are excluded by
+   positive `alpha`; `C = 1/log b` via the unmatched `rho*V` term (z-constant amplitude) or via the switch-spectrum equation `S A = rho A` (z-dependent amplitude `A(z)`; `rho=0.02 notin {0,-2/3}`))`) are excluded by
    corrected order accounting. **Broader non-power/exotic S3 tails are NOT claimed
-   excluded** — they remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
+   excluded** — including monotone-preserving oscillatory remainders (small oscillations around a monotone leading tail may keep `V_b>0`) — they remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
    gate. Under `R=O(1)` the combined transfer Hamiltonian `V_b[d(R-1)-chi]` is
    `O(1/b^2)` (subleading). **This is a formal dominant-balance statement, NOT an actual
    asymptotic theorem:** realization of the `p=2` tail by the actual HJB solution
@@ -206,6 +206,33 @@ protocol is designed but NOT executed
 
 ---
 
+## 3c. Rev 3 corrections (reviewer `5507222546`)
+
+1. **Phase D made S3-compatible:** D1 no longer reproduces the `a`-dependent
+   `M(a,z) b^(-3/2)` value remainder alongside `R=O(1)`; the O(1/b) coefficient audit
+   is stated directly under the exact contract (E) (`V=-K/b+H/b^2+r0`,
+   `V_b=K/b^2-2H/b^3+r_b`, `V_a=H_a/b^2+r_a`, `R -> H_a/K = O(1)`), with all permitted
+   `a`-dependence at `H/b^2` order or smaller. A nonzero b-independent `M_a` would
+   force `R ~ sqrt(b)` (outside S3) and is excluded at that order.
+2. **z-dependent `1/log b` case corrected:** for `V(b,z) = -A(z)/log b`, `S*V` is also
+   `O(1/log b)`; the leading equation is `S A = rho A`, and since `rho=0.02` is not in
+   `{0,-2/3}` no nonzero `A(z)` survives (switch-spectrum argument). The z-constant
+   case reduces to the unmatched `rho*V` term. This replaces any "simply unmatched"
+   phrasing in Phase C/E and the summaries.
+3. **Oscillatory-tail statement narrowed:** only constructions whose derivative changes
+   sign infinitely often (violating S1 `V_b>0`) are excluded; **monotone-preserving
+   oscillatory remainders** (small oscillations around a monotone leading tail keeping
+   `V_b>0`) are NOT exhaustively ruled out and remain in the open
+   `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate unless separately shown harmless.
+4. **Contract (E) matches the first-order HJB:** the second-derivative clause was
+   removed from the HJB remainder; if second/mixed partials are needed at all, they are
+   invoked only as auxiliary regularity to justify differentiating the expansion, not
+   as HJB terms (the frozen HJB is first-order in `(a,b)`).
+5. Terminal **B is retained**; the `1<p<2` switch-spectrum exclusion and `p>2`
+   unbalanced-consumption argument are preserved unchanged.
+
+---
+
 ## 4. What is NOT claimed
 
 - NOT claimed: any candidate is a theorem, frozen, implemented, or model-defining.
@@ -222,7 +249,9 @@ protocol is designed but NOT executed
   a general theorem over all S3 non-power tails.
 - NOT claimed: an **exhaustive** exclusion of every non-power/exotic S3 tail; only the
   power families and the explicitly tested log/slow families are excluded, and broader
-  classes remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
+  classes — including monotone-preserving oscillatory remainders (small oscillations
+  around a monotone leading tail may keep `V_b>0`) — remain part of the open
+  `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
 - NOT claimed: full `[0,10]` uniform theorem authority; endpoint laws are unresolved.
 - NOT claimed: any numerical result; the falsification protocol is design only.
 

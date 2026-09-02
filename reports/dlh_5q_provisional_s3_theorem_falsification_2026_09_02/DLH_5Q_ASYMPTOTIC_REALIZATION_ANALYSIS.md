@@ -1,15 +1,18 @@
-# DLH-5Q Phase C — Asymptotic-Realization Analysis (Rev 2)
+# DLH-5Q Phase C — Asymptotic-Realization Analysis (Rev 3)
 
 **Issue #43 Phase C (steps 24-28).** Within the provisional S3 class
 (`R = V_a/V_b = O(1)` uniformly), determines whether the actual admissible tail must
 realize `p=2`. Revisits `p<2`, `p=2`, `p>2` and log/non-power possibilities using the
 **accepted combined transfer Hamiltonian** `V_b*[d*(R-1)-chi]`, distinguishes formal
 dominant-balance exclusion from an actual asymptotic theorem, and states the
-derivative-remainder control required. **Rev 2 corrects the `1<p<2` dominant-order
+derivative-remainder control required. **Rev 2 corrected the `1<p<2` dominant-order
 inequality and the slowly-varying/non-power order accounting** (reviewer `5506978886`),
-replaces the degenerate (RD) remainder condition with an explicit non-degenerate
-uniform expansion, and narrows the exclusion claims to the correctly analyzed
-families.
+replaced the degenerate (RD) remainder condition with an explicit non-degenerate
+uniform expansion, and narrowed the exclusion claims to the correctly analyzed
+families. **Rev 3 adds the z-dependent `1/log b` switch-spectrum case, narrows the
+oscillatory-tail statement (monotone-preserving oscillatory remainders are not
+exhaustively ruled out), and cleans contract (E) so second derivatives appear only as
+auxiliary regularity, not as HJB terms** (reviewer `5507222546`).
 
 ---
 
@@ -106,7 +109,7 @@ balance. **No `p != 2` power family survives inside S3 at the formal level.**
 
 ---
 
-## C2. Log and non-power tails (Rev 2 corrected order accounting)
+## C2. Log and non-power tails (Rev 3 corrected order accounting)
 
 - **Log tail** (`V_b ~ K/b`): excluded by S1 boundedness (C1): `V ~ -K ln b -> -inf`.
 - **Slowly-varying / non-power tails:** consider `V ~ -C(b)`, `C(b) -> 0^+`,
@@ -133,26 +136,36 @@ balance. **No `p != 2` power family survives inside S3 at the formal level.**
       and unbalanced (no same-order partner; `rho*V`, `r_b*b*V_b` are smaller at
       `b^(-alpha)`). **Unbalanced -> excluded** (this reproduces the `p>2` obstruction
       in the value-scale form).
-  - **Explicit example `C(b) = 1/log b`.** `V_b = 1/(b log^2 b)`,
-    `rho*C = O(1/log b)`, `r_b*b*V_b = O(1/log^2 b)`,
-    `sqrt(V_b) = O(1/(sqrt(b) log b))`. Hence
-    `rho*C` **dominates** (not the consumption term, which is the smallest of the
-    three). The dominant `O(1/log b)` term `rho*V` is unbalanced (nothing else is
-    `O(1/log b)`), so `C = 1/log b` is excluded. (Rev 1's claim that consumption was
-    algebraically larger had the order reversed; corrected.)
+  - **Explicit example `C(b) = 1/log b` (Rev 3 includes the z-dependent case).**
+    `V_b = 1/(b log^2 b)`, `rho*C = O(1/log b)`, `r_b*b*V_b = O(1/log^2 b)`,
+    `sqrt(V_b) = O(1/(sqrt(b) log b))`. Hence `rho*C` **dominates** (not the
+    consumption term, which is the smallest of the three).
+    - **z-constant amplitude `A`:** `S*V = 0`; the dominant `O(1/log b)` term `rho*V`
+      has **no same-order partner** (nothing else is `O(1/log b)`) — an unmatched rho
+      term, so `A = 0`. Excluded. (Rev 1's claim that consumption was algebraically
+      larger had the order reversed; corrected.)
+    - **z-dependent amplitude `A(z)`:** `S*V = -(S A)/log b` is **also** `O(1/log b)`.
+      The leading equation is `rho*V = S*V`, i.e. `-rho A = -S A`, equivalently
+      `S A = rho A`: `A(z)` would have to be an eigenvector of `S` with eigenvalue
+      `rho = 0.02`. Since `rho` is **not** in the frozen spectrum `{0,-2/3}`, no nonzero
+      `A(z)` survives. Excluded by the switch-spectrum argument.
   - **Narrowed conclusion (no general claim):** the **explicitly tested** slow/non-power
     families — power-like `C = b^(-alpha)` (`0<alpha<1` excluded by the switch-spectrum
     equation, `alpha>1` excluded by the unbalanced consumption term) and the example
-    `C = 1/log b` (unbalanced `rho*C`) — are excluded by correct order accounting.
+    `C = 1/log b` (z-constant: unmatched rho term; z-dependent: switch-spectrum
+    equation `S A = rho A`) — are excluded by correct order accounting.
     **Broader non-power/exotic classes (e.g. general slowly-varying functions not of
     these forms, oscillatory-envelope constructions that keep `V_b>0`) are NOT claimed
     excluded**; they remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
     gate (step 18).
 
-- **Oscillatory tails** (`V` with bounded oscillation times a decaying envelope):
-  `V_b` would change sign infinitely often, violating S1 `V_b>0` on any monotone
-  interval; an oscillatory tail is incompatible with the monotonicity class. Not a
-  coherent S3 candidate.
+- **Oscillatory tails (Rev 3 narrowed statement):**
+  - constructions whose derivative `V_b` changes sign infinitely often violate S1
+    `V_b > 0` and are therefore not coherent S3 candidates;
+  - **sufficiently small oscillatory remainders around a monotone leading tail may
+    keep `V_b > 0`** and are **NOT exhaustively ruled out** by this argument;
+  - such monotone-preserving oscillatory/exotic remainders remain part of the open
+    `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate unless separately shown harmless.
 
 ---
 
@@ -182,7 +195,7 @@ class, not an existence/realization theorem.
 
 ---
 
-## C4. Derivative-remainder control (step 28) — Rev 2 non-degenerate contract
+## C4. Derivative-remainder control (step 28) — Rev 3 non-degenerate contract
 
 Passing from "`V_b ~ K/b^2`" to "`R = V_a/V_b = O(1)`" and to the O(1/b) coefficient
 equation requires controlling remainders. The accepted DLH-5P/5O rule is explicit:
@@ -202,10 +215,12 @@ derivative expansion** (theorem-assumption item, NOT established):
       V    = -K(z)/b + H(a,z)/b^2 + r0,          r0 = o(b^(-2))
       V_b  =  K(z)/b^2 - 2 H(a,z)/b^3 + r_b,     r_b = o(b^(-3))
       V_a  =  H_a(a,z)/b^2 + r_a,                r_a = o(b^(-2))
-
-    and any second-derivative remainders entering the (formal) HJB remainder are
-    o(1/b).
 ```
+
+If second or mixed partial derivatives are needed at all, they are invoked **only as
+auxiliary regularity** to justify differentiating the expansion (E) (e.g., to validate
+the derivative formulas above) — they are **NOT** HJB terms: the frozen HJB is
+**first-order** in `(a,b)` (Rev 3 cleanup, reviewer `5507222546`).
 
 Under (E), `R = V_a/V_b = (H_a/b^2 + o(b^-2)) / (K/b^2 + o(b^-2)) -> H_a/K = O(1)`,
 provided the derivative remainders are controlled uniformly — the concrete S3-compatible
@@ -253,8 +268,10 @@ about the actual solution.
   - `p = 1` log tail: excluded by S1 boundedness;
   - explicitly tested slow families: `C = b^(-alpha)` (`0<alpha<1` via the
     switch-spectrum equation `(rho + r_b alpha) C = S*C`, no positive `alpha`;
-    `alpha>1` via the unbalanced consumption term) and `C = 1/log b` (unbalanced
-    dominant `rho*C`) are excluded by correct order accounting.
+    `alpha>1` via the unbalanced consumption term) and `C = 1/log b` (z-constant:
+    unmatched dominant `rho*C`; z-dependent: switch-spectrum equation `S A = rho A`,
+    no nonzero `A` since `rho=0.02 notin {0,-2/3}`) are excluded by correct order
+    accounting.
   - **Broader non-power/exotic S3 tails are NOT claimed excluded** — they remain part
     of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
 - This is a **formal dominant-balance statement**, not an actual asymptotic theorem

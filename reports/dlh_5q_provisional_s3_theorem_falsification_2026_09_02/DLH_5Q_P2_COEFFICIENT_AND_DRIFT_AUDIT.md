@@ -1,4 +1,4 @@
-# DLH-5Q Phase D — p=2 Coefficient and Drift Audit (Rev 2)
+# DLH-5Q Phase D — p=2 Coefficient and Drift Audit (Rev 3)
 
 **Issue #43 Phase D (steps 29-31).** Conditional on the `p=2` balance being realized
 within the stated theorem assumptions (Phase C), derives/verifies:
@@ -11,10 +11,11 @@ mu_W/b -> -0.0025,
 ```
 
 and audits z-switching, labor, transfer, adjustment cost, and fixed-`a` terms at every
-same order. States theorem-level vs conditional vs unsupported. **Rev 2 renames the
-remainder gate to the non-degenerate derivative-remainder contract (E) (Phase C C4)
-and requalifies the `mu_W/b >= 0` search as conditional on the realized `p=2` balance**
-(reviewer `5506978886`).
+same order. States theorem-level vs conditional vs unsupported. **Rev 2 renamed the
+remainder gate to the non-degenerate derivative-remainder contract (E) and
+requalified the `mu_W/b >= 0` search as conditional. Rev 3 removes the last
+S3-incompatible `M(a,z) b^(-3/2)` remainder from D1 and states the coefficient audit
+directly under the exact contract (E)** (reviewer `5507222546`).
 
 ---
 
@@ -34,11 +35,21 @@ Assume the `p=2` tail is realized with the derivative-remainder contract (E)
 (Phase C C4) and uniformity:
 
 ```text
-V ~ -K/b - M(a,z) b^(-3/2) + ...,   V_b ~ K/b^2,   R = V_a/V_b = O(1),   K a-independent.
+(E):  V    = -K(z)/b + H(a,z)/b^2 + r0         (r0 = o(b^(-2)))
+      V_b  =  K(z)/b^2 - 2 H(a,z)/b^3 + r_b    (r_b = o(b^(-3)))
+      V_a  =  H_a(a,z)/b^2 + r_a               (r_a = o(b^(-2)))
+      R = V_a/V_b -> H_a/K = O(1),   K a-independent.
 ```
 
+**S3-compatibility (Rev 3):** this is exactly the contract (E). The Rev 1
+`a`-dependent `M(a,z) b^(-3/2)` value remainder is **not** used here: a nonzero
+`b`-independent `M_a` in such a term would force `V_a ~ -(2/3) M_a b^(-3/2)` and
+`R ~ -(2/3)(M_a/K) sqrt(b)` (outside S3). Under (E) all permitted `a`-dependence enters
+at `H/b^2` order or smaller, i.e. `O(1/b^2)`; it therefore does **not** affect the
+O(1/b) coefficient system below.
+
 **Same-order audit at O(1/b)** (all terms are the `1/b` coefficients of the combined
-HJB):
+HJB; the `H/b^2` part of `V` contributes only at `O(1/b^2)`):
 
 | Term | O(1/b) coefficient | Note |
 |---|---|---|
