@@ -1,4 +1,4 @@
-# DLH-5Q / Issue #43 — Provisional S3 Liquid-Tail Theorem Verification and Parallel Falsification
+# DLH-5Q / Issue #43 — Provisional S3 Liquid-Tail Theorem Verification and Parallel Falsification (Rev 2)
 
 **Task type:** `SCIENTIFIC_THEOREM_VERIFICATION__PROVISIONAL_S3_LIQUID_TAIL_AND_PARALLEL_FALSIFICATION`
 **Date:** 2026-09-02
@@ -7,6 +7,7 @@
 **Authoritative activation comment (Issue #43):** `5506167630`
 **Owner decision:** `PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
 **Owner-decision comment (Issue #42):** `5506138177`
+**Rev 2 review comment (Issue #43):** `5506978886` — bounded same-Issue revision.
 
 This is a **theorem-verification + falsification-design gate only**. It does NOT freeze
 or implement any analytic specification, does NOT select R/W/W1/W2/`W_max`, does NOT
@@ -106,32 +107,44 @@ switch rate `1/3` (spectrum `{0,-2/3}`).
    law, and a tail boundary specification are exactly the missing ingredients. `V_inf=0`
    is a level/boundary selection, not a uniqueness theorem. The exact missing
    assumptions are enumerated. See `DLH_5Q_EXISTENCE_COMPARISON_AUDIT.md`.
-3. **Phase C — asymptotic realization.** Within S3, the power-law families `p<2` and
-   `p>2` (and the `p=1` log tail) are formally inconsistent: the consumption/utility
-   term `u - c V_b = -2 sqrt(V_b) ~ -2 sqrt(K)/b^(p/2)` is of a different order than
-   the `rho*V`, `r_b*b*V_b`, `S*V` terms (`1/b^(p-1)`) whenever `p != 2`, and is
-   unbalanced. `p=2` is the unique self-consistent formal balance, and under `R=O(1)`
-   the combined transfer Hamiltonian `V_b[d(R-1)-chi]` is `O(1/b^2)` (subleading).
-   **This is a formal dominant-balance statement, NOT an actual asymptotic theorem:**
-   realization of the `p=2` tail by the actual HJB solution requires
-   existence + comparison + explicit derivative-remainder control + no exotic
-   competing regime, none of which is established. See
+3. **Phase C — asymptotic realization.** Within S3, across the **correctly analyzed
+   families**, `p=2` is the unique self-consistent formal balance. For
+   `1 < p < 2`, `p-1 < p/2`, so the rho/r_b/S block at `b^(-(p-1))` **dominates**; the
+   leading equation `[rho + (p-1) r_b] K = S*K` has no nonzero `K` because
+   `rho + (p-1) r_b > 0` is not in the frozen switch spectrum `{0,-2/3}` (switch-
+   spectrum exclusion). For `p > 2`, `p/2 < p-1`, so the consumption block
+   `u - c V_b = -2 sqrt(V_b) ~ -2 sqrt(K)/b^(p/2)` dominates and is unbalanced. The
+   `p=1` log tail is excluded by S1 boundedness; explicitly tested slow families
+   (`C = b^(-alpha)` via the switch-spectrum equation `(rho + r_b alpha) C = S*C`, no
+   positive `alpha`; `C = 1/log b` via unbalanced dominant `rho*C`) are excluded by
+   corrected order accounting. **Broader non-power/exotic S3 tails are NOT claimed
+   excluded** — they remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
+   gate. Under `R=O(1)` the combined transfer Hamiltonian `V_b[d(R-1)-chi]` is
+   `O(1/b^2)` (subleading). **This is a formal dominant-balance statement, NOT an actual
+   asymptotic theorem:** realization of the `p=2` tail by the actual HJB solution
+   requires existence + comparison + the explicit derivative-remainder contract (E) +
+   no exotic competing regime, none of which is established. See
    `DLH_5Q_ASYMPTOTIC_REALIZATION_ANALYSIS.md`.
 4. **Phase D — coefficient/drift.** Conditional on the `p=2` balance being realized
-   with remainder control, the O(1/b) balance gives `(rho+r_b)K - 2 sqrt(K) = S*K`
-   with `K = 4/(rho+r_b)^2` (z-constant), `c/b -> 0.0175`, `mu_W/b -> -0.0025 < 0`.
-   Same-order audit: z-switching (`S*V` at O(1/b), `S*K=0` for z-constant K), labor
-   (`o(1)`), transfer and adjustment cost (`O(1/b^2)` under `R=O(1)`), fixed-`a`
-   illiquid return (`O(1/b^2)`). These are **conditional**, not theorem-level. See
+   with the derivative-remainder contract (E), the O(1/b) balance gives
+   `(rho+r_b)K - 2 sqrt(K) = S*K` with `K = 4/(rho+r_b)^2` (z-constant),
+   `c/b -> 0.0175`, `mu_W/b -> -0.0025 < 0`. Same-order audit: z-switching (`S*V` at
+   O(1/b), `S*K=0` for z-constant K), labor (`o(1)`), transfer and adjustment cost
+   (`O(1/b^2)` under `R=O(1)`), fixed-`a` illiquid return (`O(1/b^2)`). These are
+   **conditional**, not theorem-level. See
    `DLH_5Q_P2_COEFFICIENT_AND_DRIFT_AUDIT.md`.
-5. **Phase E — parallel falsification search (analytic only).** No S3-internal
-   in-class counterexample was found: no `p != 2` power or log tail, no slowly-varying
-   non-power tail, no S3-internal remainder construction that changes the `O(1/b)`
-   coefficient, no first-order z-deformation of K (the required spectral value
-   `(rho+r_b)/2 = 0.0175` is not in `{0,-2/3}`), and no `mu_W/b >= 0` branch (would
-   need `c/b <= r_b`, i.e. `K >= 1/r_b^2`, outside the S3 balance). These are formal
-   exclusions, not theorems. The critical `m=1/2` family is preserved outside S3 as the
-   exclusion-cost benchmark. See `DLH_5Q_ANALYTIC_FALSIFICATION_SEARCH.md`.
+5. **Phase E — parallel falsification search (analytic only).** No in-class S3
+   counterexample was found **among the correctly analyzed families**: no `p != 2`
+   power tail (power `1<p<2` via the switch-spectrum argument, `p>2` via the unbalanced
+   consumption block), no log tail (S1 boundedness), no explicitly tested slow tail
+   (`C = b^(-alpha)`, `C = 1/log b`), no S3-internal remainder construction that changes
+   the `O(1/b)` coefficient, no first-order z-deformation of K (the required spectral
+   value `(rho+r_b)/2 = 0.0175` is not in `{0,-2/3}`), and no `mu_W/b >= 0` branch
+   (**conditional on the realized `p=2` balance**: would need `c/b <= r_b`, i.e.
+   `K >= 1/r_b^2`, outside the S3 balance). These are formal exclusions of the analyzed
+   families, not theorems and **not an exhaustive exclusion** of every non-power/exotic
+   S3 tail. The critical `m=1/2` family is preserved outside S3 as the exclusion-cost
+   benchmark. See `DLH_5Q_ANALYTIC_FALSIFICATION_SEARCH.md`.
 6. **Phase F — endpoint scope.** Only a compact-interior-`a` theorem statement is
    currently supported (and even that only conditional on Phase B/C gaps being
    closed). Full `[0,10]` authority requires an Owner-adopted `a=10` upper-`a` law and
@@ -146,11 +159,50 @@ switch rate `1/3` (spectrum `{0,-2/3}`).
 DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY
 ```
 
-The provisional S3 class is internally consistent (no in-class counterexample found)
-and the `p=2` balance survives as the unique self-consistent formal branch, but the
-theorem is NOT closed because existence, comparison, and asymptotic realization are
-not established from current authority. The future numerical falsification protocol is
-designed but NOT executed (`DLH_5Q_NUMERICAL_FALSIFICATION_PROTOCOL.md`).
+The provisional S3 class is internally consistent across the correctly analyzed
+families (no counterexample found among them), and the `p=2` balance survives as the
+unique self-consistent formal branch among those families, but the theorem is NOT
+closed because existence, comparison, and asymptotic realization are not established
+from current authority, and broader non-power/exotic S3 tails remain part of the open
+`ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate. The future numerical falsification
+protocol is designed but NOT executed
+(`DLH_5Q_NUMERICAL_FALSIFICATION_PROTOCOL.md`).
+
+---
+
+## 3b. Rev 2 corrections (reviewer `5506978886`)
+
+1. **`1 < p < 2` dominant order corrected:** for `1<p<2`, `p-1 < p/2`, so the
+   rho/r_b/S block at `b^(-(p-1))` dominates (Rev 1's "consumption dominates for
+   `p<2`" had the inequality reversed). The leading equation
+   `[rho + (p-1) r_b] K = S*K` has no nonzero `K` for the frozen switch spectrum
+   `{0,-2/3}` — switch-spectrum exclusion.
+2. **`p > 2` preserved separately:** `p/2 < p-1`, consumption block dominant and
+   unbalanced.
+3. **Slow-tail order/sign corrected:** the z-constant balance `-rho*C = r_b*b*(-C')`
+   for `C = b^(-alpha)` gives `-rho = r_b alpha` (no positive `alpha`); z-dependent
+   amplitudes give the switch-spectrum equation `(rho + r_b alpha) C = S*C`; the
+   example `C = 1/log b` has `rho*C = O(1/log b)` dominant (not the consumption term).
+   Rev 1's `alpha = rho/r_b = 4/3` was a sign error and is withdrawn.
+4. **No general non-power exclusion claim:** only the power families and the explicitly
+   tested log/slow families are excluded; broader non-power/exotic classes remain part
+   of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate (step 18).
+5. **Derivative-remainder contract (E):** the degenerate `|b^2(V_a - R V_b)|` term
+   (identically zero) is removed; replaced by the explicit uniform expansion
+   `V = -K/b + H/b^2 + r0`, `V_b = K/b^2 - 2H/b^3 + r_b`, `V_a = H_a/b^2 + r_a` with
+   uniform small-o bounds, giving `R -> H_a/K = O(1)`. The incoherent
+   `M_a = O(K b^(-1/2))` statement is removed; a nonzero b-independent `M_a` in a
+   `b^(-3/2)` term would force `R ~ sqrt(b)` (outside S3), so S3 requires that
+   coefficient's `a`-derivative to vanish at that order (Phase C C4).
+6. **Existence PDE characterization corrected:** the frozen analytic problem is a
+   **first-order** regime-switching HJB (no second-order term in the accepted
+   authority); any viscosity/comparison framework must match that structure.
+7. **Falsification language narrowed:** "no in-class counterexample found" = none
+   found among the correctly analyzed families, not an exhaustive exclusion; the
+   `mu_W/b >= 0` search is conditional on the realized `p=2` balance.
+8. Terminal **B is retained** (not A); provisional S3 primary `R=O(1)`, P-TR
+   sensitivity only, critical `m=1/2` outside S3 as benchmark, no numerical run, no
+   endpoint law, stationary KFE NOT AUTHORIZED — all preserved.
 
 ---
 
@@ -164,8 +216,13 @@ designed but NOT executed (`DLH_5Q_NUMERICAL_FALSIFICATION_PROTOCOL.md`).
   Phase B/C gates.
 - NOT claimed: that the critical `R ~ Theta(sqrt(b))` family is economically
   impossible; it is outside S3 and preserved as a benchmark.
-- NOT claimed: any `mu_W/b >= 0` branch; within S3 the balance gives inward drift, and
-  the out-of-class critical family is also inward (`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`).
+- NOT claimed: any `mu_W/b >= 0` branch under the realized `p=2` balance; within that
+  balance the drift is inward, and the out-of-class critical family is also inward
+  (`mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`). The `mu_W/b >= 0` search is conditional, not
+  a general theorem over all S3 non-power tails.
+- NOT claimed: an **exhaustive** exclusion of every non-power/exotic S3 tail; only the
+  power families and the explicitly tested log/slow families are excluded, and broader
+  classes remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
 - NOT claimed: full `[0,10]` uniform theorem authority; endpoint laws are unresolved.
 - NOT claimed: any numerical result; the falsification protocol is design only.
 

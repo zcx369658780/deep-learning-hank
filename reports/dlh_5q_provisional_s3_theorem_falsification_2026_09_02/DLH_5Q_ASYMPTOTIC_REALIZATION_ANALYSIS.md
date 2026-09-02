@@ -1,11 +1,15 @@
-# DLH-5Q Phase C — Asymptotic-Realization Analysis
+# DLH-5Q Phase C — Asymptotic-Realization Analysis (Rev 2)
 
 **Issue #43 Phase C (steps 24-28).** Within the provisional S3 class
 (`R = V_a/V_b = O(1)` uniformly), determines whether the actual admissible tail must
 realize `p=2`. Revisits `p<2`, `p=2`, `p>2` and log/non-power possibilities using the
 **accepted combined transfer Hamiltonian** `V_b*[d*(R-1)-chi]`, distinguishes formal
 dominant-balance exclusion from an actual asymptotic theorem, and states the
-derivative-remainder control required.
+derivative-remainder control required. **Rev 2 corrects the `1<p<2` dominant-order
+inequality and the slowly-varying/non-power order accounting** (reviewer `5506978886`),
+replaces the degenerate (RD) remainder condition with an explicit non-degenerate
+uniform expansion, and narrows the exclusion claims to the correctly analyzed
+families.
 
 ---
 
@@ -52,7 +56,7 @@ rho*V            ~ -rho*K/((p-1) b^(p-1))
 u                ~ -sqrt(K)/b^(p/2)          [u = -1/c = -V_b^(1/2)]
 r_a_eff(a)*a*V_a ~  O(1)/b^p                 [V_a = R V_b = O(K/b^p)]
 H_tr             ~  O(1)/b^p                 [bounded multiple of V_b]
-S*V              ~  O(1)/b^(p-1)             [0 if K z-constant]
+S*V              ~  -S*K/((p-1) b^(p-1))     [0 if K z-constant]
 ```
 
 so the consumption/utility terms combine exactly as
@@ -62,51 +66,88 @@ u - c*V_b = -2 sqrt(V_b) ~ -2 sqrt(K)/b^(p/2),
 ```
 
 and the two candidate dominant scales are `1/b^(p/2)` (consumption) and `1/b^(p-1)`
-(rho / r_b / S).
+(rho / r_b / S). For `1<p<2` we have `p-1 < p/2`, so `b^(-(p-1))` decays **more
+slowly** than `b^(-p/2)`; for `p>2` we have `p/2 < p-1`, so the consumption scale
+`b^(-p/2)` is larger. The two scales coincide only at `p=2`.
 
-**Dominant-order condition.** For a consistent balance with no unbalanced leading
-term, the consumption scale must coincide with the rho/r_b/S scale:
+**Case `1 < p < 2` — rho/r_b/S block dominates (switch-spectrum exclusion).**
+Here `p-1 < p/2`, so the leading equation is the `b^(-(p-1))` balance among `rho*V`,
+`r_b*b*V_b`, and `S*V` (consumption, `H_tr`, `r_a*V_a` are strictly subleading):
 
 ```text
-p/2 = p - 1   <=>   p = 2.
+-rho*K/(p-1) = r_b*K - S*K/(p-1)        (leading b^(-(p-1)) equation)
+<=>  [rho + (p-1) r_b] K = S*K.
 ```
 
-- `p < 2` (`1 < p < 2`): `p/2 < p-1`, so `-2 sqrt(K)/b^(p/2)` is the **largest** term
-  and has no same-order partner among `rho*V`, `r_b*b*V_b`, `S*V` (all `1/b^(p-1)`),
-  nor among `H_tr`, `r_a*V_a` (all `1/b^p`). **Unbalanced -> formally inconsistent.**
-- `p > 2`: again `p/2 < p-1`, so `-2 sqrt(K)/b^(p/2)` is larger than `1/b^(p-1)` and
-  unbalanced (its same-order partner would have to be a `1/b^(p/2)` term, and there is
-  none; `u` and `-c V_b` cancel only into the combined `-2 sqrt(V_b)`). **Formally
-  inconsistent.**
-- `p = 2`: `p/2 = p-1 = 1`; the O(1/b) balance is
-  `-rho*K + r_b*K - 2 sqrt(K) + (S*K) = 0`, i.e.
-  `(rho+r_b)K - 2 sqrt(K) = S*K` — the DLH-5O Phase C system — **self-consistent**
-  (conditional).
+`K` must therefore be an eigenvector of the switch generator `S` with eigenvalue
+`rho + (p-1) r_b`. For the frozen symmetric `S` (spectrum `{0,-2/3}`), the left scalar
+`rho + (p-1) r_b` is strictly positive (rho>0, p>1), so it is **not** an eigenvalue of
+`S`. Hence **no nonzero `K` satisfies the leading equation: `1 < p < 2` is excluded by
+the switch-spectrum argument.** For z-constant `K` the contradiction is immediate
+(`S*K=0` forces `rho + (p-1) r_b = 0`, impossible).
 
-This reproduces and confirms DLH-5O Phase B within the S3 class: `p<2` and `p>2` are
-formally inconsistent; `p=2` is the unique self-consistent power balance. **No `p != 2`
-power family survives inside S3 at the formal level.**
+**Case `p > 2` — consumption block dominates and is unbalanced.**
+Here `p/2 < p-1`, so `-2 sqrt(K)/b^(p/2)` is the **largest** term; it has no same-order
+partner (its same-order partner would have to be a `1/b^(p/2)` term, and there is none;
+`u` and `-c V_b` cancel only into the combined `-2 sqrt(V_b)`; `rho*V`, `r_b*b*V_b`,
+`S*V` are all smaller at `1/b^(p-1)`, and `H_tr`, `r_a*V_a` are smaller still at
+`1/b^p`). **Unbalanced -> formally inconsistent.**
+
+**Case `p = 2` — the O(1/b) balance.**
+`p/2 = p-1 = 1`; the O(1/b) balance is `-rho*K + r_b*K - 2 sqrt(K) + (S*K) = 0`, i.e.
+`(rho+r_b)K - 2 sqrt(K) = S*K` — the DLH-5O Phase C system — **self-consistent**
+(conditional).
+
+This reproduces and confirms DLH-5O Phase B within the S3 class, with the `1<p<2`
+exclusion now based on the **correct** dominant system (the rho/r_b/S block, resolved
+by the switch spectrum) rather than an unbalanced consumption term: `p<2` and `p>2`
+power families are formally inconsistent; `p=2` is the unique self-consistent power
+balance. **No `p != 2` power family survives inside S3 at the formal level.**
 
 ---
 
-## C2. Log and non-power tails
+## C2. Log and non-power tails (Rev 2 corrected order accounting)
 
-- **Log tail** (`V_b ~ K/b`): excluded by S1 boundedness (C1).
+- **Log tail** (`V_b ~ K/b`): excluded by S1 boundedness (C1): `V ~ -K ln b -> -inf`.
 - **Slowly-varying / non-power tails:** consider `V ~ -C(b)`, `C(b) -> 0^+`,
-  `C'(b) < 0` (so `V_b = -C'(b) > 0`). The dominant scales are `rho*V ~ -rho C(b)`,
-  `r_b*b*V_b ~ -r_b b C'(b)`, and `u - c V_b = -2 sqrt(-C'(b))`.
-  - Try `C(b) = b^(-alpha)`, `alpha > 0` (power-like): `sqrt(-C'(b)) ~ b^(-(alpha+1)/2)`.
-    Balance requires `(alpha+1)/2 = alpha`, i.e. `alpha = 1` (`p=2`). For `alpha > 1`
-    (thinner than `1/b`), the consumption term `b^(-(alpha+1)/2)` is **larger** than
-    `b^(-alpha)` and unbalanced. For `0 < alpha < 1` (thicker), the consumption term is
-    smaller; the rho/r_b terms give `(r_b*alpha - rho) b^(-alpha)`, which would require
-    `alpha = rho/r_b = 0.02/0.015 = 4/3 > 1`, contradicting `alpha < 1`.
-  - General slowly-varying `C` (e.g. `1/ln b`): the consumption term
-    `-2 sqrt(-C'(b))` is algebraically larger than `rho C(b)` and `r_b b C'(b)` when
-    `C` decays slower than `1/b`, leaving it unbalanced; for `C` decaying faster than
-    `1/b` it is again unbalanced at its own (higher) order.
-  - Conclusion: **no slowly-varying/non-power formal tail survives inside S3**; the
-    balance drives the value scale to `~ 1/b` (i.e. `V_b ~ 1/b^2`, `p=2`).
+  `C'(b) < 0` (so `V_b = -C'(b) > 0`). The relevant scales are
+  `rho*V ~ -rho C(b)`, `r_b*b*V_b ~ -r_b b C'(b)`, and
+  `u - c V_b = -2 sqrt(V_b) = -2 sqrt(-C'(b))`. In addition `S*V = -S*C` enters if the
+  amplitude is z-dependent.
+  - **Power-like `C(b) = b^(-alpha)`, `alpha > 0`.** `C'(b) = -alpha b^(-alpha-1)`,
+    `V_b = alpha b^(-alpha-1)`. The consumption scale is `sqrt(V_b) ~ b^(-(alpha+1)/2)`;
+    the rho/r_b scale is `b^(-alpha)`. Since `(alpha+1)/2 < alpha` for `alpha > 1` and
+    `(alpha+1)/2 > alpha` for `0 < alpha < 1`, the consumption term is subleading for
+    `alpha < 1` and dominant for `alpha > 1`.
+    - **`0 < alpha < 1` (thicker than `1/b`):** consumption is subleading; the leading
+      `b^(-alpha)` balance is `rho*V = r_b*b*V_b + S*V`, i.e. `-rho*C = -r_b b C' - S*C`
+      (z-constant amplitude: `S*C = 0`). For `C = b^(-alpha) C(z)`:
+      `(rho + r_b alpha) C(z) = S C(z)`, i.e. `C(z)` is an eigenvector of `S` with
+      eigenvalue `rho + r_b alpha`. For the frozen spectrum `{0,-2/3}`,
+      `rho + r_b alpha > 0` cannot equal `-2/3`, and equals `0` only for
+      `alpha = -rho/r_b < 0`. **No positive `alpha` solves the switch-spectrum
+      equation -> no `0 < alpha < 1` power-like slow tail.** (The Rev 1 statement
+      `alpha = rho/r_b = 4/3` had the sign wrong; the correct z-constant balance
+      `-rho*C = r_b*b*(-C')` gives `-rho = r_b alpha`, no positive solution.)
+    - **`alpha > 1` (thinner than `1/b`):** consumption `b^(-(alpha+1)/2)` is dominant
+      and unbalanced (no same-order partner; `rho*V`, `r_b*b*V_b` are smaller at
+      `b^(-alpha)`). **Unbalanced -> excluded** (this reproduces the `p>2` obstruction
+      in the value-scale form).
+  - **Explicit example `C(b) = 1/log b`.** `V_b = 1/(b log^2 b)`,
+    `rho*C = O(1/log b)`, `r_b*b*V_b = O(1/log^2 b)`,
+    `sqrt(V_b) = O(1/(sqrt(b) log b))`. Hence
+    `rho*C` **dominates** (not the consumption term, which is the smallest of the
+    three). The dominant `O(1/log b)` term `rho*V` is unbalanced (nothing else is
+    `O(1/log b)`), so `C = 1/log b` is excluded. (Rev 1's claim that consumption was
+    algebraically larger had the order reversed; corrected.)
+  - **Narrowed conclusion (no general claim):** the **explicitly tested** slow/non-power
+    families — power-like `C = b^(-alpha)` (`0<alpha<1` excluded by the switch-spectrum
+    equation, `alpha>1` excluded by the unbalanced consumption term) and the example
+    `C = 1/log b` (unbalanced `rho*C`) — are excluded by correct order accounting.
+    **Broader non-power/exotic classes (e.g. general slowly-varying functions not of
+    these forms, oscillatory-envelope constructions that keep `V_b>0`) are NOT claimed
+    excluded**; they remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
+    gate (step 18).
 
 - **Oscillatory tails** (`V` with bounded oscillation times a decaying envelope):
   `V_b` would change sign infinitely often, violating S1 `V_b>0` on any monotone
@@ -117,21 +158,22 @@ power family survives inside S3 at the formal level.**
 
 ## C3. Formal dominant-balance exclusion vs actual asymptotic theorem (step 26)
 
-The results of C1/C2 are **formal dominant-balance statements**: they show that, if
-`V` admits a power (or slowly-varying) tail of the stated leading form with
-`R=O(1)` and a controlled remainder, then the only self-consistent scale is `p=2`.
-They are **NOT** an asymptotic theorem, because an actual theorem additionally needs:
+The results of C1/C2 are **formal dominant-balance statements about the correctly
+analyzed families**: they show that, if `V` admits one of the tested power or
+explicitly handled log/slow tail forms with `R=O(1)` and a controlled remainder, then
+the only self-consistent scale is `p=2`. They are **NOT** an asymptotic theorem,
+because an actual theorem additionally needs:
 
 1. **Existence + comparison** (Phase B) so that there is a well-defined actual
    solution to realize the tail.
 2. **Derivative-remainder control** (C4): the passage from `V_b` scaling to
    `R = V_a/V_b` and to the coefficient equation requires a justified expansion with
    controlled remainders.
-3. **No exotic competing regime:** the formal exclusion of `p != 2` power/log/
-   slowly-varying families does not by itself rule out an *a priori unanticipated*
-   tail (e.g. a non-uniform-in-`a` construction, a boundary-layer-induced regime, or a
-   family requiring a different leading ansatz). This is the "asymptotic realization /
-   no exotic competing regime" gate.
+3. **No exotic competing regime:** the formal exclusion of the `p != 2` power/log and
+   the explicitly tested slow families does **not** by itself rule out an *a priori
+   unanticipated* tail — a non-uniform-in-`a` construction, a boundary-layer-induced
+   regime, or a non-power/exotic family outside the tested forms (step 18). This is the
+   "asymptotic realization / no exotic competing regime" gate.
 4. **Uniformity** over the claimed `(a,z)` support (interior vs full `[0,10]`).
 
 **Therefore:** do NOT infer that the actual HJB solution realizes `p=2` merely because
@@ -140,35 +182,52 @@ class, not an existence/realization theorem.
 
 ---
 
-## C4. Derivative-remainder control (step 28)
+## C4. Derivative-remainder control (step 28) — Rev 2 non-degenerate contract
 
 Passing from "`V_b ~ K/b^2`" to "`R = V_a/V_b = O(1)`" and to the O(1/b) coefficient
 equation requires controlling remainders. The accepted DLH-5P/5O rule is explicit:
 **do not differentiate leading asymptotic equivalences term-by-term without a
 justified remainder-derivative condition.**
 
-The minimal condition used in DLH-5Q (as a theorem-assumption item, NOT established):
+Rev 1's condition `(RD)` contained the degenerate term `|b^2 (V_a - R V_b)|`, which is
+identically zero because `R = V_a/V_b`; it supplied no remainder information and has
+been **removed**. In its place DLH-5Q adopts an explicit, non-degenerate **uniform
+derivative expansion** (theorem-assumption item, NOT established):
 
 ```text
-(RD) There exist K(a,z), and a remainder R_b such that, for large b,
-     |b^2 V_b - K| + |b^2 (V_a - R V_b)| + b |V_a| <= eps(b)   with eps(b) -> 0,
-     R = V_a/V_b = O(1) uniformly, and the second-derivative terms entering
-     the (formal) remainder of the HJB are o(1/b).
+(E) There exist a-independent K(z) > 0 and bounded H(a,z) with bounded H_a, and
+    remainders r0, r_b, r_a with explicit uniform small-o bounds, such that for
+    large b and uniformly on the claimed (a,z) support:
+
+      V    = -K(z)/b + H(a,z)/b^2 + r0,          r0 = o(b^(-2))
+      V_b  =  K(z)/b^2 - 2 H(a,z)/b^3 + r_b,     r_b = o(b^(-3))
+      V_a  =  H_a(a,z)/b^2 + r_a,                r_a = o(b^(-2))
+
+    and any second-derivative remainders entering the (formal) HJB remainder are
+    o(1/b).
 ```
 
-Under (RD): `V ~ V_inf - K/b - M(a,z) b^(-3/2) + ...` (p=2 base with a subleading
-`a`-dependent part `M/b^(3/2)`), giving `V_a ~ -(2/3)M_a b^(-3/2)` (the DLH-5O/5P
-remainder-derivative mechanism), and `R ~ -(2/3)(M_a/K) b^(1/2)` — which would be
-`Theta(sqrt(b))` unless `M_a = O(K b^(-1/2))`, i.e. unless the `a`-dependent subleading
-part is arranged so that `R = O(1)`. Under S3 (`R=O(1)`), this forces the leading
-coefficients to be `a`-independent: `d_av V_inf = 0` and `d_aa K = 0` (necessary for
-`R=O(1)`, consistent with DLH-5O point 3). A nonzero `R=O(1)` limit arises from a
-subleading term `H(a,z)/b^2` with `R -> H_a/K = O(1)`.
+Under (E), `R = V_a/V_b = (H_a/b^2 + o(b^-2)) / (K/b^2 + o(b^-2)) -> H_a/K = O(1)`,
+provided the derivative remainders are controlled uniformly — the concrete S3-compatible
+`a`-dependent subleading mechanism. The leading `K` is `a`-independent (forced by
+`R=O(1)`, consistent with DLH-5O point 3); the first `a`-dependent contribution enters
+at `O(1/b^2)` through `H`.
 
-**Status:** the remainder-derivative condition (RD) is exactly the kind of
-theorem-assumption content that is not derivable from the finite-grid accepted source;
-it is a required theorem gate (Phase A A3.5). Without (RD), the formal balance is not
-a rigorous statement about the actual solution.
+**On a retained `M(a,z) b^(-3/2)` term (removed as incoherent in Rev 1):** the Rev 1
+statement "`M_a = O(K b^(-1/2))`" is incoherent — `M` is a `b`-independent coefficient,
+so a `b`-dependent bound on its derivative is meaningless. The correct statement: a
+nonzero `b`-independent `M_a` in a `V_a ~ -(2/3) M_a b^(-3/2)` term generates
+`R ~ -(2/3)(M_a/K) sqrt(b)`, which is **outside S3** (`R = Theta(sqrt(b))`, not
+`O(1)`). Hence **S3 requires `M_a = 0` at that order**: any `b^(-3/2)` coefficient must
+be `a`-independent, and `a`-dependence may enter only at `O(1/b^2)` or smaller, exactly
+as in (E).
+
+**Status:** the derivative-remainder expansion (E) — including the uniform small-o
+bounds on `r0`, `r_b`, `r_a` and the `K`-a-independence / `H` regularity it requires —
+is exactly the kind of theorem-assumption content that is not derivable from the
+finite-grid accepted source; it is a required theorem gate (Phase A A3.5). Without (E)
+(or an equivalent justified expansion), the formal balance is not a rigorous statement
+about the actual solution.
 
 ---
 
@@ -177,17 +236,29 @@ a rigorous statement about the actual solution.
 | Claim | Status |
 |---|---|
 | `V_b * b^2 -> K` with `K = 4/(rho+r_b)^2` follows from current authority alone | **NO** — not derivable (no existence/realization/remainder control). |
-| `V_b * b^2 -> K` conditional on the S3 balance being realized | **YES (conditional)** — if the `p=2` tail is realized with remainder control (RD) and uniformity, the O(1/b) balance gives `K = 4/(rho+r_b)^2` (z-constant). |
+| `V_b * b^2 -> K` conditional on the S3 balance being realized | **YES (conditional)** — if the `p=2` tail is realized with the derivative-remainder contract (E) and uniformity, the O(1/b) balance gives `K = 4/(rho+r_b)^2` (z-constant). |
 | `V_b * b^2 -> K` is unconditionally false | **NOT CLAIMED** — the formal balance is self-consistent, so the tail is a live candidate, but it is not a theorem. |
 
 ---
 
 ## C6. Bottom line (Phase C)
 
-- Inside S3, the only self-consistent formal tail scale is `p=2`; `p<2`, `p>2`, log,
-  slowly-varying, and oscillatory tails are formally excluded (C1-C2).
-- This is a **formal dominant-balance exclusion**, not an actual asymptotic theorem
-  (C3); it requires existence/comparison, remainder control (RD), no exotic regime,
-  and uniformity.
+- Inside S3, across the **correctly analyzed families**, the only self-consistent
+  formal tail scale is `p=2`:
+  - `1 < p < 2`: excluded by the **switch-spectrum argument** — the rho/r_b/S block at
+    `b^(-(p-1))` dominates (`p-1 < p/2`), and `[rho + (p-1) r_b] K = S*K` has no
+    nonzero `K` because `rho + (p-1) r_b > 0` is not in the switch spectrum `{0,-2/3}`;
+  - `p > 2`: consumption block `-2 sqrt(K)/b^(p/2)` dominates (`p/2 < p-1`) and is
+    unbalanced;
+  - `p = 1` log tail: excluded by S1 boundedness;
+  - explicitly tested slow families: `C = b^(-alpha)` (`0<alpha<1` via the
+    switch-spectrum equation `(rho + r_b alpha) C = S*C`, no positive `alpha`;
+    `alpha>1` via the unbalanced consumption term) and `C = 1/log b` (unbalanced
+    dominant `rho*C`) are excluded by correct order accounting.
+  - **Broader non-power/exotic S3 tails are NOT claimed excluded** — they remain part
+    of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
+- This is a **formal dominant-balance statement**, not an actual asymptotic theorem
+  (C3); it requires existence/comparison, the derivative-remainder contract (E), no
+  exotic regime, and uniformity.
 - `V_b*b^2 -> K`: **conditional**, not derivable from current authority.
 - These are the `MISSING_ASYMPTOTIC_REALIZATION` components of the DLH-5Q terminal.

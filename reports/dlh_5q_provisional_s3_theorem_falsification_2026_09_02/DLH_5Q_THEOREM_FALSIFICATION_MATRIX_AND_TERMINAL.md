@@ -1,7 +1,10 @@
-# DLH-5Q Phase G — Theorem / Falsification Matrix and Terminal
+# DLH-5Q Phase G — Theorem / Falsification Matrix and Terminal (Rev 2)
 
 **Issue #43 Phase G (step 39).** Produces the theorem/falsification matrix and the
-exact single terminal.
+exact single terminal. **Rev 2 reflects the corrected `1<p<2` and slow-tail
+arguments (switch-spectrum-based exclusions), the narrowed (non-exhaustive)
+falsification-search conclusion, and the requalified `mu_W/b>=0` search** (reviewer
+`5506978886`); terminal B is retained.
 
 ---
 
@@ -20,14 +23,14 @@ exact single terminal.
 
 | Row | Item | Status under provisional S1+S2+S3 |
 |---|---|---|
-| 1 | **Existence** of an admissible value solution (continuous unbounded-`b` HJB) | **NOT ESTABLISHED** — needs a solution notion + comparison framework on `(b_lo,+inf) x (0,a_max) x {z}`, endpoint data (`a=10`, `b_lo`), uniform estimates (Phase B B1) |
+| 1 | **Existence** of an admissible value solution (continuous unbounded-`b` HJB) | **NOT ESTABLISHED** — needs a solution notion + comparison framework for the **first-order regime-switching** HJB on `(b_lo,+inf) x (0,a_max) x {z}`, endpoint data (`a=10`, `b_lo`), uniform estimates (Phase B B1) |
 | 2 | **Comparison / uniqueness** | **NOT ESTABLISHED** — `V_inf=0` is a level/boundary selection, not a uniqueness theorem; a comparison principle + class-consistency of `R=O(1)` is required (Phase B B2) |
 | 3 | **S2 necessity status** (`V_inf=0` as the actual tail-value condition) | **PROVISIONAL ASSUMPTION** (not a proved necessity); within the `p=2` formal balance the O(1) equation `(rho I - S)V_inf = 0`, `rho not in spec(S)`, forces `V_inf=0` at the formal level (consistent, but not a theorem) |
 | 4 | **S3 status** (`R=O(1)` primary; P-TR sensitivity only) | **PROVISIONAL WORKING CLASS** (Owner-adopted); excludes the `m=1/2` branch by class; does NOT prove realized tail is `p=2` |
-| 5 | **p=2 asymptotic realization** | **CONDITIONAL / NOT ESTABLISHED** — p=2 is the unique self-consistent formal balance inside S3 (p<2, p>2, log, slowly-varying formally excluded); actual realization needs existence/comparison/remainder-control/no-exotic-regime (Phase C) |
+| 5 | **p=2 asymptotic realization** | **CONDITIONAL / NOT ESTABLISHED** — p=2 is the unique self-consistent formal balance inside S3 **across the correctly analyzed families** (power `1<p<2` via the switch-spectrum argument; `p>2` via the unbalanced consumption block; `p<=1`/log via S1 boundedness; explicit slow families via corrected order accounting); **broader non-power/exotic classes remain open**; actual realization needs existence/comparison/remainder-control/no-exotic-regime (Phase C) |
 | 6 | **Coefficient convergence** (`V_b*b^2 -> K`, `c/b -> 0.0175`, `mu_W/b -> -0.0025`) | **CONDITIONAL** on p=2 realization; `K=4/(rho+r_b)^2`, `c/b -> 0.0175`, `mu_W/b -> -0.0025 < 0` derived from the O(1/b) balance (Phase D) |
 | 7 | **Full-`[0,10]` vs interior-`a` theorem scope** | **INTERIOR-`a` CONDITIONAL ONLY**; full support needs `a=10` and `b_lo` Owner endpoint decisions (Phase F) |
-| 8 | **In-class counterexample search** (`p!=2`, log/non-power, remainder, z-coupling, `mu_W/b>=0` under S3) | **NONE FOUND** (formal exclusions; no first-order z-deformation; no `mu_W/b>=0` branch) — S3 not analytically falsified from inside (Phase E) |
+| 8 | **In-class counterexample search** (`p!=2`, log/non-power, remainder, z-coupling, `mu_W/b>=0` under S3) | **NONE FOUND among the correctly analyzed families** (power `p!=2` via corrected balances/switch-spectrum; explicit log/slow families via order calcs; no first-order z-deformation; `mu_W/b>=0` none found **conditional on the realized `p=2` balance**) — S3 not analytically falsified from inside by those families; **not an exhaustive exclusion** (Phase E) |
 | 9 | **Out-of-class critical-branch benchmark** (`R ~ Theta(sqrt(b))`) | **PRESERVED outside S3** as exclusion-cost/falsification benchmark; `UNRESOLVED/ADMISSIBLE` on compact interior-`a`; not declared impossible (Phase E E6) |
 | 10 | **Future numerical falsification readiness** | **READY (design only, NOT executed)** — observables `V_a/V_b`, `b^2 V_b`, `c/b`, `d` order, `chi` order, `mu_W/b`, boundary influence, pass/fail thresholds (Phase P) |
 
@@ -63,15 +66,22 @@ DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPT
 
 ## G3. Route reasoning (why B)
 
-1. The provisional S3 class is **internally consistent**: no in-class counterexample
-   was found (Phase E), so the class is not falsified from inside (not C).
-2. The `p=2` balance is the **unique self-consistent formal branch** inside S3, and the
-   coefficient/drift system is derived conditional on realization (Phase C/D).
+1. The provisional S3 class is **internally consistent across the correctly analyzed
+   families**: no counterexample among the power (`p!=2`), log, and explicitly tested
+   slow families was found (Phase E), so the class is not falsified from inside by
+   those families (not C). The exclusion is **not exhaustive** — broader non-power/
+   exotic S3 tails remain part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME`
+   gate.
+2. The `p=2` balance is the **unique self-consistent formal branch among the analyzed
+   families** inside S3 (power `1<p<2` excluded by the switch-spectrum argument,
+   `p>2` by the unbalanced consumption block, `p<=1`/log by S1 boundedness, explicit
+   slow families by corrected order accounting), and the coefficient/drift system is
+   derived conditional on realization (Phase C/D).
 3. But **existence, comparison, and asymptotic realization are not established**
    (Phase B/C): the accepted finite-grid source does not provide an infinite-domain
-   existence/comparison framework, endpoint authority (`a=10`, `b_lo`) is unresolved,
-   and remainder-control/uniformity are theorem gates. Hence the theorem is **not
-   closed**.
+   existence/comparison framework for the first-order regime-switching HJB, endpoint
+   authority (`a=10`, `b_lo`) is unresolved, and the derivative-remainder contract
+   (E) / uniformity are theorem gates. Hence the theorem is **not closed**.
 4. The endpoint/full-support issue (Phase F) is real but secondary: even the
    interior-`a` statement awaits the Phase B/C gates, so terminal D would overstate
    current support.

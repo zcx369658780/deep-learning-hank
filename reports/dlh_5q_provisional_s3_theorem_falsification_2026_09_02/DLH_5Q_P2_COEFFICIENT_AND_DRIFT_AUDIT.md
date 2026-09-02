@@ -1,4 +1,4 @@
-# DLH-5Q Phase D — p=2 Coefficient and Drift Audit
+# DLH-5Q Phase D — p=2 Coefficient and Drift Audit (Rev 2)
 
 **Issue #43 Phase D (steps 29-31).** Conditional on the `p=2` balance being realized
 within the stated theorem assumptions (Phase C), derives/verifies:
@@ -11,7 +11,10 @@ mu_W/b -> -0.0025,
 ```
 
 and audits z-switching, labor, transfer, adjustment cost, and fixed-`a` terms at every
-same order. States theorem-level vs conditional vs unsupported.
+same order. States theorem-level vs conditional vs unsupported. **Rev 2 renames the
+remainder gate to the non-degenerate derivative-remainder contract (E) (Phase C C4)
+and requalifies the `mu_W/b >= 0` search as conditional on the realized `p=2` balance**
+(reviewer `5506978886`).
 
 ---
 
@@ -27,7 +30,8 @@ Phase C system, restated and audited under S3.
 
 ## D1. The O(1/b) coefficient system
 
-Assume the `p=2` tail is realized with remainder control (RD) and uniformity:
+Assume the `p=2` tail is realized with the derivative-remainder contract (E)
+(Phase C C4) and uniformity:
 
 ```text
 V ~ -K/b - M(a,z) b^(-3/2) + ...,   V_b ~ K/b^2,   R = V_a/V_b = O(1),   K a-independent.
@@ -112,10 +116,10 @@ DLH-5O Phase E/F and DLH-5N.
 
 | Statement | Status |
 |---|---|
-| `(rho+r_b)K - 2 sqrt(K) = S*K` with `K = 4/(rho+r_b)^2`, `c/b -> 0.0175`, `mu_W/b -> -0.0025` | **CONDITIONAL** (valid if the `p=2` tail is realized with remainder control, no exotic regime, and uniformity) |
+| `(rho+r_b)K - 2 sqrt(K) = S*K` with `K = 4/(rho+r_b)^2`, `c/b -> 0.0175`, `mu_W/b -> -0.0025` | **CONDITIONAL** (valid if the `p=2` tail is realized with the derivative-remainder contract (E), no exotic regime, and uniformity) |
 | The actual HJB solution realizes these values | **UNSUPPORTED** (needs existence + comparison + asymptotic realization) |
 | `mu_W/b < 0` in the fixed-`a` liquid tail under S3 | **CONDITIONAL** (inward under the `p=2` balance; the out-of-class critical family is also inward) |
-| Any `mu_W/b >= 0` branch under S3 | **NOT FOUND** (see falsification search; would require `c/b <= r_b`, i.e. `K >= 1/r_b^2`, outside the S3 balance) |
+| Any `mu_W/b >= 0` branch under S3 | **NOT FOUND — CONDITIONAL** on the realized `p=2` coefficient balance (would require `c/b <= r_b`, i.e. `K >= 1/r_b^2`, outside the S3 balance); NOT a general theorem covering every unresolved S3 non-power/exotic tail (Phase E E5, step 23) |
 | Full `[0,10]` uniform version | **UNSUPPORTED** (endpoint authority missing; Phase F) |
 
 ---

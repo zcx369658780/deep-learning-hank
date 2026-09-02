@@ -1,8 +1,8 @@
-# DLH-5Q — Forbidden-Operation / Scope Check (Issue #43 §11)
+# DLH-5Q — Forbidden-Operation / Scope Check (Issue #43 §11) — Rev 2
 
 DLH-5Q is a **theorem-verification + falsification-design gate only**. DSH performed
-NONE of the following during DLH-5Q; no source, model, domain, numerical, or endpoint
-object was touched.
+NONE of the following during DLH-5Q (Rev 1 `9f5774d` and Rev 2 on the same dedicated
+branch); no source, model, domain, numerical, or endpoint object was touched.
 
 | Forbidden operation | Status |
 |---|---|
@@ -24,6 +24,10 @@ object was touched.
 | Claim the actual HJB solution realizes `p=2` merely because S3 excludes `m=1/2` | NOT PERFORMED (explicitly refused; step 27) |
 | Claim the critical `m=1/2` branch is ruled out or economically impossible | NOT PERFORMED (preserved outside S3 as benchmark; step 37) |
 | Execute the future numerical falsification protocol | NOT PERFORMED (design only; step 38) |
+| Claim consumption dominates for `1<p<2` (reversed-inequality error) | NOT RETAINED — withdrawn in Rev 2; `1<p<2` is excluded by the switch-spectrum argument on the dominant rho/r_b/S block (reviewer `5506978886`) |
+| Claim all non-power/exotic S3 tails are formally excluded | NOT PERFORMED — Rev 2 excludes only power families and explicitly tested log/slow families; broader classes remain open (step 18) |
+| Use a degenerate derivative-remainder term `|b^2(V_a - R V_b)|` or `M_a = O(K b^(-1/2))` | NOT RETAINED — removed in Rev 2; replaced by the explicit derivative-remainder contract (E) (Phase C C4) |
+| Call the frozen analytic problem a second-order HJB | NOT RETAINED — corrected to the first-order regime-switching HJB (Phase B B1) |
 | `git add .` / `git add -A` | NOT PERFORMED (explicit staging of allowlist paths only) |
 
 ---

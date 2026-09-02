@@ -1,10 +1,13 @@
-# DLH-5Q Phase E — Analytic Falsification Search
+# DLH-5Q Phase E — Analytic Falsification Search (Rev 2)
 
 **Issue #43 Phase E (steps 32-37).** Treats the provisional S3 class
 (`R=V_a/V_b=O(1)` uniformly, `V_inf=0`) as falsifiable. Executes **analytic
 falsification search only** (no numerical HJB/KFE/grid execution). Searches for
 S3-internal alternatives and preserves the accepted critical `m=1/2` family outside S3
-as an exclusion-cost benchmark (NOT an in-class counterexample).
+as an exclusion-cost benchmark (NOT an in-class counterexample). **Rev 2 corrects the
+`1<p<2` dominant-order argument (rho/r_b/S block dominates; switch-spectrum
+exclusion), corrects the slow-tail order accounting, and narrows "no in-class
+counterexample" to the correctly analyzed families** (reviewer `5506978886`).
 
 ---
 
@@ -14,44 +17,63 @@ An S3-internal alternative would be a tail with `R=O(1)` and `V_inf=0` that does
 realize the `p=2` coefficient balance, i.e. one of:
 
 - a `p != 2` power tail;
-- a non-power / log / slowly-varying tail;
+- a non-power / log / slowly-varying tail (of a form admitted by the tested ansatze);
 - a derivative-remainder construction that changes the `O(1/b)` coefficient;
 - a z-coupling or endpoint construction that violates claimed uniformity while
   remaining in S3;
-- any formal branch with `mu_W/b >= 0` under S3.
+- any formal branch with `mu_W/b >= 0` under S3 (conditional on the realized `p=2`
+  balance — E5).
+
+"**No in-class counterexample found**" below means **no counterexample found among the
+correctly analyzed families**; it is NOT an exhaustive exclusion of every non-power /
+exotic S3 tail (step 22).
 
 ---
 
 ## E1. Search 1 — an S3-admissible alternative tail with `p != 2`
 
-**Result: NONE FOUND (formal exclusion).** From Phase C: for `1 < p < 2` and `p > 2`,
-the consumption/utility term `u - c V_b = -2 sqrt(V_b) ~ -2 sqrt(K)/b^(p/2)` is of a
-different order than the `rho*V`, `r_b*b*V_b`, `S*V` terms (`1/b^(p-1)`) and is
-unbalanced. `p <= 1` is excluded by S1 boundedness. So no `p != 2` power tail survives
-inside S3 at the formal level.
+**Result: NONE FOUND among the power families (formal exclusion, corrected).**
+
+- `1 < p < 2`: the rho/r_b/S block at `b^(-(p-1))` **dominates** (since `p-1 < p/2`);
+  the leading equation is `[rho + (p-1) r_b] K = S*K`. For the frozen symmetric `S`
+  (spectrum `{0,-2/3}`), `rho + (p-1) r_b > 0` is not an eigenvalue of `S`, so no
+  nonzero `K` satisfies it; `1 < p < 2` is excluded by the **switch-spectrum argument**
+  (Phase C C1). (Rev 1's "consumption dominates for `p<2`" was the reversed inequality
+  and is withdrawn.)
+- `p > 2`: `p/2 < p-1`, so the consumption block `-2 sqrt(K)/b^(p/2)` dominates and is
+  unbalanced — excluded (Phase C C1).
+- `p <= 1`: excluded by S1 boundedness (log tail `V ~ -K ln b`, or `V` unbounded).
+- Hence no `p != 2` power tail survives inside S3 at the formal level.
 
 **Caveat:** this is a formal dominant-balance exclusion (Phase C C3), not a theorem;
-it cannot rule out an *a priori unanticipated* regime. It is a negative result for the
-falsification search, not an in-class counterexample.
+it cannot rule out an *a priori unanticipated* regime or non-power/exotic families.
+It is a negative result for the falsification search, not an in-class counterexample.
 
 ---
 
 ## E2. Search 2 — an S3-admissible non-power / log tail
 
-**Result: NONE FOUND.**
+**Result: NONE FOUND among the explicitly tested families.**
 
 - **Log tail** (`V_b ~ K/b`): excluded by S1 boundedness (`V ~ -K ln b -> -inf`).
-- **Slowly-varying tail** (`V ~ -C(b)`, `C -> 0`): the balance drives the value scale
-  to `C ~ 1/b` (`p=2`); power-like `C = b^(-alpha)` requires `alpha = 1` for the
-  consumption/rho/r_b terms to balance, `alpha > 1` leaves the consumption term
-  unbalanced at its own (higher) order, and `alpha < 1` is inconsistent with the
-  rho/r_b condition `alpha = rho/r_b = 4/3`. General slowly-varying `C` fails the same
-  way. (Formal argument, Phase C C2.)
+- **Slowly-varying tail** (`V ~ -C(b)`, `C -> 0`, `C'<0`):
+  - power-like `C = b^(-alpha)`: the leading balance is the switch-spectrum equation
+    `(rho + r_b alpha) C(z) = S C(z)` (z-dependent amplitude); for the spectrum
+    `{0,-2/3}` there is **no positive `alpha`** (`alpha = -rho/r_b < 0` for the
+    z-constant/eigenvalue-0 case; the `-2/3` case is also negative). `alpha > 1` is
+    separately excluded by the unbalanced dominant consumption term. (Rev 1's
+    `alpha = rho/r_b = 4/3` had the sign wrong; corrected in Phase C C2.)
+  - explicit example `C = 1/log b`: `rho*C = O(1/log b)` dominates
+    (`r_b*b*V_b = O(1/log^2 b)`, consumption `O(1/(sqrt(b) log b))`) and is
+    unbalanced — excluded.
+- **Broader non-power/exotic families** (general slowly-varying `C`, oscillatory-
+  envelope constructions keeping `V_b>0`, etc.): **NOT claimed excluded**; they remain
+  part of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate (step 18).
 - **Oscillatory tails:** violate S1 `V_b > 0` on monotone intervals; not coherent in
   S3.
 
-**Caveat:** the slowly-varying analysis assumes the leading ansatz `V ~ -C(b)` and
-regularity; a formal exclusion, not a theorem.
+**Caveat:** the tested-family exclusions are formal order-accounting statements
+(Phase C C2/C3), not theorems.
 
 ---
 
@@ -64,7 +86,8 @@ transfer Hamiltonian `H_tr = V_b[d(R-1)-chi]` is a **bounded multiple of `V_b`**
 could only shift `K` if it made `H_tr` (or `r_a_eff a V_a`, or labor) same-order at
 `O(1/b)`, which would require `d` or `chi` (or `R-1`) to grow like `b`, violating
 `R=O(1)`. Hence **inside S3 the p=2 coefficient is stable against remainder
-constructions** (conditional on the balance).
+constructions** (conditional on the balance; the derivative-remainder contract (E)
+must be satisfied — Phase C C4).
 
 **Contrast (out-of-class):** the critical `m=1/2` branch does change the coefficient —
 `(rho+r_b)K - 2 sqrt(K) = S*K - 0.5*C*K/chi_1`, `c/b = (rho+r_b+0.5 C/chi_1)/2` (accepted
@@ -102,13 +125,15 @@ counterexample.
 
 ## E5. Search 5 — an S3-admissible formal branch with `mu_W/b >= 0`
 
-**Result: NONE FOUND.** Under S3 and the `p=2` balance, `mu_W/b -> r_b - c/b =
-r_b - (rho+r_b)/2 = -0.0025 < 0` (Phase D D3). A branch with `mu_W/b >= 0` would
-require `c/b <= r_b`, i.e. `sqrt(K) >= 1/r_b`, i.e. `K >= 1/r_b^2 = 4444.4`. But the
-S3 balance pins `K = 4/(rho+r_b)^2 = 3265.3` (no same-order transfer/cost term can
-shift it, E3). No such branch is found inside S3. (For reference, the out-of-class
-critical family is also inward: `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`, accepted DLH-5P
-Rev 4.)
+**Result: NONE FOUND — CONDITIONAL on the realized `p=2` coefficient balance.**
+Under the S3 `p=2` balance, `mu_W/b -> r_b - c/b = r_b - (rho+r_b)/2 = -0.0025 < 0`
+(Phase D D3). A branch with `mu_W/b >= 0` would require `c/b <= r_b`, i.e.
+`sqrt(K) >= 1/r_b`, i.e. `K >= 1/r_b^2 = 4444.4`; but the `p=2` balance pins
+`K = 4/(rho+r_b)^2 = 3265.3` (no same-order transfer/cost term can shift it, E3).
+This is **conditional on the realized `p=2` coefficient balance**; it is NOT a general
+theorem covering every unresolved S3 non-power/exotic tail (step 23). (For reference,
+the out-of-class critical family is also inward: `mu_W/b = -0.0025 - 3C/(4 chi_1) < 0`,
+accepted DLH-5P Rev 4.)
 
 ---
 
@@ -139,14 +164,17 @@ counterexample.
 
 | Search | Target | Result |
 |---|---|---|
-| 1 | `p != 2` power tail in S3 | NONE FOUND (formal exclusion) |
-| 2 | log / non-power / slowly-varying tail in S3 | NONE FOUND (S1 boundedness / balance) |
-| 3 | remainder construction changing p=2 coefficient in S3 | NONE FOUND (H_tr subleading) |
-| 4 | z-coupling / endpoint uniformity violation in S3 | NO first-order z-deformation (spectral obstruction); endpoint uniformity = authority gap, not in-class |
-| 5 | `mu_W/b >= 0` branch in S3 | NONE FOUND (would need `K >= 1/r_b^2`, outside S3 balance) |
+| 1 | `p != 2` power tail in S3 | NONE FOUND among power families (`1<p<2` via switch-spectrum argument; `p>2` via unbalanced consumption; `p<=1` via S1 boundedness) |
+| 2 | log / non-power / slowly-varying tail in S3 | NONE FOUND among explicitly tested families (log via S1; `C=b^(-alpha)` via switch-spectrum / unbalanced consumption; `C=1/log b` via unbalanced `rho*C`); broader non-power/exotic classes remain OPEN gates |
+| 3 | remainder construction changing p=2 coefficient in S3 | NONE FOUND (H_tr subleading; contract (E) required) |
+| 4 | z-coupling / endpoint uniformity violation in S3 | NO first-order z-deformation (spectral obstruction `0.0175 notin {0,-2/3}`); endpoint uniformity = authority gap, not in-class |
+| 5 | `mu_W/b >= 0` branch in S3 | NONE FOUND — CONDITIONAL on the realized `p=2` balance (would need `K >= 1/r_b^2`, outside the S3 balance); not a general theorem over all S3 non-power tails |
 | Benchmark | critical `m=1/2` family | PRESERVED outside S3 as exclusion-cost benchmark |
 
-**Verdict:** no in-class S3 counterexample found → provisional S3 is NOT analytically
-falsified from inside (so terminal C is not selected). The class remains internally
-consistent at the formal level, but it is also NOT verified as a theorem (Phase B/C
-gaps), so terminal B is selected.
+**Verdict:** no in-class S3 counterexample was found **among the correctly analyzed
+families** (powers `p != 2` via the corrected balances, log and the explicitly tested
+slow families via correct order accounting). Provisional S3 is therefore NOT
+analytically falsified from inside by those families (so terminal C is not selected).
+But the exclusion is **not exhaustive** — broader non-power/exotic S3 tails remain part
+of the open `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate, and the class is also NOT
+verified as a theorem (Phase B/C gaps). Terminal B is selected.

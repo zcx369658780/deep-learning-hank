@@ -1,11 +1,14 @@
-# DLH-5Q Phase B — Existence / Comparison / Uniqueness Audit
+# DLH-5Q Phase B — Existence / Comparison / Uniqueness Audit (Rev 2)
 
 **Issue #43 Phase B (steps 21-23).** Determines whether the provisional S1+S2+S3
 analytic problem currently has enough specification to support existence of an
 admissible value solution, comparison/uniqueness, value-level uniqueness under
 `V_inf=0`, and endpoint compatibility. No theorem may be claimed from `V_inf=0` alone
 (Issue #42 acceptance item 6 controls). Missing assumptions are identified rather than
-importing textbook results silently.
+importing textbook results silently. **Rev 2 corrects the PDE characterization: the
+frozen analytic problem is a first-order regime-switching HJB (no second-order term in
+the accepted authority), so any proposed viscosity/comparison framework must match
+that first-order structure** (reviewer `5506978886`).
 
 ---
 
@@ -42,13 +45,19 @@ monotone `V`, `V_inf=0`, `R=O(1)`), and the interior balance. This is close to a
 well-posed analytic *statement*, but a rigorous existence theorem for the **continuous
 unbounded-`b`** problem requires ingredients that are not adopted:
 
-1. **A solution notion on the unbounded domain.** The natural candidate is a viscosity
-   solution (or classical `C^1` solution under additional regularity) of the second-
-   order/fully-nonlinear degenerate HJB operator. The provisional class adopts `C^1`
-   (via S1) as an ansatz-level condition, not as a proved existence theorem. The
-   standard route (Perron's method / finite-difference viscosity convergence) on an
-   unbounded domain needs a comparison framework and growth/boundary data that are not
-   part of current authority.
+1. **A solution notion on the unbounded domain.** The frozen analytic problem in this
+   Issue is a **first-order** (in the continuous asset variables `(b,a)`) HJB system
+   with finite-state Markov switching in `z` — there is no second-order/diffusion term
+   in the accepted authority:
+   `rho*V = u + (r_b*b + labor - c)*V_b + r_a_eff(a)*a*V_a + V_b*[d*(R-1)-chi] + S*V`.
+   It is NOT a second-order degenerate HJB. The natural candidate is therefore a
+   viscosity solution (or classical `C^1` solution under additional regularity) of this
+   **first-order regime-switching HJB**. The provisional class adopts `C^1` (via S1) as
+   an ansatz-level condition, not as a proved existence theorem. A viscosity/comparison
+   route (e.g., Perron's method / finite-difference viscosity convergence) may be
+   proposed, but it must be stated for the actual first-order regime-switching HJB, and
+   on an unbounded domain it still needs a comparison framework and growth/boundary
+   data that are not part of current authority.
 2. **Boundary data.** The `a=10` upper-`a` law, the `b_lo` lower-`b` law, and the
    `b -> +inf` tail condition (`V_inf=0`) are the boundary data. Two of these
    (`a=10`, `b_lo`) are unresolved endpoint authority (Phase A A4), so the boundary
