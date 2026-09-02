@@ -1,0 +1,87 @@
+# DLH-5R (Issue #44) — HJB-only provisional-S3 liquid-tail numerical falsification.
+#
+# This config controls the DLH-5R HJB-ONLY diagnostic execution and pre-registered
+# evidence screens. It reads the mature DLH-5J grid definitions read-only (no new
+# extent/resolution), the frozen D0 economics, and the accepted immutable household
+# HJB source. NO stationary KFE, NO R/W/domain/endpoint law, NO source mutation.
+# b160 remains the HARD ROUTE CEILING.
+
+[authority]
+issue = 44
+task_id = "DLH_5R_HJB_ONLY_PROVISIONAL_S3_LIQUID_TAIL_NUMERICAL_FALSIFICATION"
+owner_route = "APPROVE_Q_B2_HJB_ONLY_NUMERICAL_FALSIFICATION__NO_KFE"
+source_blob = "76ae5b149993a7edeeb8eb337f1b02b3fe33c51e"
+source_path = "src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py"
+
+[grid_authority]
+# Mature DLH-5J grid definitions are read read-only; nothing here creates a new
+# grid. b160 is the hard route ceiling (no b180/b200).
+dlh5j_config_path = "configs/dlh_5j_final_coupled_b_extent_diagnostic.toml"
+dlh5b_config_path = "configs/dlh_5b_two_region_symmetric_anchor.toml"
+region_index = 0
+route_ceiling_note = "b160_IS_THE_HARD_ROUTE_CEILING__NO_B180_B200"
+
+[frozen_economics_identity]
+wbar = 1.0
+r_a = 0.03
+taper_identity = "r_a*(1-0.1*(a/a_max)^9)_MATLAB_FAITHFUL_UNCHANGED"
+
+# Exact six mature pre-existing variants {a77,a153} x {b120,b140,b160}.
+[variants]
+J0_A77_B120 = { a_res = "a77", b_ext = "b120" }
+J1_A77_B140 = { a_res = "a77", b_ext = "b140" }
+J2_A77_B160 = { a_res = "a77", b_ext = "b160" }
+J3_A153_B120 = { a_res = "a153", b_ext = "b120" }
+J4_A153_B140 = { a_res = "a153", b_ext = "b140" }
+J5_A153_B160 = { a_res = "a153", b_ext = "b160" }
+
+[evidence_masks]
+# Primary a mask (Issue #44 section 6):
+#   a77: aligned nodes j = 1..74 inclusive (excludes a=0, and top two a77 coarse
+#        layers near a=10: j=75,76 at a=9.8684, a=10).
+#   a153: every-second aligned nodes, even j = 2..148 inclusive (excludes a=0,
+#        and the a153 even nodes corresponding to the top two a77 coarse layers:
+#        j=150 at a=9.8684, j=152 at a=10).
+# Both z states included. a=0 reported separately; a=10 not primary theorem evidence.
+a77_primary_j = [1, 74]
+a153_primary_jeven = [2, 148]
+top_two_b_nodes_excluded = true
+
+# Physical b evidence windows (Issue #44 section 6). Nodes selected by physical
+# b value. W3 only exists on b140/b160; W4 exists only on b160 (descriptive only,
+# must not alone determine the final verdict).
+[b_windows]
+W1_COMMON = { b_lo = 20.0, b_hi = 35.0, b_lo_inclusive = true, extents = ["b120", "b140", "b160"] }
+W2_COMMON_HIGH = { b_lo = 35.0, b_hi = 40.0, b_lo_inclusive = false, extents = ["b120", "b140", "b160"] }
+W3_EXTENDED = { b_lo = 42.0, b_hi = 48.0, b_lo_inclusive = true, extents = ["b140", "b160"] }
+W4_B160_ONLY = { b_lo = 50.0, b_hi = 55.0, b_lo_inclusive = true, extents = ["b160"], descriptive_only = true }
+
+[provisional_s3_p2_predictions]
+K_star = 3265.3061224489797        # 4/(rho+r_b)^2, z-constant p=2 coefficient
+c_over_b_star = 0.0175             # (rho+r_b)/2
+mu_W_over_b_star = -0.0025         # r_b - c/b
+chi_over_b_star = 0.0
+R_behavior = "R = V_a/V_b = O(1); no systematic |R| ~ sqrt(b) growth"
+
+[support_screen]
+# Issue #44 section 9 (failure of this screen is NOT automatic falsification).
+slope_band = [-2.15, -1.85]        # median raw-V_b log-log slope, high common/extended window
+Q_hat_tol_frac = 0.10              # median Q_hat within 10% of K*
+c_over_b_tol_frac = 0.10           # median c/b within 10% of 0.0175
+cross_extent_resolution_materiality = 0.10   # b140/b160 and a77/a153 material discrepancy <=10%
+
+[falsification_screen]
+# Issue #44 section 10 (strong falsification must be stable across b140 AND b160
+# AND a77 AND a153, and not attributable to boundary/floor/non-convergence artifacts).
+slope_stable_band = [-2.25, -1.75] # raw V_b slope stable OUTSIDE this band = falsification direction D
+plateau_deviation_frac = 0.20      # >20% away from K* or 0.0175 = falsification directions B/C
+stable_band_discrepancy_frac = 0.10
+
+[diagnostics]
+# Relative-difference arithmetic uses this denominator floor. Diagnostic only; it
+# NEVER alters R_hat or any economic control.
+rel_diff_denominator_floor = 1.0e-12
+min_window_valid_states = 3
+
+[output]
+root = "reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02"
