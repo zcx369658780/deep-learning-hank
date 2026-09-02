@@ -21,59 +21,45 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+**No active Builder Issue.**
 
-**Issue #44 — DLH-5R: Execute HJB-only provisional-S3 liquid-tail numerical falsification**
+Current status:
 
-Task type:
+`DLH_5R_ACCEPTED__NEXT_ROUTE_OWNER_DECISION_PENDING`
 
-`SCIENTIFIC_NUMERICAL_FALSIFICATION__PROVISIONAL_S3_HJB_TAIL_DIAGNOSTIC`
-
-Dedicated branch:
-
-`dsh/issue-44-dlh-5r-hjb-tail-falsification-2026-09-02`
-
-Builder authority becomes active only while Issue #44 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+Issue #44 / DLH-5R is CLOSED completed. DSH must STOP / fail closed until a successor Issue is explicitly published, Task Index / Startup identity is synchronized, and an authoritative activation comment is posted.
 
 Current master roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 
-## Latest accepted gate — Issue #43 / DLH-5Q
+## Latest accepted gate — Issue #44 / DLH-5R
 
 Accepted candidate:
 
-`dd39385b6cf4fcf8fed382d69683ab907747cfe3`
+`6b79b7b1ff388174b5460a32de547a25ecb8a097`
 
 Reviewer acceptance comment:
 
-`5507534903`
+`5510368753`
 
 Acceptance integration commit:
 
-`570d858aea3029e1a30c286b5c683a8efdb836bd`
+`96f0adb855233da06e96b71c6d8b6fe6aa540fc7`
 
 Accepted verdict:
 
-`DLH_5Q_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__PROVISIONAL_S3_SURVIVES_ANALYZED_FAMILIES__THEOREM_NOT_CLOSED__FALSIFICATION_PROTOCOL_READY`
+`DLH_5R_REV2_ACCEPTED__OUTCOME_C_CONFIRMED__S3_DERIVATIVE_CONTROL_NUMERICALLY_COMPATIBLE_ON_ACCESSIBLE_RANGE__P2_ASYMPTOTIC_REALIZATION_NOT_REACHED__FINITE_TRUNCATION_ASYMPTOTIC_REACH_REMAINS`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_NUMERICAL_FALSIFICATION_EVIDENCE_ACCEPTED`
 
 Accepted terminal:
 
-`DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY`
+`DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION_INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS`
 
-## Owner decision after DLH-5Q
-
-Owner selected Q-B2:
-
-`APPROVE_Q_B2_HJB_ONLY_NUMERICAL_FALSIFICATION__NO_KFE`
-
-Owner-decision comment on Issue #43:
-
-`5507666206`
-
-This authorizes a bounded HJB-only numerical falsification experiment against provisional S3. It does not authorize S3 promotion, R/W selection, endpoint law adoption, or stationary KFE.
-
-## Controlling source and grids
+## Controlling source and accepted numerical evidence
 
 Accepted household source remains immutable/read-only:
 
@@ -83,11 +69,7 @@ Git blob:
 
 `76ae5b149993a7edeeb337f1b02b3fe33c51e`
 
-Read-only mature-grid authority:
-
-`configs/dlh_5j_final_coupled_b_extent_diagnostic.toml`
-
-Exactly six fresh HJB-only variants are authorized:
+DLH-5R used only the six mature pre-existing DLH-5J HJB variants:
 
 ```text
 J0_A77_B120
@@ -98,77 +80,53 @@ J4_A153_B140
 J5_A153_B160
 ```
 
-Frozen numerical bounds:
+Frozen bounds were:
 
 ```text
 a in [0,10]
 a_max = 10
 b_lo = -2
 db = 7/19
-b120 <= 41.84210526315789
-b140 <= 49.21052631578947
 b160 <= 56.578947368421055
 ```
 
-No new b extent, b resolution, b_lo, a_hi, or a_max is authorized. b160 remains the hard ceiling.
+`b160` remains the hard route ceiling after acceptance; no larger domain is authorized.
 
-## Provisional S3 predictions under test
+Accepted execution facts:
 
-The experiment tests numerical signatures of the provisional working class:
+- all six HJB-only variants converged at iteration 10 and reproduced accepted DLH-5J numerical behavior;
+- raw transfer-FOC-consistent value gradients were reconstructed from converged `V` under accepted finite-difference/upwind semantics without source mutation;
+- `MATLAB_DERIVATIVE_FLOOR` did not activate and was not substituted into `R_hat`;
+- no non-finite values occurred;
+- common physical-window observables are highly stable across b120/b140/b160 and across aligned a77/a153 nodes.
 
-```text
-R = V_a/V_b = O(1)
-K* = 4/(rho+r_b)^2 = 3265.3061224489797
-b^2 V_b -> K*
-c/b -> 0.0175
-mu_W/b -> -0.0025
-chi/b -> 0
-```
+Nonblocking reviewer clarification: realized drift signs / selected upwind branch are controlling for gradient provenance. Do not treat `r_b<rho => dissaving` as a general economic theorem.
 
-These are conditional predictions, not theorem facts.
+## Accepted scientific interpretation
 
-The accepted out-of-S3 exclusion-cost benchmark remains:
+The accessible HJB range provides three distinct conclusions:
 
-```text
-R ~ Theta(sqrt(b))
-chi/b -> positive constant
-c/b can approach a coefficient different from 0.0175
-```
+1. **Primary S3 derivative-control signature is numerically compatible over the accessible range.** `|R|≈1.11=O(1)`, `|R|/sqrt(b)` declines, and `chi/b` declines. The accepted critical `R~Theta(sqrt(b))` / positive-`chi/b` exclusion-cost signature is not observed.
+2. **p=2 coefficient/scaling is not yet numerically supported at accessible b.** Raw-`V_b` effective slopes remain far from `-2`; `b^2 V_b` remains far below `K*=3265.3061`; `c/b` remains above `0.0175`. The pre-registered support screen fails over `b<=56.5789`.
+3. **Eventual asymptotic p=2 is not numerically falsified.** `Q_hat` and `c/b` do not form stable non-p2 plateaus, the effective exponent remains materially b-dependent, and the p2-facing observables move toward the conditional p2 targets as b increases. The finite domain cannot adjudicate the eventual asymptotic class.
 
-A stable benchmark-like signature may falsify promotion of S3 as the realized model. It does not falsify the mathematical definition of S3 itself.
+Thus the accepted material limitation is **finite truncation / asymptotic reach at the b160 hard ceiling**, not instability across existing b extents or a resolutions.
 
-## Raw-gradient provenance rule
+S3 in full remains unverified: S2 `V_inf=0`, continuous-domain existence/comparison, actual asymptotic realization, coefficient convergence, and full-support endpoint authority remain open.
 
-Primary numerical observable is:
+`W4_B160_ONLY` remains descriptive only.
 
-`R_hat = V_a_raw / V_b_raw`
+## Current route decision checkpoint
 
-The raw gradients must be those used in, or algebraically consistent with, the accepted transfer FOC. Do not silently substitute consumption/labor derivative floors into `R_hat`.
+No successor is active. The next route requires Owner selection.
 
-If raw transfer-FOC-consistent gradient provenance cannot be established without accepted-source mutation, Issue #44 must stop blocked.
+Scientifically defensible options:
 
-Derivative-floor activation must be recorded separately as a numerical-semantic limitation.
+- **R-C1 — bounded analytic asymptotic-realization closure:** analyze the evolving finite-window exponent/coefficient and sharpen conditions under which the provisional S3 HJB could realize p=2, without expanding the numerical domain.
+- **R-C2 — Owner-authorized extended-domain reconsideration:** explicitly reopen the b160 ceiling only if the Owner decides the information value justifies it. Any new extent must be bounded and hypothesis-driven; uncontrolled larger-grid PASS seeking remains closed.
+- **R-C3 — endpoint model-definition review:** resolve analytic `a=10` and continuous `b_lo` authority before a full-support theorem or production-domain implementation.
 
-## Primary evidence windows
-
-Aligned physical-b windows are frozen in Issue #44:
-
-```text
-W1_COMMON      = [20,35]
-W2_COMMON_HIGH = (35,40]
-W3_EXTENDED    = [42,48]   # b140/b160
-W4_B160_ONLY   = [50,55]   # descriptive only
-```
-
-Primary interior-a evidence excludes `a=0` and the top two a77 coarse layers; a77/a153 comparisons use aligned nodes. `a=0` is reported separately; `a=10` is not primary theorem evidence.
-
-## Scientific interpretation ceiling
-
-- numerical support does not prove existence/comparison or close the S3 theorem;
-- numerical falsification must be stable across mature b extents and a resolutions and not reducible to boundary/floor/non-convergence artifacts;
-- no production-domain choice follows from Issue #44;
-- R/W/W1/W2 remain unfrozen; no `W_max`;
-- no endpoint-KKT or analytic endpoint law is authorized.
+No route skips later HJB/KFE same-controlled-process validation.
 
 ## Controlling HJB/KFE rule
 
@@ -178,43 +136,31 @@ HJB boundary policy <=> KFE boundary transition law
 
 Issue #27 remains binding. Stationary KFE remains **NOT AUTHORIZED**.
 
-## Exact Builder allowlist
+R/W/W1/W2 remain unfrozen. No `W_max` or endpoint law is authorized.
 
-Builder may create only the 10 files frozen in Issue #44:
+## Scientific ceiling at this checkpoint
 
-- one new DLH-5R config;
-- one new DLH-5R diagnostic runner;
-- eight exact report/CSV outputs under `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/`.
-
-No existing tracked file may be modified by Builder. Large raw full-grid arrays must not be committed.
-
-## Scientific ceiling during Issue #44
+Until a successor Issue is activated:
 
 - no accepted-source/economics mutation;
-- no new grid extent beyond existing b160 and no new b_lo/a_max;
+- no new b extent, b resolution, b_lo, or a_max;
 - no R/W/W1/W2/`W_max`;
-- no endpoint-KKT;
-- no stationary KFE/nullspace/pin/density/aggregates;
+- no HJB/KFE/grid/stationary execution;
+- no endpoint KKT/state-domain implementation;
 - no regional GE / multi-province audit;
 - no network training / nominal HANK;
 - no calibration / policy / welfare / Results.
 
-## DSH startup sequence
+## DSH startup rule at this checkpoint
+
+If invoked before a successor Issue is activated, DSH must:
 
 1. `Set-Location D:\deep-learning-hank`;
 2. verify repository / remote / worktree / staging;
 3. `git fetch origin` and record fresh `origin/main`;
-4. read all CURRENT rules;
-5. read Task Index, this Startup Snapshot and current Roadmap;
-6. read Issue #44 full body and latest comments, including authoritative activation;
-7. read Issue #43 acceptance, reviewer and Owner-decision comments read-only;
-8. read accepted DLH-5Q numerical protocol, DLH-5J grid config and household source read-only;
-9. verify Issue / Task Index / Startup identity exactly;
-10. create the exact dedicated branch from fresh `origin/main`;
-11. create only Issue #44 allowlist files;
-12. establish raw-gradient provenance before scientific inference;
-13. run exactly the six authorized HJB-only mature variants;
-14. do not run KFE/stationary/aggregates;
-15. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
+4. read all CURRENT rules, Task Index, this Startup Snapshot and Roadmap;
+5. observe that there is no active Builder Issue;
+6. make no repository/scientific mutation;
+7. STOP with an authority-missing classification.
 
 Chat text is not Builder authority.
