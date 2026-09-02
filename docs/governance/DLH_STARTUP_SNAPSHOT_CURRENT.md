@@ -10,9 +10,9 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 
 - live GitHub `main` = synchronized repository/code/governance authority;
 - GitHub Issue = sole DSH Builder authority only after publication + Task Index / Startup synchronization + authoritative activation comment;
-- DSH = bounded Builder/executor or bounded design analyst as authorized by the active Issue;
+- DSH = bounded Builder/executor or bounded theory analyst as authorized by the active Issue;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route advisor / task issuer / governance operator;
-- Owner = final scientific authority; model-defining domain/boundary-law decisions require Owner approval;
+- Owner = final scientific authority;
 - Builder completion is not acceptance.
 
 Priority:
@@ -23,17 +23,17 @@ Priority:
 
 Current published task:
 
-**Issue #39 — DLH-5M: Design-review state-domain geometry and joint HJB/KKT boundary law**
+**Issue #40 — DLH-5N: Analyze high-wealth total-drift asymptotics and domain viability**
 
 Task type:
 
-`SCIENTIFIC_DESIGN_REVIEW__STATE_DOMAIN_GEOMETRY_AND_JOINT_KKT`
+`SCIENTIFIC_THEORY_ANALYSIS__HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY`
 
 Dedicated branch:
 
-`dsh/issue-39-dlh-5m-domain-kkt-design-review-2026-09-02`
+`dsh/issue-40-dlh-5n-high-wealth-total-drift-asymptotics-2026-09-02`
 
-Builder authority becomes active only while Issue #39 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+Builder authority becomes active only while Issue #40 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -43,36 +43,38 @@ Historical scientific handoff:
 
 `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
 
-## Latest accepted gate — Issue #38 / DLH-5L
+## Latest accepted gate — Issue #39 / DLH-5M
 
 Accepted candidate:
 
-`3df43fe4da552e19aa7cd3486e06a7e5042d97df`
+`80cdb7ab2c14bcb7606fc66a0737c28bd3fbb4bb`
 
 Integrated to `main` by acceptance merge commit:
 
-`b20e23e28d2f9969df06cb725b3ca23a6fecc2fe`
+`69bde2115cdf038e40640ec41d23e0b620167539`
 
 Accepted reviewer verdict:
 
-`DLH_5L_ISSUE_38_IMPLEMENTATION_ACCEPTED__TOTAL_ASSET_DRIFT_INWARD_ON_PREFROZEN_HIGH_WEALTH_STATE_SET__RECTANGULAR_B_VIOLATION_REINTERPRETED_AS_COMPONENTWISE_REALLOCATION__CROSS_A_TOTAL_DRIFT_SENSITIVITY_REMAINS__DOMAIN_KKT_DESIGN_REVIEW_REQUIRED`
+`DLH_5M_REVISED_CANDIDATE_ACCEPTED__CORE_KKT_AND_W_ACTIVITY_BLOCKERS_RESOLVED__RECOMMENDATION_U_SUPPORTED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
 
 Acceptance level:
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_ANALYTICAL_DIAGNOSTIC_ACCEPTED`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_REVIEW_ACCEPTED`
+
+Owner scientific decision:
+
+`ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`
 
 Controlling accepted interpretation:
 
-- J0–J5 reproduce accepted HJB/boundary evidence exactly; deterministic repeat has max numeric diff 0;
-- the inspected state set is the pre-frozen 105-state union of accepted DLH-5K localization and cross-a evidence;
-- all 44 material positive liquid-drift states are `B_OUTWARD__TOTAL_INWARD`; no inspected state has positive `mu_W`;
-- all 17 accepted top-layer upper-b offenders violate rectangular `mu_b<=0` while satisfying `mu_a<=0` and `mu_W<=0`;
-- `mu_W=mu_a+mu_b` and the transfer-cancelled budget identity hold to machine precision; linear transfer cancels one-for-one while adjustment cost remains;
-- this establishes inward source-accounting total-asset drift only on the pre-frozen finite state set, not an infinite-domain theorem, stationary-tail result, or production-domain choice;
-- cross-a total-drift differences shrink substantially in absolute magnitude but remain above the existing 1e-2 diagnostic threshold on 16/24 aligned pairs;
-- no source/domain redesign or stationary re-entry is accepted.
-
-Non-blocking documentation note: `DLH_5L_FORBIDDEN_OPERATION_CHECK.md` contains a stale DLH-5K stationary marker; it is a labeling typo and carries no authority.
+- Design R remains a candidate only; a finite rectangular state constraint may be a numerical closure, but no vanishing-boundary-influence argument is established.
+- Design W remains a candidate only; `W=a+b` is accepted as a source-accounting coordinate but not as a production-domain authority.
+- No numerical `W_max` is authorized.
+- Maximization KKT convention for upper constraints is `L = H - lambda*g`; effective gradients are `V-lambda`.
+- On a W face, `lambda_W` cancels from the linear transfer contribution but remains through the adjustment-cost resource term.
+- W-face activity for accepted states is conditional on symbolic `W_max`; without `W_max`, one may only report `W_s=a+b` and conditional activity.
+- W is the more economically coherent hypothesis on current finite-state evidence, but finite-state evidence, undefined `W_max`, cross-a sensitivity, and unresolved process matching prevent a model freeze.
+- Stationary KFE remains NOT AUTHORIZED.
 
 ## Controlling HJB/KFE rule
 
@@ -82,63 +84,51 @@ HJB boundary policy <=> KFE boundary transition law
 
 Issue #27 remains the stationary-KFE contract. Stationary validation cannot begin until a scientifically accepted domain/boundary controlled process is implemented and numerically validated.
 
-## DLH-5M scientific rationale
+## DLH-5N scientific rationale
 
-Accepted evidence now separates two facts:
+Owner accepted Recommendation U. The next gate must not patch the boundary or choose a domain. It must ask whether the accepted household economics themselves imply high-liquid-wealth total-wealth mean reversion.
 
-1. under the current rectangular computational truncation, some high-wealth states violate componentwise upper-b inwardness;
-2. on the same pre-frozen states, source-accounting total drift `mu_W=mu_a+mu_b` is inward.
-
-This does not justify changing the domain automatically. It requires a model-design review of the state-constraint geometry and HJB/KKT law.
-
-DLH-5M must distinguish economic constraints from computational truncations and compare:
-
-### Design R — rectangular componentwise constraints
+The narrow asymptotic path is:
 
 ```text
-upper-a: mu_a <= 0
-upper-b: mu_b <= 0
-joint upper corner: mu_a <= 0 AND mu_b <= 0
+0 <= a <= a_max=10 held fixed as the currently accepted finite illiquid support
+b -> +infinity
+W=a+b -> +infinity
 ```
 
-The HJB boundary problem must be formulated as optimization over controls admissible to the active tangent cone, with corresponding KKT conditions, not clipping or ad hoc branch forcing.
-
-### Design W — hybrid joint-wealth truncation
+The theory task must analyze:
 
 ```text
-D_W = {a>=0, b>=b_min, a<=a_max, a+b<=W_max}
-W face: mu_W<=0
-upper-a face: mu_a<=0
-intersection: mu_a<=0 AND mu_W<=0
+mu_W = r_a_eff(a)*a + r_b*b + labor_income - chi(d,a) - consumption
 ```
 
-This is a candidate design only. `W=a+b` is accepted as a source-accounting coordinate, not yet as the production truncation variable. No numerical `W_max` may be chosen in DLH-5M.
+and determine whether the sign is provable from accepted authority, conditional on missing control/value-derivative asymptotics, or contradicted by a source-consistent counterexample.
 
-DLH-5M must also compare masked `(a,b)` versus transformed `(a,W)` representations, reject geometry-inconsistent shortcuts, map accepted DLH-5K/5L evidence, and provide an explicit Owner decision packet.
+This is NOT a full two-asset infinite-domain theorem. No claim about `a->infinity` is authorized because `a_max=10` and the accepted taper remain current authority.
 
-## Required Recommendation vocabulary
+## Exact scientific terminals
 
-Use exactly one:
+Issue #40 must use exactly one:
 
-- `DLH_5M_RECTANGULAR_COMPONENTWISE_STATE_CONSTRAINT_KKT_RECOMMENDED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
-- `DLH_5M_HYBRID_JOINT_WEALTH_DOMAIN_AND_JOINT_KKT_RECOMMENDED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
-- `DLH_5M_DOMAIN_GEOMETRY_DESIGN_EVIDENCE_INSUFFICIENT__OWNER_SCIENTIFIC_DECISION_REQUIRED`
-- `BLOCKED_DLH_5M_SOURCE_OR_ACCEPTED_EVIDENCE_INCONSISTENCY`
+- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_INWARDNESS_ESTABLISHED__DOMAIN_DESIGN_REVIEW_MAY_RESUME`
+- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`
+- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_NONINWARD_COUNTEREXAMPLE_ESTABLISHED__W_DIRECTION_WEAKENED`
+- `BLOCKED_DLH_5N_ACCEPTED_SOURCE_OR_ASYMPTOTIC_OBJECT_INCONSISTENCY`
 
-No recommendation freezes the model. Owner decision is mandatory before implementation.
+No terminal freezes R/W or authorizes implementation.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `docs/design/DLH_5M_STATE_DOMAIN_AND_JOINT_KKT_DESIGN_REVIEW.md`
-2. `reports/dlh_5m_state_domain_joint_kkt_design_review_2026_09_02/` with exactly eight frozen evidence files listed in Issue #39.
+1. `docs/theory/DLH_5N_HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY.md`
+2. `reports/dlh_5n_high_wealth_total_drift_asymptotics_2026_09_02/` with exactly eight files listed in Issue #40.
 
 No existing tracked file may be modified by Builder.
 
-## Scientific ceiling during Issue #39
+## Scientific ceiling during Issue #40
 
-No existing-file mutation; no HJB/KFE/regional source mutation; no taper/FOC/adjustment-cost/economic-price change; no production-domain choice or implementation; no `W_max`; no new or rerun grids; no boundary-KKT implementation; no clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, network training, nominal HANK, calibration, policy/welfare or Results.
+No source/model/domain mutation; no taper/FOC/adjustment-cost/economic-price/calibration change; no R/W/W1/W2 choice; no numerical `W_max`; no new `b_max` or `a_max`; no HJB/KFE/grid run; no previous-fixture rerun; no stationary density/tail/aggregates; no D1-D3, regional GE, multi-province audit, network training, nominal HANK, calibration, policy/welfare or Results.
 
 ## DSH startup sequence
 
@@ -146,14 +136,14 @@ No existing-file mutation; no HJB/KFE/regional source mutation; no taper/FOC/adj
 2. verify repository / remote / worktree / staging;
 3. `git fetch origin` and record fresh `origin/main`;
 4. read all CURRENT project rules;
-5. read Task Index, this Startup Snapshot, current Roadmap and historical Handoff;
-6. read Issue #39 full body and latest comments, including activation;
-7. read accepted Issue #38 review/evidence and controlling Issue #27–#37 authority;
-8. read accepted household source and DLH-5K/5L evidence read-only;
+5. read Task Index, this Startup Snapshot and current Roadmap;
+6. read Issue #40 full body and latest comments, including activation;
+7. read accepted Issue #39 acceptance/Owner-decision comments and accepted DLH-5M package read-only;
+8. read accepted household source and relevant frozen D0 configuration/evidence read-only;
 9. verify Issue / Task Index / Startup identity exactly;
-10. create the exact dedicated branch from fresh `origin/main`;
-11. create only the Issue #39 allowlist files;
-12. do not run any HJB/KFE/grid experiment;
-13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review and Owner scientific decision.
+10. create exact dedicated branch from fresh `origin/main`;
+11. create only the Issue #40 allowlist files;
+12. do not run HJB/KFE/grid/stationary experiments;
+13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
 Chat text is not Builder authority.
