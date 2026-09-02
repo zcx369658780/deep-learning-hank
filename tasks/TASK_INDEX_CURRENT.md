@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5M_STATE_DOMAIN_GEOMETRY_AND_JOINT_KKT_DESIGN_REVIEW`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5N_HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY`
 
 Last synchronized: 2026-09-02
 
@@ -10,94 +10,96 @@ Repository: `zcx369658780/deep-learning-hank`
 
 Current Issue:
 
-**Issue #39 — OPEN**
+**Issue #40 — OPEN**
 
 Title:
 
-`DLH-5M: Design-review state-domain geometry and joint HJB/KKT boundary law`
+`DLH-5N: Analyze high-wealth total-drift asymptotics and domain viability`
 
 Task type:
 
-`SCIENTIFIC_DESIGN_REVIEW__STATE_DOMAIN_GEOMETRY_AND_JOINT_KKT`
+`SCIENTIFIC_THEORY_ANALYSIS__HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY`
 
 Dedicated branch:
 
-`dsh/issue-39-dlh-5m-domain-kkt-design-review-2026-09-02`
+`dsh/issue-40-dlh-5n-high-wealth-total-drift-asymptotics-2026-09-02`
 
-Issue #39 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #39 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
+Issue #40 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #40 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
 
-## Latest accepted task — Issue #38 / DLH-5L
+## Latest accepted task — Issue #39 / DLH-5M
 
 Accepted candidate:
 
-`3df43fe4da552e19aa7cd3486e06a7e5042d97df`
+`80cdb7ab2c14bcb7606fc66a0737c28bd3fbb4bb`
 
 Integrated to `main` by acceptance merge commit:
 
-`b20e23e28d2f9969df06cb725b3ca23a6fecc2fe`
+`69bde2115cdf038e40640ec41d23e0b620167539`
 
 Accepted reviewer verdict:
 
-`DLH_5L_ISSUE_38_IMPLEMENTATION_ACCEPTED__TOTAL_ASSET_DRIFT_INWARD_ON_PREFROZEN_HIGH_WEALTH_STATE_SET__RECTANGULAR_B_VIOLATION_REINTERPRETED_AS_COMPONENTWISE_REALLOCATION__CROSS_A_TOTAL_DRIFT_SENSITIVITY_REMAINS__DOMAIN_KKT_DESIGN_REVIEW_REQUIRED`
+`DLH_5M_REVISED_CANDIDATE_ACCEPTED__CORE_KKT_AND_W_ACTIVITY_BLOCKERS_RESOLVED__RECOMMENDATION_U_SUPPORTED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
 
-Acceptance level:
+Owner scientific decision:
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_ANALYTICAL_DIAGNOSTIC_ACCEPTED`
+`ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`
 
 Accepted interpretation:
 
-- accepted J0–J5 evidence reproduces exactly and the deterministic repeat is exact;
-- the pre-frozen DLH-5K/DLH-5L evidence set contains 105 unique states;
-- every one of the 44 material positive-`mu_b` states has `mu_W=mu_a+mu_b<=0`;
-- all 17 top-layer upper-b offenders violate rectangular `mu_b<=0` while satisfying `mu_a<=0` and `mu_W<=0`;
-- the linear transfer control cancels one-for-one in total-asset drift while adjustment cost remains;
-- this is finite-state/source-accounting evidence only, not an infinite-domain mean-reversion theorem or stationary-tail proof;
-- cross-a absolute total-drift differences are smaller than liquid-drift differences, but `rel_diff_mu_W` still exceeds the pre-registered 1e-2 diagnostic threshold on 16/24 aligned pairs;
-- no production-domain replacement, HJB/KFE mutation, taper/FOC/adjustment-cost change, or stationary re-entry is accepted;
-- pure larger-b-grid continuation remains CLOSED;
-- stationary KFE remains NOT AUTHORIZED under Issue #27.
+- Design R is not frozen;
+- Design W is not frozen;
+- no numerical `W_max` is authorized;
+- `W=a+b` remains a source-accounting coordinate and a plausible truncation hypothesis, not a production-domain authority;
+- maximization KKT convention for upper constraints is `L=H-lambda*g`, effective gradients `V-lambda`;
+- at a W face `lambda_W` cancels from the linear transfer term but survives through adjustment cost;
+- W-face activity for accepted finite states is conditional on symbolic `W_max` and cannot be inferred without choosing it;
+- a finite rectangular state constraint may be a numerical closure rather than an economic cap, but no truncation-vanishing argument is accepted;
+- stationary KFE remains NOT AUTHORIZED.
 
-Reviewer note: the stale DLH-5K stationary marker in the DLH-5L forbidden-operation report is a non-scientific labeling typo only.
+## Issue #40 scientific scope
 
-## Issue #39 scientific scope
+DLH-5N is a **theory/documentation gate only**.
 
-DLH-5M is a **model-design review**, not an implementation task.
+It asks whether, under the currently accepted household equations and with the current finite illiquid support `0<=a<=10` and accepted taper held fixed, the model itself implies total-wealth mean reversion as `b->+infinity` / `W=a+b->+infinity`, without imposing an upper `b` constraint or choosing `W_max`.
 
-It must distinguish structural/economic constraints from computational truncations, and compare two coherent candidate designs:
+The Builder must:
 
-1. **Design R — rectangular componentwise state constraints** with tangent-cone/KKT conditions on active faces, including `mu_a<=0`, `mu_b<=0`, and both at the upper corner.
-2. **Design W — hybrid joint-wealth truncation** `a>=0`, `b>=b_min`, `a<=a_max`, `a+b<=W_max`, with normal-drift condition `mu_W<=0` on the joint-wealth face and joint constraints at active intersections.
+1. audit exact source asymptotic objects and frozen D0 inputs;
+2. decompose the asymptotic order of every term in `mu_W`;
+3. determine which control/value-derivative growth rates are provable vs conditional vs unidentified;
+4. build a theorem / conditional theorem / counterexample matrix;
+5. use DLH-5L finite-state evidence only as a read-only consistency check;
+6. state narrow implications for unresolved R/W domain viability;
+7. use exactly one Issue #40 terminal.
 
-The task must also compare W1 masked `(a,b)` and W2 transformed `(a,W)` representations, reject geometry-inconsistent shortcuts, map accepted DLH-5K/5L evidence to both designs, and produce an explicit Owner decision packet.
-
-No Builder recommendation freezes or changes the model. Owner decision is mandatory before any implementation authority exists.
+The task must explicitly distinguish a fixed-`a` liquid-tail result from a full two-asset infinite-domain theorem.
 
 ## Exact Builder allowlist
 
 Builder may create only:
 
-1. `docs/design/DLH_5M_STATE_DOMAIN_AND_JOINT_KKT_DESIGN_REVIEW.md`
-2. `reports/dlh_5m_state_domain_joint_kkt_design_review_2026_09_02/` with exactly:
-   - `DLH_5M_CONSTRAINT_CLASSIFICATION.md`
-   - `DLH_5M_GEOMETRY_CANDIDATES.md`
-   - `DLH_5M_JOINT_KKT_BOUNDARY_LAWS.md`
-   - `DLH_5M_ACCEPTED_EVIDENCE_MAPPING.csv`
-   - `DLH_5M_IMPLEMENTATION_IMPACT_MATRIX.csv`
-   - `DLH_5M_SCIENTIFIC_RECOMMENDATION.md`
-   - `DLH_5M_OWNER_DECISION_PACKET.md`
-   - `DLH_5M_FORBIDDEN_OPERATION_CHECK.md`
+1. `docs/theory/DLH_5N_HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY.md`
+2. `reports/dlh_5n_high_wealth_total_drift_asymptotics_2026_09_02/` with exactly:
+   - `DLH_5N_SOURCE_ASYMPTOTIC_OBJECTS.md`
+   - `DLH_5N_ASYMPTOTIC_TERM_ORDER_TABLE.md`
+   - `DLH_5N_CONTROL_GROWTH_ASSUMPTION_AUDIT.md`
+   - `DLH_5N_THEOREM_AND_COUNTEREXAMPLE_MATRIX.md`
+   - `DLH_5N_DOMAIN_VIABILITY_IMPLICATIONS.md`
+   - `DLH_5N_SCIENTIFIC_TERMINAL.md`
+   - `DLH_5N_EXECUTION_REPORT.md`
+   - `DLH_5N_FORBIDDEN_OPERATION_CHECK.md`
 
 No existing tracked file may be modified by Builder.
 
 ## Scientific ceiling
 
-No source/model/domain mutation; no numerical `W_max`; no new or rerun grid; no HJB/KFE/taper/FOC/adjustment-cost/economic-price mutation; no boundary-KKT implementation; no clipping; no stationary KFE/density/tail/aggregates; no D1-D3, regional GE, multi-province audit, neural training, nominal HANK, calibration, policy/welfare or Results.
+No source/model/domain/taper/FOC/adjustment-cost/economic-price/calibration mutation; no R/W/W1/W2 choice; no numerical `W_max`; no new `b_max` or `a_max`; no grid/HJB/KFE run; no J0–J5 rerun; no stationary density/aggregates; no regional GE or multi-province audit; no neural training; no nominal HANK; no policy/welfare/Results.
 
 No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
-- Issue #39 full body + authoritative activation comment = exact Builder design-review authority once activation is posted.
+- Issue #40 full body + authoritative activation comment = exact Builder theory-analysis authority once activation is posted.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Historical handoff remains context only: `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
+- Accepted DLH-5M design package is read-only context.
