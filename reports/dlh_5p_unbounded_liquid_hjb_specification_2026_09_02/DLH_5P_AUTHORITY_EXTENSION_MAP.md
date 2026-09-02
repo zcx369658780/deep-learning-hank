@@ -1,8 +1,13 @@
-# DLH-5P Phase A — Authority-Extension Map
+# DLH-5P Phase A — Authority-Extension Map (Rev 2)
 
-**Issue #42 Phase A.** Exact map of what is inherited from accepted authority versus
-what is newly model-defining for the fixed-`a`, unbounded-positive-`b` analytic HJB
-problem. Labels are exactly those required by Issue #42:
+**Issue #42 Phase A (Rev 2).** Exact map of what is inherited from accepted authority
+versus what is newly model-defining for the fixed-`a`, unbounded-positive-`b` analytic
+HJB problem. Labels are exactly those required by Issue #42. Rev 2: (i) the critical
+`m=1/2` branch status is updated to `UNRESOLVED/ADMISSIBLE` (the Rev 1 ruling-out is
+withdrawn — see Phase E); (ii) adopting `b_lo=-2` as continuous analytic state-space
+authority is separated from the inherited borrowing-gap economics (step 24);
+(iii) regularity includes explicit derivative-remainder control (no term-by-term
+differentiation of leading equivalences).
 
 - `INHERITED_ACCEPTED_ECONOMICS`
 - `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY`
@@ -22,24 +27,24 @@ No new specification is accepted merely by appearing in this table.
 | A3 | Transfer FOC `d = a*T(V_a/V_b-1)/chi_1`, `T(q)=min(q+chi_0,0)+max(q-chi_0,0)`, `chi_0=0.1`, `chi_1=2` (bare `a`) | `transfer_candidate` | `INHERITED_ACCEPTED_ECONOMICS` |
 | A4 | Adjustment cost `chi(d,a) = chi_0|d| + 0.5 chi_1 d^2/max(a,a_bar)`, `a_bar=1e-6` | `adjustment_cost` | `INHERITED_ACCEPTED_ECONOMICS` |
 | A5 | Drifts `mu_a = r_a_eff(a)*a + d`; `mu_b = r_b*b + labor_income - d - chi - (c - transfer_income)`, `transfer_income=0` | `asset_drifts_matlab_faithful` | `INHERITED_ACCEPTED_ECONOMICS` |
-| A6 | `r_b = 0.015`; borrowing-rate gap `rb_gap=0.01` (effective rate `0.025` for `b<0`, used in boundary/shadow selection); `r_a = 0.03`; `tau=0.15`; wages `1`; migration costs; `rho=0.02` | frozen D0 config, policy selection | `INHERITED_ACCEPTED_ECONOMICS` |
+| A6 | `r_b = 0.015`; borrowing-rate gap `rb_gap=0.01` (effective rate `0.025` for `b<0`, used in boundary/shadow selection); `r_a = 0.03`; `tau=0.15`; wages `1`; migration costs; `rho=0.02` | frozen D0 config, policy selection | `INHERITED_ACCEPTED_ECONOMICS` (the borrowing-gap economics is inherited; it is DISTINCT from adopting `b_lo=-2` as continuous analytic state-space authority, step 24) |
 | A7 | Illiquid return taper `r_a_eff(a) = r_a*(1 - 0.1*(a/a_max)^9)` on `[0,a_max=10]`; no extrapolation beyond `a_max` | `matlab_faithful_illiquid_return` | `INHERITED_ACCEPTED_ECONOMICS` (on `[0,10]` only) |
 | A8 | Productivity switch `z in {0.8,1.3}`, rate `1/3`, `S = [[-1/3,1/3],[1/3,-1/3]]`; finite Markov generator | `switch_matrix`, `bswitch` | `INHERITED_ACCEPTED_ECONOMICS` |
-| A9 | Lower liquid bound `b_lo = -2` (grid lower edge) and its finite-grid closure | solver grid dataclass, boundary cells | `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY` |
+| A9 | Lower liquid bound `b_lo = -2` (grid lower edge) and its finite-grid closure | solver grid dataclass, boundary cells | `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY` (the grid value `-2` is inherited); **adopting `b_lo=-2` as the continuous analytic state-space lower bound is a separate `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` step (step 24)** |
 | A10 | `a=0` corner: bare-`a` transfer `d = 0` for any `R`; `mu_a(0)=0` | `transfer_candidate` bare-`a`, `asset_drifts` | `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY` (corner semantics) |
 | A11 | `a=a_max=10` upper boundary: `at_upper_a` restricts `d<0`; `r_a_eff(10)=0.027` | `select_matlab_faithful_local_policy` boundary branch | `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY` |
 | A12 | Continuous interior HJB identity `rho*V = u + mu_b V_b + mu_a V_a + S*V`, equivalently `rho*V = u + (r_b b + labor - c)V_b + r_a_eff a V_a + V_b[d(R-1)-chi] + S*V` | converged fixed point of `solve_matlab_faithful_hjb` (continuum limit) | `DERIVABLE_CONTINUOUS_INTERIOR_IDENTITY` (conditional on smooth-continuum regularity) |
 | A13 | Combined transfer Hamiltonian `V_b[d(R-1)-chi]`, `R=V_a/V_b`; transfer FOC is its maximizer (up to bare-`a`/`a_bar` caveat) | A3-A5 algebra; accepted DLH-5O A3b | `DERIVABLE_CONTINUOUS_INTERIOR_IDENTITY` |
 | A14 | Unbounded positive-`b` state-space extension `(b_lo,+inf)` | none (solver is finite-grid) | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` |
 | A15 | Asymptotic boundary / transversality / no-Ponzi law at `b -> +inf` | none | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` |
-| A16 | Analytic lower-boundary law at `b_lo=-2` | finite-grid closure only (A9) | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` (or `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY` if left as data) |
+| A16 | Analytic lower-boundary law at `b_lo=-2` | finite-grid closure only (A9) | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` — distinct from the inherited borrowing-rate-gap economics (A6); adopting `b_lo=-2` as the continuous analytic state-space edge is itself new model definition (step 24) |
 | A17 | Analytic upper-`a` endpoint law at `a=a_max` | finite-grid branch only (A11) | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` |
 | A18 | Admissible value-function class (growth bound on `V`) | none | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` |
-| A19 | Regularity (smooth-continuum convergence of the upwind finite-difference solution; `C^1`/`C^2` tail) | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
-| A20 | Uniformity of rates over `(a,z)` | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
-| A21 | Derivative-control condition `P-TR: R = V_a/V_b = o(sqrt(b))` uniformly (or `R=O(1)`) | assumed in DLH-5O as a theorem premise | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` unless Owner elevates; partially justified at the dominant-balance level (Phase D/E) |
+| A19 | Regularity (smooth-continuum convergence of the upwind finite-difference solution; `C^1`/`C^2` tail) **with an explicit derivative-remainder expansion** (leading equivalences are NOT differentiated term-by-term; e.g. `V_b = K b^{-p} + M b^{-p-1/2} + ...` must be carried when differentiating) | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
+| A20 | Uniformity of rates over `(a,z)` (full `[0,10]` vs compact interior-`a` kept separate) | none | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` |
+| A21 | Derivative-control condition `P-TR: R = V_a/V_b = o(sqrt(b))` uniformly (or `R=O(1)`) | assumed in DLH-5O as a theorem premise | `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` unless the Owner elevates it; NOT independently justified by a ruling-out (the ruling-out is withdrawn — Phase E Rev 2); justified only as an explicit Owner-adopted admissibility primitive |
 | A22 | Uniqueness/comparison principle selecting the value solution | none | `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER` / `UNRESOLVED` |
-| A23 | Critical `m=1/2` branch (`R ~ Theta(sqrt(b))`) status | left unresolved in DLH-5O | `UNRESOLVED` at DLH-5O level; DLH-5P Phase E rules it out as a smooth dominant balance |
+| A23 | Critical `m=1/2` branch (`R ~ Theta(sqrt(b))`) status | left unresolved in DLH-5O | `UNRESOLVED/ADMISSIBLE` (compact interior-`a`) after Rev 2; Rev 1's "ruled out" claim withdrawn (Phase E). Full-`[0,10]` uniform smooth realization not established; `a=0` governed by the bare-`a` degeneracy |
 
 ## A1. Inheritance boundary (what is fixed)
 

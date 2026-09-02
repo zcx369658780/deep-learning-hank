@@ -1,150 +1,189 @@
-# DLH-5P Phase E — Critical `m = 1/2` Transfer Branch Analysis
+# DLH-5P Phase E — Critical `m = 1/2` Transfer Branch Analysis (Rev 2)
 
-**Issue #42 Phase E.** Analyzes the unresolved branch
+**Issue #42 Phase E (Rev 2).** Analyzes the branch
 
 ```text
 R = V_a/V_b ~ L(a,z) * sqrt(b),   L != 0,
 ```
 
 using the accepted transfer FOC and the **combined transfer Hamiltonian**
-`V_b * [ d*(R-1) - chi(d,a) ]` (never adjustment cost alone). The branch is tested as a
-smooth, uniform dominant balance under the source-faithful interior balance shared by
-all three candidates (Phase A A12/A13). A formal dominant balance is distinguished
-from an actual admissible HJB solution.
+`V_b * [ d*(R-1) - chi(d,a) ]` (never adjustment cost alone). Rev 1's conclusion that
+this branch is "ruled out" is **withdrawn** (reviewer `5504929967`, Blocking
+corrections 1-2). This revision (a) withdraws the Clairaut `p=1/2` inference,
+(b) gives the explicit remainder-derivative mechanism that admits the branch,
+(c) derives the general same-order system without the shortcut, (d) audits the
+`L ~ a^{-1/2}` interior family and the `max(a,a_bar)` endpoint behavior, and
+(e) leaves the branch **unresolved/admissible** on the compact interior per the
+reviewer's Option B.
 
-## E1. Leading transfer and adjustment-cost coefficients under `R ~ L sqrt(b)`
+## E0. Rule: no term-by-term differentiation of a leading equivalence
 
-Interior transfer/cost objects (accepted):
+A leading asymptotic equivalence (e.g. `V_b ~ K(z) b^{-p}`) may **not** be
+differentiated term-by-term to infer `V_a` or to apply Clairaut to leading terms,
+unless an explicit derivative-remainder expansion justifies it. Rev 1 violated this;
+Rev 2 does not.
 
-```text
-q = R - 1 ~ L sqrt(b),   T(q) = min(q+chi_0,0) + max(q-chi_0,0) ~ q - chi_0  (active branch),
-d = a*T(q)/chi_1 ~ (a L/chi_1) sqrt(b) =: d1(a,z) sqrt(b),   d1 = a L/chi_1,
-chi = chi_0|d| + 0.5 chi_1 d^2/max(a,a_bar) ~ 0.5 chi_1 d1^2 b/max(a,a_bar)
-    = 0.5 a^2 L^2 b / (chi_1 max(a,a_bar)),
-```
+## E1. The remainder-derivative mechanism (Blocking correction 1)
 
-and for `a > a_bar` (`a_bar = 1e-6`):
-
-```text
-chi ~ chi1c(a,z) b,   chi1c = 0.5 a L^2 / chi_1,
-d*q ~ d*R ~ (a L^2/chi_1) b,
-d*q - chi ~ (a L^2/chi_1 - 0.5 a L^2/chi_1) b = 0.5 a L^2 b / chi_1  (order b, does not cancel).
-```
-
-The combined transfer Hamiltonian (with `V_b ~ K b^{-p}` to be determined) is
+Consider the explicit expansion with a subleading a-dependent remainder
 
 ```text
-V_b * [d*q - chi] ~ K b^{-p} * (0.5 a L^2/chi_1) b = 0.5 a L^2 K b^{1-p} / chi_1.
+V_b = K(z) b^{-p} + M(a,z) b^{-p-1/2} + o(b^{-p-1/2}),   K_a = 0,
 ```
 
-## E2. Mixed-partial (Clairaut) consistency forces `p = 1/2`
-
-Suppose the value function is smooth (`C^2`) on the tail and `V_b ~ K(a,z) b^{-p}`,
-`R ~ L(a,z) b^{1/2}` with `L != 0`. Then
+valid for `p` in the range where the remainder is subleading to the leading term. This
+corresponds to a value function with
 
 ```text
-V_a = R*V_b ~ L K b^{1/2-p}.
+V_sub = M(a,z)/(1/2-p) * b^{1/2-p}   (integration of the remainder),
+V_a ~ M_a/(1/2-p) * b^{1/2-p},
+R = V_a/V_b ~ [M_a/(K(1/2-p))] sqrt(b) =: L(a,z) sqrt(b),
 ```
 
-Clairaut's theorem (`partial_a V_b = partial_b V_a`) gives, at leading order,
+and the mixed-partial check
 
 ```text
-partial_a V_b ~ (d_a K) b^{-p},        partial_b V_a ~ (1/2 - p) L K b^{-1/2-p}.
+partial_a V_b ~ M_a b^{-p-1/2},     partial_b V_a ~ M_a b^{-p-1/2},
 ```
 
-- If `d_a K != 0`: the two orders differ by `b^{-1/2}` (never equal) — not `C^2`.
-- Therefore `d_a K = 0` (`K` a-independent) and `(1/2 - p) L K = 0`; with `L != 0`,
-  `K != 0`, this forces **`p = 1/2`**.
+so **Clairaut is satisfied for arbitrary `p`** (within the expansion's validity), not
+only `p=1/2`. Therefore `C^2` smoothness alone does **not** force `p=1/2`; the
+`m=1/2` branch can coexist with any `p` (in particular `p=2`) through the
+remainder-derivative term `M`. The same missing derivative-remainder control that
+mattered in DLH-5O reappears here. **Rev 1's `p=1/2` inference is withdrawn.**
 
-**Conclusion (E2):** a nonzero critical branch `R ~ L sqrt(b)` with a smooth value
-function is a `p = 1/2` tail, `V_b ~ K(z) b^{-1/2}` (so `V ~ 2 K(z) sqrt(b) + C(a,z) + ...`
-with `C_a = L K`), **not** a `p = 2` tail. In particular, the `p = 2` value base
-(`V_b ~ K/b^2`) is **incompatible** with `R ~ sqrt(b)`: it would force `L = 0` (the
-mixed-partial orders `b^{-2}` vs `b^{-5/2}` cannot match).
+## E2. The `p = 2` base with the `m=1/2` remainder: general same-order system
 
-## E3. The altered `O(b^{1/2})` balance for the `p = 1/2` tail
+For the `p=2` base (`K` z-dependent, a-independent) with `M(a,z) != 0`:
 
-Value structure: `V ~ 2 K(z) sqrt(b) + C(a,z) + o(1)`, `C_a = L K`, `K` a-independent.
-Substitute into the source-faithful interior balance (combined-Hamiltonian form) and
-collect `O(b^{1/2})`:
+```text
+V ~ -K(z)/b - (2/3)M(a,z) b^{-3/2} + ...,
+V_b ~ K b^{-2} + M b^{-5/2} + ...,
+V_a ~ -(2/3)M_a b^{-3/2} + ...,
+R ~ -(2/3)(M_a/K) sqrt(b) = L sqrt(b),   L = -(2/3)M_a/K   (a-dependent).
+```
 
-| Term | `O(b^{1/2})` coefficient |
+Clairaut is satisfied identically: `partial_a V_b ~ M_a b^{-5/2} = partial_b V_a`.
+Transfer objects (with `max(a,a_bar)` kept explicit, Blocking correction / step 23):
+
+```text
+d = a*T(R-1)/chi_1 ~ a L b^{1/2}/chi_1 = -(2/3) a M_a b^{1/2}/(K chi_1),     (O(sqrt(b)))
+chi = chi_0|d| + 0.5 chi_1 d^2/max(a,a_bar)
+    ~ 0.5 a^2 L^2 b / (chi_1 max(a,a_bar)),
+d q - chi ~ a L^2 b/chi_1 * [1 - 0.5 a/max(a,a_bar)].
+  For a >= a_bar:    d q - chi ~ 0.5 a L^2 b / chi_1.
+  For 0 < a < a_bar: d q - chi ~ a L^2 b/chi_1 [1 - 0.5 a/a_bar]  (coefficient in (0.5,1) of a L^2 b/chi_1).
+```
+
+Combined transfer Hamiltonian term:
+
+```text
+V_b * [d q - chi] ~ K b^{-2} * [0.5 a L^2 b/chi_1] = 0.5 a L^2 K/(chi_1 b)   (a>=a_bar),   = O(1/b), a-dependent.
+```
+
+Collecting the `O(1/b)` balance of the source-faithful interior HJB (combined form):
+
+| Term | `O(1/b)` coefficient |
 |---|---|
-| `rho*V` | `2 rho K` |
-| `(r_b b + labor - c)*V_b` | `r_b K` (`c = V_b^{-1/2} ~ K^{-1/2} b^{1/4}` lower order; `labor = o(1)`) |
-| `r_a_eff(a)*a*V_a` | `0` (`V_a ~ C_a = O(1)`, so this is `O(1)`, lower order) |
-| combined transfer `V_b*[d*q - chi]` | `0.5 a L^2 K / chi_1` (a-dependent) |
-| `S*V` | `2 S*K` |
-| `u ~ -K^{1/2} b^{-1/4}` | lower order |
-
-Balance at `O(b^{1/2})`:
+| `rho*V` | `-rho*K` (the `M b^{-3/2}` term is lower order) |
+| `u = -1/c` | `-sqrt(K)` (c correction is `O(b^{1/2})`, u correction lower order) |
+| `(r_b b + labor - c)V_b` | `(r_b - 1/sqrt(K))K` |
+| `r_a_eff(a) a V_a` | `0` (this is `O(b^{-3/2})`) |
+| combined transfer | `0.5 a L^2 K / chi_1` (a-dependent) |
+| `S*V` | `-S*K` |
 
 ```text
-2 rho K = r_b K + 0.5 a L^2 K / chi_1 + 2 S*K.        (E*)
+(rho + r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K / chi_1,   L = -(2/3)M_a/K.     (E*)
 ```
 
-**Uniformity kills it.** Every `O(b^{1/2})` term except the transfer term is
-`a`-independent (`K` a-independent, `S*K` a-independent). The transfer term
-`0.5 a L^2 K / chi_1` is `a`-dependent and positive for `a in (0,10]` when `L != 0`.
-A single-sided `a`-dependence cannot be matched uniformly over `(0,10]`: the equation
-(E*) holds for **one** `a` value at most unless `L = 0`. Hence uniform consistency
-forces `L = 0` — contradiction with `L != 0`.
+This is the **altered same-order system** for the `m=1/2`/`p=2` branch.
 
-**Switch-spectrum check.** If instead one solves (E*) pointwise for a fixed `a`, the
-a-dependent term forces `(2 rho - r_b - 0.5 a L^2/chi_1)K = 2 S*K`. For the symmetric
-switch this requires `0.5 a L^2/chi_1 = 2 rho - r_b - 2*lambda` for an eigenvalue
-`lambda in {0, -2/3}`, i.e. `L^2 = (2*chi_1/a)(2 rho - r_b - 2 lambda)`. The only
-positive options give `L(a) ~ a^{-1/2}` (singular at `a=0`, not smooth, not uniform).
-At `a = 0` (where the transfer term vanishes) the equation reduces to
-`(rho - r_b/2)K = S*K`; with `rho - r_b/2 = 0.02 - 0.0075 = 0.0125 notin {0,-2/3}`
-this has only `K = 0`. Either way, no non-trivial smooth solution exists.
+## E3. Audit of the `a`-dependence: `L ~ a^{-1/2}` interior family (Blocking correction 2)
 
-## E4. Status of the critical branch under each candidate
+(E*) must hold as a pointwise identity for each `a`. With `K` a-independent, the only
+a-dependent term is `0.5 a L^2 K/chi_1`. Rev 1 claimed this "forces `L = 0` globally."
+That is too strong: the term is a-independent if
 
-The interior balance and the Clairaut argument are shared by all three candidates
-(S1/S2/S3 differ only in tail selection laws; the ruling-out uses only the interior
-equation and smoothness/uniformity). Hence:
+```text
+a L(a,z)^2 = C(z)  (a-independent),   i.e.   L(a,z) ~ C(z)^{1/2} a^{-1/2}.
+```
 
-- **Under S1:** the `m=1/2` branch is **RULED OUT** as a smooth, uniform dominant
-  balance (it cannot satisfy the interior balance). It is not ruled out as a
-  non-smooth/non-power exotic realization (framework-level gap).
-- **Under S2:** same ruling-out (the transversality law is irrelevant to the interior
-  `O(b^{1/2})` balance). It is **RULED OUT** as a smooth dominant balance.
-- **Under S3:** the branch is additionally **excluded by the admissible class**
-  (`R=O(1)` or P-TR), consistent with the balance-level ruling-out.
+- **Compact interior-`a` (e.g. `[a_min, a_max - eps]`, `a_min > 0`):** `L ~ a^{-1/2}`
+  (equivalently `M ~ -3/2 K sqrt(a)`, smooth away from `a=0`) makes (E*) hold with a
+  z-dependent constant, giving the modified coefficient system
 
-**Result: the critical `m=1/2` branch is RULED OUT as a smooth, uniform dominant
-balance under all three candidates.** This resolves the DLH-5O "unresolved" status
-within the dominant-balance framework. The remaining gap is non-smooth/non-power
-exotic realizations, which are beyond the framework and beyond accepted authority
-(`UNRESOLVED` at that level, and not analyzable from the accepted finite-grid source).
+  ```text
+  (rho + r_b - 0.5 C(z)/chi_1)K - 2 sqrt(K) = S*K.
+  ```
 
-## E5. If the branch were admitted: consequences (for completeness, not realized)
+  For z-constant `K` this has the positive solution
+  `sqrt(K) = 2/(rho + r_b - 0.5 C/chi_1)` whenever
+  `rho + r_b > 0.5 C/chi_1`, yielding a **continuum** of coefficients
+  `c/b = 1/sqrt(K) = (rho + r_b - 0.5 C/chi_1)/2`, which equals `(rho+r_b)/2` only for
+  `C = 0` (trivial remainder). So the critical branch is a **coherent altered dominant
+  balance on the compact interior**, one-parameter family indexed by the remainder
+  amplitude `C(z)`; it is **admissible**, not ruled out. Completing it to a full
+  asymptotic series / actual solution (lower orders, z-coupling, transversality,
+  endpoints) is **UNRESOLVED**.
+- **Full-`[0,10]` uniform smooth realization:** the `L ~ a^{-1/2}` family is singular
+  at `a = 0` (`M ~ sqrt(a)` is `C^0` but not `C^1` at `a = 0`; `M_a` diverges). Hence
+  no **full-support smooth uniform** critical branch is established by this mechanism.
+  This failure at `a=0` does NOT imply global impossibility because the specification
+  itself allows an interior-`a` theorem (Phase C).
+- **`a -> 0` bare-`a` endpoint:** at `a = 0`, `d = a*T(q)/chi_1 = 0` for any `R`
+  (bare-`a` degeneracy), `chi = 0`, `mu_a = 0`; `R` is vacuous at `a=0`, and the
+  transfer term `0.5 a L^2 K/chi_1` vanishes. With no transfer term, (E*) reduces to
+  the P-TR form `(rho+r_b)K - 2 sqrt(K) = S*K`. The endpoint therefore does not host
+  the critical branch; it is the interior-`a` family that matters.
 
-Had the branch been a consistent balance, it would have completely changed the tail:
-`V ~ 2 K sqrt(b)` (unbounded value), `c ~ K^{-1/2} b^{1/4}` (sublinear consumption),
-`c/b -> 0`, `d ~ sqrt(b)`, `chi ~ b`, `mu_W/b -> r_b - c/b = 0.015` (positive, NOT
-inward), and a different (non-`(rho+r_b)/2`) coefficient. Since the branch is ruled
-out, none of these apply; the `p=2` result (`c/b = 0.0175`, inward) stands as the
-unique smooth dominant balance among the analyzed classes.
+## E4. Status of the critical branch under each candidate (Rev 2)
+
+- **Under S1:** the `m=1/2` branch is **admissible/unresolved** at the dominant-balance
+  level on the compact interior (S1 does not restrict `R`); a full-`[0,10]` uniform
+  smooth realization is not established. Not ruled out.
+- **Under S2:** same — S2's transversality does not control `R` and does not by itself
+  exclude the branch (a `V ~ -K/b - (2/3)M b^{-3/2}` value with a bounded-growth
+  remainder is consistent with `e^{-rho T} E[V] -> 0` for suitable paths). Not ruled out.
+- **Under S3:** the branch is **excluded only by the adopted admissibility class**
+  (`R=O(1)` or P-TR), i.e. by Owner-adopted model primitive, **not** by a balance
+  argument. This is the only mechanism that removes it.
+
+**Result (Rev 2):** the critical `m=1/2` branch is **not** ruled out; it is a coherent
+altered dominant balance on the compact interior (with `L ~ a^{-1/2}` families and a
+continuum of coefficients) and is left **UNRESOLVED/ADMISSIBLE** per the reviewer's
+Option B. Tail uniqueness (the `p=2` coefficient) holds only under an explicit
+S3/P-TR admissibility primitive.
+
+## E5. Consequence for the tail coefficient
+
+The `m=1/2` branch, if realized, yields `c/b = (rho + r_b - 0.5 C(z)/chi_1)/2` — a
+family different from the P-TR value `(rho+r_b)/2 = 0.0175` whenever the remainder
+amplitude `C != 0`. Therefore the tail coefficient is **not unique** across smooth
+dominant balances: the P-TR branch and the `m=1/2` family are distinct admissible
+balances on the interior. Only the adopted S3/P-TR primitive selects the `p=2`
+coefficient.
 
 ## E6. Formal dominant balance vs actual admissible HJB solution
 
-The ruling-out is a statement about **formal dominant balances**: no smooth power-consistent
-tail with `R ~ L sqrt(b)` can satisfy the source-faithful interior balance. It is the
-strongest analytic statement available from the interior equation and does **not** by
-itself constitute a theorem about the actual HJB solution (existence/uniqueness of the
-full boundary-value problem, and the realization of the `p=2` balance, require the
-Phase F theorem gates). The distinction is explicit: the branch is excluded at the
-formal-dominant-balance level; promoting the `p=2` balance to a theorem requires the
-full contract of Issue #42 Phase F under an Owner-endorsed candidate.
+As in Rev 1, this is a statement about **formal dominant balances**. The corrected
+conclusion is the opposite of Rev 1: the `m=1/2` branch **cannot be excluded** at the
+formal-dominant-balance level (Blocking corrections 1-2). Whether it is realized by an
+actual admissible HJB solution (completion of the series, transversality, endpoint
+laws) is **UNRESOLVED** and must be treated as an open item in the Phase F contract,
+not assumed away.
 
-## E7. Conclusion
+## E7. Conclusion (Rev 2)
 
-The critical `V_a/V_b ~ Theta(sqrt(b))` branch is **ruled out** as a smooth, uniform
-dominant balance (Clairaut forces `p=1/2`; the `O(b^{1/2})` balance is then
-`a`-dependent and forces `L=0`, equivalently `(rho - r_b/2)K = S*K` has only `K=0`).
-Consequently it does **not** obstruct a unique tail specification; the `p=2`
-bounded/sub-root-transfer balance remains the unique smooth self-consistent dominant
-balance. Non-smooth/non-power exotic realizations remain beyond the dominant-balance
-framework (not analyzable from accepted authority).
+The critical `V_a/V_b ~ Theta(sqrt(b))` branch is **UNRESOLVED/ADMISSIBLE**:
+- the Clairaut `p=1/2` inference and the ruling-out are **withdrawn**;
+- the remainder-derivative mechanism `V_b = K b^{-p} + M b^{-p-1/2} + ...` satisfies
+  Clairaut for arbitrary `p` and realizes `R ~ L sqrt(b)`;
+- for the `p=2` base the altered `O(1/b)` system is
+  `(rho+r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K/chi_1` (`L = -(2/3)M_a/K`), coherent on
+  the compact interior with `L ~ a^{-1/2}` families and a continuum of coefficients;
+- full-`[0,10]` uniform smooth realizations are not established (singular at `a=0`);
+  `a=0` is governed by the bare-`a` degeneracy;
+- `max(a,a_bar)` is retained in all transfer coefficients near `a=0`.
+
+Tail uniqueness is therefore **not** available from the balance; it requires the
+Owner-adopted S3/P-TR primitive (or a future Phase F resolution).

@@ -1,15 +1,31 @@
-# DLH-5P / Issue #42 — Unbounded-Liquid Analytic HJB Specification and Critical-Transfer Admissibility
+# DLH-5P / Issue #42 — Unbounded-Liquid Analytic HJB Specification and Critical-Transfer Admissibility (Rev 2)
 
 **Task type:** `SCIENTIFIC_ANALYTIC_MODEL_SPECIFICATION__UNBOUNDED_LIQUID_HJB_ADMISSIBILITY_AND_CRITICAL_TRANSFER`
 **Date:** 2026-09-02
 **Branch:** `dsh/issue-42-dlh-5p-unbounded-liquid-hjb-specification-2026-09-02`
 **Fresh `origin/main` baseline:** `20b4688ef6a77bf5b3e789abf5ec15a80fe188ea`
+**Rev 1 candidate reviewed:** `3fde31a51cf5703f1a4c3c8e1dc8dadc33e1c156`
+**Reviewer status (fresh, `5504929967`):**
+`DLH_5P_CANDIDATE_REVIEW_BLOCKED__CRITICAL_TRANSFER_CLAIRAUT_ARGUMENT_NOT_VALID_WITH_UNCONTROLLED_REMAINDER__S1_S2_SPECIFICATION_INTERNAL_CONTRADICTIONS__BOUNDED_SAME_ISSUE_REVISION_REQUIRED`
 
-This is a **theory/design specification gate only**. It does NOT freeze or implement any
-analytic specification, does NOT select R/W/W1/W2/`W_max`, does NOT run any numerical
+This is a **theory/design specification gate only** (bounded same-Issue revision of the
+9 Issue #42 allowlist-created files). It does NOT freeze or implement any analytic
+specification, does NOT select R/W/W1/W2/`W_max`, does NOT run any numerical
 experiment, and creates no production HJB/domain authority. Builder recommendation is
-not model freeze; the Owner remains final authority for any model-defining analytic
-specification.
+not model freeze; the Owner remains final authority.
+
+**Rev 2 summary of changes from Rev 1:** the Clairaut `p=1/2` inference and the
+associated "critical-branch ruled out" claim are **withdrawn** (Blocking corrections 1-3
+of `5504929967`); the critical `m=1/2` branch is preserved as **unresolved/admissible**
+(compact interior-`a`) per the reviewer's Option B; S1 and S2 are corrected (S1 no
+longer implicitly forces `V -> 0`; S2's transversality is stated as a proposed
+verification/selection condition, not a proved necessity, and not mechanically equated
+with an asset no-Ponzi law); S3/P-TR are re-stated as an explicit Owner-adopted
+admissibility primitive (not "independently justified by a ruling-out"); the endpoint
+audit separates full `[0,10]` uniform, compact interior-`a`, and `a -> 0` bare-`a`
+behavior; `max(a,a_bar)` is retained explicitly in critical-transfer coefficients; the
+borrowing-gap economics is kept distinct from adopting `b_lo=-2` as analytic state-space
+authority; and the recommendation terminal moves from A to **B**.
 
 ---
 
@@ -45,7 +61,7 @@ consequences, falsification conditions, and an Owner decision packet.
 
 ---
 
-## 2. Executive summary of the DLH-5P review
+## 2. Executive summary of the DLH-5P Rev 2 review
 
 ### Phase A — Authority-extension map (inherited vs new)
 
@@ -55,127 +71,152 @@ ingredient needed for an unbounded-`b` problem is `NEW_ANALYTIC_MODEL_DEFINITION
 the state-space extension, the asymptotic boundary/transversality law, the
 upper-`a`/lower-`b` endpoint laws, and the selection (comparison/uniqueness) argument.
 P-TR and regularity/uniformity are `THEOREM_ASSUMPTION_ONLY__NOT_MODEL_PRIMITIVE` unless
-the Owner elevates them. The critical `m = 1/2` branch is `UNRESOLVED` at the level of
-the accepted DLH-5O package; DLH-5P analyzes it (Phase E).
+the Owner elevates them. **The borrowing-rate-gap economics is inherited and distinct
+from adopting `b_lo = -2` as continuous analytic state-space authority** (the latter is
+new model definition). The critical `m=1/2` branch is `UNRESOLVED/ADMISSIBLE` (Rev 1's
+Phase E ruling-out is withdrawn).
 
 ### Phase B — Three candidate specifications (S1/S2/S3)
 
-- **S1 (minimal growth/admissibility):** state space `(b_lo,+inf) x (0,a_max) x {z}`,
-  the interior HJB, a broad growth class, **no** tail boundary condition. Necessary
-  base; insufficient for uniqueness or the `p=2` coefficient.
-- **S2 (economically mapped transversality/no-Ponzi):** adds
-  `lim_{T->inf} e^{-rho*T} E[V(b_T,a_T,z_T)] = 0` (and no-Ponzi), mapped to the
-  household's own discounted objective. Selects the tail constant of integration but
-  does not control `R = V_a/V_b`; `p=2` coefficient still conditional.
-- **S3 (derivative-controlled admissibility):** adds an explicit admissible class
-  `R = V_a/V_b = O(1)` uniformly (preferred) or at least `P-TR: R = o(sqrt(b))`
-  uniformly. Under S3 the DLH-5O `p=2` coefficient theorem follows. Justification:
-  the DLH-5P ruling-out of the critical branch (Phase E) plus a bounded-transfer
-  economic argument; it is an explicit, falsifiable class.
+- **S1 (minimal growth/admissibility, corrected):** state space
+  `(b_lo,+inf) x (0,a_max) x {z}`, the interior HJB, a **coherent** growth class
+  (`V in C(D̄) cap C^1(D)`, `V_b > 0`, `V < 0`, polynomial growth `|V| <= C(1+|b|)^N`;
+  **no forced `V -> 0`**). S1 explicitly acknowledges that `V -> 0` is a tail-selection
+  feature, not an S1 property. Necessary base; insufficient for uniqueness or the
+  `p=2` coefficient.
+- **S2 (transversality / no-Ponzi, corrected):** proposes the discounted-value
+  verification/selection condition `lim_{T->inf} e^{-rho*T} E[V(b_T,a_T,z_T)] = 0`
+  **as a proposed analytic selection condition, NOT a proved necessity, and NOT
+  mechanically equated with an asset-level no-Ponzi law**. Admissible-path and
+  integrability requirements are stated. S2 selects the tail integration constant but
+  does not control `R = V_a/V_b`; its incremental selection over corrected S1 is
+  **partial** (it excludes exploding values but not, by itself, the `m=1/2` branch).
+- **S3 (derivative-controlled admissibility):** an explicit **Owner-adopted
+  admissibility primitive** `R = V_a/V_b = O(1)` uniformly (preferred) or at least
+  `P-TR: R = o(sqrt(b))` uniformly. Under S3 the DLH-5O `p=2` coefficient follows.
+  It is NOT claimed to be independently justified by a critical-branch ruling-out
+  (that ruling-out is withdrawn); its justification is that it is an explicit,
+  economically motivated (bounded-transfer rationale is motivation, not derivation),
+  falsifiable admissibility primitive the Owner may adopt.
 
 ### Phase C — Boundary/endpoint audit
 
 - `a = 0`: bare-`a` degeneracy (`d = a*T(q)/chi_1 = 0` for any `R`); `R` is vacuous at
-  `a = 0`, `mu_a = 0`; the `a = 0` corner is trivial for the coefficient/sign theorem.
+  `a = 0`, `mu_a = 0`. The `m=1/2` branch's interior realizations (`L ~ a^{-1/2}`) are
+  singular at `a = 0`, so a **full-`[0,10]` uniform smooth** critical branch is not
+  established; the **compact interior-`a`** branch is admissible (Rev 2 Phase E).
 - `a = a_max = 10`: `r_a_eff(10) = 0.027 > 0`; the finite-grid `at_upper_a` branch
   (restricts `d < 0`) is `INHERITED_FINITE_GRID_NUMERICAL_SEMANTICS_ONLY`; the analytic
   upper-`a` endpoint law is `NEW_ANALYTIC_MODEL_DEFINITION_REQUIRES_OWNER`.
 - `b = b_lo = -2`: borrowing-rate gap (0.025 for `b<0`) is accepted economics; the
-  `b_lo` marginal-utility closure is numerical semantics only; the analytic lower-bound
-  law is new model definition. The tail result should be independent of the `b_lo` law
-  (robustness/falsifiability gate).
-- **Full `[0,10]` uniform theorem:** the coefficient and sign results are
-  `a`-independent, so they are uniform on `[0,10]` once the `a=0` and `a_max` endpoint
-  conventions are pinned by the chosen candidate; otherwise a clean interior-`a`
-  theorem on `(0,a_max)` plus an explicit endpoint audit. The `m=1/2` ruling-out holds
-  on `(0,10]` and is trivial at `a=0`.
+  `b_lo` marginal-utility closure is numerical semantics only; **adopting `b_lo = -2`
+  as the continuous analytic state-space lower bound is new model definition** (the
+  grid chose the value; the analytic adoption is a separate decision). The tail result
+  should be independent of the `b_lo` law (robustness/falsifiability gate).
 
 ### Phase D — P-TR derivability audit
 
 - Under **S1** and **S2**: P-TR is **not** derived (S1 has no tail law; S2's
   transversality controls the value level, not `R`). It is an additional assumption.
-- Under **S3**: P-TR is an **admissibility assumption**; it is implied by the stronger
-  `R=O(1)`; and it is **partially derived** at the dominant-balance level — DLH-5P
-  shows (Phase E) that all smooth, self-consistent dominant balances with the `p=2`
-  base have `R = O(1)` or lower, and the critical/sub-root power branches are
-  inconsistent. It is **not circular** in the harmful sense (the class admits any
-  `R=O(1)` subleading a-dependence; the coefficient is derived, not assumed) and it is
-  **falsifiable**.
-- P-TR is **never** labeled "proved" merely because it was assumed in DLH-5O.
+- Under **S3**: P-TR is an **Owner-adopted admissibility primitive**; it is implied by
+  the stronger `R=O(1)`; it is **not** derived and **not** justified by a
+  critical-branch exclusion (the exclusion is withdrawn). It is falsifiable.
+- P-TR is **never** labeled "proved" or "independently justified."
 
-### Phase E — Critical `m = 1/2` branch: RULED OUT (as a smooth dominant balance)
+### Phase E — Critical `m = 1/2` branch: WITHDRAWN ruling-out; UNRESOLVED/ADMISSIBLE
 
-The central new DLH-5P result. With `R = V_a/V_b ~ L(a,z) sqrt(b)`, `L != 0`, and a
-smooth (`C^2`) value function, the mixed-partial (Clairaut) consistency forces
-`V_b ~ K(z) b^{-1/2}` with `a`-independent `K` — i.e. the critical branch is a
-`p = 1/2` tail, **not** a `p = 2` tail. Substituting into the source-faithful interior
-balance (with the combined transfer Hamiltonian) gives an `O(b^{1/2})` equation with a
-single `a`-dependent transfer term `0.5*a*L^2*K/chi_1` that cannot be matched
-uniformly over `(0,10]` (all other `O(b^{1/2})` terms are `a`-independent), forcing
-`L = 0` — contradiction. Equivalently, the balance reduces to
-`(rho - r_b/2)K = S*K` with `rho - r_b/2 = 0.0125` not in the switch spectrum
-`{0, -2/3}`, forcing `K = 0`. Hence the critical branch is **not** an admissible
-smooth dominant balance. This resolves the DLH-5O "unresolved" status within the
-dominant-balance framework; non-smooth/non-power exotic realizations remain beyond the
-framework (not analyzable from accepted authority). The `p=2` tail is thereby the
-**unique** self-consistent smooth dominant balance among the analyzed classes.
+Rev 1's Clairaut argument (`R ~ L sqrt(b)` + `C^2` ⇒ `p = 1/2`) is **withdrawn**
+(Blocking correction 1). The reason: differentiating the leading equivalence
+term-by-term is unjustified. With an explicit remainder-derivative expansion
+
+```text
+V_b = K(z) b^{-p} + M(a,z) b^{-p-1/2} + o(b^{-p-1/2}),   K_a = 0,
+V_sub = M(a,z)/(1/2-p) b^{1/2-p},   R ~ [M_a/(K(1/2-p))] sqrt(b),
+partial_a V_b ~ M_a b^{-p-1/2} = partial_b V_a,
+```
+
+Clairaut is satisfied for **arbitrary `p`** (within the expansion's validity), so
+`C^2` smoothness alone does not force `p=1/2`; the same missing remainder-derivative
+control that mattered in DLH-5O reappears. Per the reviewer's Option B, DLH-5P does
+NOT add a branch-excluding regularity assumption (that would be circular); instead the
+critical branch is left **unresolved/admissible** and its general same-order system is
+derived without the shortcut:
+
+- For the `p = 2` base, `V ~ -K(z)/b - (2/3)M(a,z) b^{-3/2}` (arbitrary a-dependent
+  remainder) gives `R ~ L sqrt(b)` with `L = -(2/3)M_a/K`, Clairaut-consistent, and the
+  altered `O(1/b)` system
+
+  ```text
+  (rho + r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K / chi_1,   L = -(2/3)M_a/K.
+  ```
+
+- On a **compact interior-`a`** domain, `a L(a,z)^2` can be constant with
+  `L ~ a^{-1/2}` (`M ~ sqrt(a)`, smooth away from `a=0`), giving a coherent altered
+  balance with a **continuum of coefficients** `c/b != (rho+r_b)/2` (a one-parameter
+  family indexed by the remainder amplitude). This branch is **admissible at the
+  dominant-balance level**; completing it to a full solution is **UNRESOLVED**.
+- At **`a = 0`**, the bare-`a` degeneracy (`d = 0`, `mu_a = 0`) makes the transfer
+  ratio vacuous; the `L ~ a^{-1/2}` family is singular there, so a full-`[0,10]`
+  uniform smooth realization of this branch is **not established**.
+
+**Consequence:** the critical branch does NOT admit the Rev 1 exclusion; the `p=2`
+tail is **not unique** among smooth dominant balances (P-TR selects it only as an
+Owner-adopted primitive). Recommendation moves to **B**.
 
 ### Phase F — Theorem/falsification contract
 
 For each candidate, future theorem gates: existence, uniqueness/comparison, tail
-regularity, uniformity over `(a,z)`, derivation or justified admissibility of P-TR,
-exclusion of the `m=1/2` branch (Phase E argument formalized), `V_b*b^2 -> K`
-convergence, `c/b -> 0.0175`, `mu_W/b -> -0.0025`, and explicit falsification
-conditions. No theorem is claimed in this task.
+regularity (with explicit derivative-remainder control), uniformity over `(a,z)`,
+derivation or justified adoption of P-TR, **resolution (not assumption) of the `m=1/2`
+branch**, `V_b*b^2 -> K` convergence, `c/b -> 0.0175`, `mu_W/b -> -0.0025`, and
+explicit falsification conditions. No theorem is claimed in this task.
 
 ### Phase G — Owner decision packet and recommendation
 
-**Recommendation (A):**
-`DLH_5P_ANALYTIC_HJB_SPECIFICATION_CANDIDATE_READY__OWNER_MODEL_DEFINITION_DECISION_REQUIRED`
+**Recommendation (B):**
+`DLH_5P_CRITICAL_TRANSFER_BRANCH_REMAINS_ADMISSIBLE__TAIL_SPECIFICATION_NOT_UNIQUE__OWNER_DECISION_REQUIRED`
 
-The recommended package is **S3** (derivative-controlled admissibility with the
-preferred `R = O(1)` subcase), with **S2's** economically mapped transversality as the
-selection law and **S1** as the minimal base. Because the critical `m=1/2` branch is
-ruled out (Phase E), the tail specification is **unique** among smooth dominant
-balances, so Recommendation B is not triggered, and the evidence is sufficient for a
-defensible candidate (Recommendation A), not C. The recommendation is not a freeze.
+Because the critical `m=1/2` branch is **admissible/unresolved** (compact interior-`a`)
+and yields a different tail coefficient, the tail specification is **not unique** under
+S1/S2, and under S3 it is unique only via an **explicit Owner-adopted admissibility
+primitive** (P-TR / `R=O(1)`). Recommendation B is the honest terminal: the Owner must
+decide whether to (i) adopt S3 with the P-TR/`R=O(1)` primitive as model authority
+(uniqueness then conditional on that primitive, not on Phase E), or (ii) keep the
+branch open and pursue the Phase F resolution. The recommendation is not a freeze.
 
 ---
 
-## 3. The core new scientific finding in one paragraph
+## 3. The corrected central scientific statement
 
-Suppose `R = V_a/V_b ~ L(a,z) sqrt(b)` with `L != 0` and a smooth value function.
-Clairaut's theorem on mixed partials (`partial_a V_b = partial_b V_a`) forces
-`V_b ~ K(z) b^{-1/2}` (a `p=1/2` tail) with `a`-independent `K`; the `p=2` base is
-incompatible with `R ~ sqrt(b)` (it would force `L = 0`). Substituting the `p=1/2`
-tail into the interior HJB with the combined transfer Hamiltonian, the `O(b^{1/2})`
-balance acquires a single `a`-dependent transfer term `0.5*a*L^2*K/chi_1`. Because
-every other `O(b^{1/2})` term is `a`-independent, uniform consistency over `(0,10]`
-forces `L = 0` (contradiction); the same conclusion follows from the switch-spectrum
-equation `(rho - r_b/2)K = S*K` with `rho - r_b/2 = 0.0125 notin {0,-2/3}`, which has
-only `K = 0`. Therefore the critical `m=1/2` transfer branch is **ruled out** as a
-smooth, uniform dominant balance under the source-faithful interior balance shared by
-all three candidates — it cannot be a realized HJB tail within the smooth
-dominant-balance framework.
+The Rev 1 claim "the critical branch is ruled out as a smooth dominant balance" is
+**withdrawn**. The corrected statement is: the critical `R ~ L(a,z) sqrt(b)` branch can
+be realized by a remainder-derivative mechanism (`V_b = K b^{-p} + M b^{-p-1/2} + ...`)
+that satisfies Clairaut for any `p`, so smoothness alone does not exclude it. For the
+`p=2` base this produces the altered `O(1/b)` system
+`(rho+r_b)K - 2 sqrt(K) = S*K + 0.5 a L^2 K/chi_1` with `L = -(2/3)M_a/K`, which is
+coherent on a compact interior-`a` domain (`L ~ a^{-1/2}` families) and yields
+non-`(rho+r_b)/2` coefficients. The branch is therefore **admissible/unresolved** at
+the dominant-balance level (full-`[0,10]` uniform smooth realizations not established;
+`a=0` governed by the bare-`a` degeneracy). Tail uniqueness holds only under an
+explicitly adopted S3/P-TR primitive, not by exclusion.
 
 ---
 
 ## 4. What is NOT claimed
 
 - NOT claimed: any candidate is frozen, implemented, or model-defining.
-- NOT claimed: P-TR is "proved"; it is an admissibility premise (S3), partially
-  justified at the dominant-balance level, not a theorem.
-- NOT claimed: the `m=1/2` branch is ruled out as a non-smooth/non-power exotic
-  realization (that is beyond the dominant-balance framework and beyond accepted
-  authority).
+- NOT claimed: P-TR is "proved" or "independently justified"; it is an Owner-adopted
+  admissibility primitive (S3).
+- NOT claimed: the `m=1/2` branch is ruled out; it is unresolved/admissible (compact
+  interior-`a`) per the reviewer's Option B.
 - NOT claimed: any theorem is proved; the `p=2` result remains a conditional dominant
-  balance until the Phase F theorem gates are met under an Owner-endorsed candidate.
+  balance under an adopted P-TR primitive, pending the Phase F theorem gates.
 - NOT claimed: R/W/W1/W2/`W_max`, new `b_max`/`a_max`, taper extrapolation, or
   stationary authority.
 
 ## 5. Next step
 
-Owner decides among S1/S2/S3 (recommendation: S3 with S2 selection law and S1 base)
-after fresh ChatGPT review. The chosen candidate then defines the analytic HJB problem
-and the Phase F theorem contract becomes the route to promoting the conditional `p=2`
-result. Stationary KFE remains NOT AUTHORIZED under Issue #27.
+Owner decides among S1/S2/S3 (recommendation: Recommendation B — decide whether to
+adopt S3 with the P-TR/`R=O(1)` primitive, or to fund the Phase F resolution of the
+critical branch) after fresh ChatGPT review. Stationary KFE remains NOT AUTHORIZED
+under Issue #27.
