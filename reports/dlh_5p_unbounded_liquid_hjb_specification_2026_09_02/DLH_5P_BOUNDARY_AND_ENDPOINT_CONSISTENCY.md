@@ -1,12 +1,15 @@
-# DLH-5P Phase C — Boundary and Endpoint Consistency (Rev 2)
+# DLH-5P Phase C — Boundary and Endpoint Consistency (Rev 3)
 
-**Issue #42 Phase C (Rev 2).** Audits whether the desired tail theorem can be uniform
+**Issue #42 Phase C (Rev 3).** Audits whether the desired tail theorem can be uniform
 over the finite `a` support `[0,10]`, examining `a=0`, `a=a_max=10`, and `b=b_lo=-2`,
 and whether any theorem must be restricted to an interior compact `a` subset. Rev 2
-separates the three cases the reviewer required (step 17): **full `[0,10]` uniform**,
-**compact interior-`a`**, and **`a -> 0` bare-`a` endpoint behavior**, and retains
+separated the three cases the reviewer required (step 17): **full `[0,10]` uniform**,
+**compact interior-`a`**, and **`a -> 0` bare-`a` endpoint behavior**, and retained
 `max(a,a_bar)` explicitly in all critical-transfer coefficients near `a=0` (step 23).
-No new upper-`a` economic law is created by convenience.
+Rev 3 additionally records the total-wealth drift of the critical family
+(`mu_W/b = -0.0025 - C/(4 chi_1) < 0`, inward) and confirms that the `a>=a_bar`
+formulas are not extended through the `0<a<a_bar` layer. No new upper-`a` economic law
+is created by convenience.
 
 ## C1. `a = 0` — bare-`a` transfer degeneracy
 
@@ -78,7 +81,9 @@ cost, `mu_a`) are `O(1)` or `O(1/b^2)` under P-TR/`R=O(1)` and do not enter the
    (or any compact `[a_min, a_max - eps]`, `a_min > 0`), requiring only the interior
    HJB, the adopted P-TR class, and regularity. This is also the domain on which the
    `m=1/2` alternative family (Phase E, `L ~ a^{-1/2}`) is **admissible** — so on the
-   interior the P-TR coefficient is NOT unique without the adopted primitive.
+   interior the P-TR coefficient is NOT unique without the adopted primitive. Its
+   total-wealth drift is `mu_W/b = -0.0025 - C/(4 chi_1) < 0` for `C = aL^2 >= 0`
+   (`a >= a_bar`), i.e. inward (no mean-reversion reversal).
 2. **Full `[0,10]` uniform theorem (requires endpoints):** holds with explicit endpoint
    conventions: `a=0` is a trivial corner (no transfer, no illiquid drift; the result
    is trivially valid there), and `a_max=10` uses the Owner-chosen upper-`a` law (C2).
@@ -88,29 +93,33 @@ cost, `mu_a`) are `O(1)` or `O(1/b^2)` under P-TR/`R=O(1)` and do not enter the
    specification itself allows an interior-`a` theorem.
 3. **`a -> 0` bare-`a` endpoint:** governed by the bare-`a` degeneracy (C1): `d=0`,
    `R` vacuous, `mu_a=0`, transfer term vanishes; the balance at `a=0` is the P-TR form.
-   The critical branch's interior family does not extend smoothly to `a=0`.
+   The critical branch's interior family does not extend smoothly to `a=0`; for
+   `0 < a < a_bar`, `max(a,a_bar)` is kept explicit and the `a>=a_bar` formulas
+   (`c/b`, `chi/b`, `mu_W/b`) are **not** extended through that layer (step 22).
 
 Recommendation: state the full-`[0,10]` uniform P-TR theorem with explicit endpoint
 conventions; require the `a_max` law from the Owner; and report the `m=1/2` family as
 an interior-admissible alternative whose full-support smooth realization is not
-established.
+established and whose `mu_W/b` is inward.
 
 ## C5. Compatibility of admissibility/transversality with endpoints
 
-- The S2 verification/selection condition (`e^{-rho T} E[V] -> 0`) and S3
-  derivative-control class (`R = o(sqrt(b))` or `O(1)`) are tail laws; they do not
-  conflict with the `a=0` corner (vacuous there) or `a_max` (which only constrains `d`
-  sign in the finite grid, replaced by an Owner law). The `m=1/2` family can satisfy
-  the S2 condition for suitable admissible paths (Phase E), so the endpoint laws do
-  not by themselves exclude it.
+- The S2 tail-value selection (`V_inf = 0`) and S3 derivative-control class
+  (`R = o(sqrt(b))` or `O(1)`) are tail laws; they do not conflict with the `a=0`
+  corner (vacuous there) or `a_max` (which only constrains `d` sign in the finite grid,
+  replaced by an Owner law). The `m=1/2` family has `V_inf = 0` and can satisfy the S2
+  selection, so the endpoint laws do not by themselves exclude it. The discounted-value
+  condition `e^{-rho T} E[V] -> 0` is vacuous under S1 (bounded V) and adds no
+  endpoint content.
 
-## C6. Conclusion (Rev 2)
+## C6. Conclusion (Rev 3)
 
 The P-TR `p=2` theorem can be stated uniformly on the full `[0,10]` support provided
 (i) the interior HJB holds on `(0,a_max)`, (ii) the `a_max` upper-`a` endpoint law is
 chosen by the Owner (new model definition), (iii) the `a=0` corner is treated as
 trivial (bare-`a`), and (iv) rates are uniform **and the P-TR primitive is adopted**.
 The `m=1/2` family is an interior-admissible alternative (full-`[0,10]` uniform smooth
-realization not established; `a=0` bare-`a`), so coefficient uniqueness requires the
-adopted primitive, not the balance. `max(a,a_bar)` is retained explicitly near `a=0`.
-No new upper-`a` economic law is created.
+realization not established; `a=0` bare-`a`; `mu_W/b = -0.0025 - C/(4 chi_1) < 0`,
+inward), so coefficient uniqueness requires the adopted primitive, not the balance.
+`max(a,a_bar)` is retained explicitly near `a=0`, and the `a>=a_bar` formulas are not
+extended through the `0<a<a_bar` layer. No new upper-`a` economic law is created.
