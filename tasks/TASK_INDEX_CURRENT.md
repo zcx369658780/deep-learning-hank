@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5Q_PROVISIONAL_S3_TAIL_THEOREM_AND_PARALLEL_FALSIFICATION`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5Q_ACCEPTED__NEXT_ROUTE_OWNER_DECISION_PENDING`
 
 Last synchronized: 2026-09-02
 
@@ -8,118 +8,81 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**No active Builder Issue.**
 
-**Issue #43 — OPEN**
+Issue #43 / DLH-5Q is accepted, integrated to `main`, and CLOSED completed. DSH must fail closed until a successor Issue is explicitly published, Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #43 / DLH-5Q
 
 Title:
 
 `DLH-5Q: Verify provisional S3 liquid-tail theorem class and formalize parallel falsification`
 
-Task type:
-
-`SCIENTIFIC_THEOREM_VERIFICATION__PROVISIONAL_S3_LIQUID_TAIL_AND_PARALLEL_FALSIFICATION`
-
-Dedicated branch:
-
-`dsh/issue-43-dlh-5q-provisional-s3-theorem-falsification-2026-09-02`
-
-Issue #43 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #43 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
-
-## Latest accepted task — Issue #42 / DLH-5P
-
 Accepted candidate:
 
-`faa9fd27dec941de72888d2c8db7db6f5393e0f6`
+`dd39385b6cf4fcf8fed382d69683ab907747cfe3`
 
 Reviewer acceptance comment:
 
-`5505979616`
+`5507534903`
 
 Acceptance integration commit:
 
-`156d8d092839668b18ab52a6a9d0e12023f248bd`
+`570d858aea3029e1a30c286b5c683a8efdb836bd`
 
 Accepted verdict:
 
-`DLH_5P_REV4_ACCEPTED__RECOMMENDATION_B_SUPPORTED__CRITICAL_TRANSFER_BRANCH_REMAINS_FORMALLY_ADMISSIBLE__TAIL_COEFFICIENT_NONUNIQUE__DEMONSTRATED_TOTAL_WEALTH_DRIFT_REMAINS_INWARD__OWNER_DECISION_REQUIRED`
+`DLH_5Q_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__PROVISIONAL_S3_SURVIVES_ANALYZED_FAMILIES__THEOREM_NOT_CLOSED__FALSIFICATION_PROTOCOL_READY`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_THEOREM_ANALYSIS_AND_FALSIFICATION_DESIGN_ACCEPTED`
 
 Accepted terminal:
 
-`DLH_5P_CRITICAL_TRANSFER_BRANCH_REMAINS_ADMISSIBLE__TAIL_SPECIFICATION_NOT_UNIQUE__OWNER_DECISION_REQUIRED`
-
-## Owner decision after DLH-5P
-
-Owner selected Option C:
-
-`PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
-
-Owner-decision comment:
-
-`5506138177`
-
-Provisional working authority for Issue #43:
-
-- S1 continuous fixed-a-support unbounded-liquid analytic base;
-- S2 tail-value selection `V_inf(a,z)=0`, provisional assumption, not proved necessity;
-- primary S3 class `R=V_a/V_b=O(1)` uniformly;
-- weaker P-TR `R=o(sqrt(b))` is sensitivity only, not co-equal primary authority;
-- critical `R~Theta(sqrt(b))` remains an out-of-class falsification/exclusion-cost benchmark, not an economic impossibility theorem.
+`DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY`
 
 ## Controlling accepted interpretation
 
-- accepted MATLAB-faithful household source remains immutable/read-only finite-grid authority;
-- finite-grid upper-b closure is not analytic transversality authority;
-- under full DLH-5O p=2/P-TR premises, candidate coefficient is `c/b=0.0175` and `mu_W/b->-0.0025`;
-- DLH-5P demonstrated coefficient non-uniqueness outside S3 through a formal critical family, while the demonstrated family remains total-wealth inward;
-- S3 excludes that critical family by class, not by derivation;
-- S3 does not itself prove actual p=2 asymptotic realization;
-- existence/comparison, endpoint scope, derivative-remainder regularity and coefficient convergence remain theorem gates;
-- R/W/W1/W2 remain unfrozen; no `W_max`; stationary KFE remains NOT AUTHORIZED.
+1. Provisional S3 remains a working analytic class: primary `R=V_a/V_b=O(1)` uniformly; P-TR `R=o(sqrt(b))` is sensitivity only.
+2. S2 `V_inf(a,z)=0` remains provisional tail/boundary selection content, not a proved necessity, gauge normalization, or comparison theorem.
+3. Among the correctly analyzed families, `p=2` is the unique self-consistent formal balance inside S3: `1<p<2` is excluded by the switch-spectrum equation `[rho+(p-1)r_b]K=S K`; `p>2` by the unbalanced consumption block; `p<=1`/log by S1 boundedness; explicit slow families by corrected order accounting.
+4. Broader non-power/exotic and monotone-preserving oscillatory tails remain open under the `ASYMPTOTIC_REALIZATION / NO-EXOTIC-REGIME` gate.
+5. Actual existence, comparison/uniqueness, asymptotic realization, coefficient convergence and full-support endpoint authority remain NOT ESTABLISHED.
+6. Conditional on p=2 realization with the accepted derivative-remainder contract (E): `(rho+r_b)K-2sqrt(K)=S K`; z-constant `K=4/(rho+r_b)^2`; `c/b->0.0175`; `mu_W/b->-0.0025`.
+7. The critical `R~Theta(sqrt(b))` family remains outside S3 as an exclusion-cost/falsification benchmark, not an in-class counterexample or economic impossibility theorem.
+8. The future numerical falsification protocol is accepted as DESIGN ONLY and has NOT been executed.
+9. Reviewer execution annotations control future work: use raw accepted value gradients for `R=V_a/V_b` rather than silently applying the consumption/labor derivative floor; any `b_max`/`b_lo` sensitivity variants require explicit future Owner/Issue authority.
+10. R/W/W1/W2 remain unfrozen; no `W_max`; stationary KFE remains NOT AUTHORIZED under Issue #27.
 
-## Issue #43 scientific scope
+## Current route checkpoint
 
-DLH-5Q is a **theorem-analysis + parallel-falsification-design gate only**.
+DLH-5Q returns the project to a route decision. Scientifically defensible next directions are:
 
-It must:
+- **Q-B1 — continue analytic closure:** open a bounded theory gate for first-order regime-switching HJB existence/comparison and asymptotic-realization assumptions, without inventing endpoint laws.
+- **Q-B2 — execute the parallel numerical falsification protocol:** requires explicit Owner authorization in a separate Issue; no stationary KFE. Any bounded truncation-sensitivity variants must be authorized there.
+- **Q-B3 — endpoint model-definition review:** resolve `a=10` and continuous `b_lo` analytic boundary authority before any full-support theorem; this is model-defining and requires Owner choice.
 
-1. freeze the exact provisional S1+S2+S3 theorem class for analysis;
-2. audit existence/comparison/uniqueness support;
-3. attempt to establish actual p=2 asymptotic realization under primary `R=O(1)`;
-4. audit the p=2 coefficient and total drift only if realization is justified;
-5. search analytically for in-class counterexamples or alternate tails;
-6. preserve the out-of-class critical branch as an exclusion-cost benchmark;
-7. design, but not execute, a future numerical falsification protocol;
-8. audit compact-interior vs full-support endpoint theorem scope;
-9. emit exactly one pre-registered Outcome A/B/C/D/Blocked terminal and STOP for fresh ChatGPT review.
+No successor is activated automatically at this checkpoint.
 
-## Exact Builder allowlist
+## Current scientific ceiling
 
-Builder may create only:
+Until the next Owner/route decision and successor activation:
 
-1. `docs/theory/DLH_5Q_PROVISIONAL_S3_TAIL_THEOREM_AND_FALSIFICATION.md`
-2. `reports/dlh_5q_provisional_s3_theorem_falsification_2026_09_02/` with exactly:
-   - `DLH_5Q_PROVISIONAL_AUTHORITY_FREEZE.md`
-   - `DLH_5Q_EXISTENCE_COMPARISON_AUDIT.md`
-   - `DLH_5Q_ASYMPTOTIC_REALIZATION_ANALYSIS.md`
-   - `DLH_5Q_P2_COEFFICIENT_AND_DRIFT_AUDIT.md`
-   - `DLH_5Q_ANALYTIC_FALSIFICATION_SEARCH.md`
-   - `DLH_5Q_NUMERICAL_FALSIFICATION_PROTOCOL.md`
-   - `DLH_5Q_ENDPOINT_SCOPE_AUDIT.md`
-   - `DLH_5Q_THEOREM_FALSIFICATION_MATRIX_AND_TERMINAL.md`
-   - `DLH_5Q_FORBIDDEN_OPERATION_CHECK.md`
-
-No existing tracked file may be modified by Builder.
-
-## Scientific ceiling
-
-No accepted source/economics mutation; no R/W/W1/W2/`W_max`; no new numerical `b_max`/`a_max`; no HJB/KFE/grid/stationary run; no J0-J5 rerun; no endpoint-KKT implementation; no regional GE/multi-province audit; no network training; no nominal HANK; no calibration/policy/welfare/Results.
-
-No PR / merge / close / successor Issue / self-accept from Builder.
+- no accepted-source/economics mutation;
+- no R/W/W1/W2 selection or `W_max`;
+- no new numerical grid extent;
+- no HJB/KFE/grid/stationary execution;
+- no endpoint-KKT implementation;
+- no regional GE / multi-province audit / neural training / nominal HANK / calibration / policy / welfare / Results.
 
 ## Current route authority
 
-- Issue #43 full body + authoritative activation comment = exact Builder authority once activation is posted.
+- Latest accepted theory package: Issue #43 / DLH-5Q.
+- Reviewer acceptance authority: Issue #43 comment `5507534903`.
+- Acceptance integration: `570d858aea3029e1a30c286b5c683a8efdb836bd`.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`.
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`.
-- Accepted DLH-5O / DLH-5P packages and reviewer/Owner-decision comments remain read-only controlling context.
+- There is currently **no active Builder branch/task authority**.
