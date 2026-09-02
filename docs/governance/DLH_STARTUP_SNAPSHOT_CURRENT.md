@@ -23,17 +23,17 @@ Priority:
 
 Current published task:
 
-**Issue #40 — DLH-5N: Analyze high-wealth total-drift asymptotics and domain viability**
+**Issue #41 — DLH-5O: Derive fixed-a liquid-tail HJB value-function asymptotics**
 
 Task type:
 
-`SCIENTIFIC_THEORY_ANALYSIS__HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY`
+`SCIENTIFIC_THEORY_ANALYSIS__HJB_VALUE_FUNCTION_LIQUID_TAIL_SCALING`
 
 Dedicated branch:
 
-`dsh/issue-40-dlh-5n-high-wealth-total-drift-asymptotics-2026-09-02`
+`dsh/issue-41-dlh-5o-hjb-value-tail-asymptotics-2026-09-02`
 
-Builder authority becomes active only while Issue #40 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+Builder authority becomes active only while Issue #41 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -43,38 +43,37 @@ Historical scientific handoff:
 
 `docs/governance/DLH_HANDOFF_2026_09_01_UPPER_DOMAIN_STATIONARY_TAIL_ROUTE.md`
 
-## Latest accepted gate — Issue #39 / DLH-5M
+## Latest accepted gate — Issue #40 / DLH-5N
 
 Accepted candidate:
 
-`80cdb7ab2c14bcb7606fc66a0737c28bd3fbb4bb`
+`bded30a8b8cb579c3f359a62f5b530d7c34b7526`
 
-Integrated to `main` by acceptance merge commit:
+Integrated to `main` by acceptance integration commit:
 
-`69bde2115cdf038e40640ec41d23e0b620167539`
+`e23b1ada5f5ab1b11c1291d8141d8286884553d4`
 
 Accepted reviewer verdict:
 
-`DLH_5M_REVISED_CANDIDATE_ACCEPTED__CORE_KKT_AND_W_ACTIVITY_BLOCKERS_RESOLVED__RECOMMENDATION_U_SUPPORTED__OWNER_SCIENTIFIC_DECISION_REQUIRED`
+`DLH_5N_REV2_ACCEPTED__OUTCOME_B_SUPPORTED__FIXED_A_LIQUID_TAIL_SIGN_REMAINS_CONDITIONAL__HJB_VALUE_FUNCTION_TAIL_ASYMPTOTICS_NEXT_GATE_REQUIRED`
 
 Acceptance level:
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_REVIEW_ACCEPTED`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_THEORY_ANALYSIS_ACCEPTED`
 
-Owner scientific decision:
+Accepted terminal:
 
-`ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`
+`DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`
 
 Controlling accepted interpretation:
 
-- Design R remains a candidate only; a finite rectangular state constraint may be a numerical closure, but no vanishing-boundary-influence argument is established.
-- Design W remains a candidate only; `W=a+b` is accepted as a source-accounting coordinate but not as a production-domain authority.
-- No numerical `W_max` is authorized.
-- Maximization KKT convention for upper constraints is `L = H - lambda*g`; effective gradients are `V-lambda`.
-- On a W face, `lambda_W` cancels from the linear transfer contribution but remains through the adjustment-cost resource term.
-- W-face activity for accepted states is conditional on symbolic `W_max`; without `W_max`, one may only report `W_s=a+b` and conditional activity.
-- W is the more economically coherent hypothesis on current finite-state evidence, but finite-state evidence, undefined `W_max`, cross-a sensitivity, and unresolved process matching prevent a model freeze.
-- Stationary KFE remains NOT AUTHORIZED.
+- the accepted household source does not by itself establish unconditional fixed-a liquid-tail total-wealth inwardness;
+- `r_b*b` is an explicit positive linear term, while the b-orders of consumption, labor, transfer, adjustment cost and the remainder are not identified without HJB/value-gradient tail results;
+- conditional inwardness and outwardness require explicit tail assumptions;
+- the formula-level outward family is not HJB-verified and therefore is not a model-level counterexample;
+- fast `V_b` decay is sufficient, not necessary, for inwardness;
+- reviewer acceptance comment `5503274333` narrows local Phase A/C shorthand: the accepted controlling transfer-ratio implications are sufficient directions, not uniform biconditionals over the entire `a` support including `a=0`;
+- no claim about `a->infinity`; R/W remain unfrozen; no `W_max`; stationary KFE remains NOT AUTHORIZED.
 
 ## Controlling HJB/KFE rule
 
@@ -84,36 +83,37 @@ HJB boundary policy <=> KFE boundary transition law
 
 Issue #27 remains the stationary-KFE contract. Stationary validation cannot begin until a scientifically accepted domain/boundary controlled process is implemented and numerically validated.
 
-## DLH-5N scientific rationale
+## DLH-5O scientific rationale
 
-Owner accepted Recommendation U. The next gate must not patch the boundary or choose a domain. It must ask whether the accepted household economics themselves imply high-liquid-wealth total-wealth mean reversion.
+DLH-5N identified the missing object but did not resolve it: the asymptotic HJB scaling of `V_b` and `V_a/V_b`.
 
-The narrow asymptotic path is:
+DLH-5O therefore asks a narrower and deeper question:
 
-```text
-0 <= a <= a_max=10 held fixed as the currently accepted finite illiquid support
-b -> +infinity
-W=a+b -> +infinity
-```
+> Does the accepted MATLAB-faithful HJB authority itself imply the value-function tail scaling needed to determine `c/b` and the sign of `mu_W` as `b->+infinity` with `a in [0,10]` fixed?
 
-The theory task must analyze:
+The central candidate
 
 ```text
-mu_W = r_a_eff(a)*a + r_b*b + labor_income - chi(d,a) - consumption
+V_b ~ K(a,z)/b^2
+V ~ V_inf(a,z) - K(a,z)/b
+c ~ b/sqrt(K)
 ```
 
-and determine whether the sign is provable from accepted authority, conditional on missing control/value-derivative asymptotics, or contradicted by a source-consistent counterexample.
+is a candidate dominant balance only. It must be derived, rejected, or left conditional.
 
-This is NOT a full two-asset infinite-domain theorem. No claim about `a->infinity` is authorized because `a_max=10` and the accepted taper remain current authority.
+A critical first step is an authority audit: the accepted source is a finite-grid MATLAB-faithful HJB operator/solver. The Builder must distinguish finite-grid numerical semantics from any source-supported continuous interior HJB identity and must determine whether an unbounded-`b` analytical problem or asymptotic boundary/transversality law is actually specified by current authority.
+
+If a `p=2` coefficient system is derivable, all same-order terms must be retained, including productivity switching and any transfer/adjustment-cost coupling generated by `V_a/V_b`. A simple consumption ratio such as `(rho+r_b)/2` may appear only if derived from the accepted HJB balance, never imported from textbook knowledge.
 
 ## Exact scientific terminals
 
-Issue #40 must use exactly one:
+Issue #41 must use exactly one:
 
-- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_INWARDNESS_ESTABLISHED__DOMAIN_DESIGN_REVIEW_MAY_RESUME`
-- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`
-- `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_NONINWARD_COUNTEREXAMPLE_ESTABLISHED__W_DIRECTION_WEAKENED`
-- `BLOCKED_DLH_5N_ACCEPTED_SOURCE_OR_ASYMPTOTIC_OBJECT_INCONSISTENCY`
+- `DLH_5O_HJB_FIXED_A_LIQUID_TAIL_SCALING_DERIVED__CONSUMPTION_RATIO_AND_TOTAL_DRIFT_SIGN_RESOLVED`
+- `DLH_5O_HJB_LIQUID_TAIL_DOMINANT_BALANCE_CONDITIONAL__MISSING_ANALYTIC_ASSUMPTIONS_IDENTIFIED`
+- `DLH_5O_ACCEPTED_HJB_AUTHORITY_INSUFFICIENT_FOR_UNBOUNDED_LIQUID_TAIL_THEOREM__ANALYTIC_MODEL_SPECIFICATION_REQUIRED`
+- `DLH_5O_HJB_CONSISTENT_NONINWARD_LIQUID_TAIL_REGIME_ESTABLISHED__W_DIRECTION_WEAKENED`
+- `BLOCKED_DLH_5O_ACCEPTED_HJB_SOURCE_OR_EQUATION_AUTHORITY_INCONSISTENCY`
 
 No terminal freezes R/W or authorizes implementation.
 
@@ -121,14 +121,14 @@ No terminal freezes R/W or authorizes implementation.
 
 Builder may create only:
 
-1. `docs/theory/DLH_5N_HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY.md`
-2. `reports/dlh_5n_high_wealth_total_drift_asymptotics_2026_09_02/` with exactly eight files listed in Issue #40.
+1. `docs/theory/DLH_5O_HJB_VALUE_FUNCTION_LIQUID_TAIL_ASYMPTOTICS.md`
+2. `reports/dlh_5o_hjb_value_function_tail_asymptotics_2026_09_02/` with exactly eight files listed in Issue #41.
 
 No existing tracked file may be modified by Builder.
 
-## Scientific ceiling during Issue #40
+## Scientific ceiling during Issue #41
 
-No source/model/domain mutation; no taper/FOC/adjustment-cost/economic-price/calibration change; no R/W/W1/W2 choice; no numerical `W_max`; no new `b_max` or `a_max`; no HJB/KFE/grid run; no previous-fixture rerun; no stationary density/tail/aggregates; no D1-D3, regional GE, multi-province audit, network training, nominal HANK, calibration, policy/welfare or Results.
+No accepted source/model/domain mutation; no taper/FOC/adjustment-cost/economic-price/calibration change; no R/W/W1/W2 choice; no `W_max`; no new `b_max` or `a_max`; no HJB/KFE/grid/stationary run; no previous-fixture rerun; no boundary-KKT implementation; no textbook transversality/representative-agent tail formula imported as authority; no regional GE, multi-province audit, network training, nominal HANK, policy/welfare or Results.
 
 ## DSH startup sequence
 
@@ -137,12 +137,12 @@ No source/model/domain mutation; no taper/FOC/adjustment-cost/economic-price/cal
 3. `git fetch origin` and record fresh `origin/main`;
 4. read all CURRENT project rules;
 5. read Task Index, this Startup Snapshot and current Roadmap;
-6. read Issue #40 full body and latest comments, including activation;
-7. read accepted Issue #39 acceptance/Owner-decision comments and accepted DLH-5M package read-only;
-8. read accepted household source and relevant frozen D0 configuration/evidence read-only;
+6. read Issue #41 full body and latest comments, including activation;
+7. read accepted Issue #40 review/acceptance comments and accepted DLH-5N package read-only;
+8. read accepted household source and relevant equation/design history read-only;
 9. verify Issue / Task Index / Startup identity exactly;
 10. create exact dedicated branch from fresh `origin/main`;
-11. create only the Issue #40 allowlist files;
+11. create only the Issue #41 allowlist files;
 12. do not run HJB/KFE/grid/stationary experiments;
 13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
