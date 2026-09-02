@@ -2,6 +2,7 @@
 
 **Task type:** `SCIENTIFIC_THEORY_ANALYSIS__HIGH_WEALTH_TOTAL_DRIFT_ASYMPTOTICS_AND_DOMAIN_VIABILITY`
 **Date:** 2026-09-02
+**Revision:** rev 2 (bounded revision for fresh ChatGPT review comment `5503060588`)
 **Branch:** `dsh/issue-40-dlh-5n-high-wealth-total-drift-asymptotics-2026-09-02`
 **Fresh `origin/main` baseline:** `630df87fef18aa7597a2eedccc2adaba82ec19ff`
 
@@ -93,15 +94,21 @@ Fixed scope: `a in [0, 10]` (finite, compact), `z in {0.8, 1.3}` (finite Markov)
 3. **Every other term is conditional on the asymptotic behavior of endogenous
    objects** (at least `V_b`, and through it consumption and labor, and `V_a/V_b`,
    through it the transfer and adjustment cost). Accepted authority does not
-   determine these asymptotics; no HJB tail theorem is accepted.
+   determine these asymptotics; no HJB tail theorem is accepted. In particular the
+   unconditional remainder `mu_W - r_b*b` is **not** known to be `o(b)` (nor
+   `O(1) + o(b)`); the b-orders of `labor_income`, `consumption`, `d`, `chi` are
+   unidentified absent explicit tail assumptions.
 4. **Hence no unconditional inwardness theorem is provable** (Outcome A fails). The
    sign of `mu_W` in the fixed-`a` liquid tail is **conditional**: inward iff the
-   consumption channel (net of labor income and adjustment cost) dominates `r_b*b`
-   eventually; outward in a source-formula-consistent family with slowly decaying
-   `V_b`.
+   **net** object `consumption + chi - labor_income - transfer_income` dominates
+   `r_b*b + r_a_eff(a)*a` eventually (an exact identity rearrangement); outward in a
+   source-formula-consistent family with slowly decaying `V_b` and a bounded transfer
+   ratio.
 5. **The single most important missing object is the tail decay rate of `V_b`
    (equivalently the asymptotic consumption-wealth ratio `c/b`)**, together with the
-   tail behavior of `V_a/V_b` (which drives the transfer and adjustment cost).
+   tail behavior of `V_a/V_b` (which drives the transfer and adjustment cost; note
+   `chi = o(b)` requires `d = o(sqrt(b))`), the labor tail, and a proved uniformity
+   argument for any uniform tail conclusion.
 6. **The terminal is Outcome B:**
    `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`.
 
@@ -120,17 +127,20 @@ Detailed derivations are in the report files:
 ## 3. Why the sign is conditional (the argument in one paragraph)
 
 `mu_W = r_b*b + [r_a_eff(a)*a + labor_income + transfer_income] - [chi(d,a) + consumption]`.
-The bracketed first group is `O(1)` or `o(b)` (bounded `a`-term, bounded
-`transfer_income`, and `labor_income = O(V_b^{1/phi})` which decays if `V_b -> 0`);
-the second group is controlled by `consumption = V_b^{-1/gamma_c}` and
-`chi = O(|d| + d^2/max(a,a_bar))` with `d = O(a*T(V_a/V_b - 1))`. For `mu_W < 0` in
-the tail, the household must consume (net of labor income and adjustment cost) at a
-rate that eventually exceeds `r_b*b + O(1)`, i.e. the asymptotic consumption-wealth
-ratio must be bounded below by `r_b`. Whether this holds is a property of the HJB
-solution's tail — the decay exponent of `V_b` — which the accepted source does not
-characterize. A slowly decaying `V_b` (faster than `b^{-2}` decay is required for
-inwardness; slower gives outwardness under bounded transfer). No such rate is
-established by accepted authority.
+The terms `r_a_eff(a)*a` and `transfer_income` are provably `O(1)` (bounded `a`-term,
+fixed scalar); the orders of `labor_income = O(V_b^{1/phi})`, `consumption =
+V_b^{-1/gamma_c}` and `chi = O(|d| + d^2/max(a,a_bar))` with
+`d = O(a*T(V_a/V_b - 1))` are **not identified** absent explicit tail assumptions
+(`labor_income` is `o(b)` iff `V_b = o(b^5)`; `chi = o(b)` requires `d = o(sqrt(b))`).
+For `mu_W < 0` in the tail, the **net** object `consumption + chi - labor_income -
+transfer_income` must eventually dominate `r_b*b + r_a_eff(a)*a` (an exact
+rearrangement of the identity); the asymptotic `c/b`-criterion is only the special
+case with `labor_income = o(b)` and `chi = o(b)`. Whether any of this holds is a
+property of the HJB solution's tail — the decay exponent of `V_b` and the behavior of
+`V_a/V_b` — which the accepted source does not characterize. Fast `V_b` decay
+(`O(b^{-(2+delta)})`, giving `c = Omega(b^{1+delta/2})`) is a **sufficient** (not
+necessary) route to inwardness; slow decay with bounded transfer gives outwardness.
+No such rate is established by accepted authority.
 
 ---
 
@@ -166,10 +176,11 @@ states are all `B_OUTWARD__TOTAL_INWARD`; the 17 top-layer offenders satisfy
 Consistency reading for this theory gate:
 
 - At the highest inspected `b` (`b ~ 56.58`), `r_b*b ~ 0.849` while `|mu_W| ~ 0.10-0.17`,
-  so on the sampled states the negative term
-  `(consumption - labor_income + chi - transfer_income)` already dominates
-  `r_b*b + r_a_eff(a)*a`. This is **consistent with** the mean-reversion scenario
-  `c/b > r_b` at moderate `b`, but:
+  so on the sampled states the **net** object
+  `(consumption + chi - labor_income - transfer_income)` already dominates
+  `r_b*b + r_a_eff(a)*a`. This is **consistent with** the general net inwardness
+  condition holding on the sampled finite states (in the special case of `o(b)`
+  labor and `chi`, equivalently `c/b > r_b`) at moderate `b`, but:
 - it does **not** prove the asymptotic rate; the inspected range is far short of the
   asymptotic regime, the states are concentrated at high `a` and `z = 1`/`1.3`, and
   the cross-`a` total-drift sensitivity indicates the total drift is not even
@@ -198,6 +209,8 @@ See `DLH_5N_DOMAIN_VIABILITY_IMPLICATIONS.md` for the full table. Summary:
 ## 7. What is explicitly NOT claimed
 
 - NOT claimed: `mu_W < 0` for all large `b` (Outcome A is not provable).
+- NOT claimed: the unconditional remainder `mu_W - r_b*b` is `O(1) + o(b)`; its
+  b-orders are unidentified absent tail assumptions.
 - NOT claimed: a counterexample is established at the model level (the formula-level
   non-inward family is conditional and not shown to solve the HJB; see Phase D).
 - NOT claimed: any statement about `a -> +infinity`, or any taper behavior beyond

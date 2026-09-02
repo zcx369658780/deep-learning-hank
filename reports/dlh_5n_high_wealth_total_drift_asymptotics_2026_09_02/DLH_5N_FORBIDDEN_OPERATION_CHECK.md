@@ -1,5 +1,9 @@
 # DLH-5N — Forbidden-Operation / Scope Check (Issue #40 §12)
 
+**Rev 2** (bounded revision for fresh ChatGPT review comment `5503060588`): the
+revision touched only the same 9 Issue #40 allowlist-created files; the forbidden
+operations below remain NOT PERFORMED across both revisions.
+
 DSH performed NONE of the following during DLH-5N. This gate is theory/documentation
 only; no source, model, domain, or numerical object was touched.
 

@@ -1,18 +1,20 @@
 # DLH-5N Phase F — Domain-Viability Implications (R / W, unresolved)
 
-**Issue #40 Phase F.** States the narrow implications of the theory result (Outcome
-B) for the unresolved R/W domain question. This section does NOT choose R or W, does
-NOT choose `W_max`, and does NOT freeze anything. It only records what the accepted
-theory authority does and does not imply.
+**Issue #40 Phase F (rev 2).** States the narrow implications of the theory result
+(Outcome B) for the unresolved R/W domain question. This section does NOT choose R or
+W, does NOT choose `W_max`, and does NOT freeze anything. It only records what the
+accepted theory authority does and does not imply.
 
 Controlling facts from this gate:
 
 1. `r_b*b` is the only provably positive, linearly growing term of `mu_W`.
 2. The fixed-`a` liquid-tail sign of `mu_W` is **conditional** on the (unestablished)
-   tail decay of `V_b` and the tail behavior of `V_a/V_b` (Outcome B).
-3. A formula-level source-consistent family with `mu_W -> +inf` (slow `V_b` decay)
-   exists but is not HJB-verified, so the mean-reversion hypothesis is neither proven
-   nor refuted at the model level.
+   tail decay of `V_b` and the tail behavior of `V_a/V_b` (Outcome B); the
+   unconditional remainder `mu_W - r_b*b` is not identified.
+3. A formula-level source-consistent family with `mu_W -> +inf` exists (slow `V_b`
+   decay with a bounded transfer ratio, so `d = O(1)`, `chi = O(1)`) but is not
+   HJB-verified, so the mean-reversion hypothesis is neither proven nor refuted at the
+   model level.
 4. No statement about `a -> +infinity` is made; `a_max = 10` and the accepted taper
    remain an unresolved truncation/modeling boundary.
 

@@ -1,9 +1,10 @@
 # DLH-5N Phase A — Source Asymptotic-Object Audit
 
-**Issue #40 Phase A.** Audits the exact accepted source asymptotic objects and the
-frozen D0 inputs that enter `mu_W`, separating provable source facts from
+**Issue #40 Phase A (rev 2).** Audits the exact accepted source asymptotic objects
+and the frozen D0 inputs that enter `mu_W`, separating provable source facts from
 endogenous objects whose asymptotic behavior is not characterized by accepted
-authority.
+authority. Rev 2 applies the asymptotic-order corrections of fresh ChatGPT review
+comment `5503060588`.
 
 Source (read-only, immutable): `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 (blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`,
@@ -69,14 +70,14 @@ In the frozen fixture `transfer_income = 0.0`, so numerically
 |---|---|---|---|
 | A1 | `r_b*b` | `r_b = 0.015 > 0` frozen; linear in `b` | **PROVABLE**: `O(b)`, strictly positive, `-> +inf` |
 | A2 | `r_a_eff(a)*a` | `0.03*a*(1 - 0.1*(a/10)^9)`, `a in [0,10]` | **PROVABLE**: `O(1)`, non-negative, `max = 0.27` at `a=10` |
-| A3 | `labor_income` | `0.85*z*(0.85*z)^(1/5)*V_b^(1/5)` | **CONDITIONAL**: non-negative; `= O(V_b^(1/5))`; not provably growing |
+| A3 | `labor_income` | `0.85*z*(0.85*z)^(1/5)*V_b^(1/5)` | **CONDITIONAL**: non-negative; `= O(V_b^(1/5))`; `o(b)` iff `V_b = o(b^5)`; `-> 0` if `V_b -> 0`; **otherwise b-order UNIDENTIFIED** (e.g. `V_b = O(b^5)` gives `O(b)` labor income) |
 | A4 | `transfer_income` | frozen scalar `0.0` (region 0) | **PROVABLE**: `O(1)`, state-independent, `0.0` in fixture |
-| A5 | `consumption` | `V_b^(-1/gamma_c) = V_b^(-1/2)` | **CONDITIONAL**: positive; growth set by `V_b` tail (key object) |
-| A6 | `d = transfer_candidate` | `a*T(V_a/V_b - 1)/chi_1`, bare `a` | **CONDITIONAL**: bounded iff `V_a/V_b = O(1)`; else grows |
-| A7 | `chi(d,a)` | `0.1|d| + d^2/max(a,a_bar)` | **CONDITIONAL**: non-negative; `o(b)` iff `d = o(sqrt(b))`; `O(1)` iff `d = O(1)` |
+| A5 | `consumption` | `V_b^(-1/gamma_c) = V_b^(-1/2)` | **CONDITIONAL**: positive; growth set by `V_b` tail (key object); with `V_b = O(b^{-(2+delta)})` and `V_b > 0`, `c = Omega(b^{1+delta/2})` |
+| A6 | `d = transfer_candidate` | `a*T(V_a/V_b - 1)/chi_1`, bare `a` | **CONDITIONAL**: `d = O(1)` iff `V_a/V_b = O(1)`; `d = o(sqrt(b))` iff `T(q) = o(sqrt(b))` (sufficient for `chi = o(b)`); otherwise order UNIDENTIFIED (`d = o(b)` alone does NOT give `chi = o(b)`) |
+| A7 | `chi(d,a)` | `0.1|d| + d^2/max(a,a_bar)` | **CONDITIONAL**: non-negative; **`o(b)` requires `d = o(sqrt(b))`** (NOT merely `d = o(b)`, because of the quadratic term); `O(1)` iff `d = O(1)` |
 | A8 | `V_b` | positive; no accepted tail bound | **NOT IDENTIFIED BY ACCEPTED AUTHORITY** (the decisive missing object) |
 | A9 | `V_a/V_b` | no accepted tail bound | **NOT IDENTIFIED BY ACCEPTED AUTHORITY** (drives A6/A7) |
-| A10 | `z` process | finite Markov, jump rate 1/3 | **O(1)** contribution to the HJB in `b`; finite support |
+| A10 | `z` process | finite Markov, jump rate 1/3 | finite support alone does **NOT** bound `V(b,a,z')-V(b,a,z)` as `b` grows; HJB `z`-jump contribution has **UNIDENTIFIED** b-order absent a bound on cross-`z` value differences |
 
 ---
 
@@ -99,5 +100,7 @@ The only object of `mu_W` that is provably positive and linearly growing in `b` 
 `r_b*b` (A1). The `a`-term (A2) is bounded and non-negative. `transfer_income` (A4) is
 a fixed scalar (0.0 in the frozen fixture). **Every other object (A3, A5-A9) is
 conditional on the tail behavior of the endogenous value derivatives `V_b` and
-`V_a/V_b`**, which accepted authority does not characterize. There is no accepted
-theorem about the HJB solution's behavior as `b -> +infinity`.
+`V_a/V_b`**, which accepted authority does not characterize; their b-orders (and
+hence the remainder `mu_W - r_b*b`) are **NOT_IDENTIFIED_BY_CURRENT_ACCEPTED_AUTHORITY**
+absent explicit tail assumptions. There is no accepted theorem about the HJB
+solution's behavior as `b -> +infinity`.
