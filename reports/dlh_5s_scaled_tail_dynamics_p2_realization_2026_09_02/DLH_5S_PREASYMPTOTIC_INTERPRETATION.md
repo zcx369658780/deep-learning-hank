@@ -1,9 +1,9 @@
 # DLH-5S — Interpretation of DLH-5R Pre-Asymptotic Evidence (Phase G)
 
-**Issue #45, Phase G.** Uses the accepted DLH-5R scalar medians **only** as
-read-only evidence context. No new HJB/grid execution. The transformed
-identities are used to explain the observed pattern; qualitative compatibility
-is **not** theorem proof.
+**Issue #45, Phase G (bounded Rev 2 per review `5516660741`).** Uses the
+accepted DLH-5R scalar medians **only** as read-only evidence context. No new
+HJB/grid execution. The transformed identities are used to explain the observed
+pattern; qualitative compatibility is **not** theorem proof.
 
 ## 1. Accepted DLH-5R medians (read-only)
 
@@ -16,6 +16,10 @@ p_eff     0.559   0.681   0.758   0.832        (reported V_b slopes, p_eff = -sl
 chi/b     0.00079 0.00058 0.00049 0.00040
 mu_W/b    -0.0100 -0.0083 -0.0074 -0.0067
 ```
+
+(Note: `|R|/sqrt(b)` reports the **magnitude** of `R/sqrt(b)`; the accepted
+evidence also shows `R` positive on the accessible states, i.e. `V_a = R*V_b >
+0` there — an empirical fact, not an S3 implication.)
 
 ## 2. Why increasing Q implies decreasing c/b (exact)
 
@@ -66,10 +70,17 @@ dQ/ds = Q * [2 - (rho+r_b)*sqrt(Q)] / [1 - r_b*sqrt(Q)] > 0   for all Q in (0, K
 
 because the numerator is positive (`sqrt(Q) < 2/(rho+r_b) = sqrt(K*)`) and the
 denominator is positive (`r_b*sqrt(Q) < 6/7 < 1`). So the reduced system's
-lower branch predicts exactly the observed **direction**: `Q < K* => Q
-increasing`, monotonically toward `K* = 3265.3`. The observed `Q` (315->736) is
-far below `K*` and also below the turning point `1/r_b^2 = 4444.4`, i.e. on the
-lower branch throughout.
+lower branch predicts exactly the observed **direction**: `Q < K* => Q`
+increasing, monotonically toward `K* = 3265.3`.
+
+**Branch-classification caveat (corrected).** The lower/upper branches `Q_±(H)`
+are branches of the deliberately reduced relation `rho H = F(Q)` with `E=0` and
+z-symmetry. The actual DLH-5R solution has nonzero remainder and z
+heterogeneity, so observing `Q < 1/r_b^2 = 4444.4` does **not** by itself prove
+the actual trajectory is "on the lower branch". Correct wording: **the accepted
+DLH-5R `Q` range (315->736) lies inside / is compatible with the `Q`-range of
+the reduced lower sector** `(0, 1/r_b^2)`. Branch selection for the full system
+remains an analytic condition, not an observation (Phase F item 7).
 
 ## 5. Is DLH-5R qualitatively compatible with a pre-asymptotic approach to the p=2 attractor? (conditional)
 
@@ -92,25 +103,30 @@ This is the signature of the reduced lower-branch attractor being approached
 **Two honest qualifications (do NOT over-read the data):**
 
 1. **The reduced system alone does NOT reproduce the observed rate.** At the
-   observed `Q`, the reduced flow would give
+   observed `Q`, the unforced reduced flow would give
    `d log Q/d log b = [2 - (rho+r_b)sqrt(Q)]/[1 - r_b sqrt(Q)]`, e.g. ~1.88 at
-   `Q=315`, and would have `Q ~ K*` essentially by `b ~ 30` (correction
-   `~ b^(-7)`). The observed solution stays far below `K*` at `b <= 56.6`
-   (`Q=736` at W4) with a slower `d log Q/d log b` (~1.44 -> 1.17). Hence the
-   normalized remainder `E` is **materially active and negative** on the
-   accessible range (consistent with `E_labor < 0`, `E_illiquid < 0`,
-   `E_transfer_adj <= 0`), retarding the approach; the reduced system is the
-   *asymptotic* attractor, not the finite-window trajectory. The approach rate
-   is set by `E` (and `dE/ds`), which S3 alone does not control.
-2. **The numerical medians come from the accepted fixed-`labor0` finite-grid
-   solver**, whereas the analytic attractor analysis is for the accepted
-   endogenous-labor analytic HJB (Phase A note). The qualitative direction is
-   shared; the quantitative rates are indicative only.
+   `Q=315`, and would have `Q ~ K*` essentially by `b ~ 30` (homogeneous
+   correction `~ b^(-7)`). The observed solution stays far below `K*` at
+   `b <= 56.6` (`Q=736` at W4) with a slower `d log Q/d log b` (~1.44 -> 1.17).
+   Hence the **full-system remainder/coupling** materially modifies or retards
+   the accessible-range motion; its **net sign is not identified** from the
+   accepted medians alone (the exact flow's net forcing is `S Q + E - E_s`, and
+   `E`'s components do not have an S3-determined sign — Phase C/F). The reduced
+   system is the *asymptotic* attractor of the unforced limit system, not a
+   description of the finite-window trajectory.
+2. **Labor treatment (corrected):** the accepted finite-grid solver uses the
+   **same endogenous labor FOC** as the analytic theory (B/F branches via
+   `labor_from_vb`; `baseline_labor` only on the zero-liquid branch and
+   boundary closures). There is **no fixed-labor0-vs-endogenous-labor
+   convention difference** to invoke here; the slow observed approach is
+   accounted for entirely by the full-system remainder/coupling (item 1),
+   not by any solver labor convention.
 
 **Bottom line:** the accepted finite-window evidence is **qualitatively
-compatible** with a long pre-asymptotic approach to the reduced p=2 attractor on
-the lower branch, and the exact identities (`c/b = Q^(-1/2)`, `p_eff =
-2 - dlogQ/dlogb`, `dQ/ds > 0` for `Q<K*`) account for the observed directions
-without any assumption. This does **not** imply the actual HJB reaches p=2:
-realization still requires the explicit non-circular tightness / branch-selection /
-derivative-remainder / no-exotic assumptions of Phase F.
+compatible** with a long pre-asymptotic approach to the reduced p=2 attractor,
+and the exact identities (`c/b = Q^(-1/2)`, `p_eff = 2 - dlogQ/dlogb`,
+`dQ/ds > 0` for `Q<K*`) account for the observed directions without any
+assumption. This does **not** imply the actual HJB reaches p=2: realization
+still requires the explicit non-circular sufficient condition set of Phase F
+(scaled-tail tightness, non-degeneracy, regular lower sector / branch
+selection, `E_s -> 0`, and a coupled-limit/basin entry condition).

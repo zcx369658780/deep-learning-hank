@@ -80,9 +80,12 @@ d(Delta_Q)/ds = - [ (rho+r_b)/2 + 2/3 ] / [ (rho-r_b)/2 ] * Delta_Q
 lambda_diff = - [0.0175 + 0.66667] / 0.0025 = -273.67   (in s)
 ```
 
-**The z-difference mode is strongly damped:** `Delta_Q ~ exp(lambda_diff s) =
-b^(-273.67)` at linear order. The two-state switch rate provides the strong
-`2/3` damping, amplified by the small `(rho-r_b)/2 = 0.0025` divisor.
+**The z-difference mode is strongly damped (unforced/local):** for the
+**homogeneous linearization** `Delta_Q ~ exp(lambda_diff s) = b^(-273.67)` at
+linear order. The two-state switch rate provides the strong `2/3` damping,
+amplified by the small `(rho-r_b)/2 = 0.0025` divisor. This is a *homogeneous
+local* relaxation rate of the unforced linearization; it is NOT a full-HJB
+convergence rate (forcing can dominate, see section 5).
 
 **Slaving of Delta_H.** From `(rho + 2/3) Delta_H = (rho-r_b)/2 Delta_Q + Delta_E`:
 
@@ -107,12 +110,28 @@ mode.
 
 ## 5. Stability summary and conditions
 
-| Mode | Eigenvalue (in s) | b-rate | Character |
+| Mode | Homogeneous eigenvalue (in s) | Homogeneous (unforced) b-rate | Character |
 |---|---|---|---|
 | Mean (Q_bar) | -7 | b^(-7) | stable node; forced by E_bar, dE_bar/ds |
 | Difference (Delta_Q) | -273.67 | b^(-273.67) | strongly damped; forced by Delta_E, dDelta_E/ds |
 | Difference (Delta_H) | slaved to Delta_Q | b^(-273.67) | damped via Delta_Q + Delta_E |
 
+- **Rates are homogeneous/local only.** `-7` and `-273.67` are the relaxation
+  eigenvalues of the **unforced** reduced mean system and the **unforced**
+  linearized z-difference system respectively. From merely `E -> 0` and
+  `E_s -> 0` (no rate) one may **not** conclude the full HJB converges at
+  `b^(-7)` / `b^(-273.67)`: a forcing that decays slowly can dominate the
+  realized rate. Two honest options:
+  - **Option A (default here): make no generic full-system rate claim.** The
+    homogeneous eigenvalues are recorded as attractor-structure facts only;
+    realized rates are left as Phase F conditions.
+  - **Option B (if a rate is claimed):** impose an explicit forcing-decay
+    bound, e.g. `E - E_s = O(exp(-alpha s))` (and the analogous
+    `Delta_E - d(Delta_E)/ds = O(exp(-alpha_diff s))` on the difference mode),
+    and state the realized rate as controlled by the **slower** of `alpha` and
+    the homogeneous eigenvalue, treating near-resonance (`alpha ~ 7` /
+    `alpha_diff ~ 273.67`) separately. No such rate claim is made in this
+    package without an explicit forcing-rate assumption.
 - **Isolated candidate:** the z-symmetric p=2 candidate is an isolated fixed
   point of the `E=0` coupled system; it is not an entire manifold.
 - **Difference mode damping:** strong (rate 273.67 in s). No spectral
@@ -141,7 +160,8 @@ mode.
 
 - **Exact:** the mean/difference decomposition of the scaled HJB; the fixed
   point of the E=0 coupled system; the `+2/3` switch sign.
-- **Linearized:** the eigenvalues -7 and -273.67; the slaving coefficient.
+- **Linearized:** the eigenvalues -7 and -273.67 (homogeneous/local); the
+  slaving coefficient 0.00364.
 - **Local:** the linearization holds in a neighborhood of the candidate.
 - **Conditional:** the actual convergence (Delta -> 0, coefficient
   synchronization) requires the Phase F remainder/tightness assumptions.

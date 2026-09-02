@@ -1,5 +1,10 @@
 # DLH-5S — Forbidden-Operation / Scope Check (Issue #45 §13)
 
+**Rev 2 (review `5516660741`):** same scope. This bounded revision only
+corrects analytic statements inside the same nine allowlist files (labor
+convention, S3-sign, branch classification, net-remainder sign, full-HJB rates,
+"minimality", terminal A -> B). No forbidden operation was performed in Rev 2.
+
 DLH-5S is **analytic theory work only**. DSH performed NONE of the following;
 no accepted source, economics, domain, numerical, or governance object was
 modified, and no numerical experiment was run.

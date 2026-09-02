@@ -84,10 +84,12 @@ growth is slower than quadratic in `b`.
 
 ## 6. What these identities do NOT imply
 
-- They do **not** imply `V_inf = 0` (S2 remains provisional input). E.g.
-  `H -> H_0 > 0` would give `V = -H/b -> 0` (consistent with V_inf=0), but
-  `H -> +inf` would give `V -> -inf` (outside S1 boundedness); the identities
-  themselves do not select among these.
+- They do **not** imply `V_inf = 0` (S2 remains provisional input). They do
+  not control `H/b` either: since `V = -H/b`, `H` may diverge sublinearly in
+  `b` while `V -> 0` (e.g. `H = sqrt(b)` gives `V = -1/sqrt(b) -> 0`). The
+  identities themselves do not select among `H = O(1)` (→ `V = O(1/b)`),
+  sublinear growth (→ `V -> 0`), or linear/superlinear growth (→ `V`
+  bounded-away-from-zero or diverging); hence they do not imply S2.
 - They do not imply `Q -> K*`; they only give the exact bookkeeping
   (`dH/ds = H - Q`, `p_eff = 2 - d log Q/d log b`) used to *test* candidates.
 - They do not imply `V_b ~ K*/b^2`; that is a realization claim, not an

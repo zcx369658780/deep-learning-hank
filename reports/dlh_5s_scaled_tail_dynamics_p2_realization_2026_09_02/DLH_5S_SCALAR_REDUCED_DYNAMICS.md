@@ -116,8 +116,11 @@ D(K*)   = 1 - 2*r_b/a_sum = (rho - r_b)/(rho + r_b) = 0.005/0.035 = 1/7
 lambda  = f'(K*) = -1/(1/7) = -7   (in s)
 ```
 
-So `dQ/ds ~ -7 (Q - K*)` near K*: a **stable node with eigenvalue -7 in s**,
-i.e. `Q - K* ~ C*exp(-7s) = C*b^(-7)` on the lower branch. The approach is
+So `dQ/ds ~ -7 (Q - K*)` near K*: a **stable node with homogeneous eigenvalue
+-7 in s**, i.e. for the **unforced** reduced system
+`Q - K* ~ C*exp(-7s) = C*b^(-7)` on the lower branch. This is the *unforced*
+local relaxation rate; it is not promoted to a full-HJB convergence rate
+(Phase C/F treats the forcing). The approach of the unforced reduced system is
 exponential in `s = log b` (extremely fast in `b`).
 
 ## 7. Reduced-system predictions to carry forward
@@ -131,12 +134,17 @@ exponential in `s = log b` (extremely fast in `b`).
 4. **The upper branch is run-away**: without an additional lower-branch
    selection / `Q < 1/r_b^2` bound, the reduced system alone does not guarantee
    the attractor is reached.
-5. **The reduced flow is fast**: from `Q=315` at `b=20`, the reduced dynamics
-   would give `Q(b) = K* + (315-K*)(b/20)^(-7)`, i.e. essentially K* by
-   `b~30`. The observed DLH-5R solution stays far below K* at `b<=56.6`, so the
-   actual flow is materially retarded by the (nonzero) remainder E on the
-   accessible range — the reduced system is the *asymptotic* attractor, not the
-   finite-window trajectory (Phase G).
+5. **The reduced flow is fast (homogeneous estimate)**: from `Q=315` at
+   `b=20`, the unforced reduced dynamics would give the homogeneous estimate
+   `Q(b) ~ K* + (315-K*)(b/20)^(-7)`, i.e. essentially K* by `b~30`. The
+   observed DLH-5R solution stays far below K* at `b<=56.6`, so on the
+   accessible range the **full-system remainder/coupling** (the net forcing
+   `S Q + E - E_s` of the exact flow) materially modifies/retards the motion
+   toward the reduced attractor; its **net sign is not identified** from the
+   accepted medians alone. The reduced system is the *asymptotic* attractor of
+   the unforced limit system, not a description of the finite-window trajectory
+   (Phase G). The `b^(-7)` estimate is the homogeneous local rate only; a
+   slowly-decaying forcing can dominate the realized rate (Phase C/F).
 
 ## 8. Scope caveat
 
