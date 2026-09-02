@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5R_ACCEPTED__NEXT_ROUTE_OWNER_DECISION_PENDING`
 
 Last synchronized: 2026-09-02
 
@@ -8,129 +8,85 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**No active Builder Issue.**
 
-**Issue #44 — OPEN**
+Issue #44 / DLH-5R is accepted, integrated to `main`, and CLOSED completed. DSH must fail closed until a successor Issue is explicitly published, Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #44 / DLH-5R
 
 Title:
 
 `DLH-5R: Execute HJB-only provisional-S3 liquid-tail numerical falsification`
 
-Task type:
-
-`SCIENTIFIC_NUMERICAL_FALSIFICATION__PROVISIONAL_S3_HJB_TAIL_DIAGNOSTIC`
-
-Dedicated branch:
-
-`dsh/issue-44-dlh-5r-hjb-tail-falsification-2026-09-02`
-
-Issue #44 becomes the sole DSH Builder authority only after the authoritative activation comment is posted and CURRENT Task Index / Startup identity matches. If Issue #44 is not OPEN, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #43 / DLH-5Q
-
 Accepted candidate:
 
-`dd39385b6cf4fcf8fed382d69683ab907747cfe3`
+`6b79b7b1ff388174b5460a32de547a25ecb8a097`
 
 Reviewer acceptance comment:
 
-`5507534903`
+`5510368753`
 
 Acceptance integration commit:
 
-`570d858aea3029e1a30c286b5c683a8efdb836bd`
+`96f0adb855233da06e96b71c6d8b6fe6aa540fc7`
 
 Accepted verdict:
 
-`DLH_5Q_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__PROVISIONAL_S3_SURVIVES_ANALYZED_FAMILIES__THEOREM_NOT_CLOSED__FALSIFICATION_PROTOCOL_READY`
+`DLH_5R_REV2_ACCEPTED__OUTCOME_C_CONFIRMED__S3_DERIVATIVE_CONTROL_NUMERICALLY_COMPATIBLE_ON_ACCESSIBLE_RANGE__P2_ASYMPTOTIC_REALIZATION_NOT_REACHED__FINITE_TRUNCATION_ASYMPTOTIC_REACH_REMAINS`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_NUMERICAL_FALSIFICATION_EVIDENCE_ACCEPTED`
 
 Accepted terminal:
 
-`DLH_5Q_PROVISIONAL_S3_THEOREM_NOT_CLOSED__MISSING_EXISTENCE_COMPARISON_OR_ASYMPTOTIC_REALIZATION_IDENTIFIED__FALSIFICATION_PROTOCOL_READY`
+`DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION_INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS`
 
-## Owner decision after DLH-5Q
+## Controlling accepted interpretation
 
-Owner selected Q-B2:
+1. Raw transfer-FOC-consistent value-gradient provenance is accepted for this diagnostic. `R_hat=V_a_raw/V_b_raw` is reconstructed from the converged accepted value solution using the accepted finite-difference/upwind semantics; the consumption/labor derivative floor is not substituted into `R_hat`.
+2. All six authorized mature HJB variants J0-J5 converge; derivative-floor activation is zero and no non-finite values are observed. The runs reproduce the accepted DLH-5J numerical behavior.
+3. Common physical-window observables are highly stable across b120/b140/b160 and across aligned a77/a153 nodes. This is local finite-window truncation/resolution robustness; it is not proof of asymptotic convergence as `b -> infinity`.
+4. Over the accessible range, the primary S3 derivative-control signature is numerically compatible: `|R|≈1.11=O(1)`, `|R|/sqrt(b)` falls, and `chi/b` falls. The critical `R~Theta(sqrt(b))` / positive-`chi/b` signature is not observed.
+5. The p=2 coefficient/scaling support screen fails at accessible `b<=56.5789`: the effective raw-`V_b` exponent is far from `-2`, `b^2 V_b` is far below `K*=3265.3061`, and `c/b` remains above `0.0175`.
+6. The strong falsification screen is also not satisfied: `Q_hat` and `c/b` do not form stable non-p2 plateaus, the effective exponent remains materially b-dependent, and all p2-facing observables move toward their conditional p2 targets as b increases.
+7. Therefore eventual asymptotic p2 realization is neither numerically supported nor falsified by DLH-5R. The material limitation is asymptotic reach at the pre-existing `b160` hard ceiling, not cross-b-extent or cross-a-resolution instability.
+8. S3 in full is NOT numerically verified: S2 `V_inf=0`, continuous-domain existence/comparison, actual asymptotic realization, coefficient convergence, and full-support endpoint authority remain open.
+9. Nonblocking reviewer clarification: do not promote `r_b<rho => dissaving` to a general theorem. Realized accepted numerical drift signs / selected upwind branch are controlling for provenance.
+10. `W4_B160_ONLY` remains descriptive only.
+11. R/W/W1/W2 remain unfrozen; no `W_max`; no endpoint law is selected; stationary KFE remains NOT AUTHORIZED under Issue #27.
+12. `b160` remains the hard numerical route ceiling unless the Owner explicitly reopens larger-domain authority in a future Issue.
 
-`APPROVE_Q_B2_HJB_ONLY_NUMERICAL_FALSIFICATION__NO_KFE`
+## Current route checkpoint after DLH-5R
 
-Owner-decision comment on Issue #43:
+DLH-5R returned Outcome C. No successor is activated automatically.
 
-`5507666206`
+Scientifically defensible next directions are:
 
-Scientific meaning:
+- **R-C1 — bounded analytic asymptotic-realization closure:** study why the accepted finite-window effective exponent/coefficient continues to evolve and whether the first-order regime-switching HJB plus provisional S3 can justify eventual p2 realization under sharper analytic assumptions. No numerical-domain expansion.
+- **R-C2 — Owner-authorized extended-domain reconsideration:** only if the Owner explicitly reopens the historical `b160` hard ceiling. Any such gate must be bounded and hypothesis-driven; uncontrolled larger-grid PASS seeking remains closed.
+- **R-C3 — endpoint model-definition review:** resolve analytic `a=10` and continuous `b_lo` authority before any full-support theorem or production-domain implementation.
 
-- execute the accepted DLH-5Q falsification protocol with the immutable finite-grid household HJB solver only;
-- fresh HJB-only execution of the six exact mature DLH-5J variants is authorized;
-- use only pre-existing `{a77,a153} x {b120,b140,b160}` grids, `b_lo=-2`, `db=7/19`, `a in [0,10]`;
-- `b160` remains the hard ceiling; no b180/b200, no new b_lo, no new a extent/resolution law;
-- no stationary KFE.
+No route authorizes stationary KFE automatically.
 
-## Controlling numerical/scientific interpretation
+## Current scientific ceiling
 
-1. Provisional S3 remains a falsifiable working class: primary `R=V_a/V_b=O(1)`; P-TR is sensitivity only.
-2. Conditional p=2 targets remain numerical predictions, not theorem facts:
+Until the next Owner route decision and successor activation:
 
-```text
-K* = 4/(rho+r_b)^2 = 3265.3061224489797
-c/b -> 0.0175
-mu_W/b -> -0.0025
-```
-
-3. Primary `R_hat` must use raw accepted value gradients consistent with the transfer FOC. Consumption/labor derivative floors must not silently redefine `R_hat`.
-4. Derivative-floor activation must be recorded as numerical-semantic evidence.
-5. Stable `R~sqrt(b)`, positive `chi/b` plateau, or stable non-p=2 coefficient/scaling may falsify promotion of S3 as the realized model if robust across b extent and a resolution.
-6. Numerical support does not close existence/comparison or prove the analytic theorem.
-7. R/W/W1/W2 remain unfrozen; no `W_max`; no endpoint law is selected.
-8. Stationary KFE remains NOT AUTHORIZED under Issue #27.
-
-## Exact HJB variants authorized
-
-Read-only grid authority:
-
-`configs/dlh_5j_final_coupled_b_extent_diagnostic.toml`
-
-Fresh HJB-only runs:
-
-```text
-J0_A77_B120
-J1_A77_B140
-J2_A77_B160
-J3_A153_B120
-J4_A153_B140
-J5_A153_B160
-```
-
-No additional variant is authorized.
-
-## Exact Builder allowlist
-
-Builder may create only:
-
-1. `configs/dlh_5r_provisional_s3_hjb_tail_falsification.toml`
-2. `scripts/run_dlh_5r_provisional_s3_hjb_tail_falsification.py`
-3. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_EXECUTION_REPORT.md`
-4. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_EXECUTION_MANIFEST.md`
-5. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_RAW_GRADIENT_PROVENANCE.md`
-6. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_VARIANT_RUN_SUMMARY.csv`
-7. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_ALIGNED_TAIL_OBSERVABLES.csv`
-8. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_SCALING_AND_PLATEAU_DIAGNOSTICS.csv`
-9. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_FALSIFICATION_DECISION.md`
-10. `reports/dlh_5r_provisional_s3_hjb_tail_falsification_2026_09_02/DLH_5R_FORBIDDEN_OPERATION_CHECK.md`
-
-No existing tracked file may be modified by Builder.
-
-## Scientific ceiling
-
-No accepted-source/economics mutation; no b extent beyond existing b160; no new b_lo/a_max; no R/W/W1/W2/`W_max`; no endpoint-KKT; no stationary KFE/nullspace/pin/density/aggregates; no regional GE/multi-province audit; no network training; no nominal HANK; no calibration/policy/welfare/Results.
-
-No PR / merge / close / successor Issue / self-accept from Builder.
+- no accepted-source/economics mutation;
+- no new `b` extent, `b_lo`, `a_max`, or b resolution;
+- no R/W/W1/W2 selection or `W_max`;
+- no HJB/KFE/grid/stationary execution;
+- no endpoint-KKT implementation;
+- no regional GE / multi-province audit / neural training / nominal HANK / calibration / policy / welfare / Results.
 
 ## Current route authority
 
-- Issue #44 full body + authoritative activation comment = exact Builder authority once activation is posted.
+- Latest accepted numerical evidence package: Issue #44 / DLH-5R.
+- Reviewer acceptance authority: Issue #44 comment `5510368753`.
+- Acceptance integration: `96f0adb855233da06e96b71c6d8b6fe6aa540fc7`.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`.
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`.
-- Accepted DLH-5Q package and reviewer/Owner comments remain read-only controlling context.
+- There is currently **no active Builder branch/task authority**.
