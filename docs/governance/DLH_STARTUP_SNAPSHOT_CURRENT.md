@@ -13,7 +13,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 - DSH = bounded Builder/executor or bounded scientific analyst only under an active Issue;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route advisor / task issuer / governance operator;
 - Owner = final scientific authority for model-defining choices;
-- Builder completion is not acceptance and Builder recommendation is not model freeze.
+- Builder completion is not acceptance.
 
 Priority:
 
@@ -21,13 +21,19 @@ Priority:
 
 ## Current Builder state
 
-**No active Builder Issue.**
+Current published task:
 
-Current status:
+**Issue #43 — DLH-5Q: Verify provisional S3 liquid-tail theorem class and formalize parallel falsification**
 
-`DLH_5P_ACCEPTED__OWNER_MODEL_DEFINITION_DECISION_PENDING`
+Task type:
 
-Issue #42 / DLH-5P is CLOSED completed. DSH must STOP / fail closed until a successor Issue is explicitly published and activated after Owner scientific decision.
+`SCIENTIFIC_THEOREM_VERIFICATION__PROVISIONAL_S3_LIQUID_TAIL_AND_PARALLEL_FALSIFICATION`
+
+Dedicated branch:
+
+`dsh/issue-43-dlh-5q-provisional-s3-theorem-falsification-2026-09-02`
+
+Builder authority is active only while Issue #43 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -51,13 +57,29 @@ Accepted verdict:
 
 `DLH_5P_REV4_ACCEPTED__RECOMMENDATION_B_SUPPORTED__CRITICAL_TRANSFER_BRANCH_REMAINS_FORMALLY_ADMISSIBLE__TAIL_COEFFICIENT_NONUNIQUE__DEMONSTRATED_TOTAL_WEALTH_DRIFT_REMAINS_INWARD__OWNER_DECISION_REQUIRED`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_ANALYTIC_MODEL_SPECIFICATION_REVIEW_ACCEPTED`
-
-Accepted recommendation terminal:
+Accepted terminal:
 
 `DLH_5P_CRITICAL_TRANSFER_BRANCH_REMAINS_ADMISSIBLE__TAIL_SPECIFICATION_NOT_UNIQUE__OWNER_DECISION_REQUIRED`
+
+## Owner decision after DLH-5P
+
+Owner selected Option C:
+
+`PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
+
+Owner-decision comment on Issue #42:
+
+`5506138177`
+
+This decision creates a **provisional analytic working authority for theorem analysis**, not a production-domain freeze.
+
+Provisional class:
+
+1. S1 continuous fixed-a-support, unbounded-positive-b analytic HJB base with inherited accepted economics.
+2. S2 `V_inf(a,z)=0` tail-value selection, provisionally adopted as an analytic selection assumption; necessity is unproved.
+3. S3 primary derivative-control class `R=V_a/V_b=O(1)` uniformly over the claimed `(a,z)` support.
+4. P-TR `R=o(sqrt(b))` retained only as a weaker sensitivity envelope.
+5. Critical `R~Theta(sqrt(b))` remains outside the primary class and must be retained as an exclusion-cost/falsification benchmark.
 
 ## Controlling scientific interpretation
 
@@ -65,42 +87,44 @@ Accepted household source remains immutable/read-only:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-The accepted source remains a finite-grid MATLAB-faithful HJB operator/solver. It does not itself define the unbounded-positive-`b` analytic boundary/transversality/admissibility problem.
+Accepted source remains finite-grid MATLAB-faithful numerical authority. No finite-grid upper boundary is promoted to an analytic transversality law.
 
-DLH-5P accepted the following review conclusions, not a model freeze:
-
-- **S1:** minimal continuous extension; `V_b>0`, `V<0`, finite lower `b`, compact `a in [0,10]` and finite z imply a bounded monotone value with finite tail limit `V_inf(a,z)<=0`.
-- **S2:** tail-value selection `V_inf(a,z)=0`; this is explicit new analytic-model definition / theorem-assumption content, not a proved necessity and not an asset no-Ponzi theorem.
-- **S3:** derivative-control admissibility `R=V_a/V_b=O(1)` uniformly (preferred) or P-TR `R=o(sqrt(b))`; this excludes the critical transfer branch by class but does not prove the actual tail is `p=2`.
-
-The controlling critical branch is
-
-`R=V_a/V_b ~ L(a,z)*sqrt(b)`.
-
-A subleading a-dependent remainder can generate this branch while satisfying mixed-partial consistency. For `p=2`, `a>=a_bar` and the scalar symmetric subfamily with constant `C=aL^2>=0` across productivity states:
+Under accepted DLH-5O conditional p=2 assumptions:
 
 ```text
-(rho+r_b)K - 2*sqrt(K) = -0.5*C*K/chi_1
+(rho+r_b)K - 2*sqrt(K) = S*K
+K = 4/(rho+r_b)^2
+c/b = 0.0175
+mu_W/b -> -0.0025
+```
+
+DLH-5P established that outside provisional S3, the critical `R~Theta(sqrt(b))` formal branch can alter the tail coefficient on compact interior-a sets. For the constant-across-z scalar subfamily with `C=aL^2>=0` and `a>=a_bar`:
+
+```text
 c/b = (rho+r_b+0.5*C/chi_1)/2
-chi/b = 0.5*C/chi_1
 mu_W/b = -0.0025 - 3*C/(4*chi_1) < 0
 ```
 
-This demonstrates tail/consumption-coefficient non-uniqueness while preserving total-wealth inwardness for the demonstrated family. If `C(z)` differs across z states, the coupled switch system must be solved; the scalar formula above is only the constant-across-z subfamily.
+Thus the demonstrated critical family changes the coefficient but remains total-wealth inward. It is not an actual solved HJB counterexample and is not full-support authority.
 
-The critical branch is accepted only as an **UNRESOLVED/ADMISSIBLE formal dominant balance on compact interior-a sets**. No actual admissible HJB solution, full asymptotic series, full `[0,10]` smooth realization or endpoint-compatible theorem is established.
+Primary S3 excludes that family by class. This exclusion is a provisional Owner choice, not a derived economic theorem.
 
-`V_inf=0` is a tail selection/boundary assumption. Even if future work proves its necessity, it is not by itself a comparison/uniqueness theorem; existence and comparison or an equivalent uniqueness argument remain separate gates.
+## DLH-5Q scientific rationale
 
-## Owner decision now required
+The current question is:
 
-The next action is model-defining and must come from the Owner. Current options:
+> Within the provisional S1+S2+S3 class, can the project actually establish existence/selection, p=2 asymptotic realization and coefficient convergence — while preserving a parallel route capable of falsifying the provisional class?
 
-1. **Adopt S3 explicitly:** S1 base + S2 `V_inf=0` + S3 derivative-control (`R=O(1)` preferred / P-TR fallback), knowingly excluding the critical branch by admissibility primitive. Then open a separate theorem/verification gate. This adoption would still not prove realized `p=2` asymptotics.
-2. **Do not impose S3 yet:** continue analytic work on the critical `m=1/2` remainder family, including completion of the asymptotic series, endpoint consistency, selection and existence/comparison.
-3. **Provisional S3 + parallel falsification:** use S3 as a provisional analytic class for tractable theorem work while simultaneously testing whether the exclusionary primitive is scientifically justified.
+Issue #43 must therefore:
 
-No option is automatically selected by DLH-5P acceptance.
+- freeze the exact provisional class for theorem work;
+- audit existence/comparison/uniqueness support;
+- attempt p=2 asymptotic realization under primary `R=O(1)`;
+- audit same-order coefficient/drift only if realization is justified;
+- search analytically for S3-internal counterexamples / alternate tails;
+- preserve the out-of-class critical branch as an exclusion-cost benchmark;
+- design but not run a future numerical falsification protocol;
+- separate compact-interior and full-support endpoint theorem scopes.
 
 ## Controlling HJB/KFE rule
 
@@ -110,31 +134,43 @@ HJB boundary policy <=> KFE boundary transition law
 
 Issue #27 remains binding. Stationary KFE remains **NOT AUTHORIZED**.
 
-R and W remain unfrozen. No `W_max`, new `b_max`, or new `a_max` is authorized.
+R/W/W1/W2 remain unfrozen. No `W_max`, new `b_max`, or new `a_max` is authorized.
 
-## Current scientific ceiling
+## Exact Builder allowlist
 
-Until Owner decision:
+Builder may create only:
 
-- no successor Builder authority;
+1. `docs/theory/DLH_5Q_PROVISIONAL_S3_TAIL_THEOREM_AND_FALSIFICATION.md`
+2. `reports/dlh_5q_provisional_s3_theorem_falsification_2026_09_02/` with the exact nine report files frozen in Issue #43.
+
+No existing tracked file may be modified by Builder.
+
+## Scientific ceiling during Issue #43
+
 - no accepted-source/economics mutation;
-- no analytic-model specification freeze from Builder output alone;
-- no R/W/W1/W2 selection;
-- no `W_max` / new grid / new extent / new `a_max`;
-- no HJB/KFE/grid/stationary run;
-- no boundary-KKT implementation;
+- no R/W/W1/W2/`W_max` selection;
+- no new numerical `b_max`/`a_max`;
+- no HJB/KFE/grid/stationary execution;
+- no J0-J5 rerun;
+- no endpoint-KKT implementation;
 - no regional GE / multi-province audit;
 - no network training / nominal HANK;
 - no calibration / policy / welfare / Results.
 
-## DSH startup rule at this checkpoint
+## DSH startup sequence
 
-If invoked before a successor Issue is activated, DSH must:
-
-1. fresh-fetch `origin/main`;
-2. read all CURRENT rules, Task Index, this Startup Snapshot and current Roadmap;
-3. observe that there is no active Builder Issue;
-4. make no repository/scientific mutation;
-5. STOP with an authority-missing classification.
+1. `Set-Location D:\deep-learning-hank`;
+2. verify repository / remote / worktree / staging;
+3. `git fetch origin` and record fresh `origin/main`;
+4. read all CURRENT rules;
+5. read Task Index, this Startup Snapshot and current Roadmap;
+6. read Issue #43 full body and latest comments, including activation;
+7. read Issue #42 acceptance, reviewer and Owner-decision comments read-only;
+8. read accepted DLH-5O / DLH-5P packages and household source read-only;
+9. verify Issue / Task Index / Startup identity exactly;
+10. create exact dedicated branch from fresh `origin/main`;
+11. create only Issue #43 allowlist files;
+12. do not run HJB/KFE/grid/stationary experiments;
+13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
 Chat text is not Builder authority.
