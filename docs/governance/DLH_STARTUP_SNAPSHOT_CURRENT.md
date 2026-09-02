@@ -21,13 +21,19 @@ Priority:
 
 ## Current Builder state
 
-**No active Builder Issue.**
+Current published task:
 
-Current status:
+**Issue #45 — DLH-5S: Analyze provisional-S3 pre-asymptotic dynamics and p=2 realization**
 
-`DLH_5R_ACCEPTED__NEXT_ROUTE_OWNER_DECISION_PENDING`
+Task type:
 
-Issue #44 / DLH-5R is CLOSED completed. DSH must STOP / fail closed until a successor Issue is explicitly published, Task Index / Startup identity is synchronized, and an authoritative activation comment is posted.
+`SCIENTIFIC_THEORY_ANALYSIS__PROVISIONAL_S3_PREASYMPTOTIC_DYNAMICS_AND_P2_REALIZATION`
+
+Dedicated branch:
+
+`dsh/issue-45-dlh-5s-scaled-tail-p2-realization-2026-09-02`
+
+Builder authority becomes active only while Issue #45 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -51,15 +57,23 @@ Accepted verdict:
 
 `DLH_5R_REV2_ACCEPTED__OUTCOME_C_CONFIRMED__S3_DERIVATIVE_CONTROL_NUMERICALLY_COMPATIBLE_ON_ACCESSIBLE_RANGE__P2_ASYMPTOTIC_REALIZATION_NOT_REACHED__FINITE_TRUNCATION_ASYMPTOTIC_REACH_REMAINS`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_NUMERICAL_FALSIFICATION_EVIDENCE_ACCEPTED`
-
 Accepted terminal:
 
 `DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION_INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS`
 
-## Controlling source and accepted numerical evidence
+## Owner decision after DLH-5R
+
+Owner selected R-C1:
+
+`APPROVE_R_C1_BOUNDED_ANALYTIC_ASYMPTOTIC_REALIZATION_CLOSURE__NO_NUMERICAL_DOMAIN_EXPANSION`
+
+Owner-decision comment on Issue #44:
+
+`5510675566`
+
+This authorizes bounded analytic/theory work on asymptotic realization and explicitly does NOT reopen b160 or authorize any new numerical HJB/grid experiment.
+
+## Controlling scientific starting point
 
 Accepted household source remains immutable/read-only:
 
@@ -69,98 +83,112 @@ Git blob:
 
 `76ae5b149993a7edeeb337f1b02b3fe33c51e`
 
-DLH-5R used only the six mature pre-existing DLH-5J HJB variants:
+Provisional working class remains:
+
+- S1 continuous unbounded-positive-b analytic base on fixed finite a-support;
+- S2 `V_inf(a,z)=0` provisional tail-selection assumption;
+- primary S3 `R=V_a/V_b=O(1)` uniformly on claimed compact interior-a support;
+- P-TR `R=o(sqrt(b))` sensitivity only;
+- critical `R~Theta(sqrt(b))` retained outside S3 as a benchmark.
+
+Accepted DLH-5Q theory:
+
+- p=2 is the unique self-consistent formal balance among the correctly analyzed power/explicit-slow families inside S3;
+- broader exotic/non-power regimes remain open;
+- existence/comparison, actual p=2 realization, derivative-remainder control, coefficient convergence and full-support endpoint authority remain unproved.
+
+Accepted DLH-5R numerical evidence:
 
 ```text
-J0_A77_B120
-J1_A77_B140
-J2_A77_B160
-J3_A153_B120
-J4_A153_B140
-J5_A153_B160
+                 W1       W2       W3       W4 descriptive
+slope          -0.559   -0.681   -0.758   -0.832
+b^2 V_b         315      485      610      736
+c/b            0.0564   0.0454   0.0405   0.0369
+|R|/sqrt(b)    0.212    0.182    0.166    0.154
+chi/b          0.00079  0.00058  0.00049  0.00040
+mu_W/b        -0.0100  -0.0083  -0.0074  -0.0067
 ```
 
-Frozen bounds were:
+Controlling interpretation:
+
+1. accessible-range S3 derivative-control signature is numerically compatible;
+2. no critical `R~sqrt(b)` / positive-`chi/b` signature is observed;
+3. p=2 coefficient/scaling is not yet reached;
+4. stable non-p2 asymptotic falsification is not established;
+5. principal p2-facing observables continue moving toward their conditional targets;
+6. the material numerical limitation is asymptotic reach at the pre-existing b160 hard ceiling.
+
+## DLH-5S exact theory target
+
+DLH-5S must derive and audit scaled-tail variables such as
 
 ```text
-a in [0,10]
-a_max = 10
-b_lo = -2
-db = 7/19
-b160 <= 56.578947368421055
+H=-bV
+Q=b^2 V_b
+s=log b
 ```
 
-`b160` remains the hard route ceiling after acceptance; no larger domain is authorized.
+and exact identities including
 
-Accepted execution facts:
+```text
+dH/ds = H-Q
+c/b = Q^(-1/2)
+p_eff = 2-dlog(Q)/dlog(b)
+```
 
-- all six HJB-only variants converged at iteration 10 and reproduced accepted DLH-5J numerical behavior;
-- raw transfer-FOC-consistent value gradients were reconstructed from converged `V` under accepted finite-difference/upwind semantics without source mutation;
-- `MATLAB_DERIVATIVE_FLOOR` did not activate and was not substituted into `R_hat`;
-- no non-finite values occurred;
-- common physical-window observables are highly stable across b120/b140/b160 and across aligned a77/a153 nodes.
+where regularity permits.
 
-Nonblocking reviewer clarification: realized drift signs / selected upwind branch are controlling for gradient provenance. Do not treat `r_b<rho => dissaving` as a general economic theorem.
+It must derive the exact scaled HJB decomposition, analyze the scalar z-symmetric reduced system, restore the two-state z-switching modes, and determine whether the p=2 candidate
 
-## Accepted scientific interpretation
+```text
+H*=Q*=K*=4/(rho+r_b)^2 = 3265.3061224489797
+```
 
-The accessible HJB range provides three distinct conclusions:
+is attracting on an admissibly relevant branch. The key theorem question is whether S1+S2+S3 imply the required branch selection / scaled-tail tightness / remainder smallness, or whether a sharper non-circular assumption remains necessary.
 
-1. **Primary S3 derivative-control signature is numerically compatible over the accessible range.** `|R|≈1.11=O(1)`, `|R|/sqrt(b)` declines, and `chi/b` declines. The accepted critical `R~Theta(sqrt(b))` / positive-`chi/b` exclusion-cost signature is not observed.
-2. **p=2 coefficient/scaling is not yet numerically supported at accessible b.** Raw-`V_b` effective slopes remain far from `-2`; `b^2 V_b` remains far below `K*=3265.3061`; `c/b` remains above `0.0175`. The pre-registered support screen fails over `b<=56.5789`.
-3. **Eventual asymptotic p=2 is not numerically falsified.** `Q_hat` and `c/b` do not form stable non-p2 plateaus, the effective exponent remains materially b-dependent, and the p2-facing observables move toward the conditional p2 targets as b increases. The finite domain cannot adjudicate the eventual asymptotic class.
+Finite-window DLH-5R evidence is read-only motivation/evidence context only and cannot be promoted into theorem proof.
 
-Thus the accepted material limitation is **finite truncation / asymptotic reach at the b160 hard ceiling**, not instability across existing b extents or a resolutions.
+## Scientific ceiling during Issue #45
 
-S3 in full remains unverified: S2 `V_inf=0`, continuous-domain existence/comparison, actual asymptotic realization, coefficient convergence, and full-support endpoint authority remain open.
+- no accepted-source/economics mutation;
+- no HJB/grid/resolution execution and no J0-J5 rerun as new evidence;
+- no b180/b200 or any reopening of b160;
+- no b_lo/db/a_max/a-resolution change;
+- no R/W/W1/W2/`W_max` selection;
+- no endpoint-KKT or analytic endpoint law invention;
+- no stationary KFE/nullspace/pin/density/tail mass/aggregates;
+- no regional GE / multi-province audit;
+- no network training / nominal HANK;
+- no calibration / policy / welfare / Results.
 
-`W4_B160_ONLY` remains descriptive only.
-
-## Current route decision checkpoint
-
-No successor is active. The next route requires Owner selection.
-
-Scientifically defensible options:
-
-- **R-C1 — bounded analytic asymptotic-realization closure:** analyze the evolving finite-window exponent/coefficient and sharpen conditions under which the provisional S3 HJB could realize p=2, without expanding the numerical domain.
-- **R-C2 — Owner-authorized extended-domain reconsideration:** explicitly reopen the b160 ceiling only if the Owner decides the information value justifies it. Any new extent must be bounded and hypothesis-driven; uncontrolled larger-grid PASS seeking remains closed.
-- **R-C3 — endpoint model-definition review:** resolve analytic `a=10` and continuous `b_lo` authority before a full-support theorem or production-domain implementation.
-
-No route skips later HJB/KFE same-controlled-process validation.
-
-## Controlling HJB/KFE rule
+Issue #27 remains binding:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Issue #27 remains binding. Stationary KFE remains **NOT AUTHORIZED**.
+Stationary KFE remains NOT AUTHORIZED.
 
-R/W/W1/W2 remain unfrozen. No `W_max` or endpoint law is authorized.
+## Exact Builder allowlist
 
-## Scientific ceiling at this checkpoint
+Builder may create only the nine files frozen in Issue #45: one theory document and eight exact theory reports under `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/`.
 
-Until a successor Issue is activated:
+No existing tracked file may be modified by Builder.
 
-- no accepted-source/economics mutation;
-- no new b extent, b resolution, b_lo, or a_max;
-- no R/W/W1/W2/`W_max`;
-- no HJB/KFE/grid/stationary execution;
-- no endpoint KKT/state-domain implementation;
-- no regional GE / multi-province audit;
-- no network training / nominal HANK;
-- no calibration / policy / welfare / Results.
-
-## DSH startup rule at this checkpoint
-
-If invoked before a successor Issue is activated, DSH must:
+## DSH startup sequence
 
 1. `Set-Location D:\deep-learning-hank`;
 2. verify repository / remote / worktree / staging;
 3. `git fetch origin` and record fresh `origin/main`;
-4. read all CURRENT rules, Task Index, this Startup Snapshot and Roadmap;
-5. observe that there is no active Builder Issue;
-6. make no repository/scientific mutation;
-7. STOP with an authority-missing classification.
+4. read all CURRENT rules;
+5. read Task Index, this Startup Snapshot and current Roadmap;
+6. read Issue #45 full body and latest comments, including authoritative activation;
+7. read Issue #44 acceptance and Owner route-decision comments read-only;
+8. read accepted DLH-5Q theory and DLH-5R evidence packages read-only;
+9. verify Issue / Task Index / Startup identity exactly;
+10. create the exact dedicated branch from fresh synchronized `origin/main`;
+11. create only Issue #45 allowlist files;
+12. perform analytic theory work only; no HJB/KFE/grid execution;
+13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
 Chat text is not Builder authority.
