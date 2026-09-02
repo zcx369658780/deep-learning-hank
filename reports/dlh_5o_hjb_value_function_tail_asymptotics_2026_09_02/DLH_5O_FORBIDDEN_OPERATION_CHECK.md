@@ -1,7 +1,12 @@
-# DLH-5O — Forbidden-Operation / Scope Check (Issue #41 §11)
+# DLH-5O — Forbidden-Operation / Scope Check (Issue #41 §11) — rev 2
 
-DSH performed NONE of the following during DLH-5O. This gate is theory/documentation
-only; no source, model, domain, or numerical object was touched.
+**Revision status:** rev 1 candidate `348e0b00f56e32655a85fabdaa74514af0ae718b` was
+reviewed by ChatGPT (`5504354859`); this is the **bounded revision** in response.
+The revision revises only the same 9 Issue #41 allowlist-created files, changes no
+baseline tracked file, and performs **no** HJB/KFE/grid/stationary operation.
+
+DSH performed NONE of the following during DLH-5O (rev 1 and rev 2). This gate is
+theory/documentation only; no source, model, domain, or numerical object was touched.
 
 | Forbidden operation | Status |
 |---|---|
@@ -39,6 +44,7 @@ DLH-5O created only the Issue #41 allowlist paths:
 2. `reports/dlh_5o_hjb_value_function_tail_asymptotics_2026_09_02/` with exactly the
    eight frozen filenames listed in Issue #41 §10.
 
-No existing tracked file was modified. No HJB/KFE/grid experiment was run. The
-completion is a bounded source-faithful HJB asymptotic theory analysis that stops for
-fresh ChatGPT review.
+No existing tracked file was modified. No HJB/KFE/grid experiment was run. No model,
+domain, or stationary authority is granted by the reviewer comment `5504354859` or by
+this revision. The completion is a bounded source-faithful HJB asymptotic theory
+analysis that stops for fresh ChatGPT review.

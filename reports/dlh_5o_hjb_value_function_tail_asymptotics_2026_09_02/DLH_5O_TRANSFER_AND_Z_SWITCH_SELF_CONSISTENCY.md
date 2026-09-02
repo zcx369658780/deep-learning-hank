@@ -1,77 +1,90 @@
-# DLH-5O Phase D — Transfer and Cross-State Self-Consistency
+# DLH-5O Phase D — Transfer and Cross-State Self-Consistency (rev 2)
 
-**Issue #41 Phase D.** Analyzes the key missing coupling `V_a/V_b` from DLH-5N, tests
-the self-consistency of any bounded-transfer candidate rather than assuming it, and
+**Issue #41 Phase D.** Analyzes the key missing coupling `R = V_a/V_b` from DLH-5N,
+tests the self-consistency of the candidate balance using the **combined transfer
+Hamiltonian** `V_b*[d*q - chi]` (Phase A A3b) rather than `chi` in isolation, and
 checks whether cross-`z` coefficient differences generate a productivity-switch term
 of the same asymptotic order. All results are conditional on the Phase A analytic
-assumptions.
+assumptions and the derivative-control premise P-TR (`R = o(sqrt(b))` uniformly,
+preferably `R = O(1)`).
 
-Interior transfer/adjustment-cost objects (accepted, read-only):
+Interior objects (accepted, read-only):
 
 ```text
-d  = a * T(V_a/V_b - 1)/chi_1,    T(q) = min(q+chi_0,0) + max(q-chi_0,0)
+R = V_a/V_b,   q = R - 1,
+d  = a * T(q)/chi_1,   T(q) = min(q+chi_0,0) + max(q-chi_0,0)
 chi(d,a) = chi_0|d| + 0.5 chi_1 d^2 / max(a, a_bar)
-q  = V_a/V_b - 1
+combined transfer Hamiltonian = d*V_a + (-d-chi)*V_b = V_b * [ d*q - chi ].
 ```
 
 ---
 
-## D1. `V_a/V_b` order under the candidate and its alternatives
+## D1. `R = V_a/V_b` order under the candidate and its alternatives
 
-| Value-expansion structure | `V_a` | `V_b` | `V_a/V_b` |
+| Value-expansion structure | `V_a` | `V_b` | `R = V_a/V_b` |
 |---|---|---|---|
 | `V ~ V_inf(a,z) - K/b`, `V_inf` a-dependent | `O(1)` | `O(1/b^2)` | `O(b^2)` |
 | `V ~ -K(a,z)/b`, `K` a-dependent | `O(1/b)` | `O(1/b^2)` | `O(b)` |
-| `V ~ -K(z)/b` (a-independent) | `0` (leading) | `O(1/b^2)` | `0` |
+| `V ~ -K(z)/b + H(a,z)/b^2` (leading a-independent) | `O(1/b^2)` | `O(1/b^2)` | `-> H_a/K = O(1)` (nonzero in general) |
+| `V ~ -K(z)/b + U(a,z)/b^{3/2}` | `O(b^{-3/2})` | `O(1/b^2)` | `~ Theta(sqrt(b))` (m = 1/2) |
 
-- `V_a/V_b = O(b^2)` (a-dependent `V_inf`): `d ~ O(b^2)`, `chi ~ O(b^4)` — destroys the
-  balance (Phase B B3). **Invalidates the candidate.**
-- `V_a/V_b = O(b)` (a-dependent `K`): `d ~ O(b)`, `chi ~ O(b^2)` — destroys the balance
-  (Phase B B3). **Invalidates the candidate.**
-- `V_a/V_b = 0` (a-independent `K`, `V_inf = 0`): `q = -1`, `d = -0.45a` (`O(1)`),
-  `chi = O(1)`. **Self-consistent** (this is the candidate balance of Phase B/C).
+- `R = O(b^2)` (a-dependent `V_inf`): `d ~ O(b^2)`, `chi ~ O(b^4)`, combined term
+  `V_b*[d*q - chi] ~ O(b^2)` — unbalanced (the `d*V_a = O(b^2)` part is **inside** the
+  combined term, so there is no separate counterpart). **Invalidates the candidate.**
+- `R = O(b)` (a-dependent `K`): `d ~ O(b)`, `chi ~ O(b^2)`, combined term `O(1)` —
+  unbalanced. **Invalidates the candidate.**
+- `R -> H_a/K = O(1)` (leading a-independent, subleading a-derivative): `d = O(1)`,
+  `chi = O(1)`, combined term `O(1/b^2)` — **self-consistent** and compatible with the
+  candidate balance. This is the case P-TR (with `R = O(1)`) controls; note `R = 0` is
+  **not** forced — the exact `q=-1`/`d=-0.45a` values do not follow here.
+- `R ~ Theta(sqrt(b))` (m = 1/2): `d ~ Theta(sqrt(b))`, `chi ~ Theta(b)`, combined
+  term `Theta(1/b)` — **same order** as the `O(1/b)` coefficient balance; this family
+  is **UNRESOLVED / OPEN** and explicitly excluded from the theorem by P-TR.
 
-**Conclusion:** the bounded-transfer candidate is **not assumed** — it is the unique
-`a`-structure that keeps `d` and `chi` bounded; every a-dependent `V_inf` or `K`
-feeds back through `d` and `chi` strongly enough to invalidate the balance.
-
----
-
-## D2. Transfer order in each regime
-
-- Bounded ratio (`V_a/V_b = O(1)`): `q = O(1)`, `d = O(1)`, `chi = O(1)`.
-- `V_a/V_b = o(sqrt(b))` (uniform): `d = o(sqrt(b))`, `chi = o(b)` (the sufficient
-  direction retained from accepted DLH-5N M2/M3; per reviewer comment `5503274333`,
-  the accepted controlling direction is the sufficient one — bounded ratio => bounded
-  `d`, and uniform `T(q)=o(sqrt(b))` => `d=o(sqrt(b))`; it is **not** read as a uniform
-  biconditional at `a=0` where the bare-`a` transfer vanishes).
-- `V_a/V_b ~ b^m`, `m > 0`: `d ~ O(b^m)`, `chi ~ O(b^{2m})`; for `m > 1/2` the
-  superlinear adjustment cost breaks the balance (Phase B B4); for `0 < m <= 1/2` the
-  regime is sub-superlinear and either collapses into the analyzed power-law classes or
-  is not analyzable from accepted authority.
+**Conclusion (rev 2):** the bounded-transfer candidate is **not assumed** — it is the
+`a`-structure consistent with the combined-Hamiltonian balance under P-TR; and the
+claim that bounded transfer is "the unique a-structure" is **withdrawn** (the leading
+a-independence `d_av V_inf = 0`, `d_aa K = 0` is necessary for `R = O(1)`, but the
+remainder a-derivative may give `R = O(1)` nonzero; and `R ~ Theta(sqrt(b))` is a
+distinct unresolved regime).
 
 ---
 
-## D3. The candidate's transfer and adjustment cost (explicit)
+## D2. Transfer order in each regime (combined-Hamiltonian accounting)
 
-Under the candidate (`V_inf = 0`, `K` a- and z-independent, `V_a = 0`):
+- `R = O(1)` (uniform): `q = O(1)`, `d = O(1)`, `chi = O(1)`, combined term `O(1/b^2)`.
+- `R = o(sqrt(b))` (uniform): `d = o(sqrt(b))`, `chi = o(b)`, combined term `o(1/b)`
+  (sufficient direction retained from accepted DLH-5N M2/M3; per reviewer comment
+  `5503274333`, the accepted controlling direction is the sufficient one — bounded
+  ratio => bounded `d`, and uniform `T(q)=o(sqrt(b))` => `d=o(sqrt(b))`; it is **not**
+  read as a uniform biconditional at `a=0` where the bare-`a` transfer vanishes).
+- `R ~ b^m`, `m > 0`: `d ~ O(b^m)`, `chi ~ O(b^{2m})`, combined term `O(b^{2m-2})`.
+  - `m > 1/2`: combined term more divergent than `O(1/b)` — inconsistent.
+  - `m = 1/2`: same-order `Theta(1/b)` — **unresolved** (Phase B B4).
+  - `0 < m < 1/2`: `o(1/b)` subleading — reduces to the analyzed class.
+
+---
+
+## D3. The candidate's transfer and adjustment cost (order statements; exact values only as a special case)
+
+Under the candidate with P-TR and `R = O(1)`:
 
 ```text
-q = -1,
-T(-1) = min(-1 + 0.1, 0) + max(-1 - 0.1, 0) = -0.9,
-d(a) = a*(-0.9)/2 = -0.45 a   (O(1), <= 0 on [0,10]),
-chi(a) = 0.1*0.45a + (0.45a)^2/max(a, a_bar)
-       = 0.045a + 0.2025a = 0.2475a   for a > a_bar   (O(1), bounded on [0,10]),
-mu_a = r_a_eff(a)*a + d = a*(r_a_eff(a) - 0.45) < 0   (O(1); illiquid drift inward).
+q = O(1),   d = a*T(q)/chi_1 = O(1),   chi = O(1),   mu_a = r_a_eff(a)*a + d = O(1).
+labor = (0.85 z V_b)^(1/5) ~ O(b^{-2/5}),   labor_income = o(1).
 ```
 
-- The transfer is **active** at the interior (`|q| = 1 > chi_0 = 0.1`) and negative
-  (flows from `a` to `b`).
-- The MATLAB-faithful upper-`a` branch (`at_upper_a` restricts `d < 0`) is consistent
-  with `d < 0`; at `a = 0` the bare-`a` transfer is `0` (a corner point; the sufficient
-  transfer direction still applies).
-- `labor = (0.85 z V_b)^(1/5) ~ O(b^{-2/5})`, `labor_income ~ O(b^{-2/5}) = o(1)` —
-  no `O(b)` or superlinear labor in the candidate.
+- The transfer is active or inactive depending on `|q|`; the **order** `d = O(1)`,
+  `chi = O(1)` holds in either case under `R = O(1)`.
+- **Exact limiting values are a separate special case.** If (and only if) the
+  additional assumption `R -> 0` (i.e. `V_a/V_b -> 0`) is imposed/proved, then
+  `q -> -1`, `T(-1) = -0.9`, `d -> -0.45a`, `chi -> 0.2475a` (for `a > a_bar`), and
+  `mu_a -> a*(r_a_eff(a)-0.45) < 0`. These exact values are **not** derived from the
+  leading ansatz and **not** implied by P-TR; they are labeled as the `R -> 0` special
+  case only.
+- The MATLAB-faithful upper-`a` branch (`at_upper_a` restricts `d < 0`) and lower-`a`
+  corner (`d = 0` at `a = 0`) are finite-grid selection details; they do not change the
+  interior order accounting.
 
 ---
 
@@ -98,15 +111,17 @@ a-dependent the same switch argument applies to `V_inf` and forces `V_inf = 0` v
 
 ---
 
-## D5. Summary of self-consistency results
+## D5. Summary of self-consistency results (rev 2)
 
-| Candidate property | Derived from the balance? | Status |
+| Candidate property | Derived / premise | Status |
 |---|---|---|
-| `V_inf` a-independent | required by transfer consistency (else `chi ~ b^4`) | DERIVED (necessary within candidate) |
+| `d_av V_inf = 0`, `d_aa K = 0` (leading a-independence) | necessary for `R = O(1)`; derived within candidate under P-TR | DERIVED (under P-TR) |
 | `V_inf = 0` | `(rho I - S)V_inf = 0`, `rho` not in spectrum | DERIVED |
-| `K` a-independent | required by transfer consistency (else `chi ~ b^2`) | DERIVED (necessary within candidate) |
 | `K` z-constant | coupled `O(1/b)` system, convexity argument | DERIVED |
-| `V_a/V_b = 0`, `d = -0.45a`, `chi = 0.2475a` | follows from `V_inf`/`K` a-independence | DERIVED |
+| `R = O(1)` (or `o(sqrt(b))`) uniformly | derivative-control / transfer-ratio premise | PREMISE P-TR (not derived from leading ansatz) |
+| `d = O(1)`, `chi = O(1)`, `mu_a = O(1)`, `labor = o(1)` | order statements under P-TR | ORDER STATEMENTS |
+| `q = -1`, `d = -0.45a`, `chi = 0.2475a`, `mu_a = a*(r_a_eff-0.45)` | requires additional `R -> 0` assumption | SPECIAL CASE ONLY (not derived; not implied by P-TR) |
 | cross-`z` switch term `O(1/b)` = 0 | follows from `K` z-constant | DERIVED |
-| bounded-transfer candidate is the only `a`-consistent family | all a-dependent variants invalidate the balance | DERIVED (within the analyzed classes) |
-| uniqueness among all conceivable (non-power, transfer-dominated `m<=1/2`) regimes | not established | NOT ANALYZABLE FROM ACCEPTED AUTHORITY (requires the analytic-model gate) |
+| a-dependent `V_inf` / `K` invalidate the balance | combined-Hamiltonian accounting (`O(b^2)` / `O(1)` residual) | DERIVED |
+| `R ~ Theta(sqrt(b))` (m=1/2) family | same-order combined term | **UNRESOLVED / OPEN** (excluded from theorem by P-TR) |
+| uniqueness among all conceivable regimes | not established | NOT ANALYZABLE FROM ACCEPTED AUTHORITY |
