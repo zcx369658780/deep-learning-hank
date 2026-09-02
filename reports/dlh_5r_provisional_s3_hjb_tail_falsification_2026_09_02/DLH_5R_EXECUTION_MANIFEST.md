@@ -1,6 +1,7 @@
 # DLH-5R — Execution Manifest
 
 **Issue #44 — `DLH_5R_HJB_ONLY_PROVISIONAL_S3_LIQUID_TAIL_NUMERICAL_FALSIFICATION`**
+*(bounded Rev 2 per fresh review `5509806834`)*
 
 ## 1. Authority identity (verified)
 
@@ -78,3 +79,30 @@ a scientific-input retry; both runs are identical at the solver level.
 
 No existing tracked file is modified. Large raw full-grid arrays are not
 committed; the temporary `_decision_inputs.json` remains outside Git staging.
+
+## 6. Bounded Rev 2 — interpretation correction only (no new evidence)
+
+Fresh review `5509806834` returned the candidate with
+`OUTCOME_C_REQUIRED` and required a bounded same-Issue revision. Rev 2 changes
+**only the interpretation/decision documents** (within the same 10 allowlist
+files); it introduces **no new scientific evidence and no new run**:
+
+- Terminal changed B → **C** (`INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS`).
+- Falsification directions B and C re-scored **NOT SATISFIED** (Q_hat is
+  growing, c/b is decreasing — no stable plateau).
+- Direction D re-scored **NOT SATISFIED / PRE-ASYMPTOTIC** (effective slope
+  −0.559 → −0.832 is still materially b-dependent).
+- Direction E re-scored **NOT SATISFIED** (bounded R is supported; a stable
+  non-p2 asymptotic coefficient/scaling is not).
+- All p=2-facing observables are explicitly recorded as **trending toward**
+  their conditional targets over W1 → W4 (including `mu_W/b` toward −0.0025).
+- `slow non-power family` language withdrawn in favor of
+  *"the accessible finite-window regime is non-p2 and pre-asymptotic; the
+  eventual asymptotic class remains unresolved at the authorized b160 hard
+  ceiling"*.
+
+The executed runs, CSVs, and `_decision_inputs.json` are unchanged from Rev 1;
+the preserved evidence (provenance PASS, floor inactive, all six converged,
+no non-finite results, cross-b/cross-a stability, R=O(1) with R/√b and chi/b
+falling, no critical signature, p=2 support screen FAIL at accessible b) is
+exactly the accepted evidence of the original execution.

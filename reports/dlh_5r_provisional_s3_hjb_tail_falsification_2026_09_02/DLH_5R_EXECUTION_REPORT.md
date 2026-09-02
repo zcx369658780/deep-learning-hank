@@ -8,7 +8,7 @@ R/W/domain/endpoint law, no price/calibration change, no source mutation.
 - Fresh `origin/main`: `d9d0d1c0b9af062968450200465d3caf50f068ff`
 - Dedicated branch: `dsh/issue-44-dlh-5r-hjb-tail-falsification-2026-09-02`
 - Accepted source blob (verified at runtime): `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
-- Terminal: `DLH_5R_HJB_TAIL_NUMERICAL_EVIDENCE_FALSIFIES_PROVISIONAL_S3_PROMOTION__OWNER_MODEL_REDEFINITION_REQUIRED` (see `DLH_5R_FALSIFICATION_DECISION.md`)
+- Terminal: `DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION_INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS` (see `DLH_5R_FALSIFICATION_DECISION.md`)
 
 ---
 
@@ -89,12 +89,21 @@ p=2 scaling at any authorized window:
   (5–10× below `K*` at the accessible extents);
 - `c/b` ≈ 0.0369–0.0564 (2–3× above `0.0175`), decreasing but not converging
   to `0.0175` within the ceiling;
-- `mu_W/b` ≈ −0.0067…−0.010 (negative, but 2.7–4× more negative than −0.0025).
+- `mu_W/b` ≈ −0.0067…−0.010 (negative, currently 2.7–4× more negative than −0.0025, **trending toward** −0.0025).
 
-**S3-class consistency (R/chi) holds:** `|R| ≈ 1.11` is bounded `O(1)` (pinned
-near `1 + chi_0 = 1.1`, the transfer-FOC inaction boundary), `R/√b` decreases
-0.212 → 0.154, `chi/b` decreases 0.00079 → 0.00041 toward 0. **No critical
-`R ~ sqrt(b)` / positive-`chi/b` plateau signature is observed.**
+All of these are **accessible finite-window effective values**; every
+p=2-facing observable moves **monotonically in the p=2 target direction** over
+W1 → W4 (see the trend table in `DLH_5R_FALSIFICATION_DECISION.md` §2): slope
+−0.559 → −0.832 (toward −2), `Q_hat` 315 → 736 (toward `K*`), `c/b`
+0.0564 → 0.0369 (toward 0.0175), `|R|/√b` 0.212 → 0.154 (toward 0), `chi/b`
+0.00079 → 0.00040 (toward 0), `mu_W/b` −0.0100 → −0.0067 (**toward** −0.0025).
+The eventual asymptotic class is **unresolved** at the authorized b160 hard
+ceiling.
+
+**S3 derivative-control consistency (R/chi) holds:** `|R| ≈ 1.11` is bounded
+`O(1)` (pinned near `1 + chi_0 = 1.1`, the transfer-FOC inaction boundary),
+`R/√b` decreases 0.212 → 0.154, `chi/b` decreases 0.00079 → 0.00041 toward 0.
+**No critical `R ~ sqrt(b)` / positive-`chi/b` plateau signature is observed.**
 
 **Cross-extent stability (b120 vs b140 vs b160, aligned common nodes):**
 relative differences are `0.000000` for Q_hat, c/b, slope, R/√b, mu_W/b and
@@ -118,37 +127,51 @@ Mild z-variation; both z states are far below `K*`.
 
 ## 3. Falsification screening (Issue #44 §10)
 
-Stable across b140 **and** b160 **and** a77 **and** a153, with zero floor
-activation, all variants converged, windows valid, and provenance verified:
+Evidence is stable across b140 **and** b160 **and** a77 **and** a153, with zero
+floor activation, all variants converged, windows valid, and provenance
+verified. However, no pre-registered falsification direction is satisfied: a
+**stable non-p2 asymptotic plateau/exponent is required**, and none is observed.
 
-- **A (critical `R~√b`) — NOT OBSERVED.** `|R|` is flat ≈1.11; `R/√b`
-  decreases with b; `chi/b -> 0`. The out-of-S3 m=1/2 exclusion-cost scenario is
-  not the numerical outcome.
-- **B (Q_hat plateau >20% from K\*)** — Q_hat is >80% below `K*` and
-  b-extent-stable, though it grows with b rather than forming a flat plateau.
-- **C (c/b plateau >20% from 0.0175)** — c/b is 2–3× above `0.0175` and
-  b-extent-stable, though it decreases with b.
-- **D (raw V_b slope stable outside [−2.25,−1.75]) — HOLDS.** Slope ≈ −0.56 to
-  −0.83, far outside the band, identical across b120/b140/b160 and a77/a153.
-- **E (bounded R but stable non-p2 coefficient/scaling) — HOLDS.** `R = O(1)`
-  with stable non-p2 scaling (slope, Q_hat, c/b, mu_W/b all far from the p=2
-  predictions at every window).
+- **A (critical `R~√b` + positive-`chi/b` plateau) — NOT SATISFIED.** `|R|` is
+  flat ≈1.11; `R/√b` decreases with b; `chi/b -> 0`. The out-of-S3 m=1/2
+  exclusion-cost scenario is not the numerical outcome.
+- **B (Q_hat stable plateau >20% from K\*) — NOT SATISFIED.** `Q_hat` is
+  `315 -> 485 -> 610 -> 736`, **growing, not a plateau** (>80% below `K*`).
+  Cross-b equality at the same physical nodes shows truncation independence, not
+  an asymptotic plateau.
+- **C (c/b stable value >20% from 0.0175) — NOT SATISFIED.** `c/b` is
+  `0.0564 -> 0.0454 -> 0.0405 -> 0.0369`, **decreasing, not a plateau**
+  (2–3× above 0.0175).
+- **D (raw V_b exponent stabilized outside [−2.25,−1.75]) — NOT SATISFIED /
+  PRE-ASYMPTOTIC.** Slope `-0.559 -> -0.681 -> -0.758 -> -0.832` is far outside
+  the band but **still materially b-dependent**, monotonically becoming more
+  negative as b rises. Cross-extent equality of W1/W2/W3 across b120/b140/b160
+  shows the common windows are not contaminated by the farther artificial upper
+  boundary; it does **not** establish that the local effective exponent has
+  converged as b → ∞.
+- **E (bounded R but stable non-p2 coefficient/scaling) — NOT SATISFIED.**
+  Bounded `R = O(1)` is supported; a **stable non-p2 asymptotic
+  coefficient/scaling is not** — the scaling observables continue moving with b.
 
-**Inconclusive triggers (Issue #44 §11) are NOT met**: conclusions do not change
-with b extent (<0.001%), a resolution (<0.5% material), top boundary (non-p2
-slope already present in interior W1 and consistent through W3/W4), floor (0),
-convergence (all converged), raw-gradient provenance (verified exactly), or
-window-node sufficiency (all evidence windows valid).
+**Inconclusive screen (Issue #44 §11):** the material remaining limitation is
+**finite truncation / asymptotic reach at the authorized b160 hard ceiling**.
+It is **not** a claim of cross-extent instability: common-window values are
+highly stable (cross-b < 0.001%, cross-a < 0.5% material), floor (0),
+convergence (all converged), raw-gradient provenance (verified exactly), and
+window-node sufficiency (all evidence windows valid) are all clean.
 
-**Conclusion:** the accepted numerical HJB solution does **not** realize the
-p=2 tail; it shows a stable, bounded-`R` (S3-consistent), **non-p2 slow tail**
-(raw `V_b` slope ≈ −0.6 to −0.8, `Q_hat` growing well below `K*`, `c/b`
-elevated, `mu_W/b` more negative than the p=2 value), stable across b-extent and
-a-resolution and free of floor/boundary/non-convergence artifacts. This
-falsifies the **promotion** of provisional S3 (p=2) as the realized model,
-while leaving S3 as an admissible class (`R=O(1)`, `chi/b->0`) and leaving the
-critical m=1/2 scenario unobserved. **Terminal B.** See
-`DLH_5R_FALSIFICATION_DECISION.md` for the full decision and limitations.
+**Conclusion:** the accepted numerical HJB solution does **not** support the
+p=2 coefficient/scaling at the accessible range (support screen fails:
+effective raw-`V_b` slope ≈ −0.56…−0.83, `Q_hat` ≈ 315…736 growing below `K*`,
+`c/b` ≈ 0.037…0.056 above 0.0175, `mu_W/b` more negative than −0.0025), while
+the S3 derivative-control signature is numerically compatible
+(`R = O(1)`, `R/√b` falls, `chi/b` falls) and no critical `R~√b` signature is
+observed. Because every p=2-facing observable is still **trending toward its
+conditional target** over W1 → W4 and the b160 hard ceiling prevents testing
+farther, the eventual asymptotic class is unresolved: neither Outcome A nor
+Outcome B is supported by the pre-registered screens. **Terminal C
+(INCONCLUSIVE).** See `DLH_5R_FALSIFICATION_DECISION.md` for the full decision
+and limitations.
 
 ---
 

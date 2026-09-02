@@ -27,6 +27,17 @@ between the two executions and exactly reproduce the accepted DLH-5J solutions.
 No hidden retry, no parameter/tolerance tuning, no clipping, no price change, no
 interpolation or initialization change occurred.
 
+**Bounded Rev 2 (per fresh review `5509806834`):** this revision changed
+**only the interpretation/decision documents** within the same 10 Issue #44
+allowlist files (terminal B → C; falsification directions B/C/D/E re-scored
+NOT SATISFIED; trend/language corrections). **No new run was performed and no
+scientific input changed**; the CSVs, config, runner, and `_decision_inputs.json`
+are unchanged from Rev 1. No numerical authority was expanded (no b180/b200, no
+b_lo/db/a-resolution change, no adaptive extent, no root seeking, no stationary
+KFE, no R/W/domain/endpoint choice, no GE/aggregates/network training/Results).
+A larger-domain experiment would require a new Owner decision and successor
+authority; DSH did not create such an Issue.
+
 **Completion:** explicit-stage only the exact Issue #44 allowlist (10 paths),
 commit, push the dedicated branch
 `dsh/issue-44-dlh-5r-hjb-tail-falsification-2026-09-02`, and **STOP for fresh
