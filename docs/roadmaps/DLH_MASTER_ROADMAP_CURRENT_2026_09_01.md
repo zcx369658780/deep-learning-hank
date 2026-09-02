@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.12  
+**Version:** V0.13  
 **Date:** 2026-09-02  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-APPROVED SCIENTIFIC ROUTE
+**Status:** CURRENT OWNER-DECISION CHECKPOINT — NO ACTIVE BUILDER ISSUE
 
 ---
 
@@ -16,7 +16,7 @@ The first learned object remains the regional labor/spatial rule. Capital-networ
 
 ---
 
-## 1. Accepted household foundation through DLH-5N
+## 1. Accepted household foundation through DLH-5O
 
 ### Household source — Issue #23
 
@@ -26,7 +26,7 @@ Accepted MATLAB-faithful source:
 
 Identity:
 
-- Git blob `76ae5b149993a7edeeb337f1b02b3fe33c51e`
+- Git blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 - SHA-256 `1795718C469FC3B427CAB8E3D5957C133BEAD6EACC9EF0A25A3EDB7211D1A024`
 
 ### Stationary-KFE contract — Issues #26–#27
@@ -37,174 +37,137 @@ Binding law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Any eventual stationary density must satisfy the ORIGINAL `Q^T g=0`, mass/non-negativity, conservative-generator/recurrent-class/nullspace evidence, pin admissibility and valid-pin invariance before aggregates are accepted.
+Stationary KFE remains NOT AUTHORIZED until the controlled household domain/boundary process is scientifically selected, implemented and numerically validated, then re-enters the Issue #27 recurrent-class/nullspace/pin/original-residual contract.
 
-### Boundary/domain diagnostics — Issues #28–#36
+### Boundary/domain evidence — Issues #28–#39
 
-Accepted findings:
+Controlling accepted facts remain:
 
-- artificial upper asset bounds initially receive outward requests;
-- liquid-extent expansion attenuates upper-b influence, but cross-a robustness fails through the hard b160 ceiling;
-- refining the fixed physical `a` domain resolves upper-a but can reactivate upper-b, establishing coupled domain/resolution behavior;
-- widening `a_max` is confounded by the accepted `a_max`-normalized illiquid-return taper;
-- pure larger-grid PASS seeking is CLOSED.
+- artificial upper asset truncations can receive outward policy requests;
+- pure larger-grid PASS seeking is CLOSED;
+- high-wealth positive liquid drift is substantially a portfolio-transfer/reallocation phenomenon;
+- on the pre-frozen 105-state evidence set, all 44 material positive-`mu_b` states have `mu_W=mu_a+mu_b<=0`;
+- all 17 top-layer upper-b offenders violate rectangular `mu_b<=0` while satisfying `mu_a<=0` and `mu_W<=0`;
+- `W=a+b` is an accepted source-accounting coordinate, not production-domain authority;
+- Design R and Design W remain unfrozen under Owner decision
+  `ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`;
+- no numerical `W_max` is authorized.
 
-### High-wealth mechanism — Issues #37–#38
-
-Accepted evidence establishes, narrowly:
-
-- positive high-wealth `mu_b` is largely a transfer/rebalancing phenomenon;
-- the pre-frozen accepted high-wealth evidence set contains 105 states;
-- all 44 material positive-`mu_b` states satisfy `mu_W=mu_a+mu_b<=0`;
-- all 17 top-layer upper-b offenders satisfy `mu_a<=0` and `mu_W<=0` while violating rectangular `mu_b<=0`;
-- the linear transfer term cancels one-for-one in `mu_W`, while adjustment cost remains;
-- cross-a total-drift sensitivity remains material on 16/24 aligned pairs;
-- this is finite-state/source-accounting evidence, not an infinite-domain theorem or stationary-tail proof.
-
-### State-domain/KKT design review — Issue #39 / DLH-5M
-
-Accepted candidate:
-
-`80cdb7ab2c14bcb7606fc66a0737c28bd3fbb4bb`
-
-Acceptance integration commit:
-
-`69bde2115cdf038e40640ec41d23e0b620167539`
-
-Owner scientific decision:
-
-`ACCEPT_RECOMMENDATION_U__DO_NOT_FREEZE_R_OR_W_YET`
-
-Controlling interpretation:
-
-1. **Design R remains unfrozen.** A finite rectangular tangent-cone/KKT closure is mathematically coherent, but no accepted truncation-vanishing argument shows that the upper-b numerical closure has negligible interior influence as the truncation recedes.
-2. **Design W remains unfrozen.** `W=a+b` is an accepted source-accounting coordinate and an economically plausible truncation hypothesis, but finite-state inwardness, undefined `W_max`, cross-a sensitivity, representation choice and HJB↔KFE process matching are insufficient for a model freeze.
-3. Maximization upper-constraint KKT convention is `L=H-lambda*g`; effective gradients are `V-lambda`.
-4. At a W face, `lambda_W` cancels from the linear transfer contribution but survives through adjustment cost.
-5. W-face activity is conditional on symbolic `W_max`; no accepted state is classified W-interior or W-boundary without a chosen cap.
-6. The geometry-inconsistent shortcut “rectangle but use `mu_W<=0` instead of `mu_b<=0` at the corner” is rejected.
-7. Stationary KFE remains NOT AUTHORIZED.
-
-### Fixed-a liquid-tail total-drift asymptotics — Issue #40 / DLH-5N
-
-Accepted candidate:
-
-`bded30a8b8cb579c3f359a62f5b530d7c34b7526`
-
-Acceptance integration commit:
-
-`e23b1ada5f5ab1b11c1291d8141d8286884553d4`
-
-Accepted reviewer verdict:
-
-`DLH_5N_REV2_ACCEPTED__OUTCOME_B_SUPPORTED__FIXED_A_LIQUID_TAIL_SIGN_REMAINS_CONDITIONAL__HJB_VALUE_FUNCTION_TAIL_ASYMPTOTICS_NEXT_GATE_REQUIRED`
+### Fixed-a liquid-tail drift theory — Issue #40 / DLH-5N
 
 Accepted terminal:
 
 `DLH_5N_FIXED_A_LIQUID_TAIL_TOTAL_WEALTH_SIGN_CONDITIONAL__MISSING_CONTROL_ASYMPTOTICS_IDENTIFIED`
 
+Accepted interpretation: source accounting alone does not determine the sign of `mu_W` as `b->+infinity` with `a in [0,10]`; the missing object is the HJB/value-gradient tail.
+
+### HJB value-function liquid-tail asymptotics — Issue #41 / DLH-5O
+
+Accepted candidate:
+
+`25645d2dd1963e8fc17176a7fadc16d914811221`
+
+Reviewer acceptance comment:
+
+`5504453148`
+
+Acceptance integration commit:
+
+`540b16ebd3a577a55ccd92a8d74ced373798557e`
+
+Accepted verdict:
+
+`DLH_5O_REV2_ACCEPTED__OUTCOME_B_SUPPORTED__P2_COEFFICIENT_AND_INWARD_SIGN_VALID_ONLY_UNDER_EXPLICIT_DERIVATIVE_CONTROL__ANALYTIC_MODEL_SPECIFICATION_OWNER_DECISION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5O_HJB_LIQUID_TAIL_DOMINANT_BALANCE_CONDITIONAL__MISSING_ANALYTIC_ASSUMPTIONS_IDENTIFIED`
+
 Controlling interpretation:
 
-1. With `a in [0,10]` fixed, current accepted authority does **not** establish `mu_W<0` for all sufficiently large positive `b`.
-2. `r_b*b` is the only explicit positive linearly growing term whose source order/sign is fixed; the asymptotic order of the control-dependent remainder is not identified by current authority.
-3. Conditional inwardness and outwardness can be stated only under explicit assumptions on the tail of `V_b`, `V_a/V_b`, labor and adjustment cost.
-4. The formula-level outward family is not HJB-verified and therefore is not a model-level counterexample.
-5. The result is a **fixed-a liquid-tail** statement only; it is not a full two-asset infinite-domain theorem.
-6. Reviewer acceptance comment `5503274333` supersedes local over-strong biconditional shorthand in the Phase A/C audit; downstream tasks must use only the sufficient transfer-ratio implications required by accepted M2/M3.
-7. R/W remain unfrozen; no `W_max`; stationary KFE remains NOT AUTHORIZED.
+1. The accepted MATLAB-faithful source is finite-grid HJB authority; it does not itself define an unbounded-positive-`b` HJB/transversality problem.
+2. Conditional asymptotic analysis must use the combined transfer Hamiltonian
+
+   ```text
+   V_b * [d*(V_a/V_b - 1) - chi(d,a)]
+   ```
+
+   rather than adjustment cost alone.
+3. Under a source-faithful smooth-continuum interior HJB, the p=2 candidate may be analyzed only with explicit derivative control
+
+   `P-TR: V_a/V_b = o(sqrt(b))` uniformly.
+
+4. Under the complete conditional premise set, the leading coefficient equation is
+
+   ```text
+   (rho+r_b)K - 2*sqrt(K) = S*K.
+   ```
+
+   For the frozen symmetric productivity-switch block:
+
+   ```text
+   K = 4/(rho+r_b)^2,
+   c/b = (rho+r_b)/2 = 0.0175.
+   ```
+
+5. Since `r_b=0.015`, the conditional candidate implies
+
+   ```text
+   mu_W/b -> -0.0025 < 0,
+   ```
+
+   i.e. fixed-a liquid-tail inwardness **conditional on the analytic assumptions and P-TR**.
+6. This is not an unconditional theorem, not a full two-asset infinite-domain theorem, and not a domain choice.
+7. The critical regime
+
+   `V_a/V_b ~ Theta(sqrt(b))`
+
+   remains unresolved because its transfer Hamiltonian is the same `O(1/b)` order and changes the coefficient system.
+8. Reviewer comment `5504453148` supersedes two local shorthand statements:
+   - P-TR alone yields sub-root/sublinear transfer-cost orders; `O(1)` transfer orders require the stronger `V_a/V_b=O(1)` subcase.
+   - local p<1 exponent shorthand is not controlling; the corrected reviewer order comparison governs downstream use.
 
 ---
 
-## 2. Immediate theory gate — DLH-5O / Issue #41
+## 2. Current checkpoint — Owner decision before analytic-model specification
 
-### Name
+There is **no active Builder Issue**.
 
-**Fixed-a Liquid-Tail HJB Value-Function Asymptotics**
+DLH-5O identifies the next scientific obstacle as model-defining rather than numerical:
 
-Task type:
+> What continuous/unbounded-positive-`b` HJB problem, admissibility/transversality condition, regularity class and derivative-control regime should become analytic authority for proving or falsifying the conditional p=2 tail candidate?
 
-`SCIENTIFIC_THEORY_ANALYSIS__HJB_VALUE_FUNCTION_LIQUID_TAIL_SCALING`
+This cannot be silently inferred from the finite-grid MATLAB boundary closure and cannot be supplied by Builder or ChatGPT without Owner scientific approval.
 
-### Purpose
+### Proposed next route — analytic-model specification gate
 
-DLH-5N identified the exact missing object: the HJB-implied liquid-tail scaling of the value function and value derivatives.
+If Owner approves continuation on this route, the next Issue should be a design/specification gate, not implementation and not numerical execution. It should define or adjudicate at minimum:
 
-DLH-5O therefore asks:
+1. **Analytic state-space authority** — fixed `a in [0,10]`, unbounded positive `b`, accepted productivity Markov states; explicit statement that this remains a fixed-a liquid-tail analytical extension, not a full two-asset infinite-domain model.
+2. **Interior HJB authority** — exact continuous HJB equation corresponding to accepted household economics, with transfer/adjustment-cost coupling represented jointly.
+3. **Admissibility / asymptotic boundary / transversality conditions** — what selects the economically relevant value solution without importing the finite-grid `b_max` closure.
+4. **Regularity and uniformity** — differentiability, asymptotic expansion legitimacy, cross-z uniformity and any required domination/equicontinuity conditions.
+5. **Derivative-control class** — whether P-TR (`V_a/V_b=o(sqrt(b))`) is assumed as an admissibility condition, derived from a stronger property, or rejected as too restrictive.
+6. **Critical-transfer branch** — explicit analysis of `V_a/V_b~Theta(sqrt(b))`, whose transfer Hamiltonian changes the O(1/b) coefficient system.
+7. **Theorem/falsification contract** — precise conditions under which the p=2 coefficient `c/b=0.0175` is accepted, rejected or remains conditional.
+8. **Return path to domain design** — only after analytic tail authority is accepted may R/W domain design be reconsidered; no automatic W selection.
 
-> Does the accepted MATLAB-faithful HJB authority itself determine the asymptotic scaling of `V_b`, `V_a/V_b`, and cross-productivity value differences strongly enough to identify `c/b` and the sign of total-wealth drift as `b->+infinity` with `a in [0,10]` fixed?
+### Owner decision options
 
-The candidate CRRA-2 balance
+- **Approve analytic-model specification route:** publish a separate theory/design Issue after exact task drafting and activation.
+- **Do not approve yet:** keep the project at this checkpoint and seek additional theory/economic review before any new authority.
+- **Redirect:** Owner may choose a different scientific route; any such route must be published explicitly before Builder work.
 
-```text
-V_b ~ K(a,z)/b^2
-V ~ V_inf(a,z) - K(a,z)/b
-c ~ b/sqrt(K)
-```
-
-is a hypothesis to be derived, rejected or left conditional — not an accepted premise.
-
-### Required logic
-
-DLH-5O must:
-
-1. audit the exact converged HJB fixed-point authority in the accepted source;
-2. distinguish finite-grid MATLAB numerical semantics from any derivable continuous interior HJB identity;
-3. determine whether the accepted authority actually specifies an unbounded-`b` analytical HJB problem or asymptotic boundary/transversality condition;
-4. compare `p<2`, `p=2`, `p>2` candidate balances jointly with transfer, adjustment cost, labor and productivity switching;
-5. if authorized, derive the full `p=2` coefficient system for `V_inf(a,z)` and `K(a,z)`, retaining every same-order term;
-6. test whether bounded/sub-root `V_a/V_b` and productivity-switch behavior are consequences of the candidate expansion or merely assumptions;
-7. classify theorem / conditional theorem / HJB-consistent alternative / accepted-authority insufficiency;
-8. translate the result narrowly back to DLH-5N without choosing a domain.
-
-A simple tail consumption ratio, including any expression resembling `(rho+r_b)/2`, may be reported only if derived from the accepted HJB balance after all same-order terms are accounted for. No textbook representative-agent shortcut may be imported as authority.
-
-### Exact terminals
-
-Use exactly one:
-
-- `DLH_5O_HJB_FIXED_A_LIQUID_TAIL_SCALING_DERIVED__CONSUMPTION_RATIO_AND_TOTAL_DRIFT_SIGN_RESOLVED`
-- `DLH_5O_HJB_LIQUID_TAIL_DOMINANT_BALANCE_CONDITIONAL__MISSING_ANALYTIC_ASSUMPTIONS_IDENTIFIED`
-- `DLH_5O_ACCEPTED_HJB_AUTHORITY_INSUFFICIENT_FOR_UNBOUNDED_LIQUID_TAIL_THEOREM__ANALYTIC_MODEL_SPECIFICATION_REQUIRED`
-- `DLH_5O_HJB_CONSISTENT_NONINWARD_LIQUID_TAIL_REGIME_ESTABLISHED__W_DIRECTION_WEAKENED`
-- `BLOCKED_DLH_5O_ACCEPTED_HJB_SOURCE_OR_EQUATION_AUTHORITY_INCONSISTENCY`
-
-No terminal freezes R/W or authorizes implementation.
+No successor Issue is active until Owner decision.
 
 ---
 
-## 3. Decision tree after DLH-5O
+## 3. Stationary household revalidation remains blocked
 
-### Route O-A — HJB scaling/sign resolved
+Stationary KFE remains NOT AUTHORIZED.
 
-Return to the domain-design question with a genuine fixed-a liquid-tail theorem as new evidence. Still do not immediately implement W: the finite `a_max=10` support/taper, truncation geometry, representation and HJB↔KFE same-process requirements remain separate gates.
+Only after a state-domain/boundary controlled process is selected, implemented, boundary-validated and shown to generate a conservative same-process KFE may the project re-enter Issue #27:
 
-### Route O-B — dominant balance conditional
-
-Do not patch code or choose a domain. Freeze the exact missing analytic assumptions and decide whether they can be proved from a strengthened analytic HJB specification.
-
-### Route O-C — accepted HJB authority insufficient
-
-Publish an analytic-model specification gate that cleanly states the continuous/unbounded-tail HJB problem and its admissibility/transversality conditions before further theorem work.
-
-### Route O-D — HJB-consistent non-inward regime
-
-Treat W-tail mean reversion as weakened and reassess the household high-wealth economics before any W-domain design.
-
-### Blocked
-
-Resolve genuine source/equation-authority inconsistency before further progression.
-
-No route bypasses later HJB/KFE same-controlled-process validation.
-
----
-
-## 4. Stationary household revalidation remains blocked
-
-Stationary KFE remains NOT AUTHORIZED throughout DLH-5O.
-
-Only after a state-domain/boundary-law process is scientifically selected, implemented and numerically validated may the project re-enter Issue #27:
-
-- conservative generator;
 - recurrent-class/nullspace evidence;
 - pin admissibility and valid-pin invariance;
 - ORIGINAL `Q^T g` residual;
@@ -216,7 +179,7 @@ No historical aggregate is grandfathered.
 
 ---
 
-## 5. Regional / Deep Learning sequence remains deferred
+## 4. Regional / Deep Learning sequence remains deferred
 
 Permanent hierarchy:
 
@@ -230,24 +193,17 @@ Permanent hierarchy:
 
 ---
 
-## 6. Scientific ceiling
+## 5. Scientific ceiling at the current checkpoint
 
-During DLH-5O do not:
+Until Owner decision and successor activation, do not:
 
 - mutate accepted HJB/KFE/regional source;
 - mutate taper, transfer FOC, adjustment cost, economics, prices or calibration;
-- choose/implement R, W, W1, W2, `W_max`, a new `b_max` or a new `a_max`;
-- extrapolate the accepted taper beyond `a_max=10` as authority;
+- choose/implement R, W, W1, W2 or `W_max`;
+- create new `b_max`/`a_max` or extrapolate the accepted taper beyond `a_max=10`;
 - run/extend HJB grids or previous numerical fixtures;
 - run stationary KFE/density/tail/aggregates;
 - implement any boundary KKT law;
-- import a textbook transversality condition or representative-agent tail solution as accepted authority;
 - run regional GE, multi-province audit, network training, nominal HANK, policy/welfare or Results.
-
----
-
-## 7. Governance status
-
-Issue #41 is the current intended Builder theory-analysis task. Builder authority requires synchronized Task Index / Startup Snapshot plus authoritative activation comment.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
