@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5O_ACCEPTED__OWNER_DECISION_PENDING_ANALYTIC_MODEL_SPECIFICATION`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5P_UNBOUNDED_LIQUID_HJB_ANALYTIC_SPECIFICATION`
 
 Last synchronized: 2026-09-02
 
@@ -8,17 +8,25 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**No active Builder Issue.**
+Current Issue:
 
-Issue #41 / DLH-5O is accepted, integrated to `main`, and CLOSED completed. DSH must fail closed until a new GitHub Issue is published, Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
-
-No chat instruction alone creates Builder authority.
-
-## Latest accepted task — Issue #41 / DLH-5O
+**Issue #42 — OPEN**
 
 Title:
 
-`DLH-5O: Derive fixed-a liquid-tail HJB value-function asymptotics`
+`DLH-5P: Specify unbounded-liquid analytic HJB authority and critical-transfer admissibility`
+
+Task type:
+
+`SCIENTIFIC_ANALYTIC_MODEL_SPECIFICATION__UNBOUNDED_LIQUID_HJB_ADMISSIBILITY_AND_CRITICAL_TRANSFER`
+
+Dedicated branch:
+
+`dsh/issue-42-dlh-5p-unbounded-liquid-hjb-specification-2026-09-02`
+
+Issue #42 becomes the sole DSH Builder authority only after the authoritative activation comment is present and the CURRENT Startup Snapshot is synchronized to the same Issue. If Issue #42 is not open, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
+
+## Latest accepted task — Issue #41 / DLH-5O
 
 Accepted candidate:
 
@@ -44,44 +52,66 @@ Accepted terminal:
 
 `DLH_5O_HJB_LIQUID_TAIL_DOMINANT_BALANCE_CONDITIONAL__MISSING_ANALYTIC_ASSUMPTIONS_IDENTIFIED`
 
-## Controlling accepted interpretation
+## Owner decision
 
-1. The accepted MATLAB-faithful household source is finite-grid numerical authority. It does not itself specify an unbounded-positive-`b` HJB boundary/transversality condition or tail theorem.
-2. Under an explicit smooth-continuum interior-HJB assumption and the p=2 candidate `V_b ~ K/b^2`, the transfer-dependent HJB object must be treated jointly as
-   `V_b*[d*(V_a/V_b-1)-chi(d,a)]`.
-3. The conditional p=2 coefficient result requires explicit derivative control P-TR:
-   `V_a/V_b = o(sqrt(b))` uniformly over the fixed `a in [0,10]` support and accepted z states. Under P-TR the transfer Hamiltonian is subleading at `O(1/b)`.
-4. Under the full conditional premise set, the leading coefficient system is
-   `(rho+r_b)K - 2*sqrt(K) = S*K`.
-   For the frozen symmetric z-switch system this gives
-   `K = 4/(rho+r_b)^2` and `c/b = (rho+r_b)/2 = 0.0175`.
-5. Because `0.0175 > r_b=0.015`, the candidate implies conditional fixed-a liquid-tail total-wealth inwardness: `mu_W/b -> -0.0025`.
-6. This is not an unconditional theorem, not a full two-asset infinite-domain result, and not domain authority.
-7. The critical transfer regime `V_a/V_b ~ Theta(sqrt(b))` remains unresolved; its transfer Hamiltonian is same-order and changes the coefficient equation.
-8. Reviewer comment `5504453148` controls two non-blocking clarifications over local report shorthand:
-   - P-TR alone implies `d=o(sqrt(b))`, `chi=o(b)`, `mu_a=o(sqrt(b))`; `O(1)` transfer/cost orders require the stronger `V_a/V_b=O(1)` subcase.
-   - the local p<1 utility exponent comparison is not controlling; the switch-spectrum conclusion in the sub-root-transfer class survives with the corrected order comparison.
-9. R and W remain unfrozen. No `W_max` is authorized.
-10. Stationary KFE remains NOT AUTHORIZED under Issue #27.
+Owner approved the successor route:
 
-## Owner decision checkpoint
+`APPROVE_UNBOUNDED_B_ANALYTIC_HJB_SPECIFICATION_GATE__THEORY_DESIGN_ONLY`
 
-The next proposed route is an **analytic-model specification gate** for the unbounded-positive-`b` HJB problem. That gate would be model-defining because it must specify or adjudicate:
+This approval authorizes a theory/design specification review only. It does NOT freeze an analytic model, select R/W, choose `W_max`, authorize implementation, or authorize stationary KFE.
 
-- the continuous/unbounded-`b` HJB problem being claimed as analytic authority;
-- admissibility / asymptotic boundary / transversality conditions;
-- regularity and uniformity requirements;
-- derivative-control / transfer-ratio class, including whether P-TR is assumed or proved;
-- treatment of the unresolved critical `V_a/V_b ~ Theta(sqrt(b))` regime.
+## Controlling accepted interpretation from DLH-5O
 
-**Owner scientific decision is required before any successor Issue is activated.**
+- accepted household source remains finite-grid MATLAB-faithful numerical authority;
+- no unbounded-positive-`b` transversality or tail law is directly inherited from the finite-grid upper boundary;
+- conditional p=2 coefficient result requires explicit derivative control `P-TR: V_a/V_b=o(sqrt(b))` uniformly;
+- under the complete conditional premise set, `(rho+r_b)K - 2*sqrt(K)=S*K`, `c/b=0.0175`, and `mu_W/b -> -0.0025`;
+- this remains conditional, not a production-domain or full two-asset infinite-domain theorem;
+- critical `V_a/V_b ~ Theta(sqrt(b))` remains unresolved and changes the same-order coefficient system;
+- P-TR alone implies sub-root/sublinear transfer-cost orders; bounded transfer/cost requires the stronger `V_a/V_b=O(1)` subcase;
+- R/W remain unfrozen; no `W_max`; stationary KFE remains NOT AUTHORIZED.
 
-No implementation, domain selection, stationary KFE, regional GE, neural training, nominal HANK, calibration, policy/welfare or Results work is authorized at this checkpoint.
+## Issue #42 scientific scope
+
+DLH-5P is a **theory/design model-specification gate only**.
+
+It must:
+
+1. map inherited accepted economics versus newly model-defining analytic authority;
+2. formulate at least three candidate unbounded-liquid HJB specification packages (S1 minimal admissibility, S2 transversality-selected, S3 derivative-controlled);
+3. audit lower-`b` and `a` endpoint consistency without inventing a new upper-`a` law;
+4. determine whether P-TR is derivable, assumed, circular, or falsifiable under each candidate;
+5. analyze the critical `R~Theta(sqrt(b))` transfer branch using the combined transfer Hamiltonian;
+6. define theorem/existence/uniqueness/regularity/falsification requirements;
+7. produce an Owner decision packet and one pre-registered recommendation terminal;
+8. stop for fresh ChatGPT review. Builder recommendation is not model freeze.
+
+## Exact Builder allowlist
+
+Builder may create only:
+
+1. `docs/design/DLH_5P_UNBOUNDED_LIQUID_HJB_ANALYTIC_SPECIFICATION_REVIEW.md`
+2. `reports/dlh_5p_unbounded_liquid_hjb_specification_2026_09_02/` with exactly:
+   - `DLH_5P_AUTHORITY_EXTENSION_MAP.md`
+   - `DLH_5P_ANALYTIC_HJB_SPECIFICATION_CANDIDATES.md`
+   - `DLH_5P_BOUNDARY_AND_ENDPOINT_CONSISTENCY.md`
+   - `DLH_5P_P_TR_DERIVABILITY_AUDIT.md`
+   - `DLH_5P_CRITICAL_TRANSFER_BRANCH_ANALYSIS.md`
+   - `DLH_5P_THEOREM_AND_FALSIFICATION_CONTRACT.md`
+   - `DLH_5P_OWNER_DECISION_PACKET.md`
+   - `DLH_5P_FORBIDDEN_OPERATION_CHECK.md`
+
+No existing tracked file may be modified by Builder.
+
+## Scientific ceiling
+
+No accepted source/model economics mutation; no analytic-specification freeze or implementation; no R/W/W1/W2/`W_max`; no new `b_max`/`a_max`; no HJB/KFE/grid/stationary run; no previous-fixture rerun; no KKT implementation; no regional GE/multi-province audit; no neural training; no nominal HANK; no calibration/policy/welfare/Results.
+
+No PR / merge / close / successor Issue / self-accept from Builder.
 
 ## Current route authority
 
-- Latest accepted theory package: Issue #41 / DLH-5O.
-- Reviewer acceptance authority: Issue #41 comment `5504453148`.
+- Issue #42 full body + authoritative activation comment = exact Builder authority once activation is posted.
 - Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`.
 - Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`.
-- There is currently **no active Builder branch/task authority**.
+- Accepted DLH-5N / DLH-5O packages and reviewer comments remain read-only controlling context.
