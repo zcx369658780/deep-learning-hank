@@ -21,39 +21,29 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5U_ACCEPTED__TANGENTIAL_VORONOI_PROCESS_DESIGN_REQUIRED`
 
-**Issue #47 — DLH-5U: Freeze W1 face-adapted finite-volume same-process discretization**
-
-Task type:
-
-`SCIENTIFIC_DESIGN__W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION`
-
-Dedicated branch:
-
-`dsh/issue-47-dlh-5u-w1-face-adapted-fv-design-2026-09-03`
-
-Builder authority becomes active only while Issue #47 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+There is **no active Builder Issue**. DSH must remain stopped until a successor bounded scientific-design Issue is separately published, Task Index / Startup are synchronized, and an authoritative activation comment is posted.
 
 Current master roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 
-## Latest accepted gate — Issue #46 / DLH-5T
+## Latest accepted gate — Issue #47 / DLH-5U
 
-Issue #46 is CLOSED completed.
+Issue #47 is CLOSED completed.
 
-Accepted candidate:
+Accepted Rev-1 candidate:
 
-`fa9d886ea932c2c9001b86228200a162fb1990cd`
+`81bf9b46f20e6dd96514bb6fad698097c917a948`
 
 Reviewer acceptance comment:
 
-`5519690088`
+`5521379228`
 
 Acceptance integration commit:
 
-`73efb8b00b6b4884fc966f159b3aa8401cd3df41`
+`060c2835825f9efff4f89c84646f04cab6a9c8a4`
 
 Acceptance level:
 
@@ -61,21 +51,13 @@ Acceptance level:
 
 Accepted verdict:
 
-`DLH_5T_ACCEPTED__OUTCOME_B_CONFIRMED__W_DOMAIN_AND_CONTINUOUS_SAME_PROCESS_BOUNDARY_CONTRACT_ACCEPTED__W1_TANGENTIAL_DISCRETE_PROCESS_MATCHING_REMAINS_OPEN`
+`DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
 
 Accepted terminal:
 
-`DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
+`DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED`
 
-## Owner route decision after DLH-5T
-
-Owner selected:
-
-`APPROVE_ROUTE_F_W1_FACE_ADAPTED_FINITE_VOLUME_OBLIQUE_FLUX_DESIGN`
-
-The current gate therefore keeps W1/native `(a,b)` and designs a face-adapted finite-volume / oblique-flux boundary process. W1-TC and W2 are not active routes.
-
-## Controlling household / boundary / KFE authority
+## Controlling household / finite-domain / KFE authority
 
 Accepted household source remains immutable/read-only:
 
@@ -84,6 +66,14 @@ Accepted household source remains immutable/read-only:
 Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+
+Issue #27 remains binding:
+
+```text
+HJB boundary policy <=> KFE boundary transition law
+```
+
+Stationary KFE remains **NOT AUTHORIZED**.
 
 Accepted finite numerical domain family:
 
@@ -97,7 +87,7 @@ D_W(W_max) = {
 
 No numerical `W_max` is frozen.
 
-Accepted continuous tangent-cone laws:
+Accepted continuous boundary laws:
 
 ```text
 a=0:          mu_a >= 0
@@ -106,86 +96,87 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-Central same-process law:
+Boundary controls ultimately must respect the same finite controlled process in both backward HJB and forward KFE.
+
+## Accepted DLH-5U Route-F framework
+
+The Rev-1 design accepts the following framework objects:
+
+- restricted-Voronoi dual cells induced only by represented W1 nodes, clipped to `D_W`, giving an a.e. partition of the physical domain;
+- physical W-face segments defined from actual cell geometry rather than the masked-node staircase;
+- node value plus cell-level controlled drift;
+- exact discrete control-dependent Hamiltonian
 
 ```text
-controlled process selected by boundary HJB
-        ==
-controlled process represented by KFE generator
+H_h(c,l,d)
+  = u(c) - v(l)
+  + sum_r q_{s->r}(c,l,d) [V_r - V_s]
+  + switch;
 ```
 
-Stationary KFE remains **NOT AUTHORIZED** until a discrete finite controlled process is separately designed, implemented and validated.
-
-Contamination/pin remains downstream numerical normalization only and is not the active redesign target.
-
-## Current DLH-5U scientific target
-
-Resolve the DLH-5T W1 discrete blocker without moving the oblique boundary to the borrowing floor.
-
-The critical admissible continuous pattern remains:
+- source-state face-flux/CTMC framework
 
 ```text
-mu_b > 0
-mu_a < 0
-mu_W <= 0
+q_{s->r} = |F_{s,r}| * max(mu_s·n_{s,r},0) / omega_s,
+Q[s,s]   = -sum_{r!=s} q_{s->r};
 ```
 
-Route F must specify how a physical face-adapted control-volume process represents this inward/tangential portfolio reallocation while preserving both asset coordinates, conservation and the exact HJB/KFE discrete adjoint.
+- one discrete matrix `Q` for `(Q V)` backward action and `p_dot=Q^T p` forward mass dynamics;
+- nonuniform-cell mass/density semantics
 
-Required design objects:
+```text
+p = M g,
+M = diag(omega_s),
+Q^T p = 0,
+M^{-1}Q^T M g = 0;
+```
 
-1. clipped physical control volumes and actual shared faces/normals/areas;
-2. physical slanted W-face semantics distinct from the staircase mask;
-3. precise boundary-control/Hamiltonian location and refinement interpretation;
-4. monotone conservative face-flux / CTMC transition-rate rule;
-5. local symbolic tangential-reallocation consistency argument;
-6. exact backward `Q V` / forward probability-mass `Q^T p` semantics;
-7. explicit density/mass-matrix mapping for nonuniform clipped-cell weights;
-8. downstream contamination compatibility without pin-location redesign;
-9. small-cut-cell/sliver treatment or a precise future geometric admissibility rule;
-10. first-order/refinement consistency toward the accepted continuous W-constrained process.
+- downstream MATLAB-style component pin on mass `p`, followed by normalization and validation against the ORIGINAL `Q^T p` stationary equation.
 
-Reviewer clarifications from DLH-5T remain binding:
+Continuous DLH-5T effective-gradient FOCs are refinement/consistency targets only unless discrete equivalence is separately established.
 
-- no positive W-normal flux does not mean every axial component has an in-mask axial neighbor;
-- one-dimensional stationary nullspace is only a future canonical uniqueness target conditional on uniqueness;
-- `a_bar=1e-6` is the adjustment-cost denominator floor, not the state boundary;
-- negative-`b` implementation must preserve state-dependent effective liquid return / borrowing-rate-gap semantics.
+## Single bounded unresolved scientific object
 
-## Exact Builder allowlist
+Tangential same-process consistency at W-adjacent restricted-Voronoi cells is still unresolved.
 
-Issue #47 may create only the nine exact files named in the Issue body. No existing tracked file may be modified by Builder.
+The exact tangent benchmark
 
-## Scientific ceiling during Issue #47
+```text
+mu_a = -u,
+mu_b = +u,
+mu_W = 0
+```
 
-Do not:
+shows the earlier two-step axial cascade has an O(1) spurious normal drift at fixed accepted aspect ratio `da/db=10/7`; its first-order consistency claim is withdrawn. The simple oblique one-step candidate is not monotone on the accepted rectangular lattice.
 
-- mutate accepted household/HJB/KFE/regional economics/source;
-- implement control-volume geometry/fluxes/KKT/generator/mass matrix in source;
-- run HJB, KFE, stationary density or numerical grid/domain experiments;
+This does **not** prove Route F impossible. Under the Rev-1 restricted-Voronoi tessellation, actual frontier cells may have oblique/diagonal Voronoi neighbors, so the next bounded design must analyze the true Voronoi adjacency and the achievable nonnegative transition-moment cone before Route F can be accepted as implementation-ready.
+
+Reviewer clarifications controlling the next gate:
+
+- compute `F_s^W` from `∂C_s ∩ {a+b=W_max}` directly; do not use base-cell crossing as an iff implementation test;
+- keep the sliver strategy fail-closed unless either a geometric admissibility condition is pre-registered or agglomerated-cell state/control/value semantics are separately frozen;
+- do not start source implementation until the tangential moment/transition object is resolved.
+
+## Contamination interpretation
+
+Contamination/pin remains a downstream normalization device only. Under the accepted Route-F mass convention, the parity component pin is applied to the mass system `Q^T p=0`; after solving the contaminated system, normalize and check the ORIGINAL unmodified residual. No pin-location optimization or sensitivity is authorized here.
+
+## Scientific ceiling
+
+Until successor authority exists, do not:
+
+- mutate accepted household economics;
+- implement restricted-Voronoi / Route-F boundary code;
+- run boundary HJB/KFE/stationary/grid/domain experiments;
 - choose numerical `W_max`;
-- reopen b160 or alter grid/taper/economic primitives;
-- run contamination/pin sensitivity;
+- run pin sensitivity;
 - compute stationary aggregates;
 - rebuild two-region GE;
 - run multi-province execution or neural training;
-- enter nominal HANK, calibration, policy, welfare or Results;
-- PR / merge / Issue close / successor Issue / self-accept from Builder.
+- enter nominal HANK, calibration, policy, welfare or Results.
 
-## DSH startup sequence
+## New-chat startup
 
-1. `Set-Location D:\deep-learning-hank`;
-2. verify repository / remote / worktree / staging;
-3. `git fetch origin` and record fresh `origin/main`;
-4. read all CURRENT project rules;
-5. read CURRENT Task Index, this Startup Snapshot and Roadmap;
-6. read full Issue #47 and ALL comments, including authoritative activation;
-7. read Issue #46 acceptance comment `5519690088` and accepted DLH-5T package;
-8. read Issue #27 KFE contract and accepted household source read-only as needed;
-9. verify Issue / Task Index / Startup identity exactly;
-10. create the exact dedicated branch from fresh synchronized main;
-11. create only the nine Issue #47 allowlist files;
-12. perform design-only work — no implementation or solver/grid execution;
-13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
+A new session must fresh-fetch `main`, read all CURRENT rules, Task Index, this snapshot and the Roadmap, verify Issue #47 acceptance comment `5521379228` and integration `060c2835825f9efff4f89c84646f04cab6a9c8a4`, and then select/publish a bounded successor design authority before any Builder work.
 
 Chat text is not Builder authority.
