@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5U_W1_FACE_ADAPTED_FINITE_VOLUME_DESIGN`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5U_ACCEPTED__TANGENTIAL_VORONOI_PROCESS_DESIGN_REQUIRED`
 
 Last synchronized: 2026-09-03
 
@@ -8,9 +8,13 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**NONE.**
 
-**Issue #47 — OPEN**
+Issue #47 / DLH-5U is accepted and CLOSED completed. DSH must remain stopped until a successor bounded design Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #47 / DLH-5U
 
 Title:
 
@@ -20,73 +24,31 @@ Task type:
 
 `SCIENTIFIC_DESIGN__W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION`
 
-Dedicated branch:
+Accepted Rev-1 candidate:
 
-`dsh/issue-47-dlh-5u-w1-face-adapted-fv-design-2026-09-03`
-
-Issue #47 becomes the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup identity matches, and the authoritative activation comment is present.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #46 / DLH-5T
-
-Accepted candidate:
-
-`fa9d886ea932c2c9001b86228200a162fb1990cd`
+`81bf9b46f20e6dd96514bb6fad698097c917a948`
 
 Reviewer acceptance comment:
 
-`5519690088`
+`5521379228`
 
 Acceptance integration commit:
 
-`73efb8b00b6b4884fc966f159b3aa8401cd3df41`
+`060c2835825f9efff4f89c84646f04cab6a9c8a4`
 
 Acceptance level:
 
 `L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
-Accepted verdict:
+Accepted reviewer verdict:
 
-`DLH_5T_ACCEPTED__OUTCOME_B_CONFIRMED__W_DOMAIN_AND_CONTINUOUS_SAME_PROCESS_BOUNDARY_CONTRACT_ACCEPTED__W1_TANGENTIAL_DISCRETE_PROCESS_MATCHING_REMAINS_OPEN`
+`DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
 
 Accepted terminal:
 
-`DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
+`DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED`
 
-## Owner route decision after DLH-5T
-
-Owner selected:
-
-`APPROVE_ROUTE_F_W1_FACE_ADAPTED_FINITE_VOLUME_OBLIQUE_FLUX_DESIGN`
-
-Scientific meaning:
-
-- keep native `(a,b,z)` household coordinates;
-- keep accepted W-domain family `D_W(W_max)={0<=a<=a_max,b>=b_min,a+b<=W_max}`;
-- keep borrowing floor `b=b_min` coordinate-aligned;
-- place oblique numerical complexity on the artificial W frontier;
-- resolve W1 tangential reallocation through a face-adapted finite-volume / oblique-flux discrete-process design;
-- preserve exact HJB/KFE same-process authority;
-- remain design-only: no implementation, HJB/KFE execution, or numerical `W_max`.
-
-## Current DLH-5U target
-
-DLH-5U must determine whether Route F can be frozen to implementation-ready level.
-
-Required design objects include:
-
-- physical clipped control-volume geometry distinct from staircase mask semantics;
-- boundary-control/Hamiltonian location and its refinement consistency;
-- monotone conservative face-flux / CTMC transition rates;
-- symbolic proof that admissible `mu_b>0, mu_a<0, mu_W<=0` tangential portfolio reallocation is represented without reflection/leakage/asset distortion;
-- exact backward `Q V` / forward mass `Q^T p` adjoint semantics;
-- explicit probability-mass vs density / nonuniform cut-cell weight contract;
-- compatibility with downstream contamination normalization;
-- small-cut-cell/sliver handling or a precise future geometric admissibility rule;
-- first-order/refinement consistency toward the accepted continuous constrained process.
-
-Stationary KFE remains **NOT AUTHORIZED**.
+## Accepted Route-F scientific state
 
 Accepted household source remains immutable/read-only:
 
@@ -96,45 +58,63 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Binding law:
+Binding law remains:
 
 ```text
-controlled process selected by boundary HJB
-        ==
-controlled process represented by KFE generator
+HJB boundary policy <=> KFE boundary transition law
 ```
 
-## Exact Builder allowlist
+Stationary KFE remains **NOT AUTHORIZED**.
 
-Issue #47 may create only the nine exact paths frozen in the Issue body:
+Accepted finite-domain / continuous authority remains:
 
-1. `docs/design/DLH_5U_W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION.md`
-2. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_AUTHORITY_AND_EVIDENCE_FREEZE.md`
-3. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_CONTROL_VOLUME_GEOMETRY_AND_BOUNDARY_LOCATION.md`
-4. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_BOUNDARY_HAMILTONIAN_AND_FACE_FLUX_CONTRACT.md`
-5. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_CTMC_GENERATOR_AND_DISCRETE_ADJOINT.md`
-6. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_TANGENTIAL_REALLOCATION_AND_CONSISTENCY.md`
-7. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_MASS_DENSITY_CONTAMINATION_COMPATIBILITY.md`
-8. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_IMPLEMENTATION_READINESS_AND_TERMINAL.md`
-9. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_FORBIDDEN_OPERATION_CHECK.md`
+```text
+D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 
-No existing tracked file may be modified by Builder.
+a=0:          mu_a >= 0
+b=b_min:      mu_b >= 0
+a=a_max:      mu_a <= 0
+a+b=W_max:    mu_W=mu_a+mu_b <= 0
+```
+
+`W_max` remains numerical truncation authority only; no production number is selected.
+
+Accepted DLH-5U design objects:
+
+1. restricted-Voronoi control-volume tessellation induced only by represented W1 nodes, partitioning `D_W` a.e.;
+2. node value + cell-level control object, with W KKT only when the actual Voronoi cell has positive physical W-face segment;
+3. exact control-dependent discrete Hamiltonian
+   `H_h = u-v + sum_r q_{s->r}(c,l,d)(V_r-V_s) + switch`;
+4. monotone/conservative face-flux CTMC framework with one `Q` for backward HJB action and forward mass dynamics;
+5. mass/density distinction `p=M g`, stationary mass equation `Q^T p=0`, density equation `M^{-1}Q^T M g=0`;
+6. MATLAB-style Issue #27 component pin preserved downstream on mass `p`, followed by normalization and ORIGINAL `Q^T p` residual validation.
+
+## Single bounded unresolved object
+
+Tangential same-process consistency at the actual restricted-Voronoi W frontier remains unresolved.
+
+The Rev-0 two-step axial cascade is NOT accepted as first-order consistent: for the exact tangent benchmark `mu_a=-u`, `mu_b=+u`, fixed `da/db=10/7`, it produces an O(1) spurious normal drift. The simple oblique one-step candidate is not monotone on the accepted rectangular lattice.
+
+The next bounded design must analyze the **actual restricted-Voronoi face-adjacency / neighbor-displacement moment cone**, including oblique Voronoi neighbors. The failed axial candidates are not an impossibility theorem for the true Voronoi graph.
+
+Reviewer clarifications controlling the successor:
+
+- determine `F_s^W` from the actual restricted-Voronoi cell intersection with `a+b=W_max`; do not use base-rectangle crossing as an iff shortcut;
+- a future sliver rule must either be a pre-registered geometric fail-closed admissibility condition or separately freeze the state/control/value semantics of agglomeration;
+- no implementation is authorized until tangential moment/transition consistency is resolved.
 
 ## Scientific ceiling
 
-Issue #47 is design-only. Do not:
+Until successor authority exists, do not:
 
-- mutate accepted household/HJB/KFE/regional source;
-- implement the Route-F scheme;
-- run HJB/KFE/stationary/grid/domain experiments;
+- mutate accepted household economics/source;
+- implement Route F / restricted Voronoi / boundary-HJB / generator code;
 - choose numerical `W_max`;
-- reopen b160 or alter grid/taper/economic primitives;
+- execute HJB/KFE/stationary/grid/domain experiments;
 - run contamination sensitivity;
-- compute stationary aggregates;
+- compute stationary aggregates `C,L,A,B`;
 - rebuild two-region GE;
-- enter multi-province execution or neural training;
-- enter nominal HANK, calibration, policy, welfare or Results;
-- PR / merge / Issue close / successor Issue / self-accept from Builder.
+- enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare or Results.
 
 Current Startup Snapshot:
 
