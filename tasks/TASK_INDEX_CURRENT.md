@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5T_FINITE_DOMAIN_SAME_PROCESS_BOUNDARY_DESIGN`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5T_ACCEPTED__OWNER_DISCRETE_PROCESS_ROUTE_DECISION_REQUIRED`
 
 Last synchronized: 2026-09-03
 
@@ -8,9 +8,13 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**NONE.**
 
-**Issue #46 — OPEN**
+Issue #46 / DLH-5T is accepted and CLOSED completed. DSH must remain stopped until the Owner selects the bounded discrete-process route and a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #46 / DLH-5T
 
 Title:
 
@@ -20,63 +24,41 @@ Task type:
 
 `SCIENTIFIC_DESIGN__FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_HJB_KFE_BOUNDARY_CONTRACT`
 
-Dedicated branch:
-
-`dsh/issue-46-dlh-5t-finite-domain-same-process-boundary-2026-09-03`
-
-Issue #46 becomes the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #45 / DLH-5S
-
 Accepted candidate:
 
-`160781a89c6e22b5f17b4259500893140fcb9c01`
+`fa9d886ea932c2c9001b86228200a162fb1990cd`
 
 Reviewer acceptance comment:
 
-`5519142363`
+`5519690088`
 
 Acceptance integration commit:
 
-`75bedf6e3bb97d024dc8af3afa30f7398f205846`
+`73efb8b00b6b4884fc966f159b3aa8401cd3df41`
 
-Accepted verdict:
+Acceptance level:
 
-`DLH_5S_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__SCALED_TAIL_STRUCTURE_ACCEPTED__P2_REALIZATION_REMAINS_OPEN`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
+
+Accepted reviewer verdict:
+
+`DLH_5T_ACCEPTED__OUTCOME_B_CONFIRMED__W_DOMAIN_AND_CONTINUOUS_SAME_PROCESS_BOUNDARY_CONTRACT_ACCEPTED__W1_TANGENTIAL_DISCRETE_PROCESS_MATCHING_REMAINS_OPEN`
 
 Accepted terminal:
 
-`DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
+`DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
 
-## Owner route decision after DLH-5S
+## Accepted scientific state
 
-Owner selected Route D:
-
-`APPROVE_ROUTE_D_FINITE_PRODUCTION_DOMAIN_AND_JOINT_HJB_KFE_BOUNDARY_DESIGN`
-
-Scientific meaning:
-
-- preserve the unresolved infinite-domain p=2 caveat;
-- move to an explicit finite numerical production-domain design;
-- prefer hybrid total-wealth truncation `a+b<=W_max` over the old rectangular upper-b cap;
-- use native `(a,b)` masked W1 representation as the primary design candidate;
-- freeze HJB boundary KKT and KFE transition law as one controlled process;
-- preserve MATLAB-style contamination as a downstream numerical normalization device, not a boundary repair;
-- do not select a numerical `W_max` or execute HJB/KFE in this design gate.
-
-## Current DLH-5T target
-
-Primary candidate domain:
+Finite numerical domain family:
 
 ```text
 D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 ```
 
-Primary representation candidate:
+`W_max` is numerical truncation authority only; no production number is selected.
 
-`W1 = native (a,b) tensor coordinates + mask a+b<=W_max`.
-
-Boundary tangent conditions to audit/freeze:
+Accepted continuous boundary laws:
 
 ```text
 a=0:          mu_a >= 0
@@ -85,7 +67,9 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-Central same-process law:
+Boundary controls must come from the constrained Hamiltonian/KKT problem itself.
+
+Binding same-process law:
 
 ```text
 controlled process selected by boundary HJB
@@ -93,26 +77,38 @@ controlled process selected by boundary HJB
 controlled process represented by KFE generator
 ```
 
-Stationary KFE remains NOT AUTHORIZED in Issue #46.
+No KFE-only clipping; generator diagonals may contain only actually admitted represented transitions; contamination remains downstream normalization only.
 
-## Exact Builder allowlist
+Accepted `W_max` adequacy method uses nested domains and staged HJB / KFE / aggregate / GE stability checks. No historical stationary aggregate is grandfathered.
 
-Builder may create only:
+## Open discrete-process blocker
 
-1. `docs/design/DLH_5T_FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_BOUNDARY_CONTRACT.md`
-2. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_AUTHORITY_AND_EVIDENCE_FREEZE.md`
-3. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_W_DOMAIN_AND_W1_REPRESENTATION.md`
-4. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_HJB_KKT_BOUNDARY_LAWS.md`
-5. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_SAME_PROCESS_KFE_GENERATOR_CONTRACT.md`
-6. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_WMAX_ADEQUACY_PROTOCOL.md`
-7. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_IMPLEMENTATION_READINESS_AND_TERMINAL.md`
-8. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_FORBIDDEN_OPERATION_CHECK.md`
+W1 = native `(a,b)` tensor coordinates + `a+b<=W_max` mask is **not implementation-ready** at the slanted W frontier. The continuous constrained process can admit portfolio-reallocation drift with `mu_b>0`, `mu_a<0`, `mu_W<=0`; coordinate-split axial transitions do not uniquely preserve that local controlled process on the masked frontier.
 
-No existing tracked file may be modified by Builder.
+Bounded next-route families:
+
+1. W1 face-adapted finite-volume / oblique flux design;
+2. W1 tangent/corner-transport transition design with grid-spacing consistency analysis;
+3. separately evaluate W2 transformed `(a,W)` representation.
+
+Owner decision is required before a successor Builder Issue is published.
+
+## Reviewer clarifications controlling downstream work
+
+- “no outward W flux” means no positive continuous **normal** flux; it does not remove the W1 axial-neighbor mismatch.
+- one-dimensional stationary nullspace is a future canonical uniqueness target conditional on uniqueness, not a result of conservativity alone.
+- `a_bar=1e-6` is the adjustment-cost denominator floor; the state face is `a=0`.
+- negative-b implementation must preserve the accepted state-dependent effective liquid return / borrowing-rate-gap semantics.
 
 ## Scientific ceiling
 
-Issue #46 is design-only. No household-source mutation; no HJB/KFE/grid execution; no numerical `W_max`; no b160 reopening; no W1 implementation; no stationary density/aggregates; no two-region GE; no multi-province execution; no neural training; no nominal HANK/calibration/policy/welfare/Results; no PR/merge/close/successor/self-accept.
+Until new Owner authority exists, do not:
+
+- mutate accepted household economics/source;
+- implement W1/W2 or select numerical `W_max`;
+- execute boundary HJB/KFE/stationary density under a new process;
+- compute stationary aggregates or rebuild the two-region anchor;
+- enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare or Results.
 
 Current Startup Snapshot:
 
