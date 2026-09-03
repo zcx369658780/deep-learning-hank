@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.21  
+**Version:** V0.22  
 **Date:** 2026-09-03  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-DECISION CHECKPOINT — DLH-5S ACCEPTED / NO ACTIVE BUILDER ISSUE
+**Status:** CURRENT OWNER-APPROVED ROUTE D — DLH-5T FINITE PRODUCTION-DOMAIN / SAME-PROCESS BOUNDARY DESIGN ACTIVE
 
 ---
 
@@ -12,7 +12,7 @@
 
 Build a data-to-structural-model calibration and regional-network HANK platform in which household HJB/KFE, aggregation, firm/accounting blocks and later nominal-HANK equations remain explicit structural economics, while difficult cross-regional mappings become interpretable learned modules only after household and equilibrium foundations pass scientific and numerical validation.
 
-The first learned object remains the regional labor/spatial rule. Capital-network learning and nominal-HANK integration remain later stages.
+The first learned object remains the regional labor/spatial rule `W^L`; capital-network learning `W^K`, nominal HANK, calibration, policy and welfare remain downstream.
 
 ---
 
@@ -32,43 +32,9 @@ Binding Issue #27 law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED** until a controlled household domain/boundary process is separately selected, implemented and validated.
+Stationary KFE remains **NOT AUTHORIZED** until one controlled finite household process is separately selected, implemented and validated.
 
-R/W domain designs remain unfrozen. `W=a+b` remains an accounting coordinate, not production-domain authority. No `W_max` is authorized.
-
-### Accepted analytic sequence before DLH-5S
-
-DLH-5O produced the conditional p=2 candidate:
-
-```text
-K = 4/(rho+r_b)^2
-c/b -> 0.0175
-mu_W/b -> -0.0025
-```
-
-DLH-5P preserved a critical out-of-S3 benchmark `R~Theta(sqrt(b))` and showed the tail specification was not unique without an additional analytic class.
-
-Owner selected provisional S3 + parallel falsification:
-
-`PROVISIONAL_S3_ANALYTIC_CLASS__PARALLEL_FALSIFICATION_ROUTE_APPROVED`
-
-Working class remains:
-
-- S1: continuous unbounded-positive-b analytic base on fixed finite a-support, `V<0`, `V_b>0`;
-- S2: `V_inf=0` provisional tail-selection assumption;
-- primary S3: `R=V_a/V_b=O(1)` uniformly on claimed compact interior-a support, with no sign restriction;
-- P-TR `R=o(sqrt(b))` sensitivity only;
-- critical `R~Theta(sqrt(b))` retained outside S3 as a benchmark.
-
-DLH-5Q established p=2 as the unique self-consistent formal balance among the correctly analyzed power/explicit-slow families inside S3, while existence/comparison, actual realization, broader exotic regimes, derivative-remainder control and endpoints remained open.
-
-DLH-5R then found accessible-range numerical compatibility with S3 derivative control: `|R|=O(1)`, `|R|/sqrt(b)` and `chi/b` declined, no critical `R~sqrt(b)` signature appeared, but p=2 scaling was not reached before the pre-existing b160 ceiling. No larger numerical domain was authorized.
-
----
-
-## 2. Accepted DLH-5S / Issue #45
-
-Issue #45 is CLOSED completed.
+### Accepted DLH-5S / Issue #45
 
 Accepted candidate:
 
@@ -82,10 +48,6 @@ Acceptance integration:
 
 `75bedf6e3bb97d024dc8af3afa30f7398f205846`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_THEORY_ANALYSIS_ACCEPTED`
-
 Accepted verdict:
 
 `DLH_5S_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__SCALED_TAIL_STRUCTURE_ACCEPTED__P2_REALIZATION_REMAINS_OPEN`
@@ -94,186 +56,241 @@ Accepted terminal:
 
 `DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
 
-### 2.1 Exact scaled structure accepted
+Accepted exact scaled structure includes:
 
 ```text
 H=-bV
 Q=b^2 V_b
-s=log b
 H_s=H-Q
 c/b=Q^(-1/2)
 p_eff=2-dlog(Q)/dlog(b)
-```
-
-Exact scaled HJB:
-
-```text
 (rho I-S)H=F(Q)+E
-F(Q)=2sqrt(Q)-r_b Q
-```
-
-Exact vector Q-flow:
-
-```text
 F'(Q)Q_s=F(Q)-rho Q+S Q+E-E_s
 ```
 
-The remainder decomposition is accepted with the Rev-2/Rev-3 caveats: S3 does not sign `R` or `V_a`; `E_illiquid` is controlled in magnitude only under S3 + bounded Q + compact-a; the simplified transfer sign is restricted to the stated compact-interior branch.
-
-### 2.2 Reduced p=2 attractor structure accepted
-
-For the deliberately reduced `E=0`, z-symmetric scalar system:
+The reduced `E=0`, z-symmetric system has positive fixed point
 
 ```text
-rho H = 2sqrt(Q)-r_b Q
-H_s = H-Q
+K*=4/(rho+r_b)^2=3265.3061224489797
 ```
 
-there is a positive fixed point
+with local homogeneous mean eigenvalue `-7`; the local homogeneous z-difference eigenvalue is about `-273.67`. These are local/unforced rates only. If `E,E_s->0`, the asymptotic limit is the **z-coupled vector system**, not automatically the scalar mean system.
 
-```text
-K*=H*=Q*=4/(rho+r_b)^2=3265.3061224489797
-```
-
-on the regular lower sector. The exact nonlinear reduced flow has:
-
-```text
-0<Q<K*              => Q_s>0
-K*<Q<1/r_b^2        => Q_s<0
-Q>1/r_b^2           => upper-sector runaway
-```
-
-The mean eigenvalue `-7` is accepted only as the **local homogeneous** eigenvalue near `K*`; it is not a global trajectory estimate and is not a generic full-HJB rate.
-
-### 2.3 z-coupled authority accepted
-
-The local homogeneous z-difference eigenvalue near the candidate is about `-273.67`. This is also a local/unforced eigenvalue only.
-
-If `E->0` and `E_s->0`, the asymptotically autonomous limit is the **E=0 z-coupled vector system**:
-
-```text
-F'(Q)Q_s=F(Q)-rho Q+S Q
-```
-
-The scalar z-symmetric reduced dynamics are an invariant/reduced subsystem and become an asymptotic reduction only conditional on z-difference synchronization. Nonlinear/global synchronization is not established.
-
-### 2.4 Effective-exponent authority accepted
-
-The identity
-
-```text
-p_eff=2-dlog(Q)/dlog(b)
-```
-
-is exact where regular. `Q->K*>0` by itself does not imply `p_eff->2`; derivative-regular convergence such as `dlog(Q)/dlog(b)->0` is additionally required. Oscillatory/derivative-irregular regimes therefore remain part of the open realization problem.
-
-### 2.5 What DLH-5S does not prove
-
-S1+S2+S3 do **not** establish:
-
-1. Q upper tightness / precompactness;
-2. Q non-degeneracy away from zero;
-3. eventual regular-lower-sector branch selection / distance from `F'(Q)=0`;
-4. derivative remainder `E_s->0`;
-5. coupled-global z synchronization;
-6. omega-limit / basin entry into the positive p=2 attractor.
-
-No analytic obstruction or counterexample was demonstrated. S3 therefore remains provisional/falsifiable rather than rejected or promoted.
-
-DLH-5R finite-window movements remain qualitatively compatible with the reduced-attractor direction but do not prove full-HJB p=2 realization.
+S1+S2+S3 do not establish Q tightness, Q non-degeneracy, regular-sector selection, `E_s->0`, global z synchronization or p=2 basin entry. No analytic obstruction/counterexample was established. The infinite-domain p=2 realization caveat therefore remains unresolved and is preserved through Route D.
 
 ---
 
-## 3. Owner decision checkpoint after DLH-5S
+## 2. KFE interpretation entering Route D
 
-There is currently **NO ACTIVE BUILDER ISSUE**.
+The current KFE blocker is **not** the existence of singularity and is **not** MATLAB-style row contamination itself.
 
-DLH-5S converted the earlier vague “no exotic tail” gap into a concrete set of missing dynamical objects. The next step is model/science defining and therefore requires an Owner choice.
+Accepted Issue #27 interpretation:
 
-### Route T — bounded analytic tightness / basin theorem
+- a conservative generator is expected to be singular;
+- MATLAB-style contaminated-row / pin normalization is allowed in principle as a numerical scale-fixing device;
+- later stationary acceptance requires the ORIGINAL unmodified residual `Q^T g`, mass normalization, non-negativity and admissible-pin diagnostics;
+- contamination is downstream of the controlled-process definition.
 
-Goal: try to derive, or materially reduce, the remaining class-B assumptions without new numerical-domain expansion.
-
-Targets may include:
-
-- upper/lower bounds for Q;
-- exclusion of approach to the reduced singular sector;
-- derivative regularity sufficient for `E_s->0`;
-- nonlinear z synchronization;
-- coupled omega-limit / basin entry.
-
-This route preserves the existing b160 ceiling and remains theory-first.
-
-### Route N — bounded numerical diagnosis of the remaining conditions
-
-Goal: test empirical/numerical signatures of tightness, regular-sector selection, derivative behavior and synchronization under an exact pre-frozen scope.
-
-This requires a new Owner authorization and Issue. It must not silently enlarge b160, convert finite-window evidence into theorem proof, or authorize stationary KFE.
-
-### Route D — return to R/W domain and joint boundary-law design
-
-Goal: accept that p=2 realization remains unresolved, and use the accepted tail information only as conditional guidance while making the model-defining production-domain / HJB-KFE boundary choice.
-
-Any R/W/W1/W2/`W_max` or endpoint law is an Owner-level scientific choice. HJB and KFE boundary laws must be frozen together; stationary KFE remains blocked until that controlled process is implemented and validated.
-
-### Route H — hold/defer
-
-Preserve the current provisional scientific boundary and do not advance household production/KFE work until a later decision or stronger theory/evidence becomes available.
-
-No route is selected automatically by this roadmap.
+The material blocker exposed by DLH-5E is boundary-policy inconsistency: the accepted finite-grid HJB can request materially outward asset drift at artificial finite boundaries. A KFE-only conservative clipping rule would then describe a different controlled process. Route D therefore freezes the finite-domain HJB and KFE boundary law jointly before any stationary execution resumes.
 
 ---
 
-## 4. Downstream household sequence after adequate Owner authority
+## 3. Owner Route-D decision after DLH-5S
 
-The downstream architecture remains:
+Owner selected:
+
+`APPROVE_ROUTE_D_FINITE_PRODUCTION_DOMAIN_AND_JOINT_HJB_KFE_BOUNDARY_DESIGN`
+
+Scientific interpretation:
+
+1. preserve the unresolved infinite-domain p=2 caveat rather than treating it as theorem closure;
+2. move to a transparent finite numerical production-domain contract;
+3. prefer total-wealth truncation over the old rectangular upper-b cap;
+4. use native `(a,b)` masked representation as the primary first design candidate;
+5. define the HJB boundary problem and KFE transition law as the same controlled process;
+6. retain contamination as downstream normalization only;
+7. select future production-domain extent by pre-registered adequacy tests, not by convenience or PASS-seeking.
+
+---
+
+## 4. Immediate active gate — DLH-5T / Issue #46
+
+### Name
+
+**Finite Production-Domain Geometry and Same-Process HJB–KFE Boundary Contract**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_HJB_KFE_BOUNDARY_CONTRACT`
+
+Dedicated branch:
+
+`dsh/issue-46-dlh-5t-finite-domain-same-process-boundary-2026-09-03`
+
+DLH-5T is **design-only**. It does not authorize implementation or numerical execution.
+
+### 4.1 Primary production-domain candidate
 
 ```text
-accepted analytic/diagnostic authority
--> Owner R/W/domain/boundary decision
--> separate boundary-law implementation authority
--> HJB boundary validation
--> truncation/resolution robustness
--> conservative same-process generator
+D_W(W_max) = {
+    0 <= a <= a_max,
+    b >= b_min,
+    a+b <= W_max
+}
+```
+
+Interpretation:
+
+- `a<=a_max` retains the accepted illiquid-support/taper specification;
+- `b>=b_min` is the economic liquid borrowing floor;
+- `a+b<=W_max` is an artificial numerical production-domain truncation;
+- `W_max` is not a household primitive, not a calibrated structural parameter and is not selected in DLH-5T.
+
+### 4.2 Primary representation candidate — W1
+
+Use native `(a,b)` tensor coordinates and represent only states satisfying `a+b<=W_max`.
+
+Reason for the design preference:
+
+- keep the economically important borrowing floor `b=b_min` coordinate-aligned;
+- keep the accepted a-based taper in native coordinates;
+- concentrate slanted-boundary/stencil complexity on the artificial numerical upper boundary rather than moving it onto the borrowing floor.
+
+W2 `(a,W)` is not silently substituted if W1 proves incomplete; that requires an explicit future decision.
+
+### 4.3 Continuous tangent-cone boundary laws
+
+DLH-5T must derive/audit and, if scientifically coherent, freeze:
+
+```text
+a=0:          mu_a >= 0
+b=b_min:      mu_b >= 0
+a=a_max:      mu_a <= 0
+a+b=W_max:    mu_W=mu_a+mu_b <= 0
+```
+
+All active constraints apply jointly at every feasible face intersection. Boundary controls must be obtained from the constrained Hamiltonian/KKT problem itself; unconstrained policy selection followed by clipping is forbidden.
+
+### 4.4 Same-process law
+
+Central Route-D identity:
+
+```text
+controlled process selected by boundary HJB
+        ==
+controlled process represented by KFE generator
+```
+
+Consequences:
+
+- no KFE-only suppression of a materially outward HJB policy;
+- every KFE off-diagonal transition corresponds to an admitted HJB-controlled transition;
+- diagonals use only actually admitted represented rates;
+- omitted masked destinations cannot leave retained exit rates;
+- future KFE remains the adjoint `Q^T g` of the same backward generator `Q V`.
+
+### 4.5 Wmax adequacy protocol
+
+DLH-5T freezes a future nested-domain selection method, not a number. Future candidate domains must be evaluated in stages:
+
+```text
+HJB shared-interior policy stability
+-> boundary influence localization
+-> stationary-tail influence after KFE authorization
+-> aggregate stability C,L,A,B
+-> GE/two-region price-state stability
+```
+
+A production `W_max` should ultimately be the smallest pre-registered candidate satisfying all relevant accepted adequacy gates.
+
+---
+
+## 5. Expected sequence after DLH-5T
+
+If DLH-5T reaches an implementation-ready design terminal, the intended household sequence is:
+
+```text
+DLH-5T finite-domain / same-process scientific design
+-> separate boundary-consistent HJB implementation authority
+-> boundary KKT/complementarity validation
+-> nested Wmax / resolution robustness
+-> conservative same-process generator implementation
 -> Issue #27 stationary KFE validation
--> recurrent-class / nullspace / pin / original Q^T g residual
+-> recurrent-class / nullspace / admissible-pin / original Q^T g residual
 -> mass / non-negativity / stationary-tail diagnostics
 -> recompute C,L,A,B
--> rebuild two-region anchor
+-> rebuild two-region structural anchor
 ```
 
-No historical aggregate is grandfathered.
+No historical stationary aggregate is grandfathered.
+
+A successor implementation Issue is **not** created automatically by Builder; DLH-5T must first be independently reviewed and accepted.
 
 ---
 
-## 5. Regional / Deep Learning sequence remains deferred
+## 6. Regional / Deep Learning architecture after household recovery
 
-Permanent hierarchy:
+The long-run hybrid architecture remains:
+
+```text
+learned regional mapping W^L
+        ↓
+composite regional wage / flow interface
+        ↓
+structural regional two-asset HA (HJB/KFE)
+        ↓
+C_i, L_i^home, A_i, B_i
+        ↓
+labor-flow allocation + structural firm block
+        ↓
+w_i, r_i^a
+        ↓
+outer equilibrium fixed point
+        ↓
+back to HA
+```
+
+Deep Learning does **not** initially replace HJB/KFE. The first learned object remains the interpretable interregional labor-allocation network; the HA block is the structural response operator inside the regional equilibrium loop.
+
+Permanent scaling hierarchy remains:
 
 ```text
 2-region unit fixture
 -> 3–5 province integration fixture
 -> 31-province empirical/source benchmark
+-> learned W^L
+-> later W^K / nominal HANK / calibration / policy / welfare
 ```
-
-Regional GE, learned regional labor/spatial rules, capital-network learning, nominal HANK, calibration, policy and welfare remain deferred until the household controlled process and stationary foundation are accepted.
-
-When neural work eventually resumes, the intended sequence remains source spatial-rule surrogate first, then constrained structural learned rule, then empirical OD-flow learning with explicit endogeneity/double-counting safeguards.
 
 ---
 
-## 6. Scientific ceiling at the current checkpoint
+## 7. Scientific ceiling during DLH-5T
 
-Until the Owner selects and authorizes a next route, do not:
+Do not:
 
-- mutate accepted household HJB/economics;
+- mutate accepted household/HJB/KFE/regional/GE source;
+- execute HJB, KFE, stationary density or grid/domain experiments;
+- choose a numerical `W_max`;
 - reopen b160 / create b180 or b200 / alter grid or taper;
-- choose or implement R/W/W1/W2/`W_max`;
-- invent/implement endpoint/state-domain laws;
-- run stationary KFE/nullspace/pin/density/tail mass/aggregates;
-- run regional GE / multi-province execution;
-- train learned regional networks;
-- enter nominal HANK, calibration, policy, welfare, or Results;
-- create a successor Builder Issue automatically.
+- implement W1 masking, KKT boundary controls or a conservative generator;
+- run contamination/pin sensitivity experiments;
+- compute stationary aggregates;
+- rebuild two-region GE;
+- run multi-province execution;
+- train neural networks;
+- enter nominal HANK, calibration, policy, welfare or Results;
+- PR / merge / Issue close / successor Issue / self-accept from Builder.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
+
+---
+
+## 8. Governance status
+
+Issue #46 / DLH-5T is the current intended Builder design task. Builder authority requires:
+
+1. Issue #46 OPEN;
+2. CURRENT Task Index / Startup identity synchronized;
+3. authoritative activation comment present.
+
+The Issue body is the exact task specification. Chat text alone does not create Builder authority.
