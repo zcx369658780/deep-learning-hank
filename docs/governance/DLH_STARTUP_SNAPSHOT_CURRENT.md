@@ -10,7 +10,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 
 - live GitHub `main` = synchronized repository/code/governance authority;
 - GitHub Issue = sole DSH Builder authority only after publication + Task Index / Startup synchronization + authoritative activation comment;
-- DSH = bounded Builder/executor or scientific analyst only under an active Issue;
+- DSH = bounded Builder/scientific analyst only under an active Issue;
 - ChatGPT = independent fresh-GitHub reviewer / scientific-route advisor / task issuer / governance operator;
 - Owner = final scientific authority;
 - Builder completion is not acceptance.
@@ -21,9 +21,19 @@ Priority:
 
 ## Current Builder state
 
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5U_ACCEPTED__TANGENTIAL_VORONOI_PROCESS_DESIGN_REQUIRED`
+Current published task:
 
-There is **no active Builder Issue**. DSH must remain stopped until a successor bounded scientific-design Issue is separately published, Task Index / Startup are synchronized, and an authoritative activation comment is posted.
+**Issue #48 — DLH-5V: Restricted-Voronoi W-frontier tangential moment-cone and same-process transition design**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_AND_SAME_PROCESS_TRANSITIONS`
+
+Dedicated branch:
+
+`dsh/issue-48-dlh-5v-voronoi-tangential-moment-cone-2026-09-03`
+
+Builder authority becomes active only while Issue #48 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -56,6 +66,14 @@ Accepted verdict:
 Accepted terminal:
 
 `DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED`
+
+## Owner continuation decision
+
+Owner approved:
+
+`APPROVE_DLH_5V_RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_DESIGN`
+
+The active gate keeps Route F / W1 and attacks the single remaining discrete scientific object: tangential same-process consistency on the actual restricted-Voronoi W-frontier graph.
 
 ## Controlling household / finite-domain / KFE authority
 
@@ -96,87 +114,79 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-Boundary controls ultimately must respect the same finite controlled process in both backward HJB and forward KFE.
-
 ## Accepted DLH-5U Route-F framework
 
-The Rev-1 design accepts the following framework objects:
+Accepted objects remain:
 
-- restricted-Voronoi dual cells induced only by represented W1 nodes, clipped to `D_W`, giving an a.e. partition of the physical domain;
-- physical W-face segments defined from actual cell geometry rather than the masked-node staircase;
-- node value plus cell-level controlled drift;
-- exact discrete control-dependent Hamiltonian
+- represented W1 node set `S={s: a_j+b_i<=W_max}`;
+- restricted-Voronoi cells induced only by represented nodes, partitioning `D_W` a.e.;
+- actual physical W segment `F_s^W = partial(C_s) intersect {a+b=W_max}`;
+- node value + cell-level control;
+- exact control-dependent discrete Hamiltonian;
+- monotone/conservative CTMC framework with one `Q` for backward HJB action and forward mass dynamics;
+- `p=M g`, weighted density equation, and downstream MATLAB-style component pin on mass `p`.
 
-```text
-H_h(c,l,d)
-  = u(c) - v(l)
-  + sum_r q_{s->r}(c,l,d) [V_r - V_s]
-  + switch;
-```
+The old axial two-step cascade is NOT accepted as tangentially consistent; at exact sliding and fixed `da/db=10/7` it generates O(1) spurious normal drift. The failed axial/rectangular-neighbor candidates are not an impossibility theorem for the actual Voronoi graph.
 
-- source-state face-flux/CTMC framework
+## Current DLH-5V scientific target
 
-```text
-q_{s->r} = |F_{s,r}| * max(mu_s·n_{s,r},0) / omega_s,
-Q[s,s]   = -sum_{r!=s} q_{s->r};
-```
-
-- one discrete matrix `Q` for `(Q V)` backward action and `p_dot=Q^T p` forward mass dynamics;
-- nonuniform-cell mass/density semantics
+For every recurring nondegenerate W-frontier phase class, derive the actual restricted-Voronoi neighbor set and displacement cone. Test whether nonnegative local rates can reproduce:
 
 ```text
-p = M g,
-M = diag(omega_s),
-Q^T p = 0,
-M^{-1}Q^T M g = 0;
+mu_a <= 0,
+mu_b >= 0,
+mu_a+mu_b <= 0,
 ```
 
-- downstream MATLAB-style component pin on mass `p`, followed by normalization and validation against the ORIGINAL `Q^T p` stationary equation.
-
-Continuous DLH-5T effective-gradient FOCs are refinement/consistency targets only unless discrete equivalence is separately established.
-
-## Single bounded unresolved scientific object
-
-Tangential same-process consistency at W-adjacent restricted-Voronoi cells is still unresolved.
-
-The exact tangent benchmark
+especially exact sliding:
 
 ```text
-mu_a = -u,
-mu_b = +u,
-mu_W = 0
+mu=(-u,+u), u>0.
 ```
 
-shows the earlier two-step axial cascade has an O(1) spurious normal drift at fixed accepted aspect ratio `da/db=10/7`; its first-order consistency claim is withdrawn. The simple oblique one-step candidate is not monotone on the accepted rectangular lattice.
+The gate must distinguish:
 
-This does **not** prove Route F impossible. Under the Rev-1 restricted-Voronoi tessellation, actual frontier cells may have oblique/diagonal Voronoi neighbors, so the next bounded design must analyze the true Voronoi adjacency and the achievable nonnegative transition-moment cone before Route F can be accepted as implementation-ready.
+1. the induced first-moment map of the accepted source-state face-flux candidate;
+2. the larger question of whether any nonnegative local moment-matching rates on actual shared-face Voronoi neighbors can satisfy the accepted same-process law.
 
-Reviewer clarifications controlling the next gate:
+If geometric feasibility exists, a W-frontier-only monotone moment-matching rate rule may be frozen at design level. If a recurring admissible class has a genuine nonnegative-cone obstruction, the gate returns to Owner.
 
-- compute `F_s^W` from `∂C_s ∩ {a+b=W_max}` directly; do not use base-cell crossing as an iff implementation test;
-- keep the sliver strategy fail-closed unless either a geometric admissibility condition is pre-registered or agglomerated-cell state/control/value semantics are separately frozen;
-- do not start source implementation until the tangential moment/transition object is resolved.
+## Geometric/sliver rule
 
-## Contamination interpretation
-
-Contamination/pin remains a downstream normalization device only. Under the accepted Route-F mass convention, the parity component pin is applied to the mass system `Q^T p=0`; after solving the contaminated system, normalize and check the ORIGINAL unmodified residual. No pin-location optimization or sensitivity is authorized here.
+DLH-5V is fail-closed on degenerate restricted-Voronoi phases. It may define symbolic positive lower-bound conditions on cell measures, shared-face lengths and cone determinants, but may not choose numeric thresholds, agglomerate states, or align `W_max` to the grid for PASS.
 
 ## Scientific ceiling
 
-Until successor authority exists, do not:
+Do not:
 
-- mutate accepted household economics;
-- implement restricted-Voronoi / Route-F boundary code;
-- run boundary HJB/KFE/stationary/grid/domain experiments;
-- choose numerical `W_max`;
-- run pin sensitivity;
+- mutate accepted household economics/source;
+- implement restricted-Voronoi or boundary transition code;
+- run programmatic Voronoi/Delaunay/grid experiments;
+- run HJB/KFE/stationary solves;
+- select numerical `W_max`;
+- alter grid/economics;
+- agglomerate cells;
+- run contamination sensitivity;
 - compute stationary aggregates;
 - rebuild two-region GE;
-- run multi-province execution or neural training;
-- enter nominal HANK, calibration, policy, welfare or Results.
+- run multi-province or neural training;
+- enter nominal HANK, calibration, policy, welfare or Results;
+- PR / merge / close / successor / self-accept from Builder.
 
-## New-chat startup
+## DSH startup sequence
 
-A new session must fresh-fetch `main`, read all CURRENT rules, Task Index, this snapshot and the Roadmap, verify Issue #47 acceptance comment `5521379228` and integration `060c2835825f9efff4f89c84646f04cab6a9c8a4`, and then select/publish a bounded successor design authority before any Builder work.
+1. `Set-Location D:\deep-learning-hank`;
+2. verify repository / remote / worktree / staging;
+3. `git fetch origin` and record fresh `origin/main`;
+4. read all CURRENT project rules;
+5. read CURRENT Task Index, this snapshot and Roadmap;
+6. read full Issue #48 and ALL comments including authoritative activation;
+7. read Issue #47 acceptance `5521379228` and the accepted DLH-5U Rev-1 package;
+8. read accepted DLH-5T / Issue #27 authority and household source read-only as needed;
+9. verify Issue / Task Index / Startup identity exactly;
+10. create exact dedicated branch from fresh synchronized main;
+11. create only the nine Issue #48 allowlist files;
+12. perform symbolic/analytic design only;
+13. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
 Chat text is not Builder authority.
