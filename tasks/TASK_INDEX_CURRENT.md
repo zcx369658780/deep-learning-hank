@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5S_ACCEPTED__OWNER_ROUTE_DECISION_REQUIRED`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5T_FINITE_DOMAIN_SAME_PROCESS_BOUNDARY_DESIGN`
 
 Last synchronized: 2026-09-03
 
@@ -8,21 +8,25 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NONE.**
+Current Issue:
 
-Issue #45 / DLH-5S is accepted and CLOSED completed. DSH must remain stopped until the Owner selects a next scientific route and a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #45 / DLH-5S
+**Issue #46 — OPEN**
 
 Title:
 
-`DLH-5S: Analyze provisional-S3 pre-asymptotic dynamics and p=2 realization`
+`DLH-5T: Freeze finite production-domain geometry and same-process HJB–KFE boundary contract`
 
 Task type:
 
-`SCIENTIFIC_THEORY_ANALYSIS__PROVISIONAL_S3_PREASYMPTOTIC_DYNAMICS_AND_P2_REALIZATION`
+`SCIENTIFIC_DESIGN__FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_HJB_KFE_BOUNDARY_CONTRACT`
+
+Dedicated branch:
+
+`dsh/issue-46-dlh-5t-finite-domain-same-process-boundary-2026-09-03`
+
+Issue #46 becomes the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #45 / DLH-5S
 
 Accepted candidate:
 
@@ -36,11 +40,7 @@ Acceptance integration commit:
 
 `75bedf6e3bb97d024dc8af3afa30f7398f205846`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_THEORY_ANALYSIS_ACCEPTED`
-
-Accepted reviewer verdict:
+Accepted verdict:
 
 `DLH_5S_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__SCALED_TAIL_STRUCTURE_ACCEPTED__P2_REALIZATION_REMAINS_OPEN`
 
@@ -48,76 +48,71 @@ Accepted terminal:
 
 `DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
 
-## Accepted DLH-5S scientific state
+## Owner route decision after DLH-5S
 
-Accepted household source remains immutable/read-only:
+Owner selected Route D:
 
-`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
+`APPROVE_ROUTE_D_FINITE_PRODUCTION_DOMAIN_AND_JOINT_HJB_KFE_BOUNDARY_DESIGN`
 
-Git blob:
+Scientific meaning:
 
-`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+- preserve the unresolved infinite-domain p=2 caveat;
+- move to an explicit finite numerical production-domain design;
+- prefer hybrid total-wealth truncation `a+b<=W_max` over the old rectangular upper-b cap;
+- use native `(a,b)` masked W1 representation as the primary design candidate;
+- freeze HJB boundary KKT and KFE transition law as one controlled process;
+- preserve MATLAB-style contamination as a downstream numerical normalization device, not a boundary repair;
+- do not select a numerical `W_max` or execute HJB/KFE in this design gate.
 
-Binding Issue #27 law remains:
+## Current DLH-5T target
+
+Primary candidate domain:
 
 ```text
-HJB boundary policy <=> KFE boundary transition law
+D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 ```
 
-Stationary KFE remains **NOT AUTHORIZED**.
+Primary representation candidate:
 
-Accepted DLH-5S theory-analysis content:
+`W1 = native (a,b) tensor coordinates + mask a+b<=W_max`.
 
-1. Exact scaled variables and identities:
-   - `H=-bV`
-   - `Q=b^2 V_b`
-   - `H_s=H-Q`
-   - `c/b=Q^(-1/2)`
-   - `p_eff=2-dlog(Q)/dlog(b)` where regular.
-2. Exact scaled HJB:
-   - `(rho I-S)H=F(Q)+E`
-   - `F(Q)=2sqrt(Q)-r_b Q`.
-3. Exact vector Q-flow:
-   - `F'(Q)Q_s=F(Q)-rho Q+S Q+E-E_s`.
-4. Reduced `E=0`, z-symmetric scalar system has the positive fixed point
-   - `K*=4/(rho+r_b)^2=3265.3061224489797`,
-   - on the reduced regular lower sector,
-   - with local homogeneous mean eigenvalue `-7` near `K*`.
-5. The local homogeneous z-difference eigenvalue near the candidate is about `-273.67`; this is not a generic full-HJB convergence rate.
-6. If `E->0` and `E_s->0`, the asymptotically autonomous limit is the **E=0 z-coupled vector system** `F'(Q)Q_s=F(Q)-rho Q+S Q`; the scalar z-symmetric dynamics are an invariant subsystem / conditional asymptotic reduction only after z-difference synchronization.
-7. `Q->K*>0` alone does not imply `p_eff->2`; derivative-regular convergence such as `dlog(Q)/dlog(b)->0` is additionally required.
-8. S1+S2+S3 do **not** establish:
-   - scaled-tail upper tightness / precompactness of Q;
-   - Q non-degeneracy;
-   - eventual regular-lower-sector branch selection;
-   - `E_s->0`;
-   - coupled-global synchronization / omega-limit basin entry.
-9. No analytic obstruction/counterexample was established; provisional S3 remains falsifiable working authority and is not promoted/frozen.
-10. DLH-5R finite-window directions are qualitatively compatible with, but do not prove, eventual p=2 realization.
+Boundary tangent conditions to audit/freeze:
 
-## Owner checkpoint after DLH-5S
+```text
+a=0:          mu_a >= 0
+b=b_min:      mu_b >= 0
+a=a_max:      mu_a <= 0
+a+b=W_max:    mu_W=mu_a+mu_b <= 0
+```
 
-No next route is selected yet. A future Owner decision may choose, for example:
+Central same-process law:
 
-- further bounded analytic work on tightness / compactness / coupled basin entry;
-- a separately authorized numerical diagnostic of the remaining scaled-tail conditions without silently enlarging the domain;
-- return to model-defining R/W domain and joint HJB/KFE boundary-law design while preserving the unresolved asymptotic caveat;
-- defer p=2 realization work and hold at the current provisional scientific boundary.
+```text
+controlled process selected by boundary HJB
+        ==
+controlled process represented by KFE generator
+```
 
-Any such route requires new explicit authority. Do **not** create a successor Issue automatically.
+Stationary KFE remains NOT AUTHORIZED in Issue #46.
 
-## Scientific ceiling at this checkpoint
+## Exact Builder allowlist
 
-Until a new Owner route decision and exact successor authority exist, do not:
+Builder may create only:
 
-- mutate accepted household economics/source;
-- reopen b160 or create a larger numerical domain;
-- choose/implement R/W/W1/W2/`W_max`;
-- invent endpoint/state-domain laws;
-- run stationary KFE/nullspace/pin/density/tail mass/aggregates;
-- enter regional GE / multi-province execution;
-- train neural networks;
-- enter nominal HANK, calibration, policy, welfare, or Results.
+1. `docs/design/DLH_5T_FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_BOUNDARY_CONTRACT.md`
+2. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_AUTHORITY_AND_EVIDENCE_FREEZE.md`
+3. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_W_DOMAIN_AND_W1_REPRESENTATION.md`
+4. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_HJB_KKT_BOUNDARY_LAWS.md`
+5. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_SAME_PROCESS_KFE_GENERATOR_CONTRACT.md`
+6. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_WMAX_ADEQUACY_PROTOCOL.md`
+7. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_IMPLEMENTATION_READINESS_AND_TERMINAL.md`
+8. `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/DLH_5T_FORBIDDEN_OPERATION_CHECK.md`
+
+No existing tracked file may be modified by Builder.
+
+## Scientific ceiling
+
+Issue #46 is design-only. No household-source mutation; no HJB/KFE/grid execution; no numerical `W_max`; no b160 reopening; no W1 implementation; no stationary density/aggregates; no two-region GE; no multi-province execution; no neural training; no nominal HANK/calibration/policy/welfare/Results; no PR/merge/close/successor/self-accept.
 
 Current Startup Snapshot:
 
