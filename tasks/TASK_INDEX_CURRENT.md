@@ -1,16 +1,20 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5S_SCALED_TAIL_P2_REALIZATION`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5S_ACCEPTED__OWNER_ROUTE_DECISION_REQUIRED`
 
-Last synchronized: 2026-09-02
+Last synchronized: 2026-09-03
 
 Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**NONE.**
 
-**Issue #45 — OPEN**
+Issue #45 / DLH-5S is accepted and CLOSED completed. DSH must remain stopped until the Owner selects a next scientific route and a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #45 / DLH-5S
 
 Title:
 
@@ -20,108 +24,105 @@ Task type:
 
 `SCIENTIFIC_THEORY_ANALYSIS__PROVISIONAL_S3_PREASYMPTOTIC_DYNAMICS_AND_P2_REALIZATION`
 
-Dedicated branch:
-
-`dsh/issue-45-dlh-5s-scaled-tail-p2-realization-2026-09-02`
-
-Issue #45 becomes the sole DSH Builder authority only after an authoritative activation comment is posted and CURRENT Task Index / Startup identity matches. If Issue #45 is not OPEN, activation is absent, or Issue / Task Index / Startup identity differs, DSH must fail closed.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #44 / DLH-5R
-
 Accepted candidate:
 
-`6b79b7b1ff388174b5460a32de547a25ecb8a097`
+`160781a89c6e22b5f17b4259500893140fcb9c01`
 
 Reviewer acceptance comment:
 
-`5510368753`
+`5519142363`
 
 Acceptance integration commit:
 
-`96f0adb855233da06e96b71c6d8b6fe6aa540fc7`
+`75bedf6e3bb97d024dc8af3afa30f7398f205846`
 
-Accepted verdict:
+Acceptance level:
 
-`DLH_5R_REV2_ACCEPTED__OUTCOME_C_CONFIRMED__S3_DERIVATIVE_CONTROL_NUMERICALLY_COMPATIBLE_ON_ACCESSIBLE_RANGE__P2_ASYMPTOTIC_REALIZATION_NOT_REACHED__FINITE_TRUNCATION_ASYMPTOTIC_REACH_REMAINS`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_THEORY_ANALYSIS_ACCEPTED`
+
+Accepted reviewer verdict:
+
+`DLH_5S_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__SCALED_TAIL_STRUCTURE_ACCEPTED__P2_REALIZATION_REMAINS_OPEN`
 
 Accepted terminal:
 
-`DLH_5R_HJB_TAIL_NUMERICAL_FALSIFICATION_INCONCLUSIVE__BOUNDARY_RESOLUTION_OR_SEMANTIC_SENSITIVITY_REMAINS`
+`DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
 
-## Owner decision after DLH-5R
+## Accepted DLH-5S scientific state
 
-Owner selected R-C1:
+Accepted household source remains immutable/read-only:
 
-`APPROVE_R_C1_BOUNDED_ANALYTIC_ASYMPTOTIC_REALIZATION_CLOSURE__NO_NUMERICAL_DOMAIN_EXPANSION`
+`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-Owner-decision comment on Issue #44:
+Git blob:
 
-`5510675566`
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Scientific meaning:
-
-- analyze the long finite-window pre-asymptotic transition using the accepted continuous first-order regime-switching HJB;
-- derive scaled-tail dynamics under provisional S3;
-- identify whether p=2 is an attracting reduced/coupled fixed point and what non-circular assumptions are still needed for actual realization;
-- do not reopen the b160 hard ceiling and do not run any new HJB/grid experiment;
-- no endpoint law, R/W choice, production-domain implementation, or stationary KFE.
-
-## Controlling accepted interpretation entering DLH-5S
-
-1. Provisional S3 remains a falsifiable working class: primary `R=V_a/V_b=O(1)`; S2 `V_inf=0` remains provisional selection content.
-2. DLH-5Q found p=2 to be the unique self-consistent formal balance among correctly analyzed power/explicit-slow families, but broader exotic/non-power regimes, existence/comparison, actual realization, coefficient convergence and endpoint authority remain open.
-3. DLH-5R found accessible-range numerical compatibility with S3 derivative control (`|R|=O(1)`, `|R|/sqrt(b)` and `chi/b` decline) and no critical `R~sqrt(b)` signature.
-4. DLH-5R did not reach p=2 scaling and did not establish a stable non-p2 asymptotic falsification. The remaining numerical limitation is asymptotic reach at b160.
-5. Current route is theory-only. Finite-window trends may motivate but cannot prove p=2.
-
-## Exact DLH-5S theory target
-
-Introduce and audit scaled variables such as:
+Binding Issue #27 law remains:
 
 ```text
-H=-bV
-Q=b^2 V_b
-s=log b
+HJB boundary policy <=> KFE boundary transition law
 ```
 
-and exact identities including, where regularity permits:
+Stationary KFE remains **NOT AUTHORIZED**.
 
-```text
-dH/ds = H-Q
-c/b = Q^(-1/2)
-p_eff = 2 - dlog(Q)/dlog(b)
-```
+Accepted DLH-5S theory-analysis content:
 
-Derive the exact scaled HJB decomposition and analyze the scalar reduced comparison system and the two-state z-coupled perturbation. Determine whether the p=2 candidate `H=Q=K*=4/(rho+r_b)^2` is attracting on a relevant branch, and identify the sharpest non-circular missing assumption if S1+S2+S3 alone do not force realization.
+1. Exact scaled variables and identities:
+   - `H=-bV`
+   - `Q=b^2 V_b`
+   - `H_s=H-Q`
+   - `c/b=Q^(-1/2)`
+   - `p_eff=2-dlog(Q)/dlog(b)` where regular.
+2. Exact scaled HJB:
+   - `(rho I-S)H=F(Q)+E`
+   - `F(Q)=2sqrt(Q)-r_b Q`.
+3. Exact vector Q-flow:
+   - `F'(Q)Q_s=F(Q)-rho Q+S Q+E-E_s`.
+4. Reduced `E=0`, z-symmetric scalar system has the positive fixed point
+   - `K*=4/(rho+r_b)^2=3265.3061224489797`,
+   - on the reduced regular lower sector,
+   - with local homogeneous mean eigenvalue `-7` near `K*`.
+5. The local homogeneous z-difference eigenvalue near the candidate is about `-273.67`; this is not a generic full-HJB convergence rate.
+6. If `E->0` and `E_s->0`, the asymptotically autonomous limit is the **E=0 z-coupled vector system** `F'(Q)Q_s=F(Q)-rho Q+S Q`; the scalar z-symmetric dynamics are an invariant subsystem / conditional asymptotic reduction only after z-difference synchronization.
+7. `Q->K*>0` alone does not imply `p_eff->2`; derivative-regular convergence such as `dlog(Q)/dlog(b)->0` is additionally required.
+8. S1+S2+S3 do **not** establish:
+   - scaled-tail upper tightness / precompactness of Q;
+   - Q non-degeneracy;
+   - eventual regular-lower-sector branch selection;
+   - `E_s->0`;
+   - coupled-global synchronization / omega-limit basin entry.
+9. No analytic obstruction/counterexample was established; provisional S3 remains falsifiable working authority and is not promoted/frozen.
+10. DLH-5R finite-window directions are qualitatively compatible with, but do not prove, eventual p=2 realization.
 
-## Exact Builder allowlist
+## Owner checkpoint after DLH-5S
 
-Builder may create only:
+No next route is selected yet. A future Owner decision may choose, for example:
 
-1. `docs/theory/DLH_5S_SCALED_TAIL_DYNAMICS_AND_P2_REALIZATION.md`
-2. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_AUTHORITY_FREEZE.md`
-3. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_SCALED_VARIABLE_IDENTITIES.md`
-4. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_SCALAR_REDUCED_DYNAMICS.md`
-5. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_Z_MODE_STABILITY.md`
-6. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_REMAINDER_BOOTSTRAP_AND_ASYMPTOTIC_AUTONOMY.md`
-7. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_PREASYMPTOTIC_INTERPRETATION.md`
-8. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_THEOREM_STATUS_MATRIX_AND_TERMINAL.md`
-9. `reports/dlh_5s_scaled_tail_dynamics_p2_realization_2026_09_02/DLH_5S_FORBIDDEN_OPERATION_CHECK.md`
+- further bounded analytic work on tightness / compactness / coupled basin entry;
+- a separately authorized numerical diagnostic of the remaining scaled-tail conditions without silently enlarging the domain;
+- return to model-defining R/W domain and joint HJB/KFE boundary-law design while preserving the unresolved asymptotic caveat;
+- defer p=2 realization work and hold at the current provisional scientific boundary.
 
-No existing tracked file may be modified by Builder.
+Any such route requires new explicit authority. Do **not** create a successor Issue automatically.
 
-## Scientific ceiling
+## Scientific ceiling at this checkpoint
 
-No accepted-source/economics mutation; no new HJB/grid/resolution execution; no b extent beyond b160; no b_lo/a_max/db changes; no R/W/W1/W2/`W_max`; no endpoint-KKT; no stationary KFE/nullspace/pin/density/aggregates; no regional GE/multi-province audit; no network training; no nominal HANK; no calibration/policy/welfare/Results.
+Until a new Owner route decision and exact successor authority exist, do not:
 
-No PR / merge / close / successor Issue / self-accept from Builder.
+- mutate accepted household economics/source;
+- reopen b160 or create a larger numerical domain;
+- choose/implement R/W/W1/W2/`W_max`;
+- invent endpoint/state-domain laws;
+- run stationary KFE/nullspace/pin/density/tail mass/aggregates;
+- enter regional GE / multi-province execution;
+- train neural networks;
+- enter nominal HANK, calibration, policy, welfare, or Results.
 
-## Current route authority
+Current Startup Snapshot:
 
-- Issue #45 full body + authoritative activation comment = exact Builder authority once activation is posted.
-- Owner route decision: Issue #44 comment `5510675566`.
-- Latest accepted numerical evidence: Issue #44 / DLH-5R.
-- Startup Snapshot: `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`.
-- Roadmap: `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`.
+`docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+
+Current Master Roadmap:
+
+`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
