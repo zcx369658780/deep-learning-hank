@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.24  
+**Version:** V0.25  
 **Date:** 2026-09-03  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-APPROVED ROUTE F — DLH-5U W1 FACE-ADAPTED FINITE-VOLUME SAME-PROCESS DESIGN ACTIVE
+**Status:** CURRENT POST-DLH-5U CHECKPOINT — ROUTE F FRAMEWORK ACCEPTED / TANGENTIAL VORONOI PROCESS REMAINS OPEN
 
 ---
 
@@ -16,7 +16,7 @@ The first learned object remains the regional labor/spatial rule `W^L`; capital-
 
 ---
 
-## 1. Accepted household foundation through DLH-5T
+## 1. Accepted household foundation through DLH-5U
 
 Accepted MATLAB-faithful household source:
 
@@ -32,41 +32,15 @@ Binding Issue #27 law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED** until one discrete finite controlled household process is selected, implemented and validated.
+Stationary KFE remains **NOT AUTHORIZED** until one discrete finite controlled household process is fully selected, implemented and validated.
 
 The accepted DLH-5O–5S asymptotic work remains conditional guidance only: the reduced p=2 attractor structure is accepted, but full-HJB p=2 realization remains unproved. Route D/F preserves that caveat rather than treating it as theorem closure.
 
 ---
 
-## 2. Accepted DLH-5T / Issue #46
+## 2. Accepted finite-domain authority from DLH-5T
 
-Issue #46 is CLOSED completed.
-
-Accepted candidate:
-
-`fa9d886ea932c2c9001b86228200a162fb1990cd`
-
-Reviewer acceptance comment:
-
-`5519690088`
-
-Acceptance integration:
-
-`73efb8b00b6b4884fc966f159b3aa8401cd3df41`
-
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
-
-Accepted verdict:
-
-`DLH_5T_ACCEPTED__OUTCOME_B_CONFIRMED__W_DOMAIN_AND_CONTINUOUS_SAME_PROCESS_BOUNDARY_CONTRACT_ACCEPTED__W1_TANGENTIAL_DISCRETE_PROCESS_MATCHING_REMAINS_OPEN`
-
-Accepted terminal:
-
-`DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
-
-### 2.1 Accepted finite production-domain family
+Finite numerical production-domain family:
 
 ```text
 D_W(W_max) = {
@@ -80,11 +54,11 @@ Interpretation:
 
 - `a>=0` is the structural non-negativity boundary;
 - `b>=b_min` is the economic liquid borrowing floor;
-- `a<=a_max` retains the accepted illiquid-support/taper anchor and requires a boundary state-constraint law;
-- `a+b<=W_max` is a numerical production-domain truncation, not a household primitive or calibrated wealth ceiling;
-- no numerical production `W_max` is selected.
+- `a<=a_max` retains the accepted illiquid-support/taper anchor;
+- `a+b<=W_max` is numerical truncation, not a household primitive or calibrated wealth ceiling;
+- no numerical production `W_max` is selected yet.
 
-### 2.2 Accepted continuous boundary process
+Accepted continuous tangent-cone laws:
 
 ```text
 a=0:          mu_a >= 0
@@ -93,9 +67,9 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-At all feasible intersections, active inequalities apply jointly. Boundary controls must be selected from the constrained Hamiltonian/KKT problem itself; unconstrained-policy-then-clip is not accepted.
+Boundary controls must come from the constrained household problem itself; unconstrained-policy-then-clip is not accepted.
 
-### 2.3 Accepted same-process law
+Accepted same-process law:
 
 ```text
 controlled process selected by boundary HJB
@@ -103,145 +77,172 @@ controlled process selected by boundary HJB
 controlled process represented by KFE generator
 ```
 
-Future discrete generator requirements:
-
-- every represented transition corresponds to the HJB-admitted discrete process;
-- no KFE-only clipping of HJB-selected boundary policy;
-- diagonal = negative sum of actually admitted represented off-diagonal rates;
-- no omitted masked destination can leave a retained diagonal exit rate;
-- row conservation and non-negative off-diagonals are mandatory;
-- contamination/pin is downstream normalization only and cannot repair boundary economics.
-
-### 2.4 Accepted `W_max` adequacy method
-
-Production-domain extent will be selected later from pre-registered nested candidates using staged HJB shared-interior stability, boundary influence localization, future stationary-tail influence, aggregate stability `C,L,A,B`, and downstream GE stability. The eventual production cap is the smallest candidate satisfying all applicable accepted gates.
+Contamination remains downstream normalization only.
 
 ---
 
-## 3. DLH-5T unresolved discrete object
+## 3. Accepted DLH-5U / Issue #47
 
-W1 keeps native `(a,b)` coordinates and masks states with `a+b>W_max`. This preserves the borrowing floor as a coordinate-aligned economic boundary and keeps the accepted a-based taper native.
+Issue #47 is CLOSED completed.
 
-At the slanted W frontier the continuous constrained HJB may admit portfolio-reallocation drift:
+Accepted Rev-1 candidate:
+
+`81bf9b46f20e6dd96514bb6fad698097c917a948`
+
+Reviewer acceptance comment:
+
+`5521379228`
+
+Acceptance integration:
+
+`060c2835825f9efff4f89c84646f04cab6a9c8a4`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
+
+Accepted verdict:
+
+`DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
+
+Accepted terminal:
+
+`DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED`
+
+### 3.1 Restricted-Voronoi Route-F geometry accepted
+
+The Rev-0 clipped-base-cell partition claim was rejected and repaired. The accepted Route-F control volumes are restricted Voronoi cells induced only by represented W1 nodes:
 
 ```text
-mu_b > 0
-mu_a < 0
-mu_W = mu_a + mu_b <= 0
+C_s = {x in D_W : ||x-s|| <= ||x-r|| for all represented r}
 ```
 
-Pure axial node-to-node transitions do not uniquely preserve this local process when the `+b` axial destination lies outside the mask. Dropping that component changes the process; retaining its diagonal rate leaks mass; rerouting it distorts asset composition.
+which partition `D_W` a.e. This gives a coherent basis for:
 
-Reviewer clarifications controlling all downstream work:
+- cell measures `omega_s`;
+- shared faces `F_{s,r}`;
+- normals `n_{s,r}`;
+- physical W segments `F_s^W`;
+- adjacency;
+- nonuniform mass matrix `M=diag(omega_s)`.
 
-- no positive W-normal flux does not imply every axial component has an in-mask axial neighbor;
-- one-dimensional stationary nullspace is only a future canonical uniqueness target conditional on uniqueness;
-- `a_bar=1e-6` is the adjustment-cost denominator floor, not the state boundary;
-- negative-`b` implementation must preserve the accepted effective liquid return / borrowing-rate-gap semantics.
+The physical W face is the actual intersection with `a+b=W_max`, not the masked-node staircase.
 
----
+### 3.2 Discrete household control object accepted
 
-## 4. Owner Route-F decision after DLH-5T
-
-Owner selected:
-
-`APPROVE_ROUTE_F_W1_FACE_ADAPTED_FINITE_VOLUME_OBLIQUE_FLUX_DESIGN`
-
-Scientific rationale:
-
-- keep native household coordinates `(a,b,z)`;
-- keep the economic borrowing floor `b=b_min` coordinate-aligned;
-- keep the difficult oblique geometry on the artificial high-wealth W boundary;
-- resolve W1 process matching through a conservative face-adapted finite-volume / oblique-flux construction rather than moving the slanted geometry to the borrowing floor;
-- remain design/specification-first before any implementation or HJB/KFE execution.
-
-W1 tangent/corner transport and W2 transformed `(a,W)` remain fallback comparison routes only, not active authority.
-
----
-
-## 5. Immediate active gate — DLH-5U / Issue #47
-
-### Name
-
-**W1 Face-Adapted Finite-Volume / Oblique-Flux Same-Process Discretization**
-
-Task type:
-
-`SCIENTIFIC_DESIGN__W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION`
-
-Dedicated branch:
-
-`dsh/issue-47-dlh-5u-w1-face-adapted-fv-design-2026-09-03`
-
-DLH-5U is **design-only**. It does not authorize implementation or numerical execution.
-
-### 5.1 Primary geometric object
-
-Route F audits control volumes clipped by the physical W-domain:
+The exact discrete Hamiltonian is control-dependent:
 
 ```text
-C_s = C_s^base ∩ D_W(W_max)
+H_h(c,l,d)
+  = u(c) - v(l)
+  + sum_r q_{s->r}(c,l,d)[V_r-V_s]
+  + switch.
 ```
 
-with explicit cell measures, actual shared faces, normals, physical W-face segments and adjacency. The physical slanted W face must be distinguished from the staircase of masked nodes.
+Controls maximize this discrete Hamiltonian subject to the active cell tangent constraints. Continuous DLH-5T effective-gradient FOCs remain consistency/refinement targets unless discrete equivalence is separately proved.
 
-### 5.2 Boundary-control location
+### 3.3 Face-flux / CTMC framework accepted in the framework sense
 
-DLH-5U must determine where the constrained HJB control/Hamiltonian lives in a cut-cell representation and give a clear refinement interpretation. It may not impose a W-face KKT condition on a strictly interior physical state without a consistency argument.
-
-### 5.3 Face-flux / CTMC generator
-
-The primary candidate is a monotone conservative source-to-neighbor face-flux generator:
+Primary rate form:
 
 ```text
-Q[s,r] = q_{s->r} >= 0, s != r
-Q[s,s] = -sum_{r != s} q_{s->r}
+q_{s->r}
+  = |F_{s,r}| * max(mu_s·n_{s,r},0) / omega_s,
+
+Q[s,s] = -sum_{r!=s} q_{s->r}.
 ```
 
-with rates derived from HJB-admitted drift and actual shared control-volume faces. Physical W-boundary outward flux is excluded by the accepted KKT condition itself, not by KFE clipping.
+Accepted framework properties:
 
-The same `Q` must define backward HJB action and forward probability-mass dynamics.
+- nonnegative off-diagonals;
+- exact row-sum conservation by construction;
+- physical W-normal outward flux excluded by the HJB/KKT constraint itself;
+- no omitted destination with retained diagonal exit rate;
+- one `Q` for backward HJB action and forward mass dynamics.
 
-### 5.4 Central tangential-reallocation test
+This is not yet accepted as a fully consistent W-frontier tangential process.
 
-For local admissible drift `mu_b>0, mu_a<0, mu_W<=0`, the design must show symbolically how face fluxes transport the process along/inward from the physical W frontier while preserving both asset coordinates, conservation and monotonicity. Outcome A is forbidden if this local process cannot be represented consistently.
+### 3.4 Weighted forward / density semantics accepted
 
-### 5.5 Mass vs density / weighted adjoint
-
-Because clipped control volumes have nonuniform measures, DLH-5U must distinguish:
+Natural forward variable is probability mass:
 
 ```text
-p_s = probability mass,
+p_dot = Q^T p,
+stationary: Q^T p = 0,
+sum_s p_s = 1.
+```
+
+For density `g` with nonuniform Voronoi weights:
+
+```text
+p = M g,
 M = diag(omega_s),
-p = M g.
+M^{-1} Q^T M g = 0.
 ```
 
-It must derive the correct forward/stationary equation for the chosen variable, normalization, economic aggregation weights, original-equation residual, and downstream contamination compatibility. Uniform-grid shorthand must not be silently reused if cut-cell weights differ.
-
-### 5.6 Sliver/small-cell and refinement consistency
-
-The gate must audit:
-
-- nonnegative rates / Markov monotonicity;
-- row-sum conservation;
-- first-order/local moment consistency;
-- physical W-boundary normal consistency;
-- tangential asset-composition consistency;
-- small-cut-cell/sliver rates and conditioning;
-- whether deterministic agglomeration, future geometric admissibility, or another bounded remedy is required;
-- no PASS-seeking numerical W alignment.
-
-No numerical `W_max` is selected.
+Economic aggregates use mass weights. Under Route F, the downstream MATLAB-style component pin is applied to the mass equation, followed by normalization and validation against the ORIGINAL unmodified `Q^T p` residual.
 
 ---
 
-## 6. Intended sequence after DLH-5U
+## 4. Single bounded unresolved object after DLH-5U
 
-If DLH-5U reaches an implementation-ready design terminal:
+Tangential same-process consistency at the actual restricted-Voronoi W frontier remains unresolved.
+
+The exact sliding benchmark
+
+```text
+mu_a = -u,
+mu_b = +u,
+mu_W = 0
+```
+
+shows that the previously proposed two-step axial cascade has an O(1) spurious normal drift at fixed accepted aspect ratio `da/db=10/7`; the Rev-0 first-order consistency claim is withdrawn. A simple oblique one-step transition on the original rectangular-neighbor cone is not monotone.
+
+This is **not** an impossibility theorem for Route F. The accepted restricted-Voronoi frontier may contain oblique/diagonal Voronoi neighbors that were not part of the failed axial-cascade analysis.
+
+Therefore the next bounded scientific object is:
+
+> characterize the actual restricted-Voronoi frontier neighbor-displacement / face-normal cone and determine whether nonnegative CTMC rates can match the admissible continuous tangential drift moments while preserving conservation and the one-`Q` same-process law.
+
+Reviewer clarifications:
+
+- determine W-face activity from actual `F_s^W = ∂C_s ∩ {a+b=W_max}`; no base-rectangle-crossing iff shortcut;
+- the next analysis must use actual Voronoi adjacency, not assume only axial W1 moves;
+- a sliver policy must be fail-closed unless either a hard pre-registered geometric admissibility rule is used or agglomerated-cell state/control/value semantics are separately frozen.
+
+---
+
+## 5. Recommended next bounded gate
+
+Recommended working name:
+
+**DLH-5V — Restricted-Voronoi W-Frontier Tangential Moment-Cone and Same-Process Transition Design**
+
+Recommended task class:
+
+`SCIENTIFIC_DESIGN__RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_AND_SAME_PROCESS_TRANSITIONS`
+
+Target:
+
+- derive actual local Voronoi frontier adjacency / displacement cones symbolically;
+- determine whether the target tangential drift lies in the nonnegative cone generated by available neighbor displacements/rates;
+- if yes, freeze a monotone conservative rate construction and its refinement statement;
+- if no, establish the precise obstruction and return to Owner for Route-F vs W1-TC/W2 choice;
+- resolve the sliver policy only insofar as required for a coherent local transition geometry;
+- remain design-only: no source implementation, no HJB/KFE execution, no numerical `W_max`.
+
+No successor Issue is active at this roadmap snapshot.
+
+---
+
+## 6. Intended sequence after tangential discrete-process closure
+
+If the next bounded gate resolves the W-frontier tangential process to implementation-ready level:
 
 ```text
 accepted DLH-5T continuous W-domain / KKT / same-process authority
--> DLH-5U face-adapted finite-volume discrete-process design
+-> accepted DLH-5U Route-F restricted-Voronoi framework
+-> restricted-Voronoi tangential moment/transition closure
 -> separate boundary-HJB / Route-F implementation authority
 -> KKT/complementarity + discrete-generator validation
 -> nested Wmax / resolution robustness
@@ -293,13 +294,14 @@ Learned `W^L`, later `W^K`, nominal HANK, calibration, policy and welfare remain
 
 ---
 
-## 8. Scientific ceiling during DLH-5U
+## 8. Scientific ceiling at current checkpoint
 
-Do not:
+Until successor authority exists, do not:
 
 - mutate accepted household economics/source;
-- implement Route F or choose numerical `W_max`;
+- implement Route F / Voronoi boundary code;
 - execute HJB/KFE/stationary/grid/domain experiments;
+- choose numerical `W_max`;
 - compute stationary aggregates or rebuild two-region GE;
 - enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare or Results.
 
