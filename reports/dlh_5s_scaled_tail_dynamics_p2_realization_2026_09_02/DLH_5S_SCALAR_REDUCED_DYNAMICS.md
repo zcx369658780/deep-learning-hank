@@ -116,35 +116,47 @@ D(K*)   = 1 - 2*r_b/a_sum = (rho - r_b)/(rho + r_b) = 0.005/0.035 = 1/7
 lambda  = f'(K*) = -1/(1/7) = -7   (in s)
 ```
 
-So `dQ/ds ~ -7 (Q - K*)` near K*: a **stable node with homogeneous eigenvalue
--7 in s**, i.e. for the **unforced** reduced system
-`Q - K* ~ C*exp(-7s) = C*b^(-7)` on the lower branch. This is the *unforced*
-local relaxation rate; it is not promoted to a full-HJB convergence rate
-(Phase C/F treats the forcing). The approach of the unforced reduced system is
-exponential in `s = log b` (extremely fast in `b`).
+So `dQ/ds ~ -7 (Q - K*)` in any sufficiently small neighborhood of K* where
+the linearization is valid: a **stable node with local homogeneous eigenvalue
+-7 in s**, i.e. for the **unforced** reduced system in that neighborhood
+`Q - K* ~ C*exp(-7s) = C*b^(-7)`. This is a *local* (linearized) relaxation
+rate near K* only; it is not promoted to a global trajectory approximation, and
+it is not a full-HJB convergence rate (Phase C/F treats the forcing).
+
+**Rev 3 (review `5518243412`):** the `b^(-7)` estimate is **local** — it is the
+eigenvalue of the linearization about K* and holds only where `Q - K*` is
+small. It must **not** be extrapolated to trajectories starting far from K*
+(e.g. `Q=315`). Away from the local neighborhood of K*, the authority is the
+**exact nonlinear reduced flow** `dQ/ds = f(Q)`, whose rigorously established
+content here is sign/qualitative: `Q in (0,K*) => Q_s > 0` (monotone increase),
+`Q in (K*,1/r_b^2) => Q_s < 0`, `Q > 1/r_b^2 => Q_s > 0` (run-away). No
+controlled nonlinear trajectory timing ("by which b is Q essentially K*") is
+derived in this package, and no numerical trajectory calculation is performed.
 
 ## 7. Reduced-system predictions to carry forward
 
-1. **p=2 candidate is a stable lower-branch fixed point** (eigenvalue -7 in s)
-   attracting the whole lower branch `(0, 1/r_b^2)`.
-2. **Q < K\* ⟹ Q increasing** (monotone approach from below) — the exact
+1. **p=2 candidate is a lower-branch fixed point of the exact nonlinear
+   reduced flow** with a **local** homogeneous eigenvalue `-7` in s (near K*).
+   The exact nonlinear flow on `(0, 1/r_b^2)` moves monotonically toward it
+   (sign results of section 5); this is the reduced basin statement.
+2. **Q < K\* ⟹ Q increasing** (exact nonlinear sign result) — the exact
    mechanism behind the DLH-5R direction `Q: 315 -> 485 -> 610 -> 736`.
 3. **c/b = Q^(-1/2)** decreases monotonically as Q grows toward K*
    (`0.0175 = 1/sqrt(K*)` is the target).
 4. **The upper branch is run-away**: without an additional lower-branch
    selection / `Q < 1/r_b^2` bound, the reduced system alone does not guarantee
    the attractor is reached.
-5. **The reduced flow is fast (homogeneous estimate)**: from `Q=315` at
-   `b=20`, the unforced reduced dynamics would give the homogeneous estimate
-   `Q(b) ~ K* + (315-K*)(b/20)^(-7)`, i.e. essentially K* by `b~30`. The
-   observed DLH-5R solution stays far below K* at `b<=56.6`, so on the
+5. **Local vs global (Rev 3):** the homogeneous rate `-7` in s is **local** to
+   a small neighborhood of K*; no controlled trajectory timing ("essentially at
+   K* by some b") is derived away from K*, and none is computed numerically.
+   The observed DLH-5R solution stays far below K* at `b<=56.6`, so on the
    accessible range the **full-system remainder/coupling** (the net forcing
    `S Q + E - E_s` of the exact flow) materially modifies/retards the motion
    toward the reduced attractor; its **net sign is not identified** from the
-   accepted medians alone. The reduced system is the *asymptotic* attractor of
-   the unforced limit system, not a description of the finite-window trajectory
-   (Phase G). The `b^(-7)` estimate is the homogeneous local rate only; a
-   slowly-decaying forcing can dominate the realized rate (Phase C/F).
+   accepted medians alone. The scalar z-symmetric reduced system is an
+   **invariant reduced subsystem** of the `E=0` coupled vector limit (Rev 3);
+   it is not by itself a description of the finite-window trajectory (Phase G),
+   and a slowly-decaying forcing can dominate any realized rate (Phase C/F).
 
 ## 8. Scope caveat
 

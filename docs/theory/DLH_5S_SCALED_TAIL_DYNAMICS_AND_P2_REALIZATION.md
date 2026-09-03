@@ -25,6 +25,22 @@ consequence of level boundedness; (g) "minimality" is withdrawn; (h) the
 terminal is re-selected A -> B (controlling tightness/branch-selection/basin
 remains unproved).
 
+**Rev 3 corrections (review `5518243412`):** (i) the local `b^(-7)` linear
+estimate near K* is **not** extrapolated — the global estimate
+`Q(b) ~ K* + (315-K*)(b/20)^(-7)` from `Q=315` and the derived "essentially at
+K* by b~30" claim are **deleted**; away from the local neighborhood of K* only
+the **exact nonlinear reduced-flow sign/qualitative results** are used (no
+controlled trajectory timing, no numerical trajectory); (ii) `Q -> K*` alone
+does **not** imply `p_eff -> 2` — the exact statement is `Q -> K* > 0` **and**
+`d log Q/d log b -> 0` ⟹ `p_eff -> 2` (derivative regularity / oscillatory-
+exotic behavior preserved as open); (iii) the asymptotically autonomous limit
+under `E -> 0, E_s -> 0` is the **`E=0` z-coupled vector system**
+`F'(Q) Q_s = F(Q) - rho Q + S Q` — the scalar z-symmetric reduced system is an
+**invariant/reduced subsystem**, and an asymptotic reduction only **conditional
+on z-difference synchronization**; the "scalar mean = the limit" identification
+is withdrawn. Terminal **B preserved** (coupled-global synchronization / basin
+entry remains unproved class-B).
+
 ---
 
 ## 1. Controlling authority (verified)
@@ -65,12 +81,14 @@ remains unproved).
    `K* = 4/(rho+r_b)^2 = 3265.3061224489797` (verified, on the reduced lower
    branch; unique positive fixed point in the regular lower sector). The
    candidate `dQ/ds = Q[2-(rho+r_b)sqrt(Q)]/[1-r_b sqrt(Q)]` is **verified
-   exact**. K* is a stable node with **homogeneous** eigenvalue `-7` in s
-   (`b^(-7)` approach for the *unforced* reduced system); reduced basin
-   `(0, 1/r_b^2)`; `Q<K* => Q` increasing; upper branch `Q>1/r_b^2` is run-away.
+   exact**. K* is a stable node with a **local homogeneous** eigenvalue `-7` in
+   s (`b^(-7)` is the *local linearization* near K* only — no global trajectory
+   extrapolation; Rev 3); reduced basin `(0, 1/r_b^2)`; `Q<K* => Q` increasing;
+   upper branch `Q>1/r_b^2` is run-away.
 5. **Phase E — z-modes.** Mean/difference decomposition with `S` spectrum
-   `{0,-2/3}`: **homogeneous** mean eigenvalue `-7`, **homogeneous**
-   z-difference eigenvalue `-273.67` in s (strongly damped), `Delta_H` slaved to
+   `{0,-2/3}`: **homogeneous/local** mean eigenvalue `-7` (near K*),
+   **homogeneous/local** z-difference eigenvalue `-273.67` in s (strongly
+   damped), `Delta_H` slaved to
    `Delta_Q`; coefficient synchronization holds conditionally. These are
    unforced/local relaxation rates — **no generic full-HJB rate is claimed**
    (a slowly-decaying forcing can dominate; forcing-rate options are explicit in
@@ -86,7 +104,10 @@ remains unproved).
    i.e. positive distance below `1/r_b^2`), (iv) `E->0` uniformly (derived from
    (i)+S3+compact-a), (v) `E_s -> 0` uniformly (primitive derivative-remainder
    assumption), (vi) coupled-limit/omega-limit basin entry into the positive
-   p=2 attractor of the `E=0` coupled limit system. Each is classified
+   p=2 attractor of the **`E=0` z-coupled vector limit system**
+   `F'(Q) Q_s = F(Q) - rho Q + S Q` (the scalar z-symmetric reduced system is
+   an invariant subsystem / an asymptotic reduction only conditional on
+   z-difference synchronization; Rev 3). Each is classified
    (A/B/C/D); none is circular; no in-class counterexample (D) was constructed;
    no formal minimality is claimed.
 7. **Phase G — DLH-5R interpretation.** The accepted medians are exactly
@@ -95,11 +116,14 @@ remains unproved).
    reduced lower-branch prediction `Q<K* => Q` increasing. The observed `Q`
    range is **compatible with the reduced lower-sector `Q`-range**. The observed
    trajectory is **qualitatively compatible** with a long pre-asymptotic
-   approach to the p=2 attractor, but the reduced flow is faster than observed —
-   the full-system remainder/coupling materially modifies/retards the motion
-   (**net sign not identified**; no labor-convention explanation). Compatibility
-   is **not** proof.
-8. **Phase H — matrix and terminal.** See below (terminal re-selected A -> B).
+   approach to the p=2 attractor; as a **pointwise** comparison the reduced
+   flow's rate at the observed `Q` (~1.88 at `Q=315`) exceeds the observed
+   `d log Q/d log b` (~1.44) — but **no global trajectory timing is derived**
+   (Rev 3) — and the full-system remainder/coupling materially
+   modifies/retards the motion (**net sign not identified**; no labor-convention
+   explanation). Compatibility is **not** proof.
+8. **Phase H — matrix and terminal.** See below (terminal re-selected A -> B in
+   Rev 2; preserved through Rev 3).
 
 ---
 
@@ -112,8 +136,9 @@ DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMA
 **Selection rationale (pre-registered Outcome B criteria):** (1) the
 reduced/coupled scaled dynamics are useful and correctly derived (exact HJB,
 exact vector Q-flow, candidate `dQ/ds` identity verified as exact, z-mode
-decomposition with verified `S` sign, reduced attractor `K*` with homogeneous
-eigenvalue `-7`, homogeneous z-difference damping `-273.67`); (2) but the
+decomposition with verified `S` sign, reduced attractor `K*` with **local
+homogeneous** eigenvalue `-7` near K*, **local homogeneous** z-difference
+damping `-273.67`); (2) but the
 **controlling unproved object** — scaled-tail tightness of `Q`, non-degeneracy,
 regular-lower-sector branch selection, `E_s -> 0`, and the coupled
 basin-entry/omega-limit condition — remains an **assumption**, not a

@@ -5,6 +5,15 @@ corrects analytic statements inside the same nine allowlist files (labor
 convention, S3-sign, branch classification, net-remainder sign, full-HJB rates,
 "minimality", terminal A -> B). No forbidden operation was performed in Rev 2.
 
+**Rev 3 (review `5518243412`):** documentation/theory correction only inside
+the same nine allowlist files — (i) the local `b^(-7)` estimate near K* is no
+longer extrapolated (the `Q(b) ~ K* + (315-K*)(b/20)^(-7)` and "by b~30"
+claims are deleted); (ii) `Q -> K*` alone no longer implies `p_eff -> 2`
+(requires additionally `d log Q/d log b -> 0`); (iii) the asymptotically
+autonomous limit is stated as the `E=0` z-coupled vector system, with the
+scalar z-symmetric system as an invariant subsystem / conditional reduction.
+Terminal B preserved. No forbidden operation was performed in Rev 3.
+
 DLH-5S is **analytic theory work only**. DSH performed NONE of the following;
 no accepted source, economics, domain, numerical, or governance object was
 modified, and no numerical experiment was run.

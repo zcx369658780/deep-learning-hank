@@ -133,11 +133,19 @@ from `F'(Q)=0` (`Q != 1/r_b^2`) wherever the s-differentiation is legitimate.
 - **Reduced limit (E=0, S=0, z-symmetric):** reduces exactly to the Phase D
   candidate formula
   `dQ/ds = Q[2 - (rho+r_b) sqrt(Q)]/[1 - r_b sqrt(Q)]` — cross-check PASS.
-- **Mean mode at K\*:** `dQ_bar/ds = -7 (Q_bar - K*) + 400 (E_bar - dE_bar/ds)`
-  (Phase E) — the homogeneous eigenvalue with remainder forcing.
-- **Asymptotic autonomy:** if `E -> 0` and `E_s -> 0` uniformly (R1–R3 +
-  primitive derivative-remainder assumption), the system is asymptotically
-  autonomous with limit system the reduced scalar (mean) dynamics.
+- **Mean-mode linearization at K\*:** `dQ_bar/ds = -7 (Q_bar - K*) +
+  400 (E_bar - dE_bar/ds)` (Phase E) — the **local** homogeneous eigenvalue
+  with remainder forcing, valid near the candidate.
+- **Asymptotic autonomy (corrected, Rev 3):** if `E -> 0` and `E_s -> 0`
+  uniformly (R1–R3 + primitive derivative-remainder assumption), the system is
+  asymptotically autonomous with limit system the **E=0 z-coupled vector
+  system** `F'(Q) Q_s = F(Q) - rho Q + S Q` — NOT automatically the scalar
+  mean dynamics, because `F` is nonlinear and mean/difference modes do not
+  decouple in general. The scalar z-symmetric reduced system is exactly (a) an
+  **invariant/reduced subsystem** of that limit (the `Delta_Q = 0` surface is
+  invariant), and (b) an **asymptotic reduction** only **conditional on
+  z-difference synchronization** (`Delta_Q -> 0`), an unproved class-B
+  condition (Phase F).
 - **Net forcing interpretation (corrected).** The realized motion of the full
   system is driven by the **net forcing** `S Q + E - E_s`, not by `E` alone.
   Observed motion slower than the unforced `E=0, S=0` reduced flow therefore
@@ -166,7 +174,7 @@ For each candidate condition, classify: **A** derivable from S1+S2+S3+HJB;
 | 8 | `R=O(1)` uniform | S3 (given); magnitude of E_illiquid, E_transfer | **A** (S3, given) |
 | 9 | `E -> 0` uniformly in magnitude | asymptotic autonomy | **A given 5+8+compact-a** (derived); NOT from S3 alone |
 | 10 | `E_s -> 0` uniformly (derivative-remainder control) | asymptotically autonomous limit | **B** (primitive; or derived from bounded/decaying `R_s`, `d_s`, `chi_s`, `Q_s` — not from levels alone) |
-| 11 | Coupled-limit / omega-limit basin condition: the full trajectory enters and stays in the basin of the positive p=2 fixed point of the `E=0` coupled limit system (regular lower sector on the mean mode × damped difference) | place trajectory in the attractor's basin | **B** (non-circular; replaces the vague "absence of persistent exotic forcing") |
+| 11 | Coupled-limit / omega-limit basin condition: the full trajectory enters and stays in the basin of the positive p=2 fixed point of the **`E=0` z-coupled vector limit system** `F'(Q) Q_s = F(Q)-rho Q+S Q` (regular lower sector, with z-difference synchronization `Delta_Q -> 0`) | place trajectory in the attractor's basin | **B** (non-circular; replaces the vague "absence of persistent exotic forcing") |
 | 12 | `Q -> K*`, `H -> K*`, `V_b ~ K*/b^2`, `c/b -> 0.0175` | conclusion | **C** (circular — must NOT be assumed) |
 | 13 | any in-class S3 counterexample to the attractor picture | falsification | **D** (none constructed; consistent with DLH-5Q) |
 

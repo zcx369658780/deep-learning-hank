@@ -66,8 +66,20 @@ p_eff = - d log(V_b) / d log(b)
 **Exact** (where regular). Consequences:
 
 - `Q` increasing with `d log Q/d log b in (0,2)`  ⟺  `p_eff in (0,2)`;
-- `Q -> K*` constant  ⟹  `p_eff -> 2`;
+- `Q -> K* > 0` **AND** `d log Q/d log b -> 0`  ⟹  `p_eff -> 2` (the exact
+  conditional statement; **level convergence alone does NOT imply** the
+  derivative term vanishes without additional derivative regularity);
 - `Q ~ b^alpha` (power)  ⟹  `p_eff = 2 - alpha`.
+
+**Rev 3 (review `5518243412`):** the previously written implication
+`Q -> K* constant ⟹ p_eff -> 2` is withdrawn. Because `p_eff = 2 -
+d log Q/d log b`, a trajectory could approach the level `K*` while the
+log-slope `d log Q/d log b` oscillates or fails to vanish (derivative
+irregularity / oscillatory-exotic constructions are precisely part of the open
+asymptotic-realization problem). A sufficient, sufficiently-regular convergence
+condition is `Q -> K* > 0` together with `d log Q/d log b -> 0`; any such
+derivative-regularity hypothesis is a class-B open condition, not a consequence
+of the identities.
 
 This identity is how "increasing Q" and "p_eff < 2" coexist: a growing `Q`
 means `d log Q/d log b > 0`, which *lowers* `p_eff` below 2 as long as the

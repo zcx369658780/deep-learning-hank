@@ -60,6 +60,15 @@ so `p_eff ~ 1.16` over the whole window — consistent, all `p_eff < 2`. There i
 no contradiction: a *growing* `Q` is exactly the signature of `p_eff` below 2
 that is *moving toward* 2.
 
+**Rev 3 (review `5518243412`):** the observed rise of `p_eff` toward 2 is an
+**empirical** fact read directly off the reported slopes. As an analytic
+implication, `Q -> K*` alone does **not** imply `p_eff -> 2`; from the exact
+identity one needs `Q -> K* > 0` **and** `d log Q/d log b -> 0` (a
+derivative-regularity condition, class-B/open), or an equivalent sufficiently
+regular convergence — level convergence alone does not control the derivative
+term (oscillatory/exotic constructions are part of the open realization
+problem; see the scaled-variable-identities file).
+
 ## 4. Does the reduced lower branch predict Q < K* => Q increasing? YES (exact)
 
 Phase D: on the reduced lower branch,
@@ -102,18 +111,21 @@ This is the signature of the reduced lower-branch attractor being approached
 
 **Two honest qualifications (do NOT over-read the data):**
 
-1. **The reduced system alone does NOT reproduce the observed rate.** At the
-   observed `Q`, the unforced reduced flow would give
-   `d log Q/d log b = [2 - (rho+r_b)sqrt(Q)]/[1 - r_b sqrt(Q)]`, e.g. ~1.88 at
-   `Q=315`, and would have `Q ~ K*` essentially by `b ~ 30` (homogeneous
-   correction `~ b^(-7)`). The observed solution stays far below `K*` at
-   `b <= 56.6` (`Q=736` at W4) with a slower `d log Q/d log b` (~1.44 -> 1.17).
-   Hence the **full-system remainder/coupling** materially modifies or retards
-   the accessible-range motion; its **net sign is not identified** from the
-   accepted medians alone (the exact flow's net forcing is `S Q + E - E_s`, and
-   `E`'s components do not have an S3-determined sign — Phase C/F). The reduced
-   system is the *asymptotic* attractor of the unforced limit system, not a
-   description of the finite-window trajectory.
+1. **The reduced (z-symmetric, `E=0`) system alone does NOT reproduce the
+   observed rate (Rev 3 — local vs global).** At the observed `Q`, the unforced
+   reduced flow gives `d log Q/d log b = [2 - (rho+r_b)sqrt(Q)]/[1 - r_b
+   sqrt(Q)]`, e.g. ~1.88 at `Q=315`. This is an **exact nonlinear sign/rate**
+   value of the reduced flow at that state; it does **not** license a global
+   trajectory estimate from `Q=315` (the `-7` local eigenvalue near K* is not
+   extrapolated here, and no "essentially at K* by some b" claim is made). The
+   observed solution stays far below `K*` at `b <= 56.6` (`Q=736` at W4) with a
+   slower `d log Q/d log b` (~1.44 -> 1.17). Hence the **full-system
+   remainder/coupling** materially modifies or retards the accessible-range
+   motion; its **net sign is not identified** from the accepted medians alone
+   (the exact flow's net forcing is `S Q + E - E_s`, and `E`'s components do
+   not have an S3-determined sign — Phase C/F). The scalar z-symmetric reduced
+   system is an **invariant reduced subsystem** of the `E=0` z-coupled vector
+   limit (Rev 3), not by itself a description of the finite-window trajectory.
 2. **Labor treatment (corrected):** the accepted finite-grid solver uses the
    **same endogenous labor FOC** as the analytic theory (B/F branches via
    `labor_from_vb`; `baseline_labor` only on the zero-liquid branch and
