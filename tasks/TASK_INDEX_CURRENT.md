@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5U_ACCEPTED__TANGENTIAL_VORONOI_PROCESS_DESIGN_REQUIRED`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5V_RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_DESIGN`
 
 Last synchronized: 2026-09-03
 
@@ -8,21 +8,25 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NONE.**
+Current Issue:
 
-Issue #47 / DLH-5U is accepted and CLOSED completed. DSH must remain stopped until a successor bounded design Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #47 / DLH-5U
+**Issue #48 — OPEN**
 
 Title:
 
-`DLH-5U: Freeze W1 face-adapted finite-volume same-process discretization`
+`DLH-5V: Restricted-Voronoi W-frontier tangential moment-cone and same-process transition design`
 
 Task type:
 
-`SCIENTIFIC_DESIGN__W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION`
+`SCIENTIFIC_DESIGN__RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_AND_SAME_PROCESS_TRANSITIONS`
+
+Dedicated branch:
+
+`dsh/issue-48-dlh-5v-voronoi-tangential-moment-cone-2026-09-03`
+
+Issue #48 becomes the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #47 / DLH-5U
 
 Accepted Rev-1 candidate:
 
@@ -36,11 +40,7 @@ Acceptance integration commit:
 
 `060c2835825f9efff4f89c84646f04cab6a9c8a4`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
-
-Accepted reviewer verdict:
+Accepted verdict:
 
 `DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
 
@@ -48,7 +48,24 @@ Accepted terminal:
 
 `DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED`
 
-## Accepted Route-F scientific state
+## Owner continuation decision
+
+Owner approved:
+
+`APPROVE_DLH_5V_RESTRICTED_VORONOI_TANGENTIAL_MOMENT_CONE_DESIGN`
+
+Scientific meaning:
+
+- retain W1/native `(a,b,z)` and the accepted finite W-domain;
+- retain restricted-Voronoi control volumes induced only by represented W1 nodes;
+- analyze the actual W-frontier Voronoi adjacency / neighbor-displacement cone, including oblique neighbors;
+- determine whether nonnegative CTMC rates can reproduce the accepted tangential reallocation cone and exact sliding benchmark;
+- distinguish strict source-state face-flux consistency from more general boundary-local nonnegative moment matching;
+- preserve one-`Q` HJB/KFE same-process semantics;
+- use fail-closed geometric admissibility for sliver/degenerate phases in this gate;
+- remain design-only: no implementation, solver execution, stationary KFE, or numerical `W_max`.
+
+## Controlling accepted objects
 
 Accepted household source remains immutable/read-only:
 
@@ -58,7 +75,7 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Binding law remains:
+Binding law:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
@@ -66,7 +83,7 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-Accepted finite-domain / continuous authority remains:
+Accepted finite domain / tangent law:
 
 ```text
 D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
@@ -77,44 +94,35 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-`W_max` remains numerical truncation authority only; no production number is selected.
+Accepted restricted-Voronoi cell:
 
-Accepted DLH-5U design objects:
+```text
+C_s = {x in D_W : ||x-s|| <= ||x-r|| for all represented r}
+```
 
-1. restricted-Voronoi control-volume tessellation induced only by represented W1 nodes, partitioning `D_W` a.e.;
-2. node value + cell-level control object, with W KKT only when the actual Voronoi cell has positive physical W-face segment;
-3. exact control-dependent discrete Hamiltonian
-   `H_h = u-v + sum_r q_{s->r}(c,l,d)(V_r-V_s) + switch`;
-4. monotone/conservative face-flux CTMC framework with one `Q` for backward HJB action and forward mass dynamics;
-5. mass/density distinction `p=M g`, stationary mass equation `Q^T p=0`, density equation `M^{-1}Q^T M g=0`;
-6. MATLAB-style Issue #27 component pin preserved downstream on mass `p`, followed by normalization and ORIGINAL `Q^T p` residual validation.
+Actual W-face activity is determined by `F_s^W = partial(C_s) intersect {a+b=W_max}` with positive length.
 
-## Single bounded unresolved object
+## Current DLH-5V target
 
-Tangential same-process consistency at the actual restricted-Voronoi W frontier remains unresolved.
+For every recurring nondegenerate W-frontier phase class under the exact accepted ratio `da/db=10/7`:
 
-The Rev-0 two-step axial cascade is NOT accepted as first-order consistent: for the exact tangent benchmark `mu_a=-u`, `mu_b=+u`, fixed `da/db=10/7`, it produces an O(1) spurious normal drift. The simple oblique one-step candidate is not monotone on the accepted rectangular lattice.
+1. derive actual restricted-Voronoi shared-face neighbors and displacements;
+2. derive the nonnegative displacement/moment cone;
+3. test the full reallocation cone `mu_a<=0, mu_b>=0, mu_a+mu_b<=0` and exact sliding ray `(-u,+u)`;
+4. audit the induced first moment of the accepted source-state face-flux formula;
+5. if needed and geometrically feasible, freeze a boundary-local nonnegative moment-matching rate rule on actual Voronoi neighbors;
+6. otherwise establish the precise recurring-class obstruction;
+7. audit phase-uniform refinement and W-endpoint/joint-boundary compatibility.
 
-The next bounded design must analyze the **actual restricted-Voronoi face-adjacency / neighbor-displacement moment cone**, including oblique Voronoi neighbors. The failed axial candidates are not an impossibility theorem for the true Voronoi graph.
+No numerical `W_max` is selected.
 
-Reviewer clarifications controlling the successor:
+## Exact Builder allowlist
 
-- determine `F_s^W` from the actual restricted-Voronoi cell intersection with `a+b=W_max`; do not use base-rectangle crossing as an iff shortcut;
-- a future sliver rule must either be a pre-registered geometric fail-closed admissibility condition or separately freeze the state/control/value semantics of agglomeration;
-- no implementation is authorized until tangential moment/transition consistency is resolved.
+Issue #48 may create only the nine exact paths named in the Issue body. No existing tracked file may be modified by Builder.
 
 ## Scientific ceiling
 
-Until successor authority exists, do not:
-
-- mutate accepted household economics/source;
-- implement Route F / restricted Voronoi / boundary-HJB / generator code;
-- choose numerical `W_max`;
-- execute HJB/KFE/stationary/grid/domain experiments;
-- run contamination sensitivity;
-- compute stationary aggregates `C,L,A,B`;
-- rebuild two-region GE;
-- enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare or Results.
+Issue #48 is design-only. Do not mutate accepted source; implement Voronoi/rate/HJB/KFE code; run programmatic grid/Voronoi/Delaunay experiments; run HJB/KFE/stationary solves; choose numerical `W_max`; agglomerate cells; run pin sensitivity; compute `C,L,A,B`; rebuild GE; or enter multi-province/neural/nominal/calibration/policy/welfare/Results. No PR/merge/Issue close/successor/self-accept from Builder.
 
 Current Startup Snapshot:
 
