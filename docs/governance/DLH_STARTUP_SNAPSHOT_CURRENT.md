@@ -21,61 +21,43 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5T_ACCEPTED__OWNER_DISCRETE_PROCESS_ROUTE_DECISION_REQUIRED`
 
-**Issue #46 — DLH-5T: Freeze finite production-domain geometry and same-process HJB–KFE boundary contract**
-
-Task type:
-
-`SCIENTIFIC_DESIGN__FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_HJB_KFE_BOUNDARY_CONTRACT`
-
-Dedicated branch:
-
-`dsh/issue-46-dlh-5t-finite-domain-same-process-boundary-2026-09-03`
-
-Builder authority becomes active only while Issue #46 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
+There is **no active Builder Issue**. DSH must remain stopped until the Owner chooses the bounded W-frontier discrete-process route and successor authority is separately published/synchronized/activated.
 
 Current master roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 
-## Latest accepted gate — Issue #45 / DLH-5S
+## Latest accepted gate — Issue #46 / DLH-5T
 
-Issue #45 is CLOSED completed.
+Issue #46 is CLOSED completed.
 
 Accepted candidate:
 
-`160781a89c6e22b5f17b4259500893140fcb9c01`
+`fa9d886ea932c2c9001b86228200a162fb1990cd`
 
 Reviewer acceptance comment:
 
-`5519142363`
+`5519690088`
 
 Acceptance integration commit:
 
-`75bedf6e3bb97d024dc8af3afa30f7398f205846`
+`73efb8b00b6b4884fc966f159b3aa8401cd3df41`
 
 Acceptance level:
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_THEORY_ANALYSIS_ACCEPTED`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5S_REV3_ACCEPTED__OUTCOME_B_CONFIRMED__SCALED_TAIL_STRUCTURE_ACCEPTED__P2_REALIZATION_REMAINS_OPEN`
+`DLH_5T_ACCEPTED__OUTCOME_B_CONFIRMED__W_DOMAIN_AND_CONTINUOUS_SAME_PROCESS_BOUNDARY_CONTRACT_ACCEPTED__W1_TANGENTIAL_DISCRETE_PROCESS_MATCHING_REMAINS_OPEN`
 
 Accepted terminal:
 
-`DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
+`DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
 
-## Owner decision after DLH-5S
-
-Owner selected Route D:
-
-`APPROVE_ROUTE_D_FINITE_PRODUCTION_DOMAIN_AND_JOINT_HJB_KFE_BOUNDARY_DESIGN`
-
-The current gate is therefore finite-domain scientific design, not additional infinite-domain proof and not stationary KFE execution.
-
-## Controlling household / KFE authority
+## Controlling household and KFE authority
 
 Accepted household source remains immutable/read-only:
 
@@ -91,18 +73,13 @@ Issue #27 remains binding:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Contamination/pin-row interpretation remains accepted:
+Stationary KFE remains **NOT AUTHORIZED** until a single finite controlled household process is selected, implemented and validated.
 
-- singularity of a conservative generator is expected;
-- MATLAB-style row contamination is a numerical normalization device in principle;
-- later stationary acceptance still requires the ORIGINAL `Q^T g` residual, normalization and admissibility checks;
-- contamination is not the active redesign target of Issue #46.
+Contamination/pin remains a downstream numerical normalization device only. It is not a boundary repair mechanism. Later stationary acceptance still requires the original unmodified `Q^T g` residual, normalization, non-negativity, recurrent-class/nullspace and admissible-pin diagnostics.
 
-Stationary KFE remains **NOT AUTHORIZED**.
+## Accepted Route-D finite-domain authority
 
-## DLH-5T scientific target
-
-Primary candidate finite production domain:
+Finite numerical domain family:
 
 ```text
 D_W(W_max) = {
@@ -112,13 +89,9 @@ D_W(W_max) = {
 }
 ```
 
-`W_max` is a numerical truncation parameter, not a household primitive. No numerical `W_max` is selected in this Issue.
+`W_max` is a numerical truncation parameter, not a household primitive or calibrated structural wealth ceiling. No numerical `W_max` is frozen.
 
-Primary representation candidate:
-
-`W1 = native (a,b) tensor coordinates with mask a+b<=W_max`.
-
-Boundary conditions to derive/audit/freeze:
+Accepted continuous tangent-cone laws:
 
 ```text
 a=0:          mu_a >= 0
@@ -127,9 +100,9 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_W=mu_a+mu_b <= 0
 ```
 
-All active constraints apply jointly at feasible face intersections.
+At feasible intersections all active conditions apply jointly. Boundary controls are selected by the constrained Hamiltonian/KKT problem itself, never by unconstrained-policy-then-clip.
 
-Central Route-D law:
+Central same-process law:
 
 ```text
 controlled process selected by boundary HJB
@@ -137,56 +110,48 @@ controlled process selected by boundary HJB
 controlled process represented by KFE generator
 ```
 
-The HJB must select boundary controls from the constrained Hamiltonian/KKT problem itself. KFE-only clipping or silent suppression of a materially outward HJB policy is forbidden.
+Future KFE may not silently suppress an HJB-selected tangential or outward component. Generator off-diagonals/diagonal must represent exactly the accepted discrete process.
 
-## Wmax adequacy design scope
+## Open W1 discrete blocker
 
-DLH-5T freezes the later selection protocol, not the number. A successor nested-domain protocol must distinguish:
+The native `(a,b)` masked W1 representation has not been frozen to implementation level. At the slanted W frontier the continuous constrained HJB can admit portfolio-reallocation drift with:
 
-- HJB shared-interior policy stability;
-- artificial-boundary influence localization;
-- future stationary-tail influence;
-- future aggregate stability `C,L,A,B`;
-- future GE/anchor stability.
+```text
+mu_b > 0
+mu_a < 0
+mu_W <= 0
+```
 
-## Exact Builder allowlist
+while the axial `+b` destination can be outside the mask. A coordinate-split axial rule therefore does not uniquely preserve the local controlled process. A bounded follow-up design must choose the W-frontier numerical representation before implementation.
 
-Issue #46 may create only the eight paths frozen in the Issue body:
+Reviewer clarifications:
 
-- one design document under `docs/design/`;
-- seven exact reports under `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/`.
+- “no outward W flux” means no positive continuous **normal** flux; it does not eliminate the axial/tangential mismatch.
+- a one-dimensional stationary nullspace is the future canonical target conditional on uniqueness, not a theorem from conservativity alone.
+- `a_bar=1e-6` is the adjustment-cost denominator floor; the actual state lower face is `a=0`.
+- at negative `b`, preserve the accepted state-dependent effective liquid return / borrowing-rate-gap semantics.
 
-No existing tracked file may be modified by Builder.
+## Bounded Owner route choices
 
-## Scientific ceiling during Issue #46
+1. **W1-FV:** face-adapted finite-volume / oblique-flux design on the artificial W frontier;
+2. **W1-TC:** tangent/corner-transport discrete transitions with explicit grid-spacing consistency analysis;
+3. **W2:** separately evaluate the transformed `(a,W)` representation, recognizing that it moves the oblique geometry to the borrowing floor.
 
-Do not:
+No route is selected automatically.
 
-- mutate accepted household/HJB/KFE/regional source;
-- run HJB, KFE, stationary density or grid/domain experiments;
-- choose a numerical `W_max`;
-- reopen b160 or alter grid/taper/economic primitives;
-- implement W1 masking/KKT boundary controls/conservative generator;
-- run contamination sensitivity;
+## Scientific ceiling
+
+Until new Owner authority exists, do not:
+
+- mutate accepted household economics;
+- implement W1/W2 or select numerical `W_max`;
+- run a new boundary-HJB/KFE/stationary process;
 - compute stationary aggregates;
-- rebuild two-region GE;
-- run multi-province execution or neural training;
-- enter nominal HANK, calibration, policy, welfare or Results;
-- PR / merge / Issue close / successor Issue / self-accept from Builder.
+- rebuild the two-region anchor;
+- enter multi-province execution, learned regional networks, nominal HANK, calibration, policy, welfare or Results.
 
-## DSH startup sequence
+## New-chat startup
 
-1. `Set-Location D:\deep-learning-hank`;
-2. verify repository / remote / worktree / staging;
-3. `git fetch origin` and record fresh `origin/main`;
-4. read all CURRENT project rules;
-5. read CURRENT Task Index, this Startup Snapshot and Roadmap;
-6. read full Issue #46 and ALL comments, including authoritative activation;
-7. read Issue #45 acceptance and accepted DLH-5M / Issue #27 / DLH-5E design-evidence as required;
-8. verify Issue / Task Index / Startup identity exactly;
-9. create the exact dedicated branch from fresh synchronized main;
-10. create only the eight Issue #46 allowlist files;
-11. perform design-only work — no solver/grid execution;
-12. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
+A new session must fresh-fetch `main`, read all CURRENT rules, Task Index, this snapshot and the Roadmap, verify Issue #46 acceptance comment `5519690088` and integration `73efb8b00b6b4884fc966f159b3aa8401cd3df41`, and obtain the Owner's bounded discrete-process route decision before publishing a successor Issue.
 
 Chat text is not Builder authority.
