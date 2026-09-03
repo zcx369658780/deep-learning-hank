@@ -21,9 +21,19 @@ Priority:
 
 ## Current Builder state
 
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5S_ACCEPTED__OWNER_ROUTE_DECISION_REQUIRED`
+Current published task:
 
-There is **no active Builder Issue**. DSH must remain stopped until the Owner selects a next route and a successor Issue is separately published, Task Index / Startup are synchronized, and an authoritative activation comment is posted.
+**Issue #46 — DLH-5T: Freeze finite production-domain geometry and same-process HJB–KFE boundary contract**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__FINITE_PRODUCTION_DOMAIN_AND_SAME_PROCESS_HJB_KFE_BOUNDARY_CONTRACT`
+
+Dedicated branch:
+
+`dsh/issue-46-dlh-5t-finite-domain-same-process-boundary-2026-09-03`
+
+Builder authority becomes active only while Issue #46 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
 
 Current master roadmap:
 
@@ -57,7 +67,15 @@ Accepted terminal:
 
 `DLH_5S_P2_REALIZATION_NOT_CLOSED__SCALED_TAIL_TIGHTNESS_OR_BRANCH_SELECTION_REMAINS_UNPROVED__OWNER_ROUTE_DECISION_REQUIRED`
 
-## Controlling household and KFE authority
+## Owner decision after DLH-5S
+
+Owner selected Route D:
+
+`APPROVE_ROUTE_D_FINITE_PRODUCTION_DOMAIN_AND_JOINT_HJB_KFE_BOUNDARY_DESIGN`
+
+The current gate is therefore finite-domain scientific design, not additional infinite-domain proof and not stationary KFE execution.
+
+## Controlling household / KFE authority
 
 Accepted household source remains immutable/read-only:
 
@@ -73,76 +91,102 @@ Issue #27 remains binding:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED**. R/W domain designs remain unfrozen; `W=a+b` is only an accounting coordinate and no `W_max` is authorized.
+Contamination/pin-row interpretation remains accepted:
 
-## Accepted DLH-5S scientific state
+- singularity of a conservative generator is expected;
+- MATLAB-style row contamination is a numerical normalization device in principle;
+- later stationary acceptance still requires the ORIGINAL `Q^T g` residual, normalization and admissibility checks;
+- contamination is not the active redesign target of Issue #46.
 
-Provisional analytic class remains S1 + provisional S2 + primary S3 `R=V_a/V_b=O(1)` on compact interior-a support, with no sign restriction on R. S3 remains falsifiable and is not promoted/frozen.
+Stationary KFE remains **NOT AUTHORIZED**.
 
-Accepted exact structure:
+## DLH-5T scientific target
+
+Primary candidate finite production domain:
 
 ```text
-H=-bV
-Q=b^2 V_b
-H_s=H-Q
-c/b=Q^(-1/2)
-p_eff=2-dlog(Q)/dlog(b)
-
-(rho I-S)H=F(Q)+E
-F(Q)=2sqrt(Q)-r_b Q
-F'(Q)Q_s=F(Q)-rho Q+S Q+E-E_s
+D_W(W_max) = {
+  0 <= a <= a_max,
+  b >= b_min,
+  a+b <= W_max
+}
 ```
 
-Reduced `E=0`, z-symmetric dynamics have the positive fixed point
+`W_max` is a numerical truncation parameter, not a household primitive. No numerical `W_max` is selected in this Issue.
 
-`K*=4/(rho+r_b)^2=3265.3061224489797`
+Primary representation candidate:
 
-in the regular lower sector. The mean eigenvalue `-7` and z-difference eigenvalue about `-273.67` are **local homogeneous** eigenvalues near the candidate only, not generic full-HJB convergence rates.
+`W1 = native (a,b) tensor coordinates with mask a+b<=W_max`.
 
-If `E->0` and `E_s->0`, the asymptotic limit is the **E=0 z-coupled vector system**
+Boundary conditions to derive/audit/freeze:
 
-`F'(Q)Q_s=F(Q)-rho Q+S Q`.
+```text
+a=0:          mu_a >= 0
+b=b_min:      mu_b >= 0
+a=a_max:      mu_a <= 0
+a+b=W_max:    mu_W=mu_a+mu_b <= 0
+```
 
-The scalar z-symmetric system is an invariant subsystem and is an asymptotic reduction only conditional on z-difference synchronization.
+All active constraints apply jointly at feasible face intersections.
 
-`Q->K*>0` alone does not imply `p_eff->2`; derivative-regular convergence such as `dlog(Q)/dlog(b)->0` is additionally required.
+Central Route-D law:
 
-S1+S2+S3 do **not** establish:
+```text
+controlled process selected by boundary HJB
+        ==
+controlled process represented by KFE generator
+```
 
-- Q upper tightness / precompactness;
-- Q non-degeneracy;
-- eventual regular-lower-sector selection;
-- `E_s->0`;
-- coupled-global synchronization / omega-limit basin entry.
+The HJB must select boundary controls from the constrained Hamiltonian/KKT problem itself. KFE-only clipping or silent suppression of a materially outward HJB policy is forbidden.
 
-No analytic obstruction/counterexample was established. DLH-5R finite-window evidence is qualitatively compatible with the reduced p=2 attractor direction but is not proof of actual realization.
+## Wmax adequacy design scope
 
-## Owner checkpoint
+DLH-5T freezes the later selection protocol, not the number. A successor nested-domain protocol must distinguish:
 
-No successor Issue has been created automatically. Scientifically defensible route families are:
+- HJB shared-interior policy stability;
+- artificial-boundary influence localization;
+- future stationary-tail influence;
+- future aggregate stability `C,L,A,B`;
+- future GE/anchor stability.
 
-1. further bounded analytic work on tightness / derivative regularity / coupled basin entry;
-2. a separately authorized bounded numerical diagnostic of the remaining scaled-tail conditions;
-3. return to model-defining R/W/domain and joint HJB/KFE boundary-law design while retaining the unresolved p=2 caveat;
-4. defer p=2 closure and hold at the current provisional boundary.
+## Exact Builder allowlist
 
-Owner must select the route before new Builder authority is published.
+Issue #46 may create only the eight paths frozen in the Issue body:
 
-## Scientific ceiling
+- one design document under `docs/design/`;
+- seven exact reports under `reports/dlh_5t_finite_production_domain_same_process_boundary_2026_09_03/`.
 
-Until new Owner authority exists, do not:
+No existing tracked file may be modified by Builder.
 
-- mutate accepted household economics;
-- reopen b160 or enlarge/change the numerical domain;
-- choose/implement R/W/W1/W2/`W_max`;
-- invent endpoint laws;
-- run stationary KFE/nullspace/pin/density/tail mass/aggregates;
-- enter regional GE / multi-province execution;
-- train neural networks;
-- enter nominal HANK, calibration, policy, welfare, or Results.
+## Scientific ceiling during Issue #46
 
-## New-chat startup
+Do not:
 
-A new ChatGPT session must fresh-fetch `main`, read all CURRENT rules, Task Index, this snapshot and the Master Roadmap, verify there is no active Builder Issue, read Issue #45 acceptance comment `5519142363` when relevant, and obtain the Owner's next scientific route decision before publishing a successor Issue.
+- mutate accepted household/HJB/KFE/regional source;
+- run HJB, KFE, stationary density or grid/domain experiments;
+- choose a numerical `W_max`;
+- reopen b160 or alter grid/taper/economic primitives;
+- implement W1 masking/KKT boundary controls/conservative generator;
+- run contamination sensitivity;
+- compute stationary aggregates;
+- rebuild two-region GE;
+- run multi-province execution or neural training;
+- enter nominal HANK, calibration, policy, welfare or Results;
+- PR / merge / Issue close / successor Issue / self-accept from Builder.
+
+## DSH startup sequence
+
+1. `Set-Location D:\deep-learning-hank`;
+2. verify repository / remote / worktree / staging;
+3. `git fetch origin` and record fresh `origin/main`;
+4. read all CURRENT project rules;
+5. read CURRENT Task Index, this Startup Snapshot and Roadmap;
+6. read full Issue #46 and ALL comments, including authoritative activation;
+7. read Issue #45 acceptance and accepted DLH-5M / Issue #27 / DLH-5E design-evidence as required;
+8. verify Issue / Task Index / Startup identity exactly;
+9. create the exact dedicated branch from fresh synchronized main;
+10. create only the eight Issue #46 allowlist files;
+11. perform design-only work — no solver/grid execution;
+12. explicit-stage only allowlist paths, commit/push, and STOP for fresh ChatGPT review.
 
 Chat text is not Builder authority.
