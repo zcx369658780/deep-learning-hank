@@ -44,10 +44,18 @@ operation was NOT performed during this gate. All checks are `NOT PERFORMED`.
 - Dedicated branch only; `origin/main` untouched; fresh baseline `9ba4a53…` recorded.
 - No `git push` to `origin/main`; only the dedicated branch is pushed after commit.
 
-## 5. Terminal
+## 5. Rev 1 (bounded revision, DOCUMENTATION / ANALYTIC CORRECTION ONLY)
+
+All prohibited operations of Sections 1–3 remain NOT PERFORMED in Rev 1. Rev 1 only
+re-writes the nine allowlist paths (same paths, same branch, parent = Rev-0 candidate
+`69e9b33…`). Analytical correction only: restricted-Voronoi tessellation, tangent
+benchmark derivation, discrete-Hamiltonian control law, and MATLAB-style component
+pin — no numerical execution of any kind.
+
+## 6. Terminal
 
 The gate stops for fresh ChatGPT review after commit + push of the nine allowlist
-paths, with the frozen Outcome-B terminal:
+paths (Rev 1 on the same dedicated branch), with the frozen Outcome-B terminal:
 
 ```text
 DLH_5U_ROUTE_F_SCIENTIFICALLY_VIABLE__ONE_BOUNDED_DISCRETE_GEOMETRY_OR_WEIGHTED_ADJOINT_OBJECT_REMAINS_UNRESOLVED

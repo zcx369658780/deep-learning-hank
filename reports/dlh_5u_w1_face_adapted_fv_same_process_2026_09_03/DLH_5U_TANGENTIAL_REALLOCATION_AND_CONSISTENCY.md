@@ -1,189 +1,180 @@
-# DLH-5U — Tangential Reallocation and Consistency (Issue #47, Phase 9 + 14)
+# DLH-5U Rev 1 — Tangential Reallocation and Consistency (Issue #47, Phase 9 + 14)
 
-**Design only.** This report carries the central scientific analysis of Route F:
-how the face-adapted finite-volume process transports the DLH-5T admissible
-tangential drift on the W frontier, and the precise consistency audit. It states
-exactly what is frozen and what remains a bounded unresolved object.
+**Rev 1 status:** DOCUMENTATION / ANALYTIC CORRECTION ONLY. Repairs BLOCKER 2 per
+reviewer comment `5521119160`. Withdraws the Rev-0 first-order consistency claims for
+the tangential cascade, derives the exact-tangent benchmark, downgrades the cascade
+to a diagnostic/candidate construction, and identifies the bounded unresolved object.
+No numerical experiment.
 
 ---
 
-## 1. The test object (DLH-5T ambiguity, re-stated)
+## 1. Test object (unchanged)
 
-At the physical W frontier the accepted continuous boundary law admits the tangential
-drift
+At the physical W frontier the accepted continuous law admits the tangential drift
 
 ```text
 mu_a < 0,  mu_b > 0,  mu_W = mu_a + mu_b <= 0
 ```
 
-i.e. illiquid assets decrease, liquid assets increase, total wealth `W = a+b` does
-not increase. On the W1 masked lattice with `da = 10/19 != db = 7/19` the face tangent
-`(1,-1)` is off-axis: the `+b` axial destination of a W-frontier cell may lie outside
-the mask. DLH-5T Outcome B established that pure axial node-to-node transitions do
-not uniquely preserve this local process. Route F replaces the node-transition
-primitive with the clipped-control-volume face-flux primitive.
+with the W1 masked lattice `da = 10/19 != db = 7/19` (face tangent off-axis).
+DLH-5T Outcome B: pure axial node-to-node transitions do not uniquely preserve the
+local process. Rev 1 keeps the face-flux primitive (Phase-8 rule) over the corrected
+Rev-1 tessellation (restricted Voronoi cells).
 
-## 2. Local geometry used by the analysis (symbolic `W_max`)
+## 2. Local geometry (Rev 1)
 
-Use the W-frontier cut cell `s=(i,j)` with the node on the W line
-(`a_j + b_i = W_max`); the general (off-line) cut cell follows by continuity of the
-face-flux formula. With `da,db` arbitrary (accepted `da=10/19`, `db=7/19`):
+Per geometry report: `C_s` is the restricted-Voronoi cell of the represented node
+`(i,j)`; `omega_s = area(C_s)`; shared faces `F_{s,r}`, physical W segment `F_s^W`.
+For the benchmark the only structural facts used are: the available axial moves in the
+needed quadrant from a W-frontier cell are `(i,j-1)` (displacement `(-da, 0)`) and,
+via the inward cell, `(0, +db)`; and `da/db = 10/7` fixed.
 
-- base cell `[a_j-da/2, a_j+da/2] x [b_i-db/2, b_i+db/2]`;
-- clipped cell `C_s = {a+b <= W_max} ∩ base`; the W line cuts the `+a`/`+b` corner;
-- `-a` face to `(i,j-1)` (length `db`), `-b` face to `(i-1,j)` (length `da`);
-- physical W segment `F_s^W` (length `sqrt(2)*db` on the `-a` side, the slanted line);
-- `+a` and `+b` neighbors are masked (not represented);
-- `omega_s = area(C_s) = (da*db)/2` for the node-on-line cut cell (half-cell).
+## 3. Frozen conservative monotone construction (what IS frozen and viable)
 
-Cell diagram (projected in the `(a,b)` plane; `z` is an independent finite state):
+The face-flux CTMC (Phase-8 rule) is frozen:
 
 ```text
-          b
-          ^
-    b_i+db|   (masked)   (masked)
-          |       o----x      <- W line a+b=W_max
-          |      /    / W segment
-    b_i+db/2|  /    /  F_s^W
-          | /    /
-    b_i  s*----x      <- -a face length db  -> (i,j-1)
-          |\    \
-          | \    \
-    b_i-db/2|  \    \
-          |   +----+   <- -b face length da -> (i-1,j)
-          +----------------------> a
-          a_j-da/2   a_j   a_j+da/2
+q_{s->r} = |F_{s,r}| * max( mu_s(c,l,d) . n_{s,r} , 0 ) / omega_s
+Q[s,s]   = - sum_{r != s} q_{s->r}
 ```
 
-## 3. Frozen primary construction: the conservative face-flux cascade
+Properties (frozen, all verified): off-diagonal `>= 0` (monotonicity); row sums
+exactly `0` (conservation); no outward W-normal flux (KKT `mu_W <= 0`); masked
+destinations not assembled and not in the diagonal; same `Q` for `Q V` and `Q^T p`;
+cell control maximizes the discrete Hamiltonian `H_h` (Phase-8 report); z-switch and
+negative-b borrowing-rate-gap preserved.
 
-### 3.1 Rates at the cut cell (Phase-4 rule, source-state upwind)
+**What is NOT frozen:** the tangential drift representation at W-adjacent cells. The
+Rev-0 claim that the two-step cascade is first-order sequence-consistent is withdrawn
+(Section 4).
+
+## 4. Exact-tangent benchmark (BLOCKER 2) — derivation
+
+**Benchmark:** `mu_a = -u`, `mu_b = +u`, `mu_W = 0` (exact sliding along the W face),
+fixed accepted aspect ratio `da/db = 10/7`, `u > 0`.
+
+**Stated two-step cascade:** `s --(rate r_a, a-down by da)--> (i,j-1) --(rate r_b,
+b-up by db)--> (i+1,j-1)`, with `r_a, r_b > 0`.
+
+**Mean waiting time per cycle:**
 
 ```text
-q_{s -> (i,j-1)} = |F_{s,(i,j-1)}| * max(-mu_a,0)/omega_s = db*(-mu_a)/( (da*db)/2 ) = -2 mu_a/da
-q_{s -> (i-1,j)} = |F_{s,(i-1,j)}| * max(-mu_b,0)/omega_s = 0            (mu_b > 0)
-+a, +b: no represented destination -> no rate assembled (and NOT in the diagonal)
-W segment: boundary, no flux (KKT gives max(mu_W,0) = 0)
-diagonal: Q[s,s] = -sum(rates) = +2 mu_a/da  (< 0)
+tau = 1/r_a + 1/r_b        (exp. waiting times add; both O(h) as h -> 0)
 ```
 
-All off-diagonal rates `>= 0`; row sum exactly `0`. The cut cell's only outflow is
-the `-a` (illiquid-down) face; the `+b` (liquid-up) motion is not a rate at `s`
-because the `+b` destination is masked.
+**Mean displacement per cycle:** `(Delta a, Delta b) = (-da, +db)`.
 
-### 3.2 The local transition sequence (the tangential transport)
-
-The `+b` motion is not suppressed and not reflected: it is **transported inward by the
-corner-transport cascade**. Concretely:
+**Effective continuous-time drift** (law-of-large-numbers rate for the cycle):
 
 ```text
-step 1: s --(-a face, rate -2 mu_a/da)--> (i,j-1)   [interior cell, full +b face]
-step 2: (i,j-1) --(+b face, rate mu_b/db)--> (i+1,j-1)  [in D_W: a_{j-1}+b_{i+1} = W_max - da + db <= W_max]
-step 3: continue along the inward chain
+( dE[a]/dt , dE[b]/dt ) = ( -da/tau , +db/tau )
+effective W-drift:  dE[W]/dt = (db - da)/tau
 ```
 
-Net displacement of the two-step composition is `(-da, +db)`, i.e. along `-tau` (the
-W-face tangent), reproducing the tangential reallocation (illiquid down, liquid up)
-with total wealth conserved to `O(|db-da|)` per step and exactly at `da=db`. The
-`+b` inflow into the cut cell from `(i-1,j)` (rate `mu_b/db` at the source cell,
-through the `-b` face) supplies the b-up motion; the `-a` outflow is the a-down
-motion. The cut cell is a conservative conduit, not a reflector.
-
-### 3.3 Why not suppressed / leaked / reflected / distorted
-
-- **Not suppressed:** the `+b` motion continues at `(i,j-1)` and inward cells; no
-  b-motion is dropped (the `+b` rate exists at the interior cells).
-- **Not leaked:** row sums are exactly zero; the W segment carries zero flux (KKT
-  `mu_W <= 0`); omitted masked destinations are not assembled and not in the diagonal.
-- **Not reflected:** no rate redirects the `+b` drift into a `-b` drift; there is no
-  `-b` rate induced by the `+b` drift at any cell.
-- **Not distorted:** each rate uses only the drift component along its own face
-  normal (`mu_a` on a-faces, `mu_b` on b-faces); no cross-term transfers b-motion
-  into a-motion at the same cell. The b-motion is *deferred* to the inward cell, not
-  *converted* into a-motion.
-
-### 3.4 Refinement consistency of the cascade
-
-At the cut cell the discrete generator is
+**Consistency condition:** the discrete effective drift must equal the target
+`(-u, +u)`:
 
 ```text
-(Q V)_s = q_{s->(i,j-1)}(V_{(i,j-1)}-V_s) ~ (-2 mu_a/da)(-da dV/da) = 2 mu_a dV/da
+-da/tau = -u   and   +db/tau = +u   ==>   tau = da/u = db/u   ==>   da = db
 ```
 
-i.e. pointwise truncation is `O(1)` (a-moment doubled by the half-cell factor `2`,
-b-term absent at `s`). This is the standard cut-cell property: the cut band has
-`O(h)` thickness, the face FLUXES are first-order consistent, and the global
-first-order accuracy holds as `h -> 0`. The local transition **sequence** (Section
-3.2) approaches `(mu_a,mu_b)` under refinement: the composed displacement per cycle
-tends to the tangential drift and the scheme's flux integral is first-order
-consistent with `-div(mu g)` in the divergence form.
+On the accepted grid `da/db = 10/7 != 1` this is **impossible for any positive
+`r_a, r_b`**. Hence the two-step axial cascade cannot reproduce the tangent benchmark.
 
-## 4. The oblique (diagonal) one-step construction
+**Concrete rates (face-flux):**
 
-Route F additionally audited an oblique/diagonal transition `s -> (i+1,j-1)`
-(`Delta a = -da`, `Delta b = +db`) that is exactly moment-consistent:
+- Half-cell normalization (Rev-0 base-clipped): `r_a = 2u/da`, `r_b = u/db`:
+
+  ```text
+  tau = da/(2u) + db/u
+  dE[a]/dt = -u*(da/db)/(da/(2db)+1) = -(5/6)u
+  dE[b]/dt =  u/(da/(2db)+1)          = +(7/12)u
+  dE[W]/dt = -(5/6)u + (7/12)u        = -(1/4)u   != 0
+  ```
+
+- Full-cell normalization (as if `omega_s = da*db`): `r_a = u/da`, `r_b = u/db`:
+
+  ```text
+  tau = da/u + db/u
+  dE[a]/dt = -u/(1+db/da) = -(10/17)u
+  dE[b]/dt =  u/(1+da/db) =  +(7/17)u
+  dE[W]/dt = -(10/17)u + (7/17)u = -(3/17)u   != 0
+  ```
+
+Both effective drifts are **O(1), independent of `h` at fixed aspect ratio**, and
+both carry a spurious inward W-drift (`mu_W^eff < 0`). Because the per-cycle waiting
+time is also `O(h)`, the `O(h)` per-cycle wealth displacement `db - da` does NOT yield
+`O(h)` normal drift — it yields `O(1)`. This is exactly the reviewer's point.
+
+**Pointwise generator at the cut cell:** `(Q V)_s = r_a(V_{(i,j-1)} - V_s) ~ r_a(-da V_a)`.
+With `r_a = 2u/da`: `(Q V)_s ~ -2u V_a` (a-coefficient doubled, `u V_b` term absent).
+With `r_a = u/da`: `(Q V)_s ~ -u V_a` (a-coefficient correct, `u V_b` term absent).
+
+**Withdrawn claims (Rev-0), not replaced by a valid derivation:**
+- "cascade is first-order sequence-consistent";
+- "tangential composition OK in the limit";
+- "global first-order cut-cell consistency" (as a statement about the tangential
+  representation at fixed aspect ratio).
+
+## 5. Oblique one-step construction (diagnostic only)
+
+A one-step oblique move `s -> (i+1,j-1)` (displacement `(-da, +db)`) at rate `r_diag`,
+plus a-down `r_a`, gives
 
 ```text
-r_diag = mu_b/db              (b-moment: db*r_diag = mu_b)
-r_a    = -mu_a/da - mu_b/db   (a-moment: -da*(r_a + r_diag) = mu_a)
+(Q V)_s ~ r_a(-da V_a) + r_diag(-da V_a + db V_b)
 ```
 
-Then `(Q V)_s ~ mu_a dV/da + mu_b dV/db` exactly (pointwise generator consistency).
-Monotonicity requires `r_a >= 0`, i.e.
+Matching `(-u, +u)`: `r_diag = u/db`; `r_a = u/da - u/db = u(db-da)/(da db)`.
+On the accepted grid `db < da`, so `r_a < 0` — **not monotone**. Withdraw as a frozen
+viable scheme; retain only as a diagnostic of why one-step tangential transport is
+obstructed on the `da != db` lattice (the one-step achievable generator cone has slope
+bounded by `db/da = 7/10`, below the physical tangent ratio 1).
+
+## 6. The bounded unresolved object (reviewer's path B)
+
+Route F's face-flux framework is scientifically viable (monotone, conservative,
+same-process, no outward W flux — Section 3), but **no frozen construction reproduces
+the admissible tangential cone at W-adjacent cells**:
+
+- the two-step axial cascade has an `O(1)` spurious normal drift at fixed aspect
+  ratio (Section 4);
+- the oblique one-step exact-moment construction is not monotone on the accepted grid
+  (Section 5);
+- no alternative monotone, conservative, pointwise-consistent discrete boundary
+  process is established in this gate.
+
+Therefore the cascade is **downgraded to a diagnostic/candidate construction**, and
+the following is retained as **THE bounded unresolved object (frozen statement)**:
 
 ```text
-|mu_a| * db  >=  mu_b * da      <=>      |mu_a|/mu_b >= da/db = (10/19)/(7/19) = 10/7
+A conservative, monotone, same-process discrete boundary process whose effective
+generator reproduces the full admissible tangential cone at the W face
+( mu_b >= 0, mu_a <= 0, mu_W <= 0, including the mu_W = 0 sliding benchmark )
+on the accepted da/db = 10/7 W1 grid.
 ```
 
-The a-dominant sub-cone `|mu_a| >= (10/7) mu_b` is exactly representable.
+No impossibility is proven (only the failure of the two frozen candidates), so Route F
+remains scientifically viable in the framework sense and Outcome C is NOT triggered;
+this is the precisely bounded design object that keeps the gate at Outcome B.
 
-## 5. The bounded unresolved object (impossibility for the b-dominant sub-cone)
+## 7. Consistency audit (Issue #47 §14, Rev 1)
 
-For the **b-dominant** sub-cone `mu_b <= |mu_a| < (10/7) mu_b` (admissible: `mu_W <= 0`
-only requires `|mu_a| >= mu_b`), no one-step monotone pointwise-consistent scheme
-exists on the W1 lattice:
-
-- the only represented one-step moves in the needed quadrant are
-  `(i,j-1)` `(Delta=-da, 0)` and `(i+1,j-1)` `(Delta=-da, +db)` (and their lattice
-  multiples with slope `db/da`), so the achievable generator cone has
-  `mu_b/|mu_a| <= db/da = 7/10`;
-- any rate assignment giving `(mu_a, mu_b)` in the generator action requires a
-  negative rate for `r_a` in the b-dominant case (Section 4), breaking monotonicity;
-- the cascade (Section 3) is unconditionally monotone and conservative but is only
-  sequence/first-order consistent (Section 3.4), not pointwise-consistent.
-
-**Frozen statement.** Route F is scientifically viable and freezes the conservative
-monotone face-flux cascade as the primary discrete process (a specific, implementable
-resolution of the DLH-5T non-uniqueness). It additionally freezes the oblique
-one-step construction for the a-dominant sub-cone as a documented exact-moment
-variant. **One bounded discrete-geometry object remains unresolved:** an
-unconditionally monotone, conservative, *pointwise*-generator-consistent tangential
-boundary transition covering the full admissible tangential cone (`mu_b <= |mu_a|`)
-on the accepted `da != db` grid. This object cannot exist within one-step monotone
-schemes on the W1 lattice (Section 5); its resolution would require either a
-second-order / higher-moment boundary stencil (a successor implementation-validation
-gate), an alternate admissible treatment of the b-dominant sub-cone, or a change to
-the lattice geometry (out of scope, would reopen the accepted W1 representation).
-This is the **single bounded unresolved object** that triggers the DLH-5U Outcome B
-terminal (Phase 17); it is NOT a Route-F failure (no conservation / same-process /
-no-flux violation), so Outcome C is not triggered.
-
-## 6. Consistency audit (Issue #47 §14, item by item)
-
-| # | Requirement | Status under frozen scheme |
+| # | Requirement | Rev-1 status |
 |---|---|---|
-| 14.1 | Markov monotonicity | OK: all rates `>= 0` by `max(.,0)`; oblique variant monotone on a-dominant sub-cone only |
-| 14.2 | Conservation (row sums 0) | OK: diagonal `= -sum(assembled rates)`; masked destinations excluded |
-| 14.3 | Adjoint mass conservation | OK: `(Q1)=0` implies `d/dt sum p = 0` |
-| 14.4 | Local first-moment / drift consistency toward `(mu_a,mu_b)` | Sequence-level OK (Section 3.4); pointwise exact only on a-dominant sub-cone (Section 4); **b-dominant sub-cone pointwise exactness unresolved (Section 5)** |
-| 14.5 | Physical W-normal boundary consistency | OK: W segment carries zero flux; KKT `mu_W <= 0` excludes outward flux; no KFE clipping |
-| 14.6 | Tangential asset-composition consistency | OK in the sequence limit; no arbitrary b-to-a transfer at any single cell |
-| 14.7 | Refinement consistency `h -> 0` | OK first-order global; cut-band pointwise truncation `O(1)` (standard cut-cell property) |
-| 14.8 | Interior-operator junction | OK: identical face-flux formula; interior cell is the full-adjacency special case |
-| 14.9 | z-switch preservation | OK: accepted finite-state Markov switch combined additively, unchanged |
-| 14.10 | Negative-b effective liquid return / borrowing gap | OK: lives in `mu_b` accounting; untouched by Route F |
+| 14.1 | Markov monotonicity | OK (frozen face-flux construction; oblique not monotone → diagnostic only) |
+| 14.2 | Conservation (row sums 0) | OK |
+| 14.3 | Adjoint mass conservation | OK |
+| 14.4 | Local first-moment / drift consistency toward `(mu_a,mu_b)` | **UNRESOLVED at W-adjacent cells** (tangent benchmark fails, Section 4); interior cells OK |
+| 14.5 | Physical W-normal boundary consistency | OK (KKT `mu_W <= 0`; W segment zero flux; no KFE clipping) |
+| 14.6 | Tangential asset-composition consistency | **UNRESOLVED** (same object as 14.4; no arbitrary b-to-a transfer is introduced, but the tangential representation itself is not established) |
+| 14.7 | Refinement consistency `h -> 0` | **NOT established for the tangential representation at fixed aspect ratio** (O(1) error, Section 4); the Rev-0 first-order claim is withdrawn |
+| 14.8 | Interior-operator junction | OK (identical face-flux formula) |
+| 14.9 | z-switch preservation | OK |
+| 14.10 | Negative-b borrowing-rate-gap | OK (lives in `mu_b` accounting; untouched) |
 
-## 7. Compliance
+## 8. Compliance
 
-No generator assembled, no HJB/KFE solved, no execution. The analysis is
-symbolic/local analytic only.
+No generator assembled, no HJB/KFE solved, no execution. Symbolic/local analytic
+derivations only (mean-waiting-time and effective-drift algebra; generator-action
+truncation).

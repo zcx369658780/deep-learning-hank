@@ -146,8 +146,27 @@ allowlist paths may be created; no existing tracked file modified; handoff /
 `_decision_inputs.json` stay untracked. Read-only symbolic/local analytic derivations
 are allowed.
 
-## 7. Stop
+## 7. Rev 1 (bounded revision inside Issue #47)
 
-This report freezes authority only. The design analysis is carried out in the
+- Controlling fresh reviewer authority: comment `5521119160`
+  (`DLH_5U_REV0_REVIEW_BLOCKED__OUTCOME_B_DIRECTION_PLAUSIBLE__FOUR_SCIENTIFIC_DESIGN_REPAIRS_REQUIRED_BEFORE_ACCEPTANCE`).
+- Same Issue #47, same dedicated branch, same nine-file allowlist; parent of Rev 1 =
+  Rev-0 candidate `69e9b33de27a74fad2d334f32c492e3abde6d9c6`.
+- Fresh `origin/main` re-fetched: `9ba4a530ba5e880d45433cec74d618e9461357b7`
+  (unchanged). Household blob re-verified:
+  `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`.
+- Rev 1 is DOCUMENTATION / ANALYTIC CORRECTION ONLY, repairing the four blockers:
+  1. Tessellation (restricted-Voronoi dual cells; partition proof) — geometry report;
+  2. Tangential cascade consistency (exact-tangent benchmark; cascade downgraded to
+     candidate; bounded unresolved object) — tangential report;
+  3. Discrete HJB control from discrete `Q` (discrete Hamiltonian `H_h`; continuous
+     FOCs as consistency targets only) + coherent boundary-control object — boundary
+     Hamiltonian and geometry reports;
+  4. MATLAB-style component pin (mass `p`, `T_tilde[n,:]=e_n`, `rhs[n]=c>0`, solve,
+     normalize, validate original residual) — mass/density report.
+
+## 8. Stop
+
+This report freezes authority only. The Rev-1 analysis is carried out in the
 companion allowlist reports. The Builder stops for fresh ChatGPT review after the
-nine-file deliverable is committed and pushed.
+nine-file Rev-1 deliverable is committed and pushed on the same dedicated branch.
