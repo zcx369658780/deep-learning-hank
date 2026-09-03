@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.23  
+**Version:** V0.24  
 **Date:** 2026-09-03  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** CURRENT OWNER-DECISION CHECKPOINT — DLH-5T ACCEPTED / W1 DISCRETE W-FRONTIER PROCESS UNRESOLVED
+**Status:** CURRENT OWNER-APPROVED ROUTE F — DLH-5U W1 FACE-ADAPTED FINITE-VOLUME SAME-PROCESS DESIGN ACTIVE
 
 ---
 
@@ -32,9 +32,9 @@ Binding Issue #27 law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED** until one finite controlled household process is selected, implemented and validated.
+Stationary KFE remains **NOT AUTHORIZED** until one discrete finite controlled household process is selected, implemented and validated.
 
-The accepted DLH-5O–5S asymptotic work remains conditional guidance only: the reduced p=2 attractor structure is accepted, but full-HJB p=2 realization remains unproved. Route D preserves that caveat rather than treating it as theorem closure.
+The accepted DLH-5O–5S asymptotic work remains conditional guidance only: the reduced p=2 attractor structure is accepted, but full-HJB p=2 realization remains unproved. Route D/F preserves that caveat rather than treating it as theorem closure.
 
 ---
 
@@ -66,7 +66,7 @@ Accepted terminal:
 
 `DLH_5T_W_DOMAIN_SCIENTIFICALLY_SUPPORTED__W1_DISCRETE_PROCESS_MATCHING_REQUIRES_BOUNDED_FOLLOWUP_DESIGN`
 
-### 2.1 Finite production-domain family accepted
+### 2.1 Accepted finite production-domain family
 
 ```text
 D_W(W_max) = {
@@ -79,14 +79,12 @@ D_W(W_max) = {
 Interpretation:
 
 - `a>=0` is the structural non-negativity boundary;
-- `b>=b_min` is the liquid borrowing floor;
+- `b>=b_min` is the economic liquid borrowing floor;
 - `a<=a_max` retains the accepted illiquid-support/taper anchor and requires a boundary state-constraint law;
 - `a+b<=W_max` is a numerical production-domain truncation, not a household primitive or calibrated wealth ceiling;
-- no numerical production `W_max` is selected yet.
+- no numerical production `W_max` is selected.
 
-### 2.2 Continuous boundary process accepted
-
-Accepted tangent-cone laws:
+### 2.2 Accepted continuous boundary process
 
 ```text
 a=0:          mu_a >= 0
@@ -97,9 +95,7 @@ a+b=W_max:    mu_W=mu_a+mu_b <= 0
 
 At all feasible intersections, active inequalities apply jointly. Boundary controls must be selected from the constrained Hamiltonian/KKT problem itself; unconstrained-policy-then-clip is not accepted.
 
-The W multiplier acts symmetrically on the two asset shadow gradients; the linear portfolio-transfer component cancels from total-wealth drift and from the linear part of the W-face transfer FOC, while adjustment cost preserves `d` dependence.
-
-### 2.3 Same-process HJB–KFE law accepted
+### 2.3 Accepted same-process law
 
 ```text
 controlled process selected by boundary HJB
@@ -110,35 +106,23 @@ controlled process represented by KFE generator
 Future discrete generator requirements:
 
 - every represented transition corresponds to the HJB-admitted discrete process;
-- no KFE-only clipping of an HJB-selected boundary policy;
+- no KFE-only clipping of HJB-selected boundary policy;
 - diagonal = negative sum of actually admitted represented off-diagonal rates;
 - no omitted masked destination can leave a retained diagonal exit rate;
-- row conservation and non-negative off-diagonals remain mandatory;
+- row conservation and non-negative off-diagonals are mandatory;
 - contamination/pin is downstream normalization only and cannot repair boundary economics.
 
-The future stationary KFE still requires recurrent-class/nullspace diagnostics, original `Q^T g` residual, normalization, non-negativity and admissible-pin checks.
+### 2.4 Accepted `W_max` adequacy method
 
-### 2.4 `W_max` adequacy method accepted
-
-Production-domain extent will be selected later from pre-registered nested candidates using staged evidence:
-
-```text
-HJB shared-interior policy stability
--> artificial-boundary influence localization
--> stationary-tail influence after KFE authorization
--> aggregate stability C,L,A,B
--> GE/two-region price-state stability
-```
-
-The eventual production cap is the smallest candidate satisfying all applicable accepted gates. No PASS-seeking tolerance relaxation is allowed.
+Production-domain extent will be selected later from pre-registered nested candidates using staged HJB shared-interior stability, boundary influence localization, future stationary-tail influence, aggregate stability `C,L,A,B`, and downstream GE stability. The eventual production cap is the smallest candidate satisfying all applicable accepted gates.
 
 ---
 
-## 3. Current unresolved object — W1 discrete W-frontier process
+## 3. DLH-5T unresolved discrete object
 
-W1 keeps native `(a,b)` coordinates and masks states with `a+b>W_max`. This preserves the economically important borrowing floor as a coordinate-aligned boundary and keeps the accepted a-based taper native.
+W1 keeps native `(a,b)` coordinates and masks states with `a+b>W_max`. This preserves the borrowing floor as a coordinate-aligned economic boundary and keeps the accepted a-based taper native.
 
-However, on the slanted W frontier the continuous constrained HJB may admit portfolio-reallocation drift:
+At the slanted W frontier the continuous constrained HJB may admit portfolio-reallocation drift:
 
 ```text
 mu_b > 0
@@ -146,60 +130,124 @@ mu_a < 0
 mu_W = mu_a + mu_b <= 0
 ```
 
-The continuous normal flux is admissible/inward, but the axial `+b` destination may lie outside the W1 mask. Pure coordinate-split axial transitions therefore do not uniquely preserve the local HJB-controlled process. Dropping the `+b` component changes the process; retaining its diagonal rate leaks mass; rerouting it to `-a` distorts asset composition.
+Pure axial node-to-node transitions do not uniquely preserve this local process when the `+b` axial destination lies outside the mask. Dropping that component changes the process; retaining its diagonal rate leaks mass; rerouting it distorts asset composition.
 
-This is a **discrete numerical-process design problem**, not a rejection of the W-domain economics.
+Reviewer clarifications controlling all downstream work:
 
-Reviewer clarifications controlling downstream work:
-
-- “no outward W flux” means no positive continuous normal flux; it does not imply every axial component has an in-mask axial destination;
-- one-dimensional stationary nullspace is a future canonical uniqueness target conditional on uniqueness, not a consequence of conservativity alone;
-- `a_bar=1e-6` is the adjustment-cost denominator floor, not the state lower bound;
+- no positive W-normal flux does not imply every axial component has an in-mask axial neighbor;
+- one-dimensional stationary nullspace is only a future canonical uniqueness target conditional on uniqueness;
+- `a_bar=1e-6` is the adjustment-cost denominator floor, not the state boundary;
 - negative-`b` implementation must preserve the accepted effective liquid return / borrowing-rate-gap semantics.
 
 ---
 
-## 4. Owner decision checkpoint — bounded discrete-process routes
+## 4. Owner Route-F decision after DLH-5T
 
-There is currently **NO ACTIVE BUILDER ISSUE**.
+Owner selected:
 
-### Route F — W1 face-adapted finite-volume / oblique-flux design
+`APPROVE_ROUTE_F_W1_FACE_ADAPTED_FINITE_VOLUME_OBLIQUE_FLUX_DESIGN`
 
-Keep W1 native `(a,b)` representation and design an explicit conservative face-based scheme on the artificial W frontier. Required objects include control-volume geometry, normal/tangential flux decomposition, HJB backward action, adjoint KFE forward action, monotonicity/conservation and grid-refinement consistency.
+Scientific rationale:
 
-**Scientific advantage:** numerical complexity stays on the artificial high-wealth truncation boundary, while the economic borrowing floor remains coordinate-aligned.
+- keep native household coordinates `(a,b,z)`;
+- keep the economic borrowing floor `b=b_min` coordinate-aligned;
+- keep the difficult oblique geometry on the artificial high-wealth W boundary;
+- resolve W1 process matching through a conservative face-adapted finite-volume / oblique-flux construction rather than moving the slanted geometry to the borrowing floor;
+- remain design/specification-first before any implementation or HJB/KFE execution.
 
-### Route C — W1 tangent/corner-transport transition design
-
-Keep the masked W1 lattice but introduce carefully specified off-axis / diagonal / corner transport transitions that approximate tangential W-face motion. Requires an explicit grid-spacing consistency argument and same-process HJB/KFE construction.
-
-**Scientific risk:** transition geometry may become nonlocal or grid-ratio dependent if not carefully designed.
-
-### Route W2 — transformed `(a,W)` representation
-
-Use `b=W-a`, making `W=W_max` coordinate-aligned. The lower borrowing constraint becomes the oblique boundary `W=a+b_min` and requires its own same-process treatment.
-
-**Scientific tradeoff:** simplifies the artificial upper boundary but moves geometric complexity to the economically important borrowing floor.
-
-### Current scientific recommendation
-
-Prefer **Route F (W1 face-adapted finite-volume / oblique-flux design)** for the next bounded gate. It retains native household states and places the difficult geometry on the artificial upper truncation rather than on the borrowing constraint. The next gate should remain design/specification-first and should not yet run HJB/KFE.
-
-Owner must approve the route before a successor Issue is published.
+W1 tangent/corner transport and W2 transformed `(a,W)` remain fallback comparison routes only, not active authority.
 
 ---
 
-## 5. Intended household sequence after discrete-process design
+## 5. Immediate active gate — DLH-5U / Issue #47
+
+### Name
+
+**W1 Face-Adapted Finite-Volume / Oblique-Flux Same-Process Discretization**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION`
+
+Dedicated branch:
+
+`dsh/issue-47-dlh-5u-w1-face-adapted-fv-design-2026-09-03`
+
+DLH-5U is **design-only**. It does not authorize implementation or numerical execution.
+
+### 5.1 Primary geometric object
+
+Route F audits control volumes clipped by the physical W-domain:
 
 ```text
-accepted DLH-5T continuous W-domain / same-process authority
--> bounded W-frontier discrete-process design
--> separate boundary-HJB implementation authority
--> KKT/complementarity and discrete-process validation
+C_s = C_s^base ∩ D_W(W_max)
+```
+
+with explicit cell measures, actual shared faces, normals, physical W-face segments and adjacency. The physical slanted W face must be distinguished from the staircase of masked nodes.
+
+### 5.2 Boundary-control location
+
+DLH-5U must determine where the constrained HJB control/Hamiltonian lives in a cut-cell representation and give a clear refinement interpretation. It may not impose a W-face KKT condition on a strictly interior physical state without a consistency argument.
+
+### 5.3 Face-flux / CTMC generator
+
+The primary candidate is a monotone conservative source-to-neighbor face-flux generator:
+
+```text
+Q[s,r] = q_{s->r} >= 0, s != r
+Q[s,s] = -sum_{r != s} q_{s->r}
+```
+
+with rates derived from HJB-admitted drift and actual shared control-volume faces. Physical W-boundary outward flux is excluded by the accepted KKT condition itself, not by KFE clipping.
+
+The same `Q` must define backward HJB action and forward probability-mass dynamics.
+
+### 5.4 Central tangential-reallocation test
+
+For local admissible drift `mu_b>0, mu_a<0, mu_W<=0`, the design must show symbolically how face fluxes transport the process along/inward from the physical W frontier while preserving both asset coordinates, conservation and monotonicity. Outcome A is forbidden if this local process cannot be represented consistently.
+
+### 5.5 Mass vs density / weighted adjoint
+
+Because clipped control volumes have nonuniform measures, DLH-5U must distinguish:
+
+```text
+p_s = probability mass,
+M = diag(omega_s),
+p = M g.
+```
+
+It must derive the correct forward/stationary equation for the chosen variable, normalization, economic aggregation weights, original-equation residual, and downstream contamination compatibility. Uniform-grid shorthand must not be silently reused if cut-cell weights differ.
+
+### 5.6 Sliver/small-cell and refinement consistency
+
+The gate must audit:
+
+- nonnegative rates / Markov monotonicity;
+- row-sum conservation;
+- first-order/local moment consistency;
+- physical W-boundary normal consistency;
+- tangential asset-composition consistency;
+- small-cut-cell/sliver rates and conditioning;
+- whether deterministic agglomeration, future geometric admissibility, or another bounded remedy is required;
+- no PASS-seeking numerical W alignment.
+
+No numerical `W_max` is selected.
+
+---
+
+## 6. Intended sequence after DLH-5U
+
+If DLH-5U reaches an implementation-ready design terminal:
+
+```text
+accepted DLH-5T continuous W-domain / KKT / same-process authority
+-> DLH-5U face-adapted finite-volume discrete-process design
+-> separate boundary-HJB / Route-F implementation authority
+-> KKT/complementarity + discrete-generator validation
 -> nested Wmax / resolution robustness
--> conservative same-process generator validation
+-> conservative same-process stationary-generator validation
 -> Issue #27 stationary KFE
--> recurrent-class / nullspace / admissible-pin / original Q^T g residual
+-> recurrent-class / nullspace / admissible-pin / original stationary residual
 -> stationary-tail diagnostics
 -> recompute C,L,A,B
 -> rebuild two-region structural anchor
@@ -209,7 +257,7 @@ No historical stationary aggregate is grandfathered.
 
 ---
 
-## 6. Regional / Deep Learning architecture remains downstream
+## 7. Regional / Deep Learning architecture remains downstream
 
 Long-run hybrid architecture:
 
@@ -245,15 +293,14 @@ Learned `W^L`, later `W^K`, nominal HANK, calibration, policy and welfare remain
 
 ---
 
-## 7. Scientific ceiling at current checkpoint
+## 8. Scientific ceiling during DLH-5U
 
-Until the Owner selects a bounded discrete-process route and successor authority exists, do not:
+Do not:
 
-- mutate accepted household economics;
-- implement W1/W2 or choose numerical `W_max`;
-- execute a new boundary-HJB/KFE process;
-- solve stationary density or aggregates;
-- rebuild two-region GE;
+- mutate accepted household economics/source;
+- implement Route F or choose numerical `W_max`;
+- execute HJB/KFE/stationary/grid/domain experiments;
+- compute stationary aggregates or rebuild two-region GE;
 - enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare or Results.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
