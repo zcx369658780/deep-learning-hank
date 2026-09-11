@@ -9,7 +9,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Governance state
 
 - live GitHub `main` = synchronized repository/code/governance authority;
-- open GitHub Issue = sole DSH Builder task authority only after publication + CURRENT synchronization + authoritative activation comment;
+- open GitHub Issue = sole DSH Builder authority only after publication + CURRENT synchronization + authoritative activation comment;
 - DSH = bounded Builder/scientific analyst only under an active Issue;
 - ChatGPT = independent reviewer / scientific-route advisor / task issuer / governance operator;
 - Owner = final scientific authority;
@@ -21,47 +21,27 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #55 / DLH-5V-G.**
+**No active Builder Issue.**
 
-Title:
+Current status:
 
-`DLH-5V-G: Prove/refute shrinking endpoint-layer asymptotic same-process approximation`
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VG_OUTCOME_C_ACCEPTED__OWNER_ROUTE_REDECISION_REQUIRED`
 
-Task type:
+Issue #55 / DLH-5V-G has been independently accepted at Outcome C. No successor authority exists until the Owner chooses the next discretization/consistency route and the normal publication/synchronization/activation sequence is completed.
 
-`SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
-
-Owner decision:
-
-`APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
-
-Authoritative activation comment:
-
-`5634144909`
-
-Authority marker:
-
-`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`
-
-Dedicated Builder branch:
-
-`dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
-
-Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm the exact task type/branch and activation comment, verify the accepted household blob, then work only inside the Issue allowlist.
-
-## Latest accepted gate — Issue #54 / DLH-5V-F
+## Latest accepted gate — Issue #55 / DLH-5V-G
 
 Accepted candidate:
 
-`b9dab7b6cf5d724074765ddb88d6f300175f6c6f`
+`15f2f81653a847344d2cd647705487cc893af1d7`
 
 Reviewer acceptance:
 
-`5633995486`
+`5635802416`
 
 Acceptance integration:
 
-`4e77d9c753f81eb2517a8b90a0827db6af8faed4`
+`8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
 
 Acceptance level:
 
@@ -69,28 +49,15 @@ Acceptance level:
 
 Accepted verdict:
 
-`DLH_5VF_ACCEPTED__OUTCOME_C_CONFIRMED__EXACT_ENDPOINT_FINITE_PROCESS_REPRESENTABILITY_OBSTRUCTION_FROZEN__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
+`DLH_5VG_ACCEPTED__OUTCOME_C_CONFIRMED__ROUTE_A_TANGENT_CONE_GRAPH_CONSISTENCY_OBSTRUCTION_FROZEN__OWNER_ROUTE_REDECISION_REQUIRED`
 
 Accepted terminal:
 
-`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
+`DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
 
-## Accepted obstruction — exact core
+## Accepted Route-A obstruction — exact core
 
-The accepted finite-m endpoint obstruction remains controlling:
-
-- exact-frontier `r_j=0` source has every represented destination with `Delta W<=0`;
-- exact `mu_W=0` with nonnegative Markov rates therefore requires same-W transitions only;
-- `10 Delta j + 7 Delta i=0` implies same-W native displacements are multiples of `(7,-10)`;
-- lower a-interior endpoint bands can lack `(-7,+10)` and upper a-interior bands can lack `(+7,-10)`.
-
-Thus finite exact pointwise process closure fails on the full endpoint complement under the previously frozen exact contract. This does not invalidate the household economics, finite W-domain, continuous KKT law or accepted recurring regular W-frontier formulas.
-
-## Owner-selected Route A — active scientific object
-
-Issue #55 tests whether the obstruction is only a finite-grid endpoint-layer phenomenon that can be handled by a **shrinking numerical approximation layer** while preserving conservation, monotonicity and one-Q semantics.
-
-Fixed-aspect symbolic refinement family:
+The fixed-aspect family remains
 
 ```text
 m=1,2,...
@@ -102,28 +69,22 @@ N_m=floor(19m*(W_max-b_min))
 10j+7i<=N_m
 ```
 
-Primitive exact tangent jumps scale as
+The finite-m A1 algebra on its admitted cones remains internally coherent: actual represented destinations, nonnegative rates, exact first moments, `O(1/m)` jumps, `O(m)` rates, `O(1/m)` second moments, conservative rows and one-Q semantics.
+
+But the exact tangent-cone graph-consistency target required by Issue #55 is impossible on the frozen state family.
+
+Controlling counterexample:
 
 ```text
-w_T^m=(-70/(19m),+70/(19m))
-w_RT^m=(+70/(19m),-70/(19m))
+s_m=(0,i_t^m(0)-2)
+mu=(0,1)
 ```
 
-and endpoint reachability layers have physical thickness
+The states are non-W-active and represented, yet converge to `(0,W_max)`. The drift is admitted and exactly represented by a native upward transition, but its limit has `mu_W>0`, outside the true corner cone `{mu_a>=0,mu_W<=0}`. Therefore outer/limsup fails.
 
-```text
-ell_m=70/(19m)=O(1/m).
-```
+This failure cannot be repaired by merely adding a finite or shrinking number of constrained rows. For `k_m=i_t(0)-i_m`, every sublinear `k_m=o(m)` can still converge to the W-corner. Requiring outer consistency along all such sequences forces a nonvanishing neighborhood of restrictions, which then destroys recovery/liminf at nearby `a=0` face-interior points where the true tangent cone allows unrestricted b-direction drift. This diagonal incompatibility is the accepted Route-A obstruction.
 
-### Route-A preference order
-
-First test **A1**: a numerical candidate-admissibility buffer on the finite stencil-width layer, applied before scoring/selection and clearly distinguished from true economic faces. If A1 is asymptotically consistent, it may retain exact first moments for all admitted candidates.
-
-Only if A1 fails, test **A2**: an explicit first-moment defect with a declared error object and a proved vanishing operator/boundary-layer consistency statement.
-
-The gate must prove/refute: exactness away from endpoints, shrinking layer, tangent-cone graph consistency, generator/operator consistency, jump/rate/second-moment scaling, monotonicity, conservation, one-Q same-process semantics and seam consistency with the accepted exact regular contract.
-
-A finite enumeration is supplementary only; the controlling consistency result must be analytic or parameterized symbolically.
+A2 first-moment defects do not remove the separately required admissible-set graph inconsistency under the Issue-#55 theorem.
 
 ## Continuous boundary law remains intact
 
@@ -144,7 +105,18 @@ a=a_max:   mu_a<=0
 W:         mu_a+mu_b<=0
 ```
 
-A numerical buffer at interior stencil-layer nodes is NOT an economic-face declaration. Its only authority is as a candidate asymptotically vanishing numerical restriction under Issue #55.
+Correct Regime-I corner semantics remain frozen:
+
+```text
+W_max>8: (a_max,b_min) is a_max x b_min only
+W_max=8: (a_max,b_min) is the a_max x b_min x W triple corner
+```
+
+Reachability bands and numerical layers are never economic faces.
+
+## Prior accepted endpoint obstruction — Issue #54 / DLH-5V-F
+
+DLH-5V-F remains accepted and controlling for the finite-m exact-lattice obstruction. DLH-5V-G adds the result that the attempted Route-A shrinking-buffer asymptotic repair fails under the exact graph-consistency target.
 
 ## Same-process / mass authority
 
@@ -174,15 +146,20 @@ Pinning/normalization may never repair leakage.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Interpretation ceiling
+## Exact next decision — Owner route choice, no Builder authority yet
 
-Issue #55 is analytic/design only. It does not authorize implementation, production-Q execution, HJB/KFE/stationary solves, numerical `W_max`, new states/ghosts, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, regional/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
+Route A is rejected under its authorized theorem. Remaining bounded choices include:
+
+- boundary-state augmentation / boundary fitting;
+- grid/aspect or boundary-fitted lattice redesign;
+- coordinate transformation such as `(a,W)`;
+- explicitly re-scoping the convergence target, but only under a new Owner decision and new Issue.
+
+No implementation, production-Q run, HJB/KFE/stationary execution, numerical `W_max`, aggregates, GE, regional, neural, nominal, calibration, policy, welfare or Results are authorized.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #55 body/comments.
-
-Issue #54 acceptance history remains the controlling provenance for why Route A is necessary.
+- Issue #55 acceptance history.
