@@ -24,7 +24,7 @@ restricted-Voronoi shared-face adjacency** of regular cells with exact displacem
 Endpoint/corner cells, moment cones, (−1,+1) feasibility, transition rates, face-flux moment maps, endpoint
 transitions, HJB/KFE, and stationary objects are explicitly deferred or forbidden (§4).
 
-## 3. Accepted results of this gate (Checkpoints B + C, exact and spot-check-verified)
+## 3. Submitted candidate results (Checkpoints B + C, exact and spot-check-verified)
 
 Let `i_t(j) = floor((N−10j)/7)`, `r_j = (N − 10j) mod 7 = (N − 3j) mod 7 ∈ {0,…,6}`, staircase drop `= 2` iff
 `r_j ∈ {0,1,2}`, else 1; `r_{j+7} = r_j` (period 7), discrete phase = `N mod 7`.
