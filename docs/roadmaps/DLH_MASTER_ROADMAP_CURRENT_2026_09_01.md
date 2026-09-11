@@ -4,7 +4,7 @@
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-G / ISSUE #55 PUBLISHED — ROUTE A SHRINKING ENDPOINT-LAYER ASYMPTOTIC APPROXIMATION / ACTIVATION PENDING
+**Status:** DLH-5V-G / ISSUE #55 ACTIVE — ROUTE A SHRINKING ENDPOINT-LAYER ASYMPTOTIC APPROXIMATION
 
 ---
 
@@ -129,27 +129,17 @@ This is a lattice/discretization obstruction, not a household-source failure.
 
 ## 4. Owner-selected next route — Route A
 
-Owner now explicitly selects:
+Owner explicitly selected:
 
 `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
 
-Route A preserves:
-
-- household economics;
-- finite W-domain;
-- native represented-state family and 10:7 aspect;
-- nonnegative Markov rates;
-- row conservation;
-- one-Q HJB/KFE semantics;
-- exact accepted regular-region contracts.
+Route A preserves household economics, finite W-domain, native represented-state family / 10:7 aspect, nonnegative Markov rates, row conservation, one-Q HJB/KFE semantics and accepted exact regular-region contracts.
 
 It relaxes only the finite-m requirement that **every endpoint-layer continuously admissible candidate must have exact pointwise native-grid first-moment representation**.
 
-No implementation is authorized yet.
-
 ---
 
-## 5. DLH-5V-G / Issue #55 — shrinking endpoint-layer asymptotic same-process approximation
+## 5. DLH-5V-G / Issue #55 — ACTIVE
 
 Title:
 
@@ -159,11 +149,17 @@ Task type:
 
 `SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
 
-Dedicated branch after activation:
+Authoritative activation comment:
+
+`5634144909`
+
+Authority marker:
+
+`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`
+
+Dedicated branch:
 
 `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
-
-Issue #55 is published. Builder mutation remains blocked until the authoritative activation comment is posted.
 
 ### 5.1 Fixed-aspect symbolic refinement family
 
@@ -226,7 +222,7 @@ Issue #55 must prove/refute all of:
 
 1. exact regular-contract recovery on every physical compact subset away from true endpoints for sufficiently large `m`;
 2. `O(1/m)` shrinking endpoint-layer width, uniformly across frontier phases;
-3. outer/limsup and recovery/liminf consistency of the numerical admissible drift sets with the true limiting tangent cones at economic faces/intersections;
+3. outer/limsup and recovery/liminf consistency of numerical admissible drift sets with true limiting tangent cones at economic faces/intersections;
 4. generator consistency for smooth test functions;
 5. jump size `O(1/m)`, rate scale `O(m)` and vanishing second-moment / numerical-diffusion term (or the correct rigorously derived orders);
 6. nonnegative off-diagonal rates and `Q_m 1=0` by construction;
@@ -249,8 +245,8 @@ shared-face-only local process                               OBSTRUCTION ACCEPTE
 regular exact-tangent wide-stencil process                   ACCEPTED
 regular control-dependent rates / global scoring             ACCEPTED
 endpoint exact finite-process closure                         OBSTRUCTION ACCEPTED — ISSUE #54
-Route A shrinking endpoint-layer asymptotic design            PUBLISHED — ISSUE #55 / ACTIVATION PENDING
-boundary-HJB / finite-process implementation                 BLOCKED PENDING 5V-G
+Route A shrinking endpoint-layer asymptotic design            ACTIVE — ISSUE #55
+boundary-HJB / finite-process implementation                 BLOCKED PENDING 5V-G ACCEPTANCE
 same-process Q validation + SCC diagnostics                  PENDING
 nested Wmax / resolution robustness                          PENDING
 conservative stationary-generator validation                 PENDING
