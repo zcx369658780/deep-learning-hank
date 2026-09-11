@@ -9,7 +9,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Governance state
 
 - live GitHub `main` = synchronized repository/code/governance authority;
-- open GitHub Issue = sole DSH Builder authority only after publication + CURRENT synchronization + authoritative activation comment;
+- open GitHub Issue = sole DSH Builder task authority only after publication + CURRENT synchronization + authoritative activation comment;
 - DSH = bounded Builder/scientific analyst only under an active Issue;
 - ChatGPT = independent reviewer / scientific-route advisor / task issuer / governance operator;
 - Owner = final scientific authority;
@@ -21,7 +21,7 @@ Priority:
 
 ## Current Builder state
 
-**Issue #55 / DLH-5V-G has been published; authoritative activation is pending at this snapshot.**
+**ACTIVE — Issue #55 / DLH-5V-G.**
 
 Title:
 
@@ -35,11 +35,19 @@ Owner decision:
 
 `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
 
+Authoritative activation comment:
+
+`5634144909`
+
+Authority marker:
+
+`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`
+
 Dedicated Builder branch:
 
 `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
 
-Builder MUST NOT mutate anything until an authoritative Issue #55 activation comment is posted. After activation, Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm the exact task type/branch, verify the accepted household blob, and then work only inside the Issue allowlist.
+Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm the exact task type/branch and activation comment, verify the accepted household blob, then work only inside the Issue allowlist.
 
 ## Latest accepted gate — Issue #54 / DLH-5V-F
 
@@ -78,7 +86,7 @@ The accepted finite-m endpoint obstruction remains controlling:
 
 Thus finite exact pointwise process closure fails on the full endpoint complement under the previously frozen exact contract. This does not invalidate the household economics, finite W-domain, continuous KKT law or accepted recurring regular W-frontier formulas.
 
-## Owner-selected Route A — exact scientific object
+## Owner-selected Route A — active scientific object
 
 Issue #55 tests whether the obstruction is only a finite-grid endpoint-layer phenomenon that can be handled by a **shrinking numerical approximation layer** while preserving conservation, monotonicity and one-Q semantics.
 
@@ -101,7 +109,7 @@ w_T^m=(-70/(19m),+70/(19m))
 w_RT^m=(+70/(19m),-70/(19m))
 ```
 
-and the endpoint reachability layers have physical thickness
+and endpoint reachability layers have physical thickness
 
 ```text
 ell_m=70/(19m)=O(1/m).
@@ -136,7 +144,7 @@ a=a_max:   mu_a<=0
 W:         mu_a+mu_b<=0
 ```
 
-A numerical buffer at interior stencil-layer nodes is NOT an economic-face declaration. Its only possible authority is as an asymptotically vanishing numerical restriction under Issue #55.
+A numerical buffer at interior stencil-layer nodes is NOT an economic-face declaration. Its only authority is as a candidate asymptotically vanishing numerical restriction under Issue #55.
 
 ## Same-process / mass authority
 
