@@ -21,45 +21,37 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VB_ACCEPTED_OUTCOME_C__OWNER_ROUTE_DECISION_REQUIRED`
 
-**Issue #50 — DLH-5V-B: Regular restricted-Voronoi geometric moment-cone analysis**
+There is **no active Builder Issue**. Issue #50 is CLOSED completed. DSH must remain stopped until the Owner selects a bounded remedy route and a successor Issue is separately published and activated.
 
-Task type:
-
-`SCIENTIFIC_DESIGN__REGULAR_VORONOI_GEOMETRIC_MOMENT_CONE`
-
-Dedicated branch:
-
-`dsh/issue-50-dlh-5vb-regular-voronoi-moment-cone-2026-09-11`
-
-Owner continuation decision:
-
-`APPROVE_DLH_5VB_REGULAR_VORONOI_GEOMETRIC_MOMENT_CONE_GATE`
-
-Builder authority is active only while Issue #50 remains OPEN, CURRENT Task Index / this Snapshot identity matches, and the authoritative activation comment is present.
-
-## Latest accepted gate — Issue #49 / DLH-5V-A
-
-Issue #49 is CLOSED completed.
+## Latest accepted gate — Issue #50 / DLH-5V-B
 
 Accepted candidate:
 
-`58a0efe2e85b497d8b19c306a831d865ed65136d`
+`6bc8612dc10de6d72d27c9c47d1b4d598a70a15d`
 
 Reviewer acceptance:
 
-`5628285587`
+`5628629099`
 
 Acceptance integration:
 
-`46d6961100d1a050e6b313fa2e321180ed255226`
+`ff0afdf6d3fa0d770654613e42109318d638639d`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5VA_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_RESTRICTED_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+`DLH_5VB_ACCEPTED__OUTCOME_C_CONFIRMED__REGULAR_LOCAL_SHARED_FACE_MOMENT_CONE_OBSTRUCTION_PROVEN__OWNER_ROUTE_DECISION_REQUIRED`
 
-## Controlling household / finite-domain / KFE authority
+Accepted terminal:
+
+`DLH_5VB_REGULAR_VORONOI_LOCAL_SHARED_FACE_MOMENT_CONE_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
+
+## Controlling household / finite-domain authority
 
 Accepted household source remains immutable/read-only:
 
@@ -77,7 +69,7 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-Accepted finite domain:
+Accepted finite domain remains:
 
 ```text
 D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
@@ -85,89 +77,38 @@ D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 
 No numerical production `W_max` is selected.
 
-## Accepted Route-F / regular-frontier geometry
+Restricted-Voronoi finite-volume framework, weighted mass/density semantics, discrete-Hamiltonian requirement, and one-`Q` HJB/KFE principle remain accepted.
 
-Restricted-Voronoi cells remain the accepted finite-volume geometry:
+## Accepted DLH-5V-B obstruction
 
-```text
-S = {s=(a_j,b_i): a_j+b_i<=W_max}
-C_s = {x in D_W: ||x-s||<=||x-r|| for all represented r}
-```
-
-DLH-5V-A froze the regular W-frontier phase/adjacency structure. Exact physical displacement map:
+DLH-5V-A froze the recurring regular W-frontier local shared-face geometry. DLH-5V-B proved:
 
 ```text
-Delta x_sr = ((10/19) Delta j, (7/19) Delta i)
+A^F: K = {7 mu_a + 10 mu_b <= 0}
+A^L: K = {mu_a <= 0, 7 mu_a + 10 mu_b <= 0}
+B^W: K = R^2
 ```
 
-W-active regular classes:
+The continuous W-boundary cone contains exact sliding `(-u,+u)`, but for `A^F` and `A^L`:
 
 ```text
-A^F: (-1,0), (0,-1), (-1,+1), (+1,-1)
-A^L: (-1,0), (0,-1), (-1,+1)
-B^W: (-1,0), (0,-1), (0,+1), (+1,-1)
+7(-u)+10(+u)=3u>0,
 ```
 
-The classification is structurally theta-independent over `theta in [0,1)` and repeats with the accepted period-7 phase structure. Endpoints/corners remain deferred.
+so the physical tangent ray is outside their nonnegative local displacement cones. The obstruction recurs uniformly with the accepted regular phase structure.
 
-## Current DLH-5V-B scientific target
+Scientific meaning: the current restricted-Voronoi **local shared-face transition geometry** is insufficient for the full continuous tangential cone. This does not rule out every Route-F discretization.
 
-For each W-active regular class define
+## Owner decision required
 
-```text
-K_s = cone{Delta x_sr}
-```
+Do not proceed directly to production transition rates or implementation. A bounded successor design gate should compare scientifically defensible remedies while preserving the same-process law.
 
-with nonnegative coefficients and compare to
+A natural first candidate to audit is a W1/native-coordinate **wide-stencil/nonlocal tangent construction**. The minimal exact lattice tangent solves `10 Delta j + 7 Delta i = 0`, e.g. `Delta j=-7`, `Delta i=+10`, giving equal-and-opposite physical asset displacement. This is only a candidate direction; it is not accepted or authorized. Alternative candidates include augmented boundary/face states or transformed-coordinate approaches.
 
-```text
-T_realloc = {mu_a<=0, mu_b>=0, mu_a+mu_b<=0}.
-```
+Endpoint/corner closure, HJB/KFE implementation, Wmax robustness, stationary KFE, aggregates, GE and neural training remain unauthorized.
 
-Mandatory exact sliding benchmark:
+Current Master Roadmap:
 
-```text
-mu=(-u,+u), u>0.
-```
-
-The gate asks only whether the accepted local shared-face geometry can represent the full continuous tangential cone monotonically. If not, it may establish a bounded geometric obstruction; it may not design a remedy or declare every possible Route-F discretization impossible.
-
-## Context-budget rule
-
-After all CURRENT project rules, current Task Index / this Snapshot / Roadmap, and full Issue #50 + comments, required scientific reading is limited to:
-
-1. `docs/design/DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY.md`
-2. `reports/dlh_5va_regular_voronoi_frontier_2026_09_10/DLH_5VA_VORONOI_ADJACENCY_AND_DISPLACEMENTS.md`
-
-Read `DLH_5VA_PHASE_CLASSIFICATION.md` only if one class-condition definition is unclear. Do not reread broad DLH-5T/DLH-5U history without a concrete contradiction.
-
-## Exact allowlist
-
-Four files only, exactly as listed in Issue #50. No existing tracked file may be modified by Builder.
-
-## Scientific ceiling
-
-Do not mutate source/economics; run broad phase/Voronoi enumeration; design production rates; audit strict face-flux moment maps; analyze endpoint/corner transitions; implement/execute HJB/KFE/stationary; select numerical `W_max`; compute aggregates/GE; run multi-province or neural training; or enter nominal HANK, calibration, policy, welfare or Results.
-
-## Intended route after this gate
-
-If the regular geometric cone is feasible:
-
-```text
-DLH-5V-B regular moment-cone closure
--> bounded boundary-local rate / strict face-flux audit
--> endpoint/corner closure
--> boundary-HJB / Route-F implementation
--> KKT + same-process generator validation
--> Wmax / resolution robustness
--> conservative stationary-generator validation
--> Issue #27 stationary KFE
--> C,L,A,B
--> two-region structural anchor
--> 3–5 province integration
--> learned W^L
-```
-
-If a regular shared-face cone obstruction is proven, the next step is an Owner route decision on a bounded remedy before implementation.
+`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 
 Chat text is not Builder authority.
