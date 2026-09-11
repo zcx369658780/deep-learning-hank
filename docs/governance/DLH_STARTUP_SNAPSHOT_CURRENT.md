@@ -21,41 +21,35 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VD_ACCEPTED_OUTCOME_A__REMAINING_REGULAR_SECTOR_GATE_PENDING`
 
-**Issue #52 — DLH-5V-D: Freeze control-dependent W1 wide-stencil rates and conservative same-process generator contract**
+There is **no active Builder Issue**. Issue #52 is CLOSED completed. DSH must remain stopped until a successor Issue is separately published, CURRENT Task Index / this Snapshot are synchronized, and an authoritative activation comment is posted.
 
-Task type:
-
-`SCIENTIFIC_DESIGN__W1_WIDE_STENCIL_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT`
-
-Dedicated branch:
-
-`dsh/issue-52-dlh-5vd-wide-stencil-rate-contract-2026-09-11`
-
-Owner continuation decision:
-
-`APPROVE_DLH_5VD_CONTROL_DEPENDENT_WIDE_STENCIL_RATE_AND_CONSERVATIVE_GENERATOR_GATE`
-
-Builder authority is active only while Issue #52 remains OPEN, CURRENT Task Index / this Snapshot identity matches, and the authoritative activation comment is present.
-
-## Latest accepted gate — Issue #51 / DLH-5V-C
+## Latest accepted gate — Issue #52 / DLH-5V-D
 
 Accepted candidate:
 
-`2134a4b249eb0a79dc20d60ba1fdee830304f261`
+`81705b0c1671a8ee09ee5c2f05953f3e4f9f1e8b`
 
 Reviewer acceptance:
 
-`5630191586`
+`5631523081`
 
 Acceptance integration:
 
-`cdbf1906963a9bf06cf117ba63072d2f1542d501`
+`d58bd962be3acc8b6f646b66643bbc96f121be57`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5VC_ACCEPTED__OUTCOME_A_CONFIRMED__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY_FROZEN__READY_FOR_WIDE_STENCIL_RATE_GATE`
+`DLH_5VD_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
+
+Accepted terminal:
+
+`DLH_5VD_REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
 
 ## Controlling household / finite-domain authority
 
@@ -83,11 +77,11 @@ D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 
 No numerical production `W_max` is selected.
 
-Restricted-Voronoi state partition, weighted mass/density semantics, discrete-Hamiltonian requirement, and one-`Q` HJB/KFE principle remain accepted.
+Restricted-Voronoi state partition, weighted mass/density semantics, discrete-Hamiltonian requirement and one-`Q` HJB/KFE principle remain accepted.
 
-## Accepted regular wide-stencil route
+## Accepted regular `T_realloc` control-dependent rate contract
 
-On recurring regular W-active states with `j>=7`:
+On accepted regular W-active states with `j>=7`:
 
 ```text
 w_in = (-10/19,0)
@@ -95,73 +89,51 @@ w_T  = (-70/19,+70/19)
 wide destination = (j-7,i+10)
 ```
 
-The wide edge is an explicit **boundary wide-stencil Markov transition**, not a shared-face FV flux. It preserves represented status, `a+b`, period-7 class and top/sub-top offset. The finite lower-a endpoint band `j in {0,...,6}` remains deferred.
-
-Accepted reallocation sector:
+Accepted sector:
 
 ```text
 T_realloc = {mu_a<=0, mu_b>=0, mu_W=mu_a+mu_b<=0}
-cone{w_in,w_T}=T_realloc
 ```
 
-## Active DLH-5V-D scientific target
-
-For each candidate boundary control `(c,l,d)` considered **inside the discrete Hamiltonian maximization**, compute the continuous drift. When the candidate lies in `T_realloc`, write
-
-```text
-mu=(-a-b,+a)
-a=mu_b>=0
-b=-mu_W>=0
-```
-
-and freeze the unique base-grid candidate-control rates
+For every continuously admissible candidate control whose drift lies in this sector, the accepted candidate-control rates are
 
 ```text
 q_T  = 19*mu_b/70
-q_in = 19*(-mu_W)/10.
+q_in = 19*(-mu_W)/10
 ```
 
-Under fixed-aspect symbolic refinement divide both rates by `h`.
+with `/h` refinement scaling.
 
-Issue #52 must close the exact activation/equality cases, uniqueness, candidate-control `H_h` semantics, no-double-counting rule, conservative diagonal construction, and same selected `Q` handoff to future KFE. It must explicitly identify any other admissible regular W-boundary drift sector that remains outside this contract.
+Accepted semantics:
 
-## KFE methodology safeguard transferred from independent Chapter-5 project
+- exact nonnegative unique two-ray decomposition on `T_realloc`;
+- rates are used to score each in-sector candidate in the discrete `H_h` before global maximization;
+- no global regular-W-boundary argmax is frozen yet;
+- outside-sector but continuously admissible candidates remain in the future global HJB choice set;
+- no double counting with alternative shared-face asset rates;
+- conservative diagonal is the negative sum of actual represented outgoing rates, so `Q1=0` by construction;
+- no omitted off-grid destination may leave a retained diagonal escape;
+- after the remaining regular sector is closed, one global discrete-Hamiltonian argmax selects the control plus its already-defined sector-specific rates, producing one backward `Q`;
+- future KFE consumes exactly `Q^T`, never reconstructing boundary rates independently;
+- downstream mass object is `p=Mg`, `p_dot=Q^T p`; pin/normalization is scale fixing only; Issue #27 pin authority is unchanged.
 
-The clean/source-free KFE experience is accepted only as a supporting safeguard, not as foreign model authority:
+## Next bounded scientific object
+
+The remaining admissible regular W-face sector is
 
 ```text
-Q = backward controlled generator
-forward = Q^T
-off-diagonal >= 0
-diagonal = -sum of actually represented outgoing rates
-Q1=0
-same Q for HJB and KFE
-stationary downstream object = mass p
-pin/normalization fixes scale only and cannot repair leakage
-original Q^T p residual must be validated
-SCC/closed recurrent classes must be diagnosed before uniqueness claims
+{mu_b<0, mu_W<=0}
 ```
 
-MATLAB-faithful contaminated-row reproduction logic is not imported. Existing Issue #27 component-pin authority remains unchanged and downstream.
+which contains reverse reallocation (`mu_a>0, mu_b<0`) and both-inward depletion (`mu_a<=0, mu_b<0`).
 
-## Context-budget rule
+Recommended next gate: **remaining regular-sector transition/rate design**. No successor is active yet and no remedy is pre-authorized.
 
-After all CURRENT project rules, current Task Index / this Snapshot / Roadmap, and full Issue #52 + comments, required scientific reading is limited to:
+The lower-a endpoint band `j in {0,...,6}`, endpoint/joint-boundary closure, code implementation, numerical `W_max`, stationary-generator validation, stationary KFE, aggregates, GE, multi-province work and neural training remain unauthorized.
 
-1. `docs/design/DLH_5VC_W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY.md`
-2. `reports/dlh_5vc_w1_wide_stencil_tangent_2026_09_11/DLH_5VC_MOMENT_LOCALITY_AND_SAME_PROCESS_AUDIT.md`
-3. `reports/dlh_5vc_w1_wide_stencil_tangent_2026_09_11/DLH_5VC_DESTINATION_PHASE_AND_DOMAIN_AUDIT.md`
-4. `docs/design/DLH_5U_W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION.md` only if the accepted discrete-Hamiltonian / one-Q semantics needs clarification.
+## Downstream KFE validation contract
 
-Verify the accepted household source blob only. Do not reread broad DLH-5T/5V-A/5V-B history without a concrete contradiction.
-
-## Exact allowlist
-
-Five new files only, exactly as listed in Issue #52. No existing tracked file may be modified by Builder.
-
-## Scientific ceiling
-
-Design only. Do not mutate source/economics; change grid/aspect ratio; implement or numerically assemble the wide-stencil generator; execute HJB/KFE/stationary; redesign endpoint/corner transitions; invent unaccepted regular-sector remedies; select numerical `W_max`; redesign Issue #27 pinning; import contaminated-row KFE production logic; compute aggregates/GE; or enter multi-province/neural/nominal/calibration/policy/welfare/Results.
+When implementation is eventually authorized, acceptance must include finite entries, nonnegative off-diagonals, `||Q1||_inf`, orientation/flattening, exact same `Q` from HJB to KFE, SCC/closed recurrent-class diagnostics before uniqueness claims, original source-free stationary residual, mass normalization/nonnegativity and density conversion through cell weights.
 
 Current Master Roadmap:
 
