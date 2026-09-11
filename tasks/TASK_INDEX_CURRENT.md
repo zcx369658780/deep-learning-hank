@@ -10,7 +10,9 @@ Repository: `zcx369658780/deep-learning-hank`
 
 **NONE.**
 
-Issue #52 / DLH-5V-D is scientifically accepted and CLOSED completed. DSH must remain stopped until a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized, and an authoritative activation comment is posted. Chat text alone does not create Builder authority.
+Issue #52 / DLH-5V-D is scientifically accepted and CLOSED completed. DSH must remain stopped until a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
 
 ## Latest accepted task — Issue #52 / DLH-5V-D
 
@@ -46,7 +48,7 @@ Accepted terminal:
 
 `DLH_5VD_REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
 
-## Controlling household / finite-domain authority
+## Accepted scientific result
 
 Accepted household source remains immutable/read-only:
 
@@ -64,60 +66,45 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-Accepted finite domain remains:
-
-```text
-D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
-```
-
-No numerical production `W_max` is selected.
-
-## Accepted DLH-5V-D contract — regular `T_realloc` sector
-
-Accepted regular reallocation sector:
+On regular W-active states where the accepted forward wide transition is available, the accepted `T_realloc` sector is
 
 ```text
 T_realloc = {mu_a<=0, mu_b>=0, mu_W=mu_a+mu_b<=0}
 ```
 
-Accepted regular W1 displacements for `j>=7`:
-
-```text
-w_in = (-10/19,0)
-w_T  = (-70/19,+70/19)
-wide destination = (j-7,i+10)
-```
-
-For every continuously admissible candidate control whose drift lies in `T_realloc`, the accepted **sector-candidate scoring** rate map is
+with canonical control-dependent rates
 
 ```text
 q_T  = 19*mu_b/70
 q_in = 19*(-mu_W)/10
 ```
 
-with fixed-aspect refinement rates divided by `h`.
+for the accepted physical directions
 
-Accepted scientific semantics:
+```text
+w_T  = (-70/19,+70/19)
+w_in = (-10/19,0).
+```
 
-- the two-ray decomposition is exact, nonnegative and unique on `T_realloc`;
-- zero-rate equality cases vanish continuously;
-- the rates enter the candidate's discrete `H_h` score before any global maximization;
-- Issue #52 does **not** freeze the global regular-W-boundary argmax;
-- outside-`T_realloc` but continuously admissible candidates remain in the future global HJB choice set;
-- canonical asset-drift representation in this sector uses exactly `{q_in,q_T}`, without shared-face double counting;
-- actual represented off-diagonals are nonnegative and the diagonal is the negative sum of actual outgoing rates, so `Q1=0` by construction;
-- omitted-destination / retained-diagonal leakage is forbidden;
-- after all regular sectors are closed, one global discrete-Hamiltonian argmax will select a candidate with already-defined sector-specific rates, producing one backward `Q`;
-- future KFE must consume exactly that `Q^T` and may not rebuild boundary transitions independently;
-- downstream mass semantics remain `p=Mg`, `p_dot=Q^T p`; pin/normalization is scale fixing only and Issue #27 component-pin authority remains unchanged.
+The rate decomposition is exact, nonnegative and unique in `T_realloc`. Rates score each in-sector candidate inside the discrete `H_h` before any maximization. This gate does **not** freeze the global regular-W-boundary argmax; continuously admissible candidates outside `T_realloc` remain in the future HJB choice set until their own sector contract is accepted.
+
+For any eventually selected candidate, the production generator contract is source-free and conservative by construction:
+
+```text
+Q_ij >= 0, i != j
+Q_ii = -sum_{j!=i} Q_ij over actual represented outgoing edges
+Q 1 = 0
+future forward operator = exactly Q^T
+```
+
+KFE must not rebuild boundary rates independently. `p=Mg`, `p_dot=Q^T p`; Issue #27 pin/normalization remains downstream scale fixing only and may not repair leakage.
 
 ## Next bounded scientific object
 
-The continuous regular W-face tangent cone is `{mu_W<=0}`. The accepted DLH-5V-D contract covers only `T_realloc`. The remaining regular sector is
+The remaining regular tangent-admissible sector is
 
 ```text
-{mu_W<=0} \ T_realloc
-= {mu_b<0, mu_W<=0}.
+{mu_W<=0} \ T_realloc = {mu_b<0, mu_W<=0}.
 ```
 
 It contains:
@@ -125,13 +112,13 @@ It contains:
 1. reverse reallocation: `mu_a>0, mu_b<0, mu_W<=0`;
 2. both-inward depletion: `mu_a<=0, mu_b<0`.
 
-Recommended successor gate: **remaining admissible regular W-boundary sector transition/rate design**. No remedy is active or pre-authorized yet.
+Recommended successor gate: audit/freeze represented transition geometry and nonnegative candidate-control rate contracts for these two remaining regular sub-sectors, without touching endpoint/joint-boundary closure or implementation. A mirror exact tangent `(+7,-10)` is only a candidate for reverse reallocation until separately proved admissible.
 
-Endpoint/joint-boundary closure remains separate and downstream. Implementation, numerical `W_max`, stationary-generator validation, stationary KFE, aggregates, GE, multi-province execution and neural training remain unauthorized.
+Endpoint/joint-boundary closure, global regular-boundary HJB implementation, numerical `W_max`, stationary generator validation, stationary KFE, aggregates, GE, multi-province execution and neural training remain unauthorized.
 
-## Downstream KFE safeguards
+## Planned session handoff checkpoint
 
-Future implementation acceptance must include finite generator entries, nonnegative off-diagonals, `||Q1||_inf`, frozen orientation/flattening, exact same `Q` from HJB to KFE, SCC/closed recurrent-class diagnostics, original source-free `Q^T p` residual, mass normalization/nonnegativity and density conversion through cell weights.
+Because the current chat is long, the preferred handoff checkpoint is **after the successor remaining-regular-sector gate is independently accepted and governance is synchronized**. Before handoff, refresh this Task Index, Startup Snapshot, Master Roadmap, and a dedicated session handoff/source snapshot so no accepted authority is lost.
 
 Current Startup Snapshot:
 
