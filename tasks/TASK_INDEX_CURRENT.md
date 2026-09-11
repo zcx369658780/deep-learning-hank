@@ -1,42 +1,42 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VG_OUTCOME_C_ACCEPTED__OWNER_ROUTE_REDECISION_REQUIRED`
+Status: `PUBLISHED_BUILDER_ISSUE_56__DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_AUDIT__ACTIVATION_PENDING`
 
-Last synchronized: 2026-09-11
+Last synchronized: 2026-09-12
 
 Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NONE.**
-
-Issue #55 / DLH-5V-G has been independently reviewed and accepted at Outcome C. No successor Builder Issue is authorized by that acceptance. Chat text, this Task Index, or the roadmap alone cannot create successor authority.
-
-## Latest accepted task — Issue #55 / DLH-5V-G
+**Issue #56 / DLH-5V-H is published but activation is pending at this commit.**
 
 Title:
 
-`DLH-5V-G: Prove/refute shrinking endpoint-layer asymptotic same-process approximation`
+`DLH-5V-H: Audit state-constraint HJB boundary consistency target before geometry redesign`
 
 Task type:
 
-`SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
+`SCIENTIFIC_THEORY_AUDIT__STATE_CONSTRAINT_HJB_BOUNDARY_CONSISTENCY_TARGET`
 
-Accepted candidate:
+Owner decision:
 
-`15f2f81653a847344d2cd647705487cc893af1d7`
+`APPROVE_DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT`
 
-Reviewer acceptance:
+Dedicated Builder branch after activation:
 
-`5635802416`
+`dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
 
-Acceptance level:
+Issue #56 body plus its future authoritative activation comment are the sole Builder task authority. Builder MUST NOT mutate anything until the activation comment is posted and a fresh startup verifies Issue #56 remains OPEN and all CURRENT governance agrees.
 
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
+## Latest accepted task — Issue #55 / DLH-5V-G
 
-Acceptance integration:
+Issue #55 is CLOSED completed at Outcome C.
 
-`8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
+Accepted candidate: `15f2f81653a847344d2cd647705487cc893af1d7`
+
+Reviewer acceptance: `5635802416`
+
+Acceptance integration: `8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
 
 Accepted verdict:
 
@@ -46,66 +46,25 @@ Accepted terminal:
 
 `DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
 
-## Accepted scientific result
+Issue #55 remains accepted under the strong graph-consistency target it was assigned; Issue #56 does not silently revise that result.
 
-DLH-5V-G tested Route A on the frozen fixed-aspect refinement family
+## Issue #56 scientific object after activation
 
-```text
-m=1,2,...
-da_m=10/(19m)
-db_m=7/(19m)
-a_j=j*10/(19m), j=0,...,19m
-b_i=b_min+i*7/(19m)
-N_m=floor(19m*(W_max-b_min))
-10j+7i<=N_m
-```
+Route E audits whether the raw admitted-drift Kuratowski graph condition used in Issue #55 is actually necessary for convergence to the state-constraint HJB value problem, or whether viscosity/operator consistency requires a weaker boundary test.
 
-with household economics, `D_W`, native represented states, 10:7 aspect, nonnegative Markov rates, row conservation and one-Q HJB/KFE semantics frozen.
+The audit must begin with the continuous state-constraint HJB / viscosity target and primary-theory provenance, then identify the legitimate monotone-scheme consistency object, and only afterward test the frozen finite-process architecture.
 
-The finite-m A1 sector algebra remains coherent for admitted candidates, but the exact Issue-#55 tangent-cone graph-consistency target is structurally impossible on the frozen state family. A controlling counterexample is
+Mandatory primary theory anchors include Soner (1986) Parts I/II and Barles–Souganidis (1991), with explicit sign/hypothesis mapping. Generic theorem name-dropping is insufficient.
 
-```text
-s_m=(0,i_t^m(0)-2),  mu=(0,1).
-```
+The Issue-#55 counterexample `s_m=(0,i_t^m(0)-2), mu=(0,1)` and its upper-corner analogue must be retested under the legitimate viscosity/operator target. A minimal state-constraint toy scheme is also required as a theory discriminator.
 
-These states are represented and non-W-active, converge physically to the true corner `(0,W_max)`, admit and exactly represent `mu=(0,1)`, yet the limiting true tangent cone requires
-
-```text
-mu_a>=0
-mu_W<=0.
-```
-
-Hence outer/limsup fails.
-
-The obstruction is not confined to a fixed finite row band. For lower-a-layer states let `k_m=i_t(0)-i_m`. Any sequence `k_m=o(m)` can converge to the W-corner. Outer consistency requires all outward b-direction drifts to be removed eventually along every such sequence. A diagonal argument then forces an eventual positive physical neighborhood in which those drifts are excluded; that in turn violates recovery/liminf at nearby `a=0` face-interior points where the true cone has full b-direction freedom. Therefore no per-state shrinking admissibility buffer can satisfy both exact graph conditions.
-
-A2 first-moment-defect relaxation does not remove this separately required admissible-set graph obstruction under Issue #55. Route A therefore fails under its authorized consistency theorem.
-
-## Prior accepted finite-m endpoint obstruction — Issue #54 / DLH-5V-F
-
-Issue #54 remains CLOSED accepted. Its exact finite-m lattice obstruction remains valid and is not reopened by Issue #55.
-
-Accepted candidate:
-
-`b9dab7b6cf5d724074765ddb88d6f300175f6c6f`
-
-Reviewer acceptance:
-
-`5633995486`
-
-Acceptance integration:
-
-`4e77d9c753f81eb2517a8b90a0827db6af8faed4`
-
-## Controlling household / same-process authority
+## Frozen authority
 
 Accepted household source remains immutable/read-only:
 
 `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
 
-Git blob:
-
-`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+Git blob: `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
 Binding law:
 
@@ -121,23 +80,16 @@ p=M g
 p_dot=Q^T p
 ```
 
-Pinning/normalization may fix scale only and may not repair leakage.
+Issue #54 finite-m lattice obstruction and Issue #55 strong graph obstruction remain accepted provenance.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Owner route re-decision — next scientific object, NOT YET AUTHORIZED
+## Hard ceiling
 
-Route A is now rejected under the exact Issue-#55 graph-consistency target. Owner must explicitly choose a successor route before implementation. Remaining route families include:
-
-1. boundary-state augmentation / boundary fitting so the state representation itself respects the boundary geometry;
-2. grid/aspect or boundary-fitted lattice redesign;
-3. coordinate transformation such as `(a,W)` with affected boundary laws and mass geometry re-derived;
-4. an explicitly re-scoped consistency notion only if Owner chooses to reopen the mathematical target rather than the state geometry.
-
-No route above has Builder authority yet. No implementation gate is authorized until a new Issue is separately published, synchronized and activated.
+Issue #56 is theory/design only. It does not authorize source implementation, production generator assembly/run, HJB/KFE/stationary execution, numerical production `W_max`, state/grid/domain redesign, state augmentation, coordinate transformation, aggregates/GE/multi-region/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #55 acceptance history.
+- Issue #56 body/comments.
