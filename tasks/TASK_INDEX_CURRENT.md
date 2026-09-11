@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE_55__DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VG_OUTCOME_C_ACCEPTED__OWNER_ROUTE_REDECISION_REQUIRED`
 
 Last synchronized: 2026-09-11
 
@@ -8,7 +8,11 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**ACTIVE — Issue #55 / DLH-5V-G.**
+**NONE.**
+
+Issue #55 / DLH-5V-G has been independently reviewed and accepted at Outcome C. No successor Builder Issue is authorized by that acceptance. Chat text, this Task Index, or the roadmap alone cannot create successor authority.
+
+## Latest accepted task — Issue #55 / DLH-5V-G
 
 Title:
 
@@ -18,27 +22,68 @@ Task type:
 
 `SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
 
-Owner decision:
+Accepted candidate:
 
-`APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
+`15f2f81653a847344d2cd647705487cc893af1d7`
 
-Authoritative activation comment:
+Reviewer acceptance:
 
-`5634144909`
+`5635802416`
 
-Authority marker:
+Acceptance level:
 
-`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
-Dedicated Builder branch:
+Acceptance integration:
 
-`dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
+`8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
 
-Issue #55 body plus authoritative activation comment `5634144909` are the sole Builder task authority. This Task Index cannot expand scope. Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, then work only inside the exact six-file allowlist.
+Accepted verdict:
 
-## Latest accepted task — Issue #54 / DLH-5V-F
+`DLH_5VG_ACCEPTED__OUTCOME_C_CONFIRMED__ROUTE_A_TANGENT_CONE_GRAPH_CONSISTENCY_OBSTRUCTION_FROZEN__OWNER_ROUTE_REDECISION_REQUIRED`
 
-Issue #54 is CLOSED completed.
+Accepted terminal:
+
+`DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
+
+## Accepted scientific result
+
+DLH-5V-G tested Route A on the frozen fixed-aspect refinement family
+
+```text
+m=1,2,...
+da_m=10/(19m)
+db_m=7/(19m)
+a_j=j*10/(19m), j=0,...,19m
+b_i=b_min+i*7/(19m)
+N_m=floor(19m*(W_max-b_min))
+10j+7i<=N_m
+```
+
+with household economics, `D_W`, native represented states, 10:7 aspect, nonnegative Markov rates, row conservation and one-Q HJB/KFE semantics frozen.
+
+The finite-m A1 sector algebra remains coherent for admitted candidates, but the exact Issue-#55 tangent-cone graph-consistency target is structurally impossible on the frozen state family. A controlling counterexample is
+
+```text
+s_m=(0,i_t^m(0)-2),  mu=(0,1).
+```
+
+These states are represented and non-W-active, converge physically to the true corner `(0,W_max)`, admit and exactly represent `mu=(0,1)`, yet the limiting true tangent cone requires
+
+```text
+mu_a>=0
+mu_W<=0.
+```
+
+Hence outer/limsup fails.
+
+The obstruction is not confined to a fixed finite row band. For lower-a-layer states let `k_m=i_t(0)-i_m`. Any sequence `k_m=o(m)` can converge to the W-corner. Outer consistency requires all outward b-direction drifts to be removed eventually along every such sequence. A diagonal argument then forces an eventual positive physical neighborhood in which those drifts are excluded; that in turn violates recovery/liminf at nearby `a=0` face-interior points where the true cone has full b-direction freedom. Therefore no per-state shrinking admissibility buffer can satisfy both exact graph conditions.
+
+A2 first-moment-defect relaxation does not remove this separately required admissible-set graph obstruction under Issue #55. Route A therefore fails under its authorized consistency theorem.
+
+## Prior accepted finite-m endpoint obstruction — Issue #54 / DLH-5V-F
+
+Issue #54 remains CLOSED accepted. Its exact finite-m lattice obstruction remains valid and is not reopened by Issue #55.
 
 Accepted candidate:
 
@@ -52,61 +97,7 @@ Acceptance integration:
 
 `4e77d9c753f81eb2517a8b90a0827db6af8faed4`
 
-Accepted verdict:
-
-`DLH_5VF_ACCEPTED__OUTCOME_C_CONFIRMED__EXACT_ENDPOINT_FINITE_PROCESS_REPRESENTABILITY_OBSTRUCTION_FROZEN__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
-
-Accepted terminal:
-
-`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
-
-## Accepted obstruction — controlling science
-
-The accepted exact finite-m obstruction is:
-
-```text
-actual native represented states only
-+ nonnegative Markov rates
-+ exact pointwise first-moment equality for every finite endpoint candidate
-+ exact one-Q same-process HJB/KFE law
-```
-
-cannot all hold over the full endpoint complement.
-
-At `r_j=0` exact-frontier top states, every represented destination has `Delta W<=0`; exact tangent `mu_W=0` therefore uses same-W moves only. Since `10 Delta j + 7 Delta i=0`, same-W native moves are multiples of `(7,-10)`. Lower endpoint bands can miss `(-7,+10)` and upper endpoint bands can miss `(+7,-10)`. This is a lattice/discretization obstruction, not a household-source error.
-
-The exact recurring regular W-frontier contract through DLH-5V-E remains accepted and is not reopened.
-
-## Active scientific object — Route A
-
-Issue #55 investigates the least-disruptive Route A only. It keeps household economics, `D_W`, native represented-state family, 10:7 aspect, nonnegative/conservative Markov rows and one-Q semantics, while allowing a deliberately numerical shrinking endpoint-layer approximation.
-
-Symbolic fixed-aspect refinement family:
-
-```text
-m=1,2,...
-da_m=10/(19m)
-db_m=7/(19m)
-a_j=j*10/(19m), j=0,...,19m
-b_i=b_min+i*7/(19m)
-N_m=floor(19m*(W_max-b_min))
-10j+7i<=N_m
-```
-
-Endpoint stencil layers have physical thickness bounded by
-
-```text
-ell_m=70/(19m)=O(1/m).
-```
-
-Scientific preference order:
-
-1. first test a shrinking **numerical candidate-admissibility buffer** that may preserve exact first moments for all admitted candidates;
-2. only if that fails, test an explicit quantified moment-defect approximation.
-
-Required design theorem includes: exactness away from endpoints, shrinking physical layer, tangent-cone/admissible-set graph consistency, generator/operator consistency, vanishing numerical diffusion, monotonicity, conservation, one-Q same-process semantics and seam consistency.
-
-## Same-process / mass authority
+## Controlling household / same-process authority
 
 Accepted household source remains immutable/read-only:
 
@@ -134,14 +125,19 @@ Pinning/normalization may fix scale only and may not repair leakage.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Hard ceiling
+## Owner route re-decision — next scientific object, NOT YET AUTHORIZED
 
-Issue #55 is design-only. It does not authorize source implementation, production generator assembly/run, HJB/KFE/stationary execution, numerical production `W_max`, grid/aspect/domain redesign, state augmentation, coordinate transformation, aggregates/GE/multi-region/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
+Route A is now rejected under the exact Issue-#55 graph-consistency target. Owner must explicitly choose a successor route before implementation. Remaining route families include:
+
+1. boundary-state augmentation / boundary fitting so the state representation itself respects the boundary geometry;
+2. grid/aspect or boundary-fitted lattice redesign;
+3. coordinate transformation such as `(a,W)` with affected boundary laws and mass geometry re-derived;
+4. an explicitly re-scoped consistency notion only if Owner chooses to reopen the mathematical target rather than the state geometry.
+
+No route above has Builder authority yet. No implementation gate is authorized until a new Issue is separately published, synchronized and activated.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #55 body/comments.
-
-Issue #54 acceptance history remains controlling provenance for the obstruction.
+- Issue #55 acceptance history.
