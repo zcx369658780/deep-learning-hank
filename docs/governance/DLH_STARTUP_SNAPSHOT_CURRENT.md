@@ -9,7 +9,7 @@ Local Owner-designated workspace: `D:\deep-learning-hank`
 ## Governance state
 
 - live GitHub `main` = synchronized repository/code/governance authority;
-- open GitHub Issue = sole DSH Builder task authority only after publication + CURRENT synchronization + authoritative activation comment;
+- open GitHub Issue = sole DSH Builder authority only after publication + CURRENT synchronization + authoritative activation comment;
 - DSH = bounded Builder/scientific analyst only under an active Issue;
 - ChatGPT = independent reviewer / scientific-route advisor / task issuer / governance operator;
 - Owner = final scientific authority;
@@ -21,19 +21,27 @@ Priority:
 
 ## Current Builder state
 
-**No active Builder Issue.**
-
-Current status:
-
-`NO_ACTIVE_BUILDER_ISSUE__DLH_5VF_OUTCOME_C_ACCEPTED__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
-
-Issue #54 / DLH-5V-F has been independently accepted at Outcome C. No successor authority exists until the Owner chooses the approximation/discretization route and the normal publication/synchronization/activation sequence is completed.
-
-## Latest accepted gate — Issue #54 / DLH-5V-F
+**Issue #55 / DLH-5V-G has been published; authoritative activation is pending at this snapshot.**
 
 Title:
 
-`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
+`DLH-5V-G: Prove/refute shrinking endpoint-layer asymptotic same-process approximation`
+
+Task type:
+
+`SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
+
+Owner decision:
+
+`APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
+
+Dedicated Builder branch:
+
+`dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
+
+Builder MUST NOT mutate anything until an authoritative Issue #55 activation comment is posted. After activation, Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm the exact task type/branch, verify the accepted household blob, and then work only inside the Issue allowlist.
+
+## Latest accepted gate — Issue #54 / DLH-5V-F
 
 Accepted candidate:
 
@@ -61,35 +69,55 @@ Accepted terminal:
 
 ## Accepted obstruction — exact core
 
-Frozen native grid:
+The accepted finite-m endpoint obstruction remains controlling:
+
+- exact-frontier `r_j=0` source has every represented destination with `Delta W<=0`;
+- exact `mu_W=0` with nonnegative Markov rates therefore requires same-W transitions only;
+- `10 Delta j + 7 Delta i=0` implies same-W native displacements are multiples of `(7,-10)`;
+- lower a-interior endpoint bands can lack `(-7,+10)` and upper a-interior bands can lack `(+7,-10)`.
+
+Thus finite exact pointwise process closure fails on the full endpoint complement under the previously frozen exact contract. This does not invalidate the household economics, finite W-domain, continuous KKT law or accepted recurring regular W-frontier formulas.
+
+## Owner-selected Route A — exact scientific object
+
+Issue #55 tests whether the obstruction is only a finite-grid endpoint-layer phenomenon that can be handled by a **shrinking numerical approximation layer** while preserving conservation, monotonicity and one-Q semantics.
+
+Fixed-aspect symbolic refinement family:
 
 ```text
-da=10/19
-db=7/19
-a_j=j*(10/19), j=0,...,19
-10j+7i<=N
+m=1,2,...
+da_m=10/(19m)
+db_m=7/(19m)
+a_j=j*10/(19m), j=0,...,19m
+b_i=b_min+i*7/(19m)
+N_m=floor(19m*(W_max-b_min))
+10j+7i<=N_m
 ```
 
-At an exact-frontier top state `r_j=0`, the source W-index is exactly `N`; therefore every actual represented destination has `Delta W<=0`. If a candidate drift has exact tangent motion `mu_W=0`, nonnegative Markov rates can place weight only on same-W destinations.
-
-The integer same-W identity is
+Primitive exact tangent jumps scale as
 
 ```text
-10 Delta j + 7 Delta i = 0
+w_T^m=(-70/(19m),+70/(19m))
+w_RT^m=(+70/(19m),-70/(19m))
 ```
 
-so all native same-W displacements are multiples of `(7,-10)`.
+and the endpoint reachability layers have physical thickness
 
-Consequently:
+```text
+ell_m=70/(19m)=O(1/m).
+```
 
-- lower a-interior endpoint band `j in {1,...,6}` lacks the forward same-W orientation `(-7,+10)` and cannot represent the continuously admissible tangent ray `(-u,+u)`;
-- upper a-interior endpoint band `j in {13,...,18}` lacks the reverse same-W orientation `(+7,-10)` and cannot represent `(+u,-u)`.
+### Route-A preference order
 
-For every `N>=190` in the current regular-Regime-I symbolic family, the period-7 residue structure yields at least one obstructed a-interior exact-frontier column. This closed-form certificate alone determines Outcome C; bounded exact enumeration is supplementary evidence only.
+First test **A1**: a numerical candidate-admissibility buffer on the finite stencil-width layer, applied before scoring/selection and clearly distinguished from true economic faces. If A1 is asymptotically consistent, it may retain exact first moments for all admitted candidates.
+
+Only if A1 fails, test **A2**: an explicit first-moment defect with a declared error object and a proved vanishing operator/boundary-layer consistency statement.
+
+The gate must prove/refute: exactness away from endpoints, shrinking layer, tangent-cone graph consistency, generator/operator consistency, jump/rate/second-moment scaling, monotonicity, conservation, one-Q same-process semantics and seam consistency with the accepted exact regular contract.
+
+A finite enumeration is supplementary only; the controlling consistency result must be analytic or parameterized symbolically.
 
 ## Continuous boundary law remains intact
-
-The obstruction does **not** invalidate the finite W-domain or continuous state-constraint/KKT law.
 
 Accepted domain:
 
@@ -99,7 +127,7 @@ a_max=10
 b_min=-2
 ```
 
-Actual active-face laws:
+True active-face laws remain:
 
 ```text
 a=0:       mu_a>=0
@@ -108,36 +136,7 @@ a=a_max:   mu_a<=0
 W:         mu_a+mu_b<=0
 ```
 
-Reachability bands remain distinct from economic faces. In Regime I the continuous W face does not intersect `b=b_min`; the continuous triple intersection at `(a_max,b_min)` occurs only at `W_max=8`. Discrete restricted-Voronoi W-contact is a separate cell-level boundary representation object.
-
-## Previously accepted recurring regular W-frontier block
-
-DLH-5V-A through DLH-5V-E remain accepted. The common regular W-active region is
-
-```text
-7<=j<=12
-i>=10
-```
-
-with sector contracts
-
-```text
-T_W={mu_W<=0}=T_realloc union R_reverse union R_deplete
-```
-
-and candidate semantics
-
-```text
-continuous admissibility
- -> candidate-specific represented nonnegative rates
- -> discrete H_h score before selection
- -> ONE global statewise argmax
- -> selected rates
- -> ONE conservative backward Q
- -> future KFE consumes exactly Q^T
-```
-
-Outcome C is confined to the finite endpoint complement; it does not reopen the accepted regular formulas.
+A numerical buffer at interior stencil-layer nodes is NOT an economic-face declaration. Its only possible authority is as an asymptotically vanishing numerical restriction under Issue #55.
 
 ## Same-process / mass authority
 
@@ -153,11 +152,6 @@ Binding law:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
-```
-
-Future conservative process safeguards remain:
-
-```text
 Q backward
 Q^T forward
 Q_ij>=0 for i!=j
@@ -168,35 +162,19 @@ p=M g
 p_dot=Q^T p
 ```
 
-Pinning/normalization may fix scale only and may not repair leakage.
+Pinning/normalization may never repair leakage.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Exact next decision — Owner route choice, no Builder authority yet
+## Interpretation ceiling
 
-The accepted obstruction shows that all four of the following cannot be retained simultaneously over the full endpoint complement:
-
-```text
-native represented state set only
-nonnegative Markov rates
-exact pointwise first-moment equality
-exact one-Q same-process HJB/KFE semantics
-```
-
-The scientifically bounded route families are:
-
-- an explicitly controlled monotone/conservative asymptotic endpoint approximation that relaxes exact pointwise moment matching while preserving actual destinations, conservation and one-Q semantics;
-- augmentation/boundary fitting of the represented state set to restore an exact tangent destination;
-- grid/aspect/boundary-fitted lattice redesign;
-- coordinate transformation such as a future `(a,W)` representation with all affected boundary laws re-derived.
-
-No route has Builder authority yet. Implementation, numerical `W_max`, production `Q`, HJB/KFE/stationary execution, aggregates, GE, regional, neural, nominal, calibration, policy, welfare and Results remain outside current authority.
+Issue #55 is analytic/design only. It does not authorize implementation, production-Q execution, HJB/KFE/stationary solves, numerical `W_max`, new states/ghosts, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, regional/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #54 acceptance history.
+- Issue #55 body/comments.
 
-The earlier post-DLH-5V-E session handoff is historical only and does not override this CURRENT snapshot.
+Issue #54 acceptance history remains the controlling provenance for why Route A is necessary.
