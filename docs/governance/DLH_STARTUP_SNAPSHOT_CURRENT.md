@@ -1,6 +1,6 @@
 # Deep Learning + HANK Startup Snapshot — CURRENT
 
-Date: 2026-09-10
+Date: 2026-09-11
 
 Repository: `zcx369658780/deep-learning-hank`
 
@@ -21,45 +21,39 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VA_ACCEPTED__REGULAR_MOMENT_CONE_GATE_REQUIRED`
 
-**Issue #49 — DLH-5V-A: Classify regular restricted-Voronoi W-frontier phases and adjacency**
+There is **no active Builder Issue**. DSH must remain stopped until a successor bounded scientific-design Issue is separately published, Task Index / Startup are synchronized, and an authoritative activation comment is posted.
 
-Task type:
+## Latest accepted gate — Issue #49 / DLH-5V-A
 
-`SCIENTIFIC_DESIGN__REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_CLASSIFICATION`
+Accepted candidate:
 
-Dedicated branch:
+`58a0efe2e85b497d8b19c306a831d865ed65136d`
 
-`dsh/issue-49-dlh-5va-voronoi-frontier-phase-adjacency-2026-09-10`
+Reviewer acceptance comment:
 
-Owner split-gate decision:
-
-`APPROVE_DLH_5VA_SPLIT_GATE__REGULAR_FRONTIER_PHASE_ADJACENCY_ONLY`
-
-Builder authority is active only while Issue #49 remains OPEN, Task Index / Startup identity matches, and the authoritative activation comment is present.
-
-## Superseded Issue #48
-
-Issue #48 was CLOSED `not_planned` after repeated Builder response/context exhaustion during startup/reference loading. No candidate commit or remote Builder branch was produced. This is operational supersession only; it carries no scientific verdict.
-
-## Latest accepted gate — Issue #47 / DLH-5U
-
-Accepted Rev-1 candidate:
-
-`81bf9b46f20e6dd96514bb6fad698097c917a948`
-
-Reviewer acceptance:
-
-`5521379228`
+`5628285587`
 
 Acceptance integration:
 
-`060c2835825f9efff4f89c84646f04cab6a9c8a4`
+`46d6961100d1a050e6b313fa2e321180ed255226`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
+`DLH_5VA_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_RESTRICTED_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+
+Accepted terminal:
+
+`DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+
+Issue #49 is to be treated as completed after reviewer closure; no successor authority is implied by the terminal.
+
+## Controlling household / finite-domain / KFE authority
 
 Accepted household source remains immutable/read-only:
 
@@ -69,7 +63,7 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Binding law:
+Binding law remains:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
@@ -77,78 +71,77 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Accepted Route-F framework entering DLH-5V-A
-
-Finite domain:
+Accepted finite domain:
 
 ```text
-D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
+D_W(W_max) = {
+  0 <= a <= a_max,
+  b >= b_min,
+  a+b <= W_max
+}
 ```
 
-Represented native nodes and restricted-Voronoi cells:
+No numerical production `W_max` is frozen.
+
+Accepted restricted-Voronoi object:
 
 ```text
 S(W_max) = {s=(a_j,b_i): a_j+b_i<=W_max}
 C_s = {x in D_W : ||x-s||_2 <= ||x-r||_2 for all represented r in S}
 ```
 
-`{C_s}` partitions `D_W` a.e. Physical W activity is defined only by the actual cell intersection `F_s^W = partial(C_s) intersect {a+b=W_max}` with positive length.
+`{C_s}` partitions `D_W` a.e.; physical W activity is defined only by the actual positive-length intersection `F_s^W = partial(C_s) intersect {a+b=W_max}`.
 
-Accepted discrete-Hamiltonian / one-`Q` / weighted mass-density / MATLAB component-pin semantics remain unchanged and are not the active target of Issue #49.
+Accepted discrete-Hamiltonian / one-`Q` / weighted mass-density / MATLAB component-pin semantics from DLH-5U remain unchanged.
 
-## Exact DLH-5V-A scientific target
+## Accepted DLH-5V-A regular-frontier result
 
-Use exact native grid spacing:
+Exact native grid:
 
 ```text
 da=10/19, db=7/19, da/db=10/7
 ```
 
-No numerical production `W_max` is selected. Symbolically classify the recurring **regular nondegenerate** W-frontier phases away from `a=0`, `a=a_max`, and `b=b_min`, then derive the actual restricted-Voronoi shared-face neighbors and displacement vectors for every regular class.
-
-Suggested exact phase coordinates:
+Symbolic phase coordinates:
 
 ```text
 kappa = 19*(W_max-b_min)
 N = floor(kappa)
 theta = kappa-N
-10*j + 7*i <= kappa
 ```
 
-The Builder must derive whether `(N mod 7, theta)` is sufficient; do not assume it.
+Accepted regular-frontier facts:
 
-Explicitly deferred: geometric moment cones, transition rates, source-state face-flux moment audit, exact sliding rate construction, endpoints/corners, sliver agglomeration semantics, implementation, HJB/KFE/stationary execution.
+1. `10j+7i<=N+theta` reduces to the theta-independent represented-node set `10j+7i<=N` for `theta in [0,1)`.
+2. `r_j=(N-10j) mod 7=(N-3j) mod 7`, with `r_{j+7}=r_j`; `N mod 7` fixes the regular discrete phase.
+3. Theta only shifts the physical W line affinely; no regular structural phase break occurs on `[0,1)`.
+4. Regular W-active cells are: staircase-top A always, sub-top B iff `r_j in {0,1,2}`; deeper regular cells are not W-active.
+5. Accepted regular Voronoi neighbor displacements are axial plus the diagonal families `(-1,+1)` and `(+1,-1)` in index units; no oblique/longer regular neighbor is accepted.
+6. Regular cell classes are `INT`, `A^F`, `A^L`, `B`; `A^L` uniquely has `N_V=3`.
 
-## Context-budget startup rule
+## Still unresolved / unauthorized
 
-After reading all CURRENT project rules, current Task Index / this snapshot / Roadmap, full Issue #49 and comments, scientific history is limited to:
+- endpoint/corner frontier classes;
+- geometric moment cones;
+- exact sliding `(-1,+1)` feasibility in the nonnegative CTMC moment cone;
+- source-state face-flux moment consistency;
+- boundary-local transition-rate construction;
+- Route-F implementation;
+- HJB/KFE execution;
+- stationary KFE;
+- numerical production `W_max`;
+- stationary aggregates `C,L,A,B`;
+- two-region GE rebuild;
+- multi-province execution / neural training / nominal HANK / calibration / policy / welfare / Results.
 
-1. `docs/design/DLH_5U_W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION.md`
-2. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_CONTROL_VOLUME_GEOMETRY_AND_BOUNDARY_LOCATION.md`
+## Recommended next gate
 
-Verify household blob identity only; do not reread the full source or superseded Issue #48 unless a direct authority contradiction is found. Do not narrate each startup read; after startup use at most a 10-line authority digest and proceed.
+A separate bounded regular-frontier **geometric moment-cone** gate should consume the accepted DLH-5V-A adjacency/displacement table and determine whether every accepted regular phase class can represent the admissible tangential reallocation cone with nonnegative local rates.
 
-## Exact allowlist
+No successor Issue is active yet.
 
-Five files only, exactly as listed in Issue #49. No existing tracked file may be modified by Builder.
+Current Master Roadmap:
 
-## Scientific ceiling
-
-Do not mutate source; run HJB/KFE/stationary; choose numerical `W_max`; modify grid/economics; compute moment cones/rates; analyze endpoint/corner transition closure; agglomerate cells; run contamination sensitivity; compute aggregates/GE; enter multi-province/neural/nominal/calibration/policy/welfare/Results; or PR/merge/close/successor/self-accept.
-
-## DSH startup sequence
-
-1. `Set-Location D:\deep-learning-hank`;
-2. verify repository / remote / worktree / staging;
-3. `git fetch origin` and record fresh `origin/main`;
-4. read all CURRENT project rules without narrating them;
-5. read CURRENT Task Index, this Startup Snapshot, Roadmap;
-6. read full Issue #49 and ALL comments including activation;
-7. read only the two scientific files listed above;
-8. verify accepted household blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` without rereading source;
-9. verify Issue / Task Index / Startup identity;
-10. create exact dedicated branch from fresh synchronized main;
-11. create only five allowlist files;
-12. perform bounded symbolic design and STOP for fresh ChatGPT review.
+`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
 
 Chat text is not Builder authority.
