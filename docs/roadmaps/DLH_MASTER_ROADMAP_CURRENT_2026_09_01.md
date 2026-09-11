@@ -4,7 +4,7 @@
 **Date:** 2026-09-12  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-H / ISSUE #56 PUBLISHED — ROUTE E STATE-CONSTRAINT HJB CONSISTENCY-TARGET AUDIT — ACTIVATION PENDING
+**Status:** DLH-5V-H / ISSUE #56 ACTIVE — ROUTE E STATE-CONSTRAINT HJB CONSISTENCY-TARGET AUDIT
 
 ---
 
@@ -159,7 +159,7 @@ This route does **not** pre-accept that Issue #55 was over-strong. It must prove
 
 ---
 
-## 6. DLH-5V-H / Issue #56 — PUBLISHED, ACTIVATION PENDING
+## 6. DLH-5V-H / Issue #56 — ACTIVE
 
 Title:
 
@@ -169,7 +169,15 @@ Task type:
 
 `SCIENTIFIC_THEORY_AUDIT__STATE_CONSTRAINT_HJB_BOUNDARY_CONSISTENCY_TARGET`
 
-Dedicated branch after activation:
+Authoritative activation comment:
+
+`5641527846`
+
+Authority marker:
+
+`DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT_AUTHORIZED`
+
+Dedicated Builder branch:
 
 `dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
 
@@ -219,7 +227,7 @@ regular exact-tangent wide-stencil process                   ACCEPTED
 regular control-dependent rates / global scoring             ACCEPTED
 endpoint exact finite-process closure                         OBSTRUCTION ACCEPTED — ISSUE #54
 Route A strong graph-consistency target                       OBSTRUCTION ACCEPTED — ISSUE #55
-Route E state-constraint HJB consistency-target audit         PUBLISHED — ISSUE #56 — ACTIVATION PENDING
+Route E state-constraint HJB consistency-target audit         ACTIVE — ISSUE #56
 boundary-HJB scheme design / implementation                  BLOCKED PENDING 5V-H
 same-process Q validation + SCC diagnostics                  PENDING
 nested Wmax / resolution robustness                          PENDING
