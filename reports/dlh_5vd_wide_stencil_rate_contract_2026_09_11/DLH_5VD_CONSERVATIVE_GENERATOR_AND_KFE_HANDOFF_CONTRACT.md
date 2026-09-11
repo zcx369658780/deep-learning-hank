@@ -35,12 +35,18 @@ diagonal escape rate — i.e., a diagonal entry that includes an exit rate whose
 represented state. In the frozen sector this cannot arise (both destinations represented); the rule is frozen
 to prevent leakage in any later endpoint/implementation stage. No later row-sum repair is permitted.
 
-## 2. Same-Q KFE handoff (Issue §6.6) — frozen
+## 2. Same-Q KFE handoff (Issue §6.6) — frozen (conditional on full regular-sector closure)
+
+The one-`Q` principle is frozen **conditionally on full regular-sector closure**. This Issue freezes only the
+`sector-candidate scoring rule` for the `T_realloc` sector (see the rate-decomposition report); the global
+regular-W-boundary maximization is deferred until the remaining sector `{mu_b < 0, mu_W <= 0}` receives its own
+accepted transition/rate contract. After that closure:
 
 ```
-candidate controls
- -> candidate-control rates inside H_h (before maximization)
- -> selected control + selected rates (argmax admissible H_h)
+all admissible candidates (all regular sectors)
+ -> sector-specific candidate-control rates inside H_h (before maximization)
+ -> ONE global discrete H_h argmax
+ -> selected control + its already-defined sector-specific rates
  -> ONE backward generator Q
  -> future KFE consumes exactly Q^T
 ```

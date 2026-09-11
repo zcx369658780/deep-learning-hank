@@ -28,19 +28,27 @@ with `mu = (-a-b, +a)`, `a = mu_b >= 0`, `b = -mu_W >= 0`; refinement scaling `q
 **Contract items (all frozen exactly):**
 - **Activation predicate**: accepted regular W-active source; `j >= 7`; candidate admissible under the accepted
   W-boundary KKT/tangent law; `mu_a <= 0, mu_b >= 0, mu_W <= 0`. Equality cases (`mu_b=0`, `mu_W=0`, `mu=(0,0)`)
-  audited; rates vanish continuously (linear in drift). Candidates outside the sector are marked outside the
-  contract — no invented transition rule.
+  audited; rates vanish continuously (linear in drift). Candidates outside the sector are marked outside this
+  Issue's contract (no invented transition rule) and remain in the future global HJB choice set pending the
+  remaining-sector contract.
 - **Uniqueness**: `det[w_in w_T] = -700/361 != 0`; the nonnegative decomposition is unique for every
   `mu in T_realloc`; **no rate tie-breaking needed** inside the sector (only trivial zero-rate boundary cases).
-- **Discrete Hamiltonian**: `H_h(c,l,d) = u(c)-v(l) + q_in[V_{s_in}-V_s] + q_T[V_{s_T}-V_s] + switch_z` with rates
-  computed **before** maximization; selected control = argmax over admissible `H_h`; no continuous-max->clip->remap.
+- **Sector-candidate scoring rule (frozen; NOT a global argmax)**: for each admissible candidate with
+  `mu in T_realloc`, construct its discrete `H_h(c,l,d) = u(c)-v(l) + q_in[V_{s_in}-V_s] + q_T[V_{s_T}-V_s] +
+  switch_z` score using its frozen in-sector rates computed **before** maximization. The **global**
+  regular-W-boundary argmax / selected control is **deferred until the remaining regular sector**
+  `{mu_b < 0, mu_W <= 0}` has its own accepted transition/rate contract (then: all admissible candidates ->
+  sector-specific `H_h` scores -> ONE global argmax -> selected control with its already-defined rates -> one
+  backward `Q` -> future KFE `Q^T`). Outside-`T_realloc` but continuously admissible candidates are **not**
+  deleted from the future global HJB choice set. No continuous-max->clip->remap.
 - **No double counting**: canonical asset generator uses exactly `{q_in, q_T}`; any alternative shared-face
   decomposition is rejected (not equivalent/unique by the uniqueness theorem); productivity switching separate.
 - **Conservative rows**: off-diagonal asset rates `>= 0`; `Q_ss(asset) = -(q_in+q_T)`; with switching,
   `Q_ss = -sum(all actual outgoing)`; **`Q 1 = 0` by construction**; forbidden: omitted outside destination with
   retained negative diagonal escape; no later row-sum repair.
-- **Same-Q handoff**: candidate controls -> in-`H_h` rates -> selected control/rates -> ONE backward `Q` ->
-  future KFE uses exactly `Q^T` (never rebuilds boundary rates from drift).
+- **Same-Q handoff (conditional on full regular-sector closure)**: after the remaining regular sector is closed,
+  the globally selected candidate together with its sector-specific already-defined rates forms the **unique
+  backward `Q`**; future KFE uses exactly `Q^T` and never rebuilds boundary rates from drift.
 - **Mass/density downstream**: `p = M g`, `p_dot = Q^T p`, future `Q^T p = 0`; pin/normalization = scale fixing
   only, never leakage repair; Issue #27 pin authority unchanged.
 - **Future validation gates (record only)**: finite Q, off-diagonal >= 0, `||Q1||_inf`, orientation/flattening,

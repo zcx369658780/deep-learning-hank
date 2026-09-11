@@ -67,8 +67,10 @@ drift, so both rates vanish continuously as their argument tends to the boundary
 no discrete on/off switch.
 
 **Outside the sector:** a candidate control with `mu not in T_realloc` is marked **outside the frozen DLH-5V-D
-contract**; no alternative transition rule is invented for it. (The remaining admissible regular drift sectors are
-identified precisely in §6.9 of the generator-contract report / umbrella §4.)
+contract**; no alternative transition rule is invented for it, and it is **not removed from the future global HJB
+choice set** — it remains admissible at the continuous level and its own transition/rate contract belongs to the
+remaining-sector gate. (The remaining admissible regular drift sectors are identified precisely in §6.9 of the
+generator-contract report / umbrella §4.)
 
 ## 4. Uniqueness / no tie-breaking (Issue §6.2) — proved
 
@@ -85,11 +87,12 @@ the nonnegative decomposition is **unique for every `mu in T_realloc`**, and **n
 inside this sector** — the only special cases are the trivial zero-rate boundary cases (`mu_b = 0`, `mu_W = 0`,
 `mu = (0,0)`), which are boundary values of the same unique map, not tie-breaks.
 
-## 5. Candidate-control discrete Hamiltonian semantics (Issue §6.3) — frozen
+## 5. Sector-candidate scoring rule (Issue §6.3) — frozen (NOT a global argmax)
 
-For each candidate control in the sector, with accepted destinations `s_in = (j-1, i)` and `s_T = (j-7, i+10)`
-(both represented in the regular region; `s_in` needs `j >= 1` — implied by `P2`, and `10(j-1)+7i = 10j+7i-10 < N`
-for a represented source; `s_T` representation is the accepted DLH-5V-C result):
+This Issue freezes the **sector-candidate scoring rule** only. For each admissible candidate control whose drift
+lies in `T_realloc`, with accepted destinations `s_in = (j-1, i)` and `s_T = (j-7, i+10)` (both represented in the
+regular region; `s_in` needs `j >= 1` — implied by `P2`, and `10(j-1)+7i = 10j+7i-10 < N` for a represented source;
+`s_T` representation is the accepted DLH-5V-C result), the candidate's discrete `H_h` score is
 
 ```
 H_h(c,l,d)
@@ -99,17 +102,24 @@ H_h(c,l,d)
  + switch_z.
 ```
 
-The rates `q_in(c,l,d)`, `q_T(c,l,d)` are computed **for each candidate control before maximization**. The selected
-boundary control is
+where the rates `q_in(c,l,d)`, `q_T(c,l,d)` are computed **for each candidate control before maximization**.
+
+**This Issue does NOT freeze a global regular-W-boundary argmax.** The global discrete-Hamiltonian maximization
+(`selected boundary control = argmax` over ALL admissible W-boundary candidates) is deferred until the remaining
+regular sector `{mu_b < 0, mu_W <= 0}` receives its own accepted transition/rate contract. At that future point:
 
 ```
-selected control = argmax_{admissible (c,l,d)} H_h(c,l,d).
+all admissible candidates (in all regular sectors)
+ -> sector-specific discrete H_h scores (each with its already-defined rates)
+ -> ONE global discrete H_h argmax
+ -> selected control + its already-defined rates
+ -> ONE backward Q
+ -> future KFE uses exactly Q^T
 ```
 
-Explicitly **not** allowed: continuous maximization followed by clipping/decomposition of the chosen drift.
-Candidate controls with `mu not in T_realloc` are excluded from the wide-stencil contract (outside-sector marking,
-§3) — the maximization is over the admissible in-sector candidates plus the (separate, unchanged) interior/productivity
-transition structure.
+Explicitly **not** allowed in this Issue: continuous maximization followed by clipping/decomposition of the chosen
+drift; and equally **not** allowed: deleting an outside-`T_realloc` but continuously admissible candidate from the
+future global HJB choice set (its scoring belongs to the remaining-sector contract, not to this Issue).
 
 ## 6. Canonical no-double-counting semantics (Issue §6.4) — frozen
 
