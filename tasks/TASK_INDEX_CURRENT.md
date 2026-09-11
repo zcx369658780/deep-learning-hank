@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `DLH_5VF_ISSUE_54_PUBLISHED__GOVERNANCE_SYNC_IN_PROGRESS__ACTIVATION_PENDING`
+Status: `ACTIVE_BUILDER_ISSUE_54__DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE`
 
 Last synchronized: 2026-09-11
 
@@ -8,20 +8,15 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**PENDING ACTIVATION — Issue #54 / DLH-5V-F.**
+**ACTIVE — Issue #54 / DLH-5V-F.**
 
-Issue #54 has been published from the Owner-approved successor concept, but Builder work is authorized only after:
+Authoritative activation comment:
 
-1. CURRENT Task Index / Startup Snapshot / Master Roadmap are synchronized to the same Issue identity, task type and branch; and
-2. an authoritative activation comment is posted on Issue #54 against the fresh synchronized `main`.
+`5632596303`
 
-Chat text or Issue publication alone does not create Builder authority.
+Authority marker:
 
-## Active successor — Issue #54 / DLH-5V-F
-
-Title:
-
-`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
+`DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_AUTHORIZED`
 
 Task type:
 
@@ -31,17 +26,15 @@ Owner decision:
 
 `APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`
 
-Dedicated Builder branch after activation:
+Dedicated Builder branch:
 
 `dsh/issue-54-dlh-5vf-endpoint-joint-boundary-2026-09-11`
 
-Exact Issue body is the sole Builder task authority after authoritative activation. Task Index only synchronizes identity and cannot expand that scope.
+Issue #54 body plus its authoritative activation comments are the sole Builder task authority. This Task Index only synchronizes identity and cannot expand scope. Builder must fresh-fetch live `origin/main` and verify Issue #54 remains OPEN and all CURRENT governance agrees before mutation.
 
 ## Latest accepted task — Issue #53 / DLH-5V-E
 
-Title:
-
-`DLH-5V-E: Close remaining regular W-boundary sectors and full regular candidate-scoring contract`
+Issue #53 is CLOSED completed.
 
 Accepted candidate:
 
@@ -58,8 +51,6 @@ Acceptance integration:
 Accepted verdict:
 
 `DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
-
-Issue #53 is CLOSED completed.
 
 ## Controlling household / same-process authority
 
@@ -164,7 +155,7 @@ candidate control
 
 No HJB/KFE solve was authorized by these design gates.
 
-## Exact active scientific object — DLH-5V-F
+## Active scientific object — DLH-5V-F
 
 Deferred reachability bands:
 
@@ -220,13 +211,9 @@ DLH-5V-F endpoint/joint finite-process closure
 
 ## Current governance files
 
-Current Startup Snapshot:
-
-`docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-
-Current Master Roadmap:
-
-`docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+- `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- Issue #54 body/comments.
 
 The post-DLH-5V-E session handoff remains a historical checkpoint and does not override later synchronized CURRENT governance:
 
