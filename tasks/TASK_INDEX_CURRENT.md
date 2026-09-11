@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5VE_REMAINING_REGULAR_W_BOUNDARY_SECTOR_CLOSURE`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VE_ACCEPTED__ENDPOINT_JOINT_BOUNDARY_GATE_NEXT`
 
 Last synchronized: 2026-09-11
 
@@ -8,9 +8,13 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**NONE.**
 
-**Issue #53 — OPEN**
+No GitHub Issue currently grants DSH Builder authority. Chat text alone does not create Builder authority.
+
+A successor task must be separately published, synchronized into CURRENT governance, and activated by an authoritative activation comment before Builder work begins.
+
+## Latest accepted task — Issue #53 / DLH-5V-E
 
 Title:
 
@@ -20,33 +24,29 @@ Task type:
 
 `SCIENTIFIC_DESIGN__REMAINING_REGULAR_W_BOUNDARY_SECTORS_AND_FULL_REGULAR_SCORING_CLOSURE`
 
-Dedicated branch:
-
-`dsh/issue-53-dlh-5ve-remaining-regular-sector-2026-09-11`
-
-Owner continuation decision:
-
-`APPROVE_DLH_5VE_REMAINING_REGULAR_W_BOUNDARY_SECTOR_CLOSURE_GATE`
-
-Issue #53 is the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup Snapshot identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #52 / DLH-5V-D
-
 Accepted candidate:
 
-`81705b0c1671a8ee09ee5c2f05953f3e4f9f1e8b`
+`ff4607ff74ab1e0cea530ba04f17045698f43a62`
 
 Reviewer acceptance:
 
-`5631523081`
+`5632150936`
 
 Acceptance integration:
 
-`d58bd962be3acc8b6f646b66643bbc96f121be57`
+`28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`
 
 Accepted verdict:
 
-`DLH_5VD_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
+`DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
+
+Accepted terminal:
+
+`DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
+
+Issue #53 is to be CLOSED completed after this post-acceptance governance synchronization. No successor authority is created by acceptance or closure.
+
+## Controlling household / same-process authority
 
 Accepted household source remains immutable/read-only:
 
@@ -64,66 +64,135 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Accepted regular-sector authority entering DLH-5V-E
-
-Regular tangent cone:
+The downstream clean/source-free generator contract remains:
 
 ```text
-T_W={mu_W=mu_a+mu_b<=0}.
+Q = backward controlled generator
+Q^T = forward mass operator
+off-diagonal >= 0
+diagonal = -sum of actual represented outgoing rates
+Q1 = 0 by construction
+same selected Q for HJB and KFE
+p = M g
+p_dot = Q^T p
 ```
 
-Accepted `T_realloc` sector:
+Issue #27 component-pin authority remains downstream scale fixing only; pinning/normalization may not repair leakage, and the original source-free `Q^T p` residual must be validated.
+
+## Accepted recurring regular W-frontier block through DLH-5V-E
+
+Finite production domain:
 
 ```text
-T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}.
+D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 ```
 
-Accepted candidate-control rates:
+Frozen grid:
 
 ```text
-q_T  = 19*mu_b/70
+da = 10/19
+db = 7/19
+a_max = 10
+j_max = 19
+```
+
+Regular W-face tangent cone:
+
+```text
+T_W = {mu_W = mu_a + mu_b <= 0}
+```
+
+### Sector 1 — forward reallocation (`T_realloc`)
+
+```text
+T_realloc = {mu_a<=0, mu_b>=0, mu_W<=0}
+w_in = (-10/19,0)
+w_T  = (-70/19,+70/19)
 q_in = 19*(-mu_W)/10
+q_T  = 19*mu_b/70
 ```
 
-on
+Forward wide transition:
 
 ```text
-w_T=(-70/19,+70/19)
-w_in=(-10/19,0).
+(j,i) -> (j-7,i+10)
 ```
 
-These rates score each in-sector candidate inside the discrete `H_h` before any global regular-boundary maximization. Conservative one-Q semantics remain: actual off-diagonals nonnegative, diagonal = negative sum of actual represented outgoing rates, `Q1=0` by construction, future KFE consumes exactly `Q^T`.
+requires `j>=7` away from the lower-a endpoint band.
 
-## Active DLH-5V-E target
-
-The remaining regular sector is
+### Sector 2 — reverse reallocation
 
 ```text
-T_rem={mu_b<0,mu_W<=0}
+R_reverse = {mu_a>0, mu_b<0, mu_W<=0}
+w_RT   = (+70/19,-70/19)
+w_down = (0,-7/19)
+q_RT   = 19*mu_a/70
+q_down = 19*(-mu_W)/7
 ```
 
-with two sub-sectors:
+Mirror wide transition:
 
 ```text
-R_reverse={mu_a>0,mu_b<0,mu_W<=0}
-R_deplete={mu_a<=0,mu_b<0}.
+(j,i) -> (j+7,i-10)
 ```
 
-DLH-5V-E must audit:
+requires independent bounds `j<=12` and `i>=10`.
 
-- candidate mirror exact tangent `(+7,-10)` / `(+70/19,-70/19)` for reverse reallocation;
-- exact represented-destination/path/class conditions and finite deferred endpoint/joint bands;
-- nonnegative reverse-reallocation candidate-control rates and scoring rule;
-- local left/down representation of both-inward depletion and exact rates;
-- equality/boundary ownership across all sectors;
-- whether accepted sector contracts now cover all regular `mu_W<=0` candidates;
-- if coverage closes, the future ONE global regular discrete-Hamiltonian argmax composition and one-Q handoff.
+### Sector 3 — both-inward depletion
 
-Endpoint/joint-boundary closure remains separately deferred. No implementation/HJB/KFE/stationary solve is authorized.
+```text
+R_deplete = {mu_a<=0, mu_b<0}
+w_left = (-10/19,0)
+w_down = (0,-7/19)
+q_left = 19*(-mu_a)/10
+q_down = 19*(-mu_b)/7
+```
 
-## Planned session handoff checkpoint
+On the declared common regular region
 
-The chosen handoff point is **after Issue #53 is independently reviewed and, if valid, accepted**, because that closes the recurring regular W-frontier sector-design block. Before handoff, refresh this Task Index, Startup Snapshot, Master Roadmap, and a dedicated current session/project-source handoff snapshot.
+```text
+7 <= j <= 12
+i >= 10
+```
+
+plus the accepted regular W-active/class conditions, the accepted sector contracts cover all `T_W` candidates without omission or double counting. Shared boundary rays are single-valued.
+
+Future regular candidate selection is frozen as design semantics:
+
+```text
+all admissible regular candidates
+ -> exactly one sector-specific discrete-H_h score before selection
+ -> ONE global regular argmax
+ -> selected control + already-defined rates
+ -> ONE conservative backward Q
+ -> future KFE consumes exactly Q^T
+```
+
+No HJB/KFE solve has been authorized or performed by these design gates.
+
+## Exact next bounded scientific object — NOT YET AUTHORIZED
+
+The scientifically natural successor is an **endpoint / joint-boundary closure gate**.
+
+Deferred state-space bands are:
+
+```text
+lower-a forward-wide band: j in {0,...,6}
+upper-a mirror-wide band:  j in {13,...,19}
+lower-b mirror-wide band:  i in {0,...,9}
+```
+
+plus their intersections/corners and W-active endpoint cells.
+
+The successor must derive tangent-cone-consistent candidate scoring / represented transition contracts for these states without silent clipping, omitted-destination/retained-diagonal leakage, or a second KFE process.
+
+Do **not** create or execute a successor from this Task Index alone.
+
+## Session handoff
+
+Current dedicated handoff snapshot:
+
+`docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md`
 
 Current Startup Snapshot:
 
