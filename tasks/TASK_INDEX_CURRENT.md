@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `PUBLISHED_BUILDER_ISSUE_56__DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_AUDIT__ACTIVATION_PENDING`
+Status: `ACTIVE_BUILDER_ISSUE_56__DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_AUDIT`
 
 Last synchronized: 2026-09-12
 
@@ -8,7 +8,7 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**Issue #56 / DLH-5V-H is published but activation is pending at this commit.**
+**ACTIVE — Issue #56 / DLH-5V-H.**
 
 Title:
 
@@ -22,11 +22,19 @@ Owner decision:
 
 `APPROVE_DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT`
 
-Dedicated Builder branch after activation:
+Authoritative activation comment:
+
+`5641527846`
+
+Authority marker:
+
+`DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT_AUTHORIZED`
+
+Dedicated Builder branch:
 
 `dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
 
-Issue #56 body plus its future authoritative activation comment are the sole Builder task authority. Builder MUST NOT mutate anything until the activation comment is posted and a fresh startup verifies Issue #56 remains OPEN and all CURRENT governance agrees.
+Issue #56 body plus authoritative activation comment `5641527846` are the sole Builder task authority. Builder must fresh-fetch live `origin/main`, verify Issue #56 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, then work only inside the exact six-file allowlist.
 
 ## Latest accepted task — Issue #55 / DLH-5V-G
 
@@ -46,17 +54,23 @@ Accepted terminal:
 
 `DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
 
-Issue #55 remains accepted under the strong graph-consistency target it was assigned; Issue #56 does not silently revise that result.
+Issue #55 remains accepted under the strong raw drift-set graph consistency target it was assigned. Issue #56 audits whether that target is mathematically necessary for state-constraint HJB convergence; it does not silently revise Issue #55.
 
-## Issue #56 scientific object after activation
+## Active scientific object — Route E theory audit
 
-Route E audits whether the raw admitted-drift Kuratowski graph condition used in Issue #55 is actually necessary for convergence to the state-constraint HJB value problem, or whether viscosity/operator consistency requires a weaker boundary test.
+The gate must proceed theory-first:
 
-The audit must begin with the continuous state-constraint HJB / viscosity target and primary-theory provenance, then identify the legitimate monotone-scheme consistency object, and only afterward test the frozen finite-process architecture.
+```text
+continuous state-constraint HJB / viscosity target
+ -> primary-source sign and hypothesis mapping
+ -> necessity audit of Issue-55 raw graph condition
+ -> weakest defensible monotone-scheme boundary consistency target
+ -> design-level frozen-process test under that legitimate target
+```
 
-Mandatory primary theory anchors include Soner (1986) Parts I/II and Barles–Souganidis (1991), with explicit sign/hypothesis mapping. Generic theorem name-dropping is insufficient.
+Mandatory primary anchors are Soner (1986) state-space constraint Parts I/II and Barles–Souganidis (1991), with additional primary references allowed as required. Generic theorem citation is not evidence without project-specific boundary/sign/comparison/stability mapping.
 
-The Issue-#55 counterexample `s_m=(0,i_t^m(0)-2), mu=(0,1)` and its upper-corner analogue must be retested under the legitimate viscosity/operator target. A minimal state-constraint toy scheme is also required as a theory discriminator.
+The Issue-#55 counterexample `s_m=(0,i_t^m(0)-2), mu=(0,1)` and its upper-corner analogue must be retested under the legitimate viscosity/operator target. A minimal state-constraint toy scheme is required as a theory discriminator.
 
 ## Frozen authority
 
