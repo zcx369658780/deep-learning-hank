@@ -21,26 +21,26 @@ w2 = (-70/19, +70/19)     [wide tangent (-7,+10)]
 *Containment*: any `mu = c1·w1 + c2·w2`, `c1, c2 >= 0` has `mu_a = -(10 c1 + 70 c2)/19 <= 0`,
 `mu_b = 70 c2/19 >= 0`, `mu_a + mu_b = -10 c1/19 <= 0` — hence `mu in T_realloc`.
 
-*Covering*: every `mu in T_realloc` is `mu = alpha(-1,0) + beta(-1,1)` with
-`alpha = -mu_a - mu_b >= 0`, `beta = mu_b >= 0` (extreme-ray representation; `(-1,0)` and `(-1,1)` are the
-extreme rays of `T_realloc`). Then
+*Covering*: write `mu in T_realloc` in the Issue parametrization `mu = (-a-b, +a)` with `a, b >= 0`
+(extreme-ray representation `mu = a·(-1,1) + b·(-1,0)`; `(-1,0)` and `(-1,1)` are the extreme rays of
+`T_realloc`, so every `mu in T_realloc` has `a = mu_b >= 0` and `b = -mu_a - mu_b >= 0`). Then
 
 ```
-mu = (19 beta/10)·w1 + (19 alpha/70)·w2,
+mu = (19 b/10)·w1 + (19 a/70)·w2,
 ```
 
-because `(19 beta/10)·(-10/19, 0) = (-beta, 0)` and `(19 alpha/70)·(-70/19, +70/19) = (-alpha, +alpha)`, summing
-to `(-alpha-beta, +alpha) = mu`. Both coefficients are nonnegative. **Equality holds exactly.**
-
-In the Issue's parametrization `mu = (-alpha-beta, +alpha)` (`alpha, beta >= 0`):
+because `(19 b/10)·(-10/19, 0) = (-b, 0)` and `(19 a/70)·(-70/19, +70/19) = (-a, +a)`, summing exactly to
+`(-a-b, +a) = mu`. Both coefficients are nonnegative:
 
 ```
-coefficient on wide tangent w2:  q_T = 19 alpha / 70   (>= 0)
-coefficient on local inward w1:  q_in = 19 beta / 10   (>= 0)
+q_T  = 19 a / 70    (on the wide tangent w2; direction (-1,1))
+q_in = 19 b / 10    (on the local inward w1; direction (-1,0))
 ```
 
-The exact sliding ray `(-u, +u)` is recovered by `alpha = u`, `beta = 0`: pure wide tangent,
-`q_T = 19u/70`, `q_in = 0`.
+**Equality holds exactly.**
+
+The exact sliding ray `(-u, +u)` is recovered by `a = u`, `b = 0`: pure wide tangent, `q_T = 19u/70`,
+`q_in = 0`.
 
 ## 2. Monotone CTMC feasibility certificate (Issue §5.4) — symbolic only
 
