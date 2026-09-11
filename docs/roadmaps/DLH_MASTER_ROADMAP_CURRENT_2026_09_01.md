@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.34  
+**Version:** V0.35  
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** POST-DLH-5V-D — REGULAR `T_realloc` CONTROL-DEPENDENT RATE / CONSERVATIVE GENERATOR CONTRACT ACCEPTED / REMAINING REGULAR SECTOR NEXT
+**Status:** POST-DLH-5V-D — `T_realloc` CONTROL-DEPENDENT RATE / CONSERVATIVE GENERATOR CONTRACT ACCEPTED; REMAINING REGULAR SECTOR NEXT
 
 ---
 
@@ -40,25 +40,49 @@ Accepted finite production-domain family:
 D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
 ```
 
+Accepted continuous W-face tangent law:
+
+```text
+mu_W = mu_a + mu_b <= 0.
+```
+
 Restricted-Voronoi cells remain the state partition / mass-volume geometry. The same controlled backward generator `Q` must define the discrete HJB transition term and forward mass dynamics `p_dot=Q^T p`.
 
 ---
 
-## 2. Accepted regular-frontier geometry and shared-face obstruction
+## 2. Accepted regular-frontier geometry — DLH-5V-A / Issue #49
 
-DLH-5V-A / Issue #49 accepted the period-7 regular W-frontier geometry and actual restricted-Voronoi adjacency. DLH-5V-B / Issue #50 then proved that the local shared-face transition cone is insufficient on recurring top cells:
+Accepted candidate `58a0efe2e85b497d8b19c306a831d865ed65136d`; reviewer acceptance `5628285587`; integration `46d6961100d1a050e6b313fa2e321180ed255226`.
+
+Exact grid:
+
+```text
+da=10/19, db=7/19, da/db=10/7.
+```
+
+Regular W-frontier phase is period 7. Endpoints/corners remain separately deferred.
+
+Accepted regular local adjacency includes left/down at all regular W-active classes, plus phase-dependent diagonal/shared-face neighbors. The physical displacement map is `((10/19) Delta j,(7/19) Delta i)`.
+
+---
+
+## 3. Accepted local shared-face obstruction — DLH-5V-B / Issue #50
+
+Accepted candidate `6bc8612dc10de6d72d27c9c47d1b4d598a70a15d`; reviewer acceptance `5628629099`; integration `ff0afdf6d3fa0d770654613e42109318d638639d`.
+
+Accepted local shared-face cones:
 
 ```text
 A^F: K = {7 mu_a + 10 mu_b <= 0}
 A^L: K = {mu_a <= 0, 7 mu_a + 10 mu_b <= 0}
-B^W: K = R^2
+B^W: K = R^2.
 ```
 
-Exact sliding `(-u,+u)` is outside the recurring top-cell shared-face cones. This rejected shared-face-only transition geometry but did not invalidate the W-domain or W1/native coordinates.
+Exact sliding `(-u,+u)` is outside recurring top-cell shared-face cones. This rejected shared-face-only transition geometry but did not invalidate the W-domain or every W1 discretization.
 
 ---
 
-## 3. Accepted W1 wide-stencil regular feasibility — DLH-5V-C / Issue #51
+## 4. Accepted W1 forward wide-stencil regular feasibility — DLH-5V-C / Issue #51
 
 Accepted candidate:
 
@@ -72,31 +96,34 @@ Acceptance integration:
 
 `cdbf1906963a9bf06cf117ba63072d2f1542d501`
 
-Accepted exact tangent:
+Accepted primitive exact tangent:
 
 ```text
 10 Delta j + 7 Delta i = 0
 (Delta j,Delta i)=(-7,+10)
-w_T=(-70/19,+70/19)
+w_T=(-70/19,+70/19).
 ```
 
-Together with
+For regular W-active states with `j>=7`, destination `(j-7,i+10)` is represented, the straight segment stays in `D_W`, `a+b` is constant, and period-7 class/top-subtop offset is preserved. The finite lower-a endpoint band `j in {0,...,6}` remains deferred.
+
+Together with local inward
 
 ```text
-w_in=(-10/19,0)
+w_in=(-10/19,0),
 ```
 
-it spans exactly
+the accepted cone satisfies
 
 ```text
-T_realloc={mu_a<=0,mu_b>=0,mu_W=mu_a+mu_b<=0}.
+cone{w_in,w_T}=T_realloc
+T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}.
 ```
 
-For regular W-active states with `j>=7`, the wide destination `(j-7,i+10)` is represented, the straight segment remains in `D_W`, and the period-7 class/top-subtop offset is preserved. The finite lower-a endpoint band `j in {0,...,6}` remains deferred.
+The wide edge is a **boundary wide-stencil Markov transition**, not an ordinary shared-face FV flux. Under fixed-aspect refinement its physical jump is `O(h)` and drift-matching rate is `O(1/h)`.
 
 ---
 
-## 4. Accepted control-dependent rate / conservative generator contract — DLH-5V-D / Issue #52
+## 5. Accepted `T_realloc` rate / generator contract — DLH-5V-D / Issue #52
 
 Issue #52 is CLOSED completed.
 
@@ -120,106 +147,54 @@ Accepted terminal:
 
 `DLH_5VD_REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
 
-### 4.1 Accepted rate map on `T_realloc`
+### 5.1 Candidate-control rate map
 
-For every continuously admissible candidate control whose drift lies in `T_realloc`, define
+For every admissible candidate with drift in `T_realloc`:
 
 ```text
 q_T  = 19*mu_b/70
-q_in = 19*(-mu_W)/10
+q_in = 19*(-mu_W)/10.
 ```
 
-and divide by `h` in the fixed-aspect refinement family.
+The first moment is exact, rates are nonnegative, and the two-ray decomposition is unique. Under symbolic fixed-aspect refinement both rates scale by `1/h`.
 
-The two-ray decomposition is exact, nonnegative and unique on the sector. Equality cases `mu_b=0`, `mu_W=0`, and zero drift are continuous zero-rate boundary values, not tie-breaks.
+### 5.2 Discrete-Hamiltonian semantics
 
-### 4.2 Accepted discrete-Hamiltonian scope
+DLH-5V-D freezes a **sector-candidate scoring rule**, not the global regular-W-boundary argmax. Each in-sector candidate is scored using its own rates inside the discrete `H_h` before maximization.
 
-DLH-5V-D freezes a **sector-candidate scoring rule**, not a global regular-boundary argmax.
+Continuously admissible candidates outside `T_realloc` remain in the future global HJB choice set. After all regular sectors receive accepted rate contracts, one global discrete-Hamiltonian argmax may choose among all sector-scored candidates.
 
-For each admissible candidate with drift in `T_realloc`, its discrete score uses the already-defined control-dependent rates before maximization. Outside-`T_realloc` but continuously admissible candidates remain in the future global HJB choice set.
+### 5.3 Conservative one-Q contract
 
-A global regular-W-boundary discrete-Hamiltonian argmax is deferred until all admissible regular sectors have accepted transition/rate contracts. Then:
+For any eventually selected candidate:
 
 ```text
-all admissible candidates
- -> sector-specific discrete H_h scores
- -> ONE global discrete H_h argmax
- -> selected control + its already-defined rates
- -> ONE backward Q
- -> future KFE consumes exactly Q^T
+Q_ij >= 0, i!=j
+Q_ii = -sum of actual represented outgoing rates
+Q1=0 by construction.
 ```
 
-### 4.3 Accepted conservative generator / KFE handoff
-
-Within the accepted sector:
-
-```text
-off-diagonal asset rates >= 0
-Q_ss(asset) = -(q_in+q_T)
-Q_ss = -sum(all actual represented outgoing rates)
-Q1=0 by construction
-```
-
-No outside/off-grid destination may be omitted while retaining its negative diagonal escape rate. No later row-sum repair is allowed.
-
-KFE may not independently reconstruct boundary transitions from drift. After full regular-sector closure, the selected/converged backward `Q` is the sole forward-process input and KFE uses exactly `Q^T`.
-
-Downstream mass semantics remain:
-
-```text
-p = M g
-p_dot = Q^T p
-stationary source-free equation: Q^T p = 0
-```
-
-Issue #27 component-pin authority remains unchanged; pin/normalization fixes scale only and may never repair leakage.
+The exact selected backward `Q` is the sole future KFE process input; future forward operator is exactly `Q^T`. KFE must not rebuild boundary rates from drifts. Pin/normalization is downstream scale fixing only, never leakage repair.
 
 ---
 
-## 5. Independent KFE methodology cross-check
+## 6. Independent KFE methodology cross-check
 
-The independently stabilized Chapter-5 clean/source-free KFE implementation is supporting methodology only, not foreign model authority. It reinforces the accepted requirements:
+The separately stabilized Chapter-5 two-asset HANK clean/source-free KFE implementation reinforces, but does not replace, project authority:
 
 ```text
 Q backward; Q^T forward
 off-diagonal >= 0
-diagonal = -sum of actual outgoing rates
+diagonal = -sum actual outgoing
 Q1=0
-same Q for HJB and KFE
-mass p as forward stationary object
-pin/normalization = scale fixing only
-original source-free residual required
-SCC / closed recurrent classes before uniqueness claims
+same Q HJB/KFE
+mass-first stationary object
+SCC/closed recurrent classes before uniqueness
+original source-free residual downstream
+pin/normalization != leakage repair.
 ```
 
-MATLAB-faithful contaminated-row reproduction logic is not imported as production logic.
-
----
-
-## 6. Immediate next bounded gate
-
-The full regular W-face tangent cone is
-
-```text
-{mu_W<=0}.
-```
-
-The accepted DLH-5V-D contract covers only `T_realloc`. The remaining admissible regular sector is
-
-```text
-{mu_W<=0} \ T_realloc
-= {mu_b<0, mu_W<=0}.
-```
-
-It has two scientific sub-sectors:
-
-1. **reverse reallocation:** `mu_a>0, mu_b<0, mu_W<=0`;
-2. **both-inward depletion:** `mu_a<=0, mu_b<0`.
-
-Recommended next gate: **remaining regular W-boundary sector transition / rate feasibility and contract design**.
-
-No specific remedy is pre-authorized. A mirror tangent `(+7,-10)` may be an object to audit for reverse reallocation, but is not yet accepted or active. Both-inward depletion may admit a different local representation and must be classified rather than forced into the mirror-tangent route.
+MATLAB-faithful contaminated-row reproduction logic is not imported. Issue #27 component-pin authority remains unchanged.
 
 ---
 
@@ -232,10 +207,11 @@ same-process HJB <=> KFE principle                           ACCEPTED
 restricted-Voronoi state partition                           ACCEPTED
 regular W-frontier phase / adjacency                         ACCEPTED
 local shared-face moment cone                                OBSTRUCTION ACCEPTED
-W1 exact-tangent wide-stencil regular feasibility            ACCEPTED
-T_realloc control-dependent rates + conservative Q contract  ACCEPTED (DLH-5V-D)
-remaining regular sector {mu_b<0, mu_W<=0}                  NEXT BOUNDED GATE
+W1 exact-tangent forward wide-stencil feasibility            ACCEPTED
+T_realloc control-dependent rates + conservative Q           ACCEPTED (DLH-5V-D)
+remaining admissible regular W-boundary sector(s)             NEXT BOUNDED GATE
 endpoint / joint-boundary closure                            PENDING
+full regular-boundary global discrete-HJB selection          PENDING UNTIL SECTORS CLOSE
 boundary-HJB / finite-process implementation                 PENDING
 KKT + same-process generator validation                      PENDING
 nested Wmax / resolution robustness                          PENDING
@@ -247,52 +223,118 @@ two-region structural anchor rebuild                         PENDING
 learned regional W^L                                         PENDING
 ```
 
-The project remains in the final household-foundation / finite-boundary discrete-process design sequence before stationary KFE can safely resume.
+---
+
+## 8. Recommended next bounded gate — remaining regular sector
+
+The regular tangent cone is
+
+```text
+T_W={mu_W<=0}.
+```
+
+The already closed sector is
+
+```text
+T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}.
+```
+
+The exact remaining regular sector is
+
+```text
+T_rem = T_W \ T_realloc = {mu_b<0,mu_W<=0}.
+```
+
+It decomposes into:
+
+```text
+R_reverse = {mu_a>0,mu_b<0,mu_W<=0}
+R_deplete = {mu_a<=0,mu_b<0}.
+```
+
+### 8.1 Reverse reallocation candidate
+
+The mirror lattice tangent
+
+```text
+(Delta j,Delta i)=(+7,-10)
+w_RT=(+70/19,-70/19)
+```
+
+is only a **candidate**. The next gate must prove/refute represented destination availability away from endpoint/joint-boundary regions, full path admissibility, period-7 class preservation, and exact cone/rate representation. It must identify precisely the finite regions near `b=b_min`, `a=a_max`, or other joint boundaries where the mirror edge cannot be used and defer them rather than forcing a regular failure.
+
+For a target reverse-reallocation drift, a plausible symbolic decomposition to audit is
+
+```text
+mu = q_RT*w_RT + q_bdown*(0,-7/19),
+```
+
+with candidate coefficients inferred from first-moment matching. They are not accepted until the next gate proves them.
+
+### 8.2 Both-inward depletion candidate
+
+All accepted regular W-active classes have local left and down transitions. The next gate should audit whether
+
+```text
+w_left=(-10/19,0)
+w_down=(0,-7/19)
+```
+
+already generate the full both-inward sector with unique nonnegative rates, avoiding unnecessary wide transitions.
+
+### 8.3 Closure target
+
+If both remaining sub-sectors pass, the gate may establish full **regular** W-face sector coverage:
+
+```text
+T_W = T_realloc union R_reverse union R_deplete
+```
+
+with sector-specific candidate scoring rules. Only then may the global regular-W-boundary discrete-Hamiltonian argmax be frozen over all admissible regular candidates, producing one selected control/rate row and one backward `Q` for later implementation/KFE handoff.
+
+Endpoint/joint-boundary closure remains separate even if regular coverage closes.
 
 ---
 
-## 8. Planned downstream sequence
+## 9. Downstream route after regular-sector closure
 
-If the remaining regular-sector gate closes successfully:
+If the remaining regular-sector gate passes:
 
 ```text
-full regular-sector transition/rate coverage
+full regular W-face sector contracts accepted
 -> endpoint/joint-boundary closure
 -> boundary-HJB / finite-process implementation
--> global discrete-Hamiltonian selection + same-process Q validation
--> SCC/closed-class diagnostics
+-> same-process Q validation + SCC/closed-class diagnostics
 -> Wmax/resolution robustness
 -> conservative stationary-generator validation
 -> Issue #27 stationary KFE
--> stationary aggregates C,L,A,B
+-> stationary aggregates
 -> two-region structural anchor rebuild
 -> 3–5 province integration
 -> learned W^L
 ```
 
-If the remaining regular sector exposes a recurring obstruction, return to Owner route decision rather than forcing a KFE-only repair.
+If a recurring regular-sector obstruction is found, return to Owner route decision rather than hiding it downstream in KFE.
 
 ---
 
-## 9. Downstream generator/KFE acceptance contract
+## 10. Planned conversation handoff checkpoint
 
-When implementation is eventually authorized, acceptance must include at minimum:
+Because the present conversation is already long, choose the **post-remaining-regular-sector acceptance** point as the session handoff checkpoint. This is scientifically natural because it finishes one coherent block: all recurring regular W-frontier sectors.
 
-- finite generator entries;
-- nonnegative off-diagonal rates;
-- `||Q1||_inf` / row-sum conservation;
-- frozen orientation/flattening contract;
-- exact same `Q` passed from HJB to KFE;
-- SCC and closed recurrent-class diagnostics before uniqueness claims;
-- original source-free stationary residual;
-- mass normalization/nonnegativity;
-- density conversion through cell weights;
-- existing Issue #27 pin semantics without using pinning as leakage repair.
+Immediately before handoff, refresh:
+
+1. `tasks/TASK_INDEX_CURRENT.md`;
+2. `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`;
+3. this Master Roadmap;
+4. a dedicated current project/session handoff snapshot recording live `main`, accepted candidate/integration SHAs, Issue states, remaining endpoint/joint-boundary work, KFE safeguards, and the exact next authorized route.
+
+A downloadable project-source handoff Markdown/ZIP should be generated at that checkpoint if useful, so the next conversation does not rely on long-chat memory.
 
 ---
 
-## 10. Regional / Deep Learning architecture remains downstream
+## 11. Scientific ceiling
 
-The first learned object remains `W^L`. Two-region structural/unit anchor -> 3–5 province integration -> 31-province benchmark remains the scaling hierarchy. `W^K`, nominal HANK, automated calibration, policy and welfare remain later roadmap objects.
+Until a successor Owner-authorized Issue is activated, do not mutate accepted household economics/source; implement the remaining-sector remedy; close endpoint/corner behavior; execute HJB/KFE/stationary; select numerical production `W_max`; compute aggregates/GE; or enter multi-province/neural/nominal/calibration/policy/welfare/Results.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
