@@ -21,7 +21,7 @@ Priority:
 
 ## Current Builder state
 
-**Issue #56 / DLH-5V-H is PUBLISHED; activation is pending at this snapshot.**
+**ACTIVE — Issue #56 / DLH-5V-H.**
 
 Title:
 
@@ -35,11 +35,19 @@ Owner decision:
 
 `APPROVE_DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT`
 
-Dedicated branch after activation:
+Authoritative activation comment:
+
+`5641527846`
+
+Authority marker:
+
+`DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT_AUTHORIZED`
+
+Dedicated Builder branch:
 
 `dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
 
-No Builder mutation is authorized until the authoritative activation comment is posted and fresh startup confirms Issue #56 remains OPEN and CURRENT governance agrees.
+Builder must fresh-fetch live `origin/main`, verify Issue #56 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm exact task type/branch/activation comment, verify the accepted household blob, then work only inside the Issue allowlist.
 
 ## Latest accepted gate — Issue #55 / DLH-5V-G
 
@@ -57,13 +65,13 @@ Accepted terminal:
 
 `DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
 
-The controlling Issue-#55 result remains: under its exact raw admissible-drift graph outer/limsup + recovery/liminf target, Route A is impossible on the frozen state family. This result is not reopened by Issue #56; only the necessity of that mathematical target for state-constraint HJB convergence is being audited.
+The controlling Issue-#55 result remains: under its exact raw admitted-drift graph outer/limsup + recovery/liminf target, Route A is impossible on the frozen state family. This result is not reopened by Issue #56; only the necessity of that mathematical target for state-constraint HJB convergence is being audited.
 
 ## Prior accepted finite-m obstruction — Issue #54 / DLH-5V-F
 
 The finite endpoint native-lattice representability obstruction remains accepted and frozen. Issue #56 may not reinterpret it as a coding error or KFE repair opportunity.
 
-## Owner-selected Route E — theory audit
+## Owner-selected Route E — active theory audit
 
 Issue #56 asks whether a valid state-constraint HJB convergence proof actually requires the strong raw drift-set graph criterion from Issue #55, or instead uses viscosity/operator consistency with state-constraint boundary inequalities, half-relaxed limits/test functions, monotonicity, stability and comparison hypotheses.
 
