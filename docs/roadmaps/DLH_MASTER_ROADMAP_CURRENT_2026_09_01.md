@@ -1,16 +1,16 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.37  
+**Version:** V0.38  
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** POST-DLH-5V-E ACCEPTED — FULL RECURRING REGULAR W-FRONTIER CONTRACT CLOSED / ENDPOINT-JOINT BOUNDARY NEXT
+**Status:** DLH-5V-F / ISSUE #54 PUBLISHED — ENDPOINT-BAND / JOINT-BOUNDARY FINITE-PROCESS CLOSURE; AUTHORITATIVE ACTIVATION REQUIRED
 
 ---
 
 ## 0. Long-run objective
 
-Build a hybrid structural–learned regional HANK platform in which household HJB/KFE, aggregation, firm/accounting and later nominal-HANK equations remain explicit structural economics, while hard-to-specify cross-regional mappings become learned modules only after the household and equilibrium foundations pass scientific and numerical validation.
+Build a hybrid structural–learned regional HANK platform in which household HJB/KFE, aggregation, firm/accounting and later nominal-HANK equations remain explicit structural economics, while hard-to-specify cross-regional mappings become learned modules only after household and equilibrium foundations pass scientific and numerical validation.
 
 The first learned object remains regional labor/spatial mapping `W^L`. Neural training remains downstream.
 
@@ -54,26 +54,16 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ---
 
-## 2. Accepted regular-frontier phase / adjacency — DLH-5V-A / Issue #49
+## 2. Accepted regular-frontier design chain — DLH-5V-A through DLH-5V-E
 
-Accepted candidate:
-
-`58a0efe2e85b497d8b19c306a831d865ed65136d`
-
-Reviewer acceptance:
-
-`5628285587`
-
-Integration:
-
-`46d6961100d1a050e6b313fa2e321180ed255226`
+### DLH-5V-A / Issue #49 — phase / adjacency — ACCEPTED
 
 Frozen grid:
 
 ```text
 da=10/19
 db=7/19
-da/db=10/7
+10j+7i<=N
 ```
 
 Regular W-frontier phase is period 7:
@@ -81,122 +71,45 @@ Regular W-frontier phase is period 7:
 ```text
 i_t(j)=floor((N-10j)/7)
 r_j=(N-10j) mod 7
-r_{j+7}=r_j.
+r_{j+7}=r_j
 ```
 
-Endpoints/corners were explicitly deferred.
+### DLH-5V-B / Issue #50 — local shared-face moment cone — OBSTRUCTION ACCEPTED
 
----
+Shared-face-only local geometry cannot represent exact W-tangent sliding on recurring top-cell classes. This bounded obstruction rejected the shared-face-only route, not the W-domain or native coordinates.
 
-## 3. Accepted local shared-face obstruction — DLH-5V-B / Issue #50
-
-Accepted candidate:
-
-`6bc8612dc10de6d72d27c9c47d1b4d598a70a15d`
-
-Reviewer acceptance:
-
-`5628629099`
-
-Integration:
-
-`ff0afdf6d3fa0d770654613e42109318d638639d`
-
-Accepted local shared-face cones:
-
-```text
-A^F: K = {7 mu_a + 10 mu_b <= 0}
-A^L: K = {mu_a <= 0, 7 mu_a + 10 mu_b <= 0}
-B^W: K = R^2
-```
-
-Exact sliding `(-u,+u)` is outside recurring top-cell shared-face cones. This rejects shared-face-only transition geometry but does not invalidate the W-domain or W1/native coordinates.
-
----
-
-## 4. Accepted forward exact-tangent wide stencil — DLH-5V-C / Issue #51
-
-Accepted candidate:
-
-`2134a4b249eb0a79dc20d60ba1fdee830304f261`
-
-Reviewer acceptance:
-
-`5630191586`
-
-Integration:
-
-`cdbf1906963a9bf06cf117ba63072d2f1542d501`
-
-Accepted primitive exact tangent:
+### DLH-5V-C / Issue #51 — forward exact-tangent wide stencil — ACCEPTED
 
 ```text
 (Delta j,Delta i)=(-7,+10)
 w_T=(-70/19,+70/19)
+(j,i)->(j-7,i+10)
 ```
 
-For recurring regular W-active states with `j>=7`, destination `(j-7,i+10)` is represented, its straight path stays in `D_W`, `a+b` is constant, and period-7 class/top-subtop offset are preserved. Lower-a band `j in {0,...,6}` is deferred.
+valid on the recurring regular W-active region with `j>=7`.
 
-Together with local inward `w_in=(-10/19,0)`, the wide edge closes
+### DLH-5V-D / Issue #52 — forward/reallocation rate contract — ACCEPTED
 
-```text
-T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}.
-```
-
-The wide edge is a **boundary wide-stencil Markov transition**, not an ordinary shared-face finite-volume flux.
-
----
-
-## 5. Accepted `T_realloc` rate / conservative generator contract — DLH-5V-D / Issue #52
-
-Issue #52 is CLOSED completed.
-
-Accepted candidate:
-
-`81705b0c1671a8ee09ee5c2f05953f3e4f9f1e8b`
-
-Reviewer acceptance:
-
-`5631523081`
-
-Acceptance integration:
-
-`d58bd962be3acc8b6f646b66643bbc96f121be57`
-
-Accepted verdict:
-
-`DLH_5VD_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
-
-For each admissible candidate in
+For
 
 ```text
 T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}
 ```
 
-accepted canonical rates are
+accepted rates are
 
 ```text
 w_in=(-10/19,0)
 w_T=(-70/19,+70/19)
 q_in=19*(-mu_W)/10
-q_T=19*mu_b/70.
+q_T=19*mu_b/70
 ```
 
-Rates enter the candidate's discrete `H_h` before selection. The gate deliberately did not freeze a global regular-boundary argmax until the remaining sectors were closed.
+with candidate-specific rates entering discrete `H_h` before selection.
 
-Conservative generator semantics:
+### DLH-5V-E / Issue #53 — full recurring regular W-frontier closure — ACCEPTED / CLOSED
 
-```text
-Q_ij>=0 for i!=j
-Q_ii=-sum actual represented outgoing rates
-Q1=0 by construction
-```
-
----
-
-## 6. Accepted full recurring regular W-frontier closure — DLH-5V-E / Issue #53
-
-Issue #53 accepted candidate:
+Accepted candidate:
 
 `ff4607ff74ab1e0cea530ba04f17045698f43a62`
 
@@ -212,120 +125,157 @@ Accepted verdict:
 
 `DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
 
-Accepted terminal:
-
-`DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
-
-### 6.1 Reverse reallocation
+Reverse reallocation:
 
 ```text
 R_reverse={mu_a>0,mu_b<0,mu_W<=0}
-```
-
-Accepted mirror exact tangent:
-
-```text
-(Delta j,Delta i)=(+7,-10)
 w_RT=(+70/19,-70/19)
-```
-
-Canonical rates:
-
-```text
+w_down=(0,-7/19)
 q_RT=19*mu_a/70
 q_down=19*(-mu_W)/7
+(j,i)->(j+7,i-10)
 ```
 
-on `w_RT` and `w_down=(0,-7/19)`.
+with independent availability conditions `j<=12`, `i>=10`.
 
-Mirror destination `(j+7,i-10)` requires both independent state conditions
-
-```text
-j<=12
-i>=10
-```
-
-because `j+7<=j_max=19` and `i-10>=0`.
-
-### 6.2 Both-inward depletion
+Both-inward depletion:
 
 ```text
 R_deplete={mu_a<=0,mu_b<0}
-```
-
-Canonical local directions/rates:
-
-```text
 w_left=(-10/19,0)
 w_down=(0,-7/19)
 q_left=19*(-mu_a)/10
-q_down=19*(-mu_b)/7.
+q_down=19*(-mu_b)/7
 ```
 
-### 6.3 Full regular closure
-
-On the accepted common regular W-active region
+On the common regular region
 
 ```text
 7<=j<=12
 i>=10
 ```
 
-plus accepted regular class conditions:
+plus accepted regular W-active/class conditions:
 
 ```text
 T_W={mu_W<=0}
- = T_realloc union R_reverse union R_deplete.
+ = T_realloc union R_reverse union R_deplete
 ```
 
-Shared boundaries are single-valued:
-
-- `mu_b=0`: `T_realloc` equals the depletion limit;
-- `mu_a=0`: depletion equals the reverse limit;
-- `mu_W=0`: forward/mirror exact sliding uses the common rate `19|mu_b|/70`;
-- zero drift has zero rates.
-
-Every continuously admissible candidate in the common regular region therefore has exactly one coherent sector-specific rate/scoring contract with no omission or double counting.
-
-### 6.4 Future global regular composition
-
-Frozen design semantics:
-
-```text
-all admissible regular W-boundary candidates
- -> exactly one sector-specific discrete-H_h score BEFORE selection
- -> ONE global regular argmax
- -> selected control + its already-defined rates
- -> ONE conservative backward row / generator Q
- -> future KFE consumes exactly Q^T
-```
-
-No HJB/KFE solve is authorized by this design acceptance.
+Every regular candidate receives exactly one sector-specific discrete-Hamiltonian score before ONE global argmax. The selected rates define ONE conservative backward `Q`; future KFE must consume exactly `Q^T`.
 
 ---
 
-## 7. Independent KFE methodology cross-check
+## 3. Current active scientific gate — DLH-5V-F / Issue #54
 
-The separately stabilized Chapter-5 clean/source-free KFE implementation reinforces, but does not replace, DeepLearning-HANK authority:
+Title:
+
+`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
+
+Task type:
+
+`SCIENTIFIC_DESIGN__ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE`
+
+Owner decision:
+
+`APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`
+
+Dedicated Builder branch after authoritative activation:
+
+`dsh/issue-54-dlh-5vf-endpoint-joint-boundary-2026-09-11`
+
+Issue publication alone does not authorize Builder work. CURRENT governance must be synchronized and an authoritative Issue #54 activation comment must record the fresh synchronized `main`.
+
+### 3.1 Exact state-space complement
 
 ```text
-Q backward
-Q^T forward
-off-diagonal >=0
-diagonal = -sum actual outgoing
-Q1=0
-same Q HJB/KFE
-mass-first stationary object p
-SCC/closed recurrent classes before uniqueness
-original source-free Q^T p residual downstream
-pin/normalization != leakage repair
+lower-a forward-wide band: j in {0,...,6}
+upper-a mirror-wide band:  j in {13,...,19}
+lower-b mirror-wide band:  i in {0,...,9}
 ```
 
-The MATLAB-faithful contaminated-row reproduction method is not imported as production logic. DeepLearning-HANK Issue #27 component-pin authority remains unchanged.
+plus their intersections, W-active endpoint cells and true economic corners/joint faces.
+
+### 3.2 Critical distinction: numerical reachability versus economic faces
+
+A reachability band is not an economic boundary face:
+
+```text
+actual a=0 face:       j=0 only
+actual a=a_max face:   j=19 only
+actual b=b_min face:   i=0 only
+```
+
+Thus `j=1,...,6`, `j=13,...,18`, and `i=1,...,9` remain interior in the corresponding asset coordinate unless another economic face is active.
+
+Continuous tangent/KKT restrictions apply only on actually active faces, jointly at intersections:
+
+```text
+a=0:       mu_a>=0
+b=b_min:   mu_b>=0
+a=a_max:   mu_a<=0
+W:         mu_a+mu_b<=0
+```
+
+### 3.3 Exact scientific sequence
+
+Issue #54 must proceed in this order:
+
+```text
+state taxonomy
+ -> economic active-set cone + transition-reachability flags
+ -> actual represented native-grid destination set
+ -> nonnegative represented first-moment cone
+ -> compare with continuous admissible cone
+ -> derive exact candidate rates/scoring where feasible
+ -> prove regular/endpoint seam consistency
+ -> freeze conservative row law using actual destinations only
+ -> either full design closure or a bounded obstruction certificate
+```
+
+Exact W-tangent native-grid identity:
+
+```text
+10 Delta j + 7 Delta i = 0
+```
+
+Primitive same-W lattice displacement is generated by `(-7,+10)` / `(+7,-10)`. The gate must determine rather than assume whether exact tangent coverage survives when these regular destinations are unavailable.
+
+### 3.4 Scientific fail-closed requirements
+
+Do not:
+
+- silently clamp an unavailable wide transition;
+- omit an off-grid destination while retaining diagonal escape;
+- introduce ghost/interpolation/virtual states or reflected KFE mass;
+- let KFE independently rebuild the HJB boundary process;
+- change grid/domain/household economics to manufacture closure;
+- weaken exact process matching inside this gate.
+
+A proof that a continuously admissible deferred-state drift cannot lie in the nonnegative cone of actual represented native-grid displacements is a legitimate scientific obstruction and requires an Owner route decision.
 
 ---
 
-## 8. Current roadmap position
+## 4. Same-process generator safeguards — frozen
+
+```text
+Q = backward controlled generator
+Q^T = forward mass operator
+Q_ij >= 0 for i != j
+Q_ii = -sum of ACTUAL represented outgoing rates
+Q1 = 0 by construction
+same selected Q for HJB and KFE
+p=Mg
+p_dot=Q^T p
+```
+
+Issue #27 component-pin semantics remain unchanged: pin/normalization fixes scale only, never leakage; validate the original source-free equation downstream.
+
+Stationary KFE remains explicitly blocked until the global finite controlled process has been implemented and validated.
+
+---
+
+## 5. Current roadmap position
 
 ```text
 MATLAB-faithful two-asset household economics                 ACCEPTED
@@ -333,12 +283,12 @@ finite W-domain + continuous tangent/KKT law                 ACCEPTED
 same-process HJB <=> KFE principle                           ACCEPTED
 restricted-Voronoi state partition                           ACCEPTED
 regular W-frontier phase / adjacency                         ACCEPTED
-local shared-face moment cone                                OBSTRUCTION ACCEPTED
-forward exact-tangent wide-stencil feasibility               ACCEPTED
-T_realloc control-dependent rates + conservative Q           ACCEPTED
+local shared-face-only process                               OBSTRUCTION ACCEPTED
+forward exact-tangent wide stencil                           ACCEPTED
+T_realloc control-dependent rates + conservative-Q semantics ACCEPTED
 remaining regular W-boundary sectors                         ACCEPTED
-full recurring regular W-frontier candidate scoring          ACCEPTED
-endpoint / joint-boundary closure                            NEXT — NOT YET AUTHORIZED
+full recurring regular W-frontier scoring                    ACCEPTED
+endpoint-band / joint-boundary finite-process closure         ACTIVE — ISSUE #54 / ACTIVATION REQUIRED
 boundary-HJB / finite-process implementation                 PENDING
 global discrete-HJB implementation                           PENDING
 same-process Q validation + SCC diagnostics                  PENDING
@@ -351,56 +301,39 @@ two-region structural anchor rebuild                         PENDING
 learned regional W^L                                         PENDING
 ```
 
-Current Builder authority: **NONE**.
+---
+
+## 6. Issue #54 terminal decision structure
+
+Full design closure:
+
+`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_CONTRACT_FROZEN__READY_FOR_BOUNDARY_HJB_IMPLEMENTATION_GATE`
+
+Sharply bounded unresolved class:
+
+`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_PARTIAL__ONE_BOUNDED_CLASS_REMAINS_UNRESOLVED`
+
+Finite-process representability obstruction:
+
+`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
+
+Authority inconsistency:
+
+`BLOCKED_DLH_5VF_ACCEPTED_SOURCE_OR_PRIOR_AUTHORITY_INCONSISTENCY`
+
+This is deliberately not a PASS-seeking gate.
 
 ---
 
-## 9. Exact next bounded scientific block — endpoint / joint-boundary closure
+## 7. Downstream route after DLH-5V-F
 
-The state-space complement deferred by the regular gates is now explicit:
-
-```text
-lower-a forward-wide band: j in {0,...,6}
-upper-a mirror-wide band:  j in {13,...,19}
-lower-b mirror-wide band:  i in {0,...,9}
-```
-
-plus:
-
-- intersections of those bands;
-- true corners / joint faces;
-- W-active endpoint cells.
-
-The next design gate should derive a finite-process transition/rate/scoring contract that respects all jointly active continuous tangent-cone/KKT constraints:
+If and only if the endpoint/joint process is scientifically closable and accepted:
 
 ```text
-a=0:       mu_a>=0
-b=b_min:   mu_b>=0
-a=a_max:   mu_a<=0
-W face:    mu_a+mu_b<=0
-```
-
-at the appropriate intersections.
-
-It must not:
-
-- silently clamp a regular wide transition that leaves the grid;
-- omit an off-grid destination while retaining diagonal escape;
-- let KFE independently repair/rebuild the HJB boundary process;
-- redesign the economic household equations without new Owner authority.
-
-The likely successor can be named conceptually `DLH-5V-F / endpoint-joint-boundary closure`, but **no successor Issue is authorized or created by this roadmap**.
-
----
-
-## 10. Downstream route after endpoint / joint-boundary closure
-
-```text
-endpoint / joint-boundary closure
- -> boundary-HJB / finite-process implementation
+boundary-HJB / finite-process implementation
  -> global discrete-HJB implementation
  -> same-process Q validation + SCC/closed-class diagnostics
- -> Wmax / resolution robustness
+ -> nested Wmax / resolution robustness
  -> conservative stationary-generator validation
  -> Issue #27 stationary KFE
  -> stationary aggregates C,L,A,B
@@ -409,34 +342,22 @@ endpoint / joint-boundary closure
  -> learned regional W^L
 ```
 
-Stationary KFE remains explicitly blocked until the finite controlled process is fully implemented and validated.
+If Issue #54 returns a structural representability obstruction, Owner chooses the next grid/discretization/domain route before implementation.
 
 ---
 
-## 11. Session handoff
+## 8. Interpretation ceiling
 
-This conversation hands off immediately after DLH-5V-E acceptance and post-acceptance governance synchronization.
-
-Dedicated handoff snapshot:
-
-`docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md`
-
-Current Task Index:
-
-`tasks/TASK_INDEX_CURRENT.md`
-
-Current Startup Snapshot:
-
-`docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-
-No active Builder Issue exists at handoff.
+DLH-5V-F is design-only. It does not authorize implementation, HJB/KFE execution, stationary computation, numerical `W_max`, aggregates, GE, multi-region, neural, nominal, calibration, policy, welfare, or Results prose.
 
 ---
 
-## 12. Audit transparency
+## 9. Current governance pointers
 
-Immediately before the DLH-5V-E integration, reviewer-side connector housekeeping accidentally created a temporary file `__does_not_exist__` on `main` in commit `51660b9a2c36529ff7e3256b5209b36bc0019716` and immediately deleted it in commit `7db0a4624630dc5cdb18c2de266635faee257ed0`.
+- `tasks/TASK_INDEX_CURRENT.md`
+- `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+- Issue #54 body/comments after authoritative activation.
 
-The cumulative compare from the pre-housekeeping scientific main `72b0b4d7c0a24d7ebeb2f670f9e26ef25f8ba1ee` to `7db0a4624630dc5cdb18c2de266635faee257ed0` has **zero changed files**. No scientific or governance content changed. History is retained transparently rather than rewritten.
+`docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md` is retained as the historical post-DLH-5V-E conversation checkpoint; it does not override later synchronized CURRENT governance.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
