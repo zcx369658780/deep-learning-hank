@@ -21,7 +21,11 @@ Priority:
 
 ## Current Builder state
 
-Issue #54 / DLH-5V-F has been published and Owner-approved.
+**ACTIVE — Issue #54 / DLH-5V-F.**
+
+Title:
+
+`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
 
 Task type:
 
@@ -31,11 +35,19 @@ Owner decision:
 
 `APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`
 
-Dedicated branch to be used after authoritative activation:
+Authoritative activation comment:
+
+`5632596303`
+
+Authority marker:
+
+`DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_AUTHORIZED`
+
+Dedicated Builder branch:
 
 `dsh/issue-54-dlh-5vf-endpoint-joint-boundary-2026-09-11`
 
-**Activation is not complete until an authoritative Issue #54 comment records the fresh synchronized `main`.** Until that comment exists, DSH must remain stopped. After activation, Issue #54 body/comments are the exact scope authority; this snapshot cannot expand them.
+Builder must fresh-fetch live `origin/main`, verify Issue #54 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm the same task type/branch, then work only inside the Issue allowlist. Issue body/comments are the exact task authority; this snapshot cannot expand scope.
 
 ## Latest accepted gate — Issue #53 / DLH-5V-E
 
@@ -57,7 +69,7 @@ Accepted verdict:
 
 `DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
 
-This closes the recurring regular W-frontier sector-design block. Endpoint-band / joint-boundary finite-process representation is the current gate.
+This closes the recurring regular W-frontier sector-design block. Endpoint-band / joint-boundary finite-process representation is now active under Issue #54.
 
 ## Controlling household / finite-domain authority
 
@@ -219,7 +231,7 @@ Do not silently clip, inject an unacknowledged inward normal component, create g
 
 Even full Outcome A can establish only a design-level endpoint/joint finite-process contract. It does not authorize:
 
-- boundary-HJB implementation unless separately accepted and followed by a new gate;
+- boundary-HJB implementation without a separately accepted successor gate;
 - global discrete-HJB execution;
 - numerical `W_max` selection;
 - stationary-generator execution;
@@ -247,6 +259,6 @@ DLH-5V-F endpoint/joint finite-process closure
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #54 body + authoritative comments after activation.
+- Issue #54 body/comments.
 
 The file `docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md` is the historical post-5V-E conversation checkpoint. It records the pre-successor state and does not override later synchronized CURRENT governance.
