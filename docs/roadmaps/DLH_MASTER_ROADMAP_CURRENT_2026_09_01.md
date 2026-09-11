@@ -4,7 +4,7 @@
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-F / ISSUE #54 PUBLISHED — ENDPOINT-BAND / JOINT-BOUNDARY FINITE-PROCESS CLOSURE; AUTHORITATIVE ACTIVATION REQUIRED
+**Status:** DLH-5V-F / ISSUE #54 ACTIVE — ENDPOINT-BAND / JOINT-BOUNDARY FINITE-PROCESS CLOSURE
 
 ---
 
@@ -180,11 +180,19 @@ Owner decision:
 
 `APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`
 
-Dedicated Builder branch after authoritative activation:
+Authoritative activation comment:
+
+`5632596303`
+
+Authority marker:
+
+`DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_AUTHORIZED`
+
+Dedicated Builder branch:
 
 `dsh/issue-54-dlh-5vf-endpoint-joint-boundary-2026-09-11`
 
-Issue publication alone does not authorize Builder work. CURRENT governance must be synchronized and an authoritative Issue #54 activation comment must record the fresh synchronized `main`.
+Issue #54 is the active Builder authority while OPEN and while fresh CURRENT governance remains synchronized to this identity. DSH must fresh-fetch before any mutation.
 
 ### 3.1 Exact state-space complement
 
@@ -219,7 +227,7 @@ W:         mu_a+mu_b<=0
 
 ### 3.3 Exact scientific sequence
 
-Issue #54 must proceed in this order:
+Issue #54 proceeds in this order:
 
 ```text
 state taxonomy
@@ -288,7 +296,7 @@ forward exact-tangent wide stencil                           ACCEPTED
 T_realloc control-dependent rates + conservative-Q semantics ACCEPTED
 remaining regular W-boundary sectors                         ACCEPTED
 full recurring regular W-frontier scoring                    ACCEPTED
-endpoint-band / joint-boundary finite-process closure         ACTIVE — ISSUE #54 / ACTIVATION REQUIRED
+endpoint-band / joint-boundary finite-process closure         ACTIVE — ISSUE #54
 boundary-HJB / finite-process implementation                 PENDING
 global discrete-HJB implementation                           PENDING
 same-process Q validation + SCC diagnostics                  PENDING
@@ -356,7 +364,7 @@ DLH-5V-F is design-only. It does not authorize implementation, HJB/KFE execution
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #54 body/comments after authoritative activation.
+- Issue #54 body/comments.
 
 `docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md` is retained as the historical post-DLH-5V-E conversation checkpoint; it does not override later synchronized CURRENT governance.
 
