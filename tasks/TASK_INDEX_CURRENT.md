@@ -1,16 +1,20 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE__DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_ADJACENCY`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VA_ACCEPTED__REGULAR_MOMENT_CONE_GATE_REQUIRED`
 
-Last synchronized: 2026-09-10
+Last synchronized: 2026-09-11
 
 Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Current Issue:
+**NONE.**
 
-**Issue #49 — OPEN**
+Issue #49 / DLH-5V-A has been scientifically accepted. DSH must remain stopped until a successor bounded Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized to it, and an authoritative activation comment is posted.
+
+Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #49 / DLH-5V-A
 
 Title:
 
@@ -20,39 +24,31 @@ Task type:
 
 `SCIENTIFIC_DESIGN__REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_CLASSIFICATION`
 
-Dedicated branch:
+Accepted candidate:
 
-`dsh/issue-49-dlh-5va-voronoi-frontier-phase-adjacency-2026-09-10`
+`58a0efe2e85b497d8b19c306a831d865ed65136d`
 
-Owner split-gate decision:
+Reviewer acceptance comment:
 
-`APPROVE_DLH_5VA_SPLIT_GATE__REGULAR_FRONTIER_PHASE_ADJACENCY_ONLY`
+`5628285587`
 
-Issue #49 is the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
+Acceptance integration commit:
 
-## Superseded Issue #48
+`46d6961100d1a050e6b313fa2e321180ed255226`
 
-Issue #48 / the original broad DLH-5V gate is CLOSED `not_planned` because repeated Builder context/output exhaustion prevented completion before any scientific deliverable was created.
+Acceptance level:
 
-No Issue #48 candidate commit exists and its designated remote branch was never created. This is an operational scope failure, **not a scientific outcome**. No accepted DLH-5U authority changed.
-
-## Latest accepted scientific task — Issue #47 / DLH-5U
-
-Accepted Rev-1 candidate:
-
-`81bf9b46f20e6dd96514bb6fad698097c917a948`
-
-Reviewer acceptance:
-
-`5521379228`
-
-Acceptance integration:
-
-`060c2835825f9efff4f89c84646f04cab6a9c8a4`
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
+`DLH_5VA_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_RESTRICTED_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+
+Accepted terminal:
+
+`DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+
+## Accepted regular-frontier authority
 
 Accepted household source remains immutable/read-only:
 
@@ -62,7 +58,7 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Binding law:
+Binding law remains:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
@@ -70,11 +66,7 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Current DLH-5V-A target
-
-This is a deliberately smaller replacement gate. It covers only regular nondegenerate W-frontier geometry away from axial endpoints/corners.
-
-Accepted objects:
+Accepted finite domain / restricted-Voronoi framework remains:
 
 ```text
 D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
@@ -88,30 +80,30 @@ Exact grid:
 da=10/19, db=7/19, da/db=10/7
 ```
 
-Builder must classify the finite recurring regular W-line phases and derive actual restricted-Voronoi shared-face neighbor/displacement sets. Moment cones, transition rates, face-flux moment tests, exact sliding rates, endpoints/corners and implementation are deferred.
+For regular non-endpoint frontier cells:
 
-## Required scientific reading budget
+- represented-node set is `10j+7i<=N`, independent of `theta in [0,1)`;
+- regular discrete phase is period 7 with `r_j=(N-10j) mod 7=(N-3j) mod 7`;
+- `N mod 7` fixes the discrete regular-frontier phase; theta moves the W line affinely without a structural break;
+- top A cell is W-active for every defect;
+- sub-top B cell is W-active iff `r_j in {0,1,2}`;
+- deeper regular cells are not W-active;
+- accepted regular neighbor families are axial plus NW/SE diagonal only; no oblique/longer regular neighbor is accepted;
+- regular types are `INT`, `A^F`, `A^L`, and `B`; `A^L` is the unique regular class with `N_V=3`.
 
-After all CURRENT project rules and current governance files, scientific history is limited to:
+## Next bounded scientific object
 
-1. `docs/design/DLH_5U_W1_FACE_ADAPTED_FINITE_VOLUME_SAME_PROCESS_DISCRETIZATION.md`
-2. `reports/dlh_5u_w1_face_adapted_fv_same_process_2026_09_03/DLH_5U_CONTROL_VOLUME_GEOMETRY_AND_BOUNDARY_LOCATION.md`
+The next recommended gate is a **regular-frontier geometric moment-cone analysis** using the now-frozen actual Voronoi neighbor/displacement sets.
 
-Verify the accepted household blob without rereading the full source unless a direct contradiction appears. Do not reread superseded Issue #48 or the full historical DLH-5T / Issue #27 packages for this bounded task.
+It should determine, for every accepted regular phase class, whether the nonnegative displacement cone contains the admissible tangential reallocation directions, especially exact sliding `(-1,+1)`.
 
-## Exact Builder allowlist
+This successor is NOT yet active.
 
-1. `docs/design/DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY.md`
-2. `reports/dlh_5va_regular_voronoi_frontier_2026_09_10/DLH_5VA_AUTHORITY_CAPSULE.md`
-3. `reports/dlh_5va_regular_voronoi_frontier_2026_09_10/DLH_5VA_PHASE_CLASSIFICATION.md`
-4. `reports/dlh_5va_regular_voronoi_frontier_2026_09_10/DLH_5VA_VORONOI_ADJACENCY_AND_DISPLACEMENTS.md`
-5. `reports/dlh_5va_regular_voronoi_frontier_2026_09_10/DLH_5VA_TERMINAL_AND_FORBIDDEN_CHECK.md`
+Endpoint/corner closure, source-state face-flux moment audit, boundary-local rate construction, implementation, HJB/KFE, stationary KFE, numerical production `W_max`, aggregates, GE, and neural training remain downstream and unauthorized.
 
-No existing tracked file may be modified by Builder.
+## Superseded Issue #48
 
-## Scientific ceiling
-
-Issue #49 is design-only. Do not mutate source; run HJB/KFE/stationary; select numerical `W_max`; change grid/economics; compute moment cones or rates; analyze endpoint/corner transitions beyond marking them deferred; agglomerate cells; compute aggregates/GE; enter multi-province/neural/nominal/calibration/policy/welfare/Results; or PR/merge/close/successor/self-accept.
+Issue #48 remains CLOSED `not_planned` for operational context-budget reasons only and carries no scientific verdict.
 
 Current Startup Snapshot:
 
