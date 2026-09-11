@@ -51,11 +51,20 @@ Regular region nonempty requires `i_t(12) = (N - 120)/7 >= 10`, i.e. `N >= 190`.
 - `j in {1..6}`: cells exist with `i_t(j) >= 19` (hence b-interior) for `N >= 190`.
 - `j in {13..18}`: cells exist with `i_t(j) >= 1` (b-interior) for `N >= 190`
   (`i_t(18) = (N - 180)/7 >= 1`).
-- Lower-b band `i <= 9` on the frontier: cells exist iff `i_t(19) = (N-190)/7 <= 9`,
-  i.e. `N <= 259`; the cells are `j = 13..19` (top) plus sub-tops. The `b = b_min`
-  W-active cell is `(19, 0)` and exists iff `10 j = N` with `j = 19`, i.e.
-  `N in {190, ..., 199}` (triple corner `a = a_max, b = b_min`); for `N >= 200` the
-  frontier at `j = 19` has `i >= 1` and no W-active `b = b_min` cell exists.
+- Lower-b band `i <= 9` on the frontier: W-active cells exist iff
+  `i_t(19) = (N-190)/7 <= 9`, i.e. `N <= 259`; for `N >= 190` these cells are exactly
+  the class-`13..19` top/sub-top cells of rows 7–12 below (the `i <= 9` band is a
+  reachability label, not an economic class — the taxonomy rows are mutually
+  exclusive and cover all of these cells). The only `b = b_min` W-active cell is
+  `(19, 0)`, and it is W-active exactly when it is the class-19 **top** cell:
+  `i_t(19) = 0`, i.e. `N in {190..196}`. (For `N in {197..203}` it is the class-19
+  sub-top with `i_t(19) = 1 < 2`, which the accepted sub-top W-activity condition
+  excludes; for `N >= 204` it is not a frontier-phase cell at all.) Continuously,
+  the triple corner `a = a_max, b = b_min, W` exists **only** at the boundary case
+  `W_max = 8`, i.e. exactly `N = 190` (`theta = 0`); for `N >= 191` the node
+  `(19,0)` lies strictly inside the W face, so the W face is not continuously active
+  there — the discrete W-activity of the cell is a separate Voronoi-contact status
+  (DLH-5V-A phase facts, `theta`-independent beyond `N = floor(kappa)`).
 - Exact-frontier top cells: `r_j = 0` iff `j == (5 N) mod 7`. In the deferred
   a-interior bands:
   - lower band: `(5 N) mod 7 in {1..6}` (i.e. `N mod 7 != 0`) gives `j in {1..6}`;
@@ -68,12 +77,22 @@ Regular region nonempty requires `i_t(12) = (N - 120)/7 >= 10`, i.e. `N >= 190`.
 
 ```text
 a=0 x W           (j = 0 top/sub-top):            { mu_a >= 0, mu_W <= 0 }
-a=a_max x W       (j = 19 top/sub-top):            { mu_a <= 0, mu_W <= 0 }
-b=b_min x W       ((19,0), N in {190..199}):       { mu_a <= 0, mu_b >= 0 }  (implies mu_W <= 0)
-a=0 x b=b_min     (not W-active for N >= 190;      { mu_a >= 0, mu_b >= 0 }
+a=a_max x W       (j = 19 top/sub-top, i >= 1):   { mu_a <= 0, mu_W <= 0 }
+a=0 x b=b_min     (not W-active for N >= 190;     { mu_a >= 0, mu_b >= 0 }
                   exists only in degenerate cases)
-a=a_max x b=b_min ((19,0) corner; W face then only when W_max = 8): { mu_a <= 0, mu_b >= 0 }
+a=a_max x b=b_min ((19,0) node, N >= 190):        { mu_a <= 0, mu_b >= 0 }
 ```
+
+The W face is additionally continuously active at `(19,0)` **only** in the boundary
+case `W_max = 8` (exactly `N = 190`, `theta = 0`), giving
+`{ mu_a <= 0, mu_b >= 0, mu_W <= 0 }` there. Note that `{ mu_a <= 0, mu_b >= 0 }`
+does **not** imply `mu_W <= 0` (e.g. `(mu_a, mu_b) = (-1, +3)`); the
+`mu_W <= 0` leg at `(19,0)` for all `N in {190..196}` comes from the **discrete
+W-activity** of the cell: the frozen W-boundary design treats every W-active cell
+with the cell-level W-contact constraint `mu_W <= 0`, exactly as in the regular
+region where W-active cells carry `T_W` even though their node lies inside the W
+face. At `(19,0)` the design cone is therefore
+`{ mu_a <= 0, mu_b >= 0, mu_W <= 0 } = cone{w_left, w_T} = T_realloc`.
 
 For `{W}`-only cells the cone is `T_W = { mu_W <= 0 }` (full tangent cone).
 
@@ -93,19 +112,22 @@ scoring report). `r_j` is the W residual; `i >= 1` means b-interior.
 | 4 | `j=1` top, `r_1 in {1,2,3}` | `N mod 7 in {4,5,6}` | `{W}` | `T_W` | **O_L** |
 | 5 | `j in {1..6}` other top | always (per class) | `{W}` | `T_W` | repr. |
 | 6 | `j in {1..6}` sub-top | `r_j in {0,1,2}`, `i_t>=2` | `{W}` | `T_W` | repr. |
-| 7 | `j=19` top | `N >= 190` | `{a=a_max, W}` | `{mu_a<=0, mu_W<=0}` | **closable** |
+| 7 | `j=19` top, `i_t(19) >= 1` | `N >= 197` | `{a=a_max, W}` | `{mu_a<=0, mu_W<=0}` | **closable** |
 | 8 | `j=19` sub-top | `r_19 in {0,1,2}`, `i_t>=2` | `{a=a_max, W}` | same | **closable** |
+| 8b | `(19,0)` = class-19 top, `i_t(19)=0` | `N in {190..196}` | continuous `{a_max, b_min}` (+`{W}` iff `N=190`); discrete W-active | design `{mu_a<=0, mu_b>=0, mu_W<=0}` = T_realloc | **closable** (T_realloc) |
 | 9 | `j in {13..18}` top, `r_j=0` | `(5N) mod 7` in upper set (above) | `{W}` | `T_W` | **O_U** |
-| 10 | `j in {13..18}` top, no-helper `r_j in {1,2}` | per-residue subset (audit §8) | `{W}` | `T_W` | **O_U** |
+| 10 | `j in {13..18}` top, no-helper set `{j in {15,16}, r_j=1} u {j in {17,18}, r_j in {1,2}}` | closed-form (helper availability, audit §5) | `{W}` | `T_W` | **O_U** (supplementary) |
 | 11 | `j in {13..18}` other top | always (per class) | `{W}` | `T_W` | repr. |
 | 12 | `j in {13..18}` sub-top | `r_j in {0,1,2}`, `i_t>=2` | `{W}` | `T_W` | repr. |
-| 13 | `(19,0)` b-min triple corner | `N in {190..199}` | `{a_max, b_min, W}` | `{mu_a<=0, mu_b>=0}` | **closable** (T_realloc) |
 
-Rows 3–4 and 9–10 are the obstruction classes; rows 1–2, 7–8, 13 are exactly
+Rows 3–4 and 9–10 are the obstruction classes; rows 1–2, 7–8, 8b are exactly
 closable; rows 5–6, 11–12 are representable for the exact tangent drift (their full
 closed-form candidate contracts are not required for the terminal and are only
 constructively evidenced in the audit report — the obstruction already determines the
-Outcome).
+Outcome). Row 10 is marked supplementary because its obstruction status rests on the
+closed-form no-helper certificate **plus** exact cell-by-cell verification over
+`N in [190, 260]` (audit §5, §8); it is non-controlling — row 9 (`r_j = 0`) is
+closed-form, universal over the `N >= 190` family, and alone forces the terminal.
 
 ## 6. Reachability inventory per band (destinations actually represented)
 

@@ -10,11 +10,11 @@ rationale, the forbidden-operation check, and the completion evidence.
 The deferred complement of DLH-5V-E is **not** closable under the frozen
 grid/domain/exact same-process contract: at least one continuously admissible
 deferred-state drift class — the exact W-tangent sliding rays at exact-frontier
-(`r_j = 0`) a-interior top cells, which exist for **every** symbolic `N` (all seven
-residues mod 7) — cannot be represented by any nonnegative combination of actual
-allowed native-grid destinations. This is a finite-process representability
-obstruction, proven in closed form (audit report §4) and machine-verified by exact
-enumeration (audit report §8).
+(`r_j = 0`) a-interior top cells, which exist for every `N >= 190` in the current
+regular-Regime-I symbolic family (all seven residues mod 7) — cannot be represented
+by any nonnegative combination of actual allowed native-grid destinations. This is a
+finite-process representability obstruction, proven in closed form (audit report §4)
+and machine-verified by exact enumeration (audit report §8).
 
 **Exact terminal (one, exact string):**
 

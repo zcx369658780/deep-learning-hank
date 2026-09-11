@@ -19,10 +19,20 @@ reverse sector   (j = 0, a=0 x W):  transitions (w_RT, w_down)
     q_down = 19*(-mu_W)/7           >= 0  (W face: mu_W <= 0)
     cone{w_RT, w_down} = { mu_a >= 0, mu_b <= 0, mu_W <= 0 } = admissible at j = 0
 
-T_realloc sector (b=b_min W-cell (19,0)):  transitions (w_left, w_T)
+T_realloc sector (b-min face cell (19,0) = class-19 top, i_t(19) = 0, N in {190..196}):
+    transitions (w_left, w_T)
     q_in = 19*(-mu_W)/10            >= 0
     q_T  = 19*mu_b/70               >= 0  (b=b_min face: mu_b >= 0)
-    cone{w_left, w_T} = { mu_a <= 0, mu_b >= 0, mu_W <= 0 } = admissible at (19,0)
+    design cone { mu_a <= 0, mu_b >= 0, mu_W <= 0 } = cone{w_left, w_T} = admissible at (19,0)
+```
+
+At `(19,0)` the continuous node faces are `{a=a_max, b=b_min}` (the W face
+additionally only in the boundary case `W_max = 8`, i.e. `N = 190`); the `mu_W <= 0`
+leg of the design cone comes from the frozen **W-contact law for W-active cells**
+(cell-level Voronoi frontier contact), not from the continuous faces alone. The
+`w_left`/`w_T` availability at `(19,0)` holds for `N >= 190` (`w_T` requires
+`j >= 7` and destination `(12,10)` with index `190 <= N`), so the sector contract is
+exact for every `N in {190..196}`.
 
 a=a_max face (j = 19):  transitions (w_left, w_down, w_T)
     mu_b >= 0:  q_in = 19*(-mu_W)/10,  q_T = 19*mu_b/70        (T_realloc branch)
@@ -100,9 +110,11 @@ obstruction. No alternative `Q`, no KFE-side correction, no second process.
 
 ## 6. Interaction with the joint-boundary KKT
 
-At joint intersections (`a=0 x W`, `a=a_max x W`, `b=b_min x W`) the rates of
-Section 1 are derived under the **joint** KKT: each multiplier is nonnegative,
-complementarity holds, and the effective-gradient convention is the accepted
+At joint intersections (`a=0 x W`, `a=a_max x W`, and the `(19,0)` corner with
+continuous faces `a=a_max x b=b_min`, plus the discrete W-contact law at that
+W-active cell) the rates of Section 1 are derived under the **joint** KKT: each
+multiplier is nonnegative, complementarity holds, and the effective-gradient
+convention is the accepted
 `L = H - sum lambda_j g_j` form (lower faces `V + lambda`, upper/W faces
 `V - lambda`). The cone equalities of Section 1 are exactly the joint-cone statements
 of the accepted DLH-5T boundary laws, so the endpoint contracts inherit the joint

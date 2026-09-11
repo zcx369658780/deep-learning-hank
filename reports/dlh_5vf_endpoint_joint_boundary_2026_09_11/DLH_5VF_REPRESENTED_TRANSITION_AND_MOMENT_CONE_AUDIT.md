@@ -91,42 +91,64 @@ These two certificates are exact and airtight: they use only (i) the node-set bo
 (ii) same-W generation, (iii) the availability conditions — no enumeration was
 needed.
 
-## 5. Obstruction certificate — additional no-helper classes (dominance)
+## 5. Obstruction certificate — additional classes
 
-**Lower band `j = 1`, `r_1 in {1,2,3}` (top cell).** Exact enumeration (N in
-[190,260]) establishes the certificate property:
+**Lower band `j = 1`, `r_1 in {1,2,3}` (top cell) — closed-form proof.** Let
+`i = i_t(1)`, so `W_idx(s) = N - r_1` with `r_1 in {1,2,3}`.
+
+*Claim P_L: no represented destination has `(Delta b > 0 AND 10 Delta j + 7 Delta i >= 0)`.*
+
+Proof. `Delta b > 0` iff `Delta i >= 1`. For `j' = 0`: `i' = i+1` is represented
+(`W_idx = N - r_1 - 3 <= N`), and any `i' >= i+2` has `W_idx >= N + 4 - r_1 > N`
+(since `r_1 <= 3`), so is not represented. For `j' >= 1`: `W_idx >= 10 + 7(i+1)
+= N - r_1 + 7 > N`. So the **only** `Delta b > 0` destination is `(0, i+1)`, with
+displacement `(-1, +1)` and `Delta W = -3/19 < 0`. Next, suppose
+`10 Delta j + 7 Delta i = Delta W_idx in {1..r_1} subset {1..3}` (a `Delta W > 0`
+destination): if `Delta i >= 0` then `Delta j >= 1` gives `Delta W >= 10`, and
+`Delta j = 0` gives `Delta W >= 7`, and `Delta j <= -2` gives `j' < 0` (off-grid),
+while `Delta j = -1` gives `Delta W in {-3, +4}` with `+4 > r_1` — contradiction;
+hence `Delta i <= -1`, and then `10 Delta j = Delta W - 7 Delta i >= 1 + 7 > 0`, so
+`Delta j >= 1`. Thus every `Delta W > 0` destination has `Delta a > 0`,
+`Delta b < 0`, and b-drag ratio `-7 Delta i / Delta W = (10 Delta j - Delta W)/Delta W
+>= 10/3 - 1 = 7/3` (using `Delta j >= 1`, `Delta W <= 3`). P_L holds.
+
+*Dominance.* If `(-u, +u) = sum q_d v_d` with `mu_W = 0`, the `(0, i+1)` mass
+`q_C` contributes `Delta W = -3 q_C/19 < 0`, so the `Delta W > 0` mass must satisfy
+`sum q_d Delta W >= 3 q_C` (index units). Its b-drag is at least
+`(7/3) sum q_d Delta W >= 7 q_C`, exactly cancelling the `+7 q_C` b-gain of
+`(0, i+1)`; the equality-degenerate case (all `Delta W > 0` mass on `(2, i-1)`,
+`r_1 = 3`) additionally forces `mu_a > 0` (wrong sign for forward-sliding, which
+needs `mu_a = -u < 0`). Hence `mu_b > 0` with `mu_W = 0` is impossible:
+`(-u, +u) not in C_rep(s)`. **Obstruction (O_L).** Re-verified exactly over
+`N in [190, 260]` (30/30 cells; exact separation test, Section 8).
+
+**Upper band no-helper cells — closed-form certificate, bounded supplementary
+obstruction evidence.** The no-helper set is closed-form: a
+`(Delta a > 0 AND Delta W >= 0)` destination needs a same-orientation helper with
+step `k = Delta j >= 1` and `Delta W_min(k) = 10 k - 7 ceil(10 k / 7) <= r_j`
+(`Delta W_min(1..5) = 3, 6, 2, 5, 1`; higher `k` with `Delta W_min in {1,2}` require
+`j + k <= 19`, i.e. `k <= 6` here). For `r_j in {1,2}` the only on-grid helpers are
+`k = 3` (`(j+3, i-4)`, `Delta W = +2`; needs `j <= 16` and `r_j >= 2`) and `k = 5`
+(`(j+5, i-7)`, `Delta W = +1`; needs `j <= 14` and `r_j >= 1`). Hence the no-helper
+set for `N >= 190` is exactly
 
 ```text
-(P_L)  no represented destination has (Delta b > 0 AND 10 Delta j + 7 Delta i >= 0).
+{ j in {15,16}, r_j = 1 }  u  { j in {17,18}, r_j in {1,2} }
 ```
 
-At these cells the only `Delta b > 0` destination is `(0, i+1)` (displacement
-`(-1, +1)`, `Delta W = -3/19`); every `Delta W > 0` destination has
-`Delta a > 0` and `Delta b < 0` with b-drag per unit W at least `7/3` (exact
-minimum over the enumerated `Delta W > 0` destinations: ratios `{7/3, 14, 49, ...}`;
-for `r_1 = 1` the minimum is 49, for `r_1 = 2` it is 14, for `r_1 = 3` it is `7/3`).
-If `(-u, +u) = sum q_d v_d` then `mu_W = 0` requires the `Delta W < 0` mass of
-`(0, i+1)` (at least `3 q` in index units) to be balanced by `Delta W > 0` mass,
-whose b-drag is at least `(7/3) * 3 q = 7 q` — exactly cancelling the `+7 q` b-gain
-of `(0, i+1)`; the equality-degenerate case additionally has `mu_a > 0` (wrong
-sign). Hence `mu_b > 0` with `mu_W = 0` is impossible: `(-u, +u) ∉ C_rep(s)`.
-**Obstruction (O_L).**
+(the required `i >= 4` / `i >= 7` hold automatically since `N >= 190`). At these
+cells no represented destination has `(Delta a > 0 AND Delta W >= 0)` — the
+*necessary* condition for excluding the reverse-sliding ray. **Sufficiency** (the
+ray `(+u, -u) not in C_rep(s)`) is verified exactly, cell-by-cell over
+`N in [190, 260]` (60/60 cells, no exceptions; exact separation test, Section 8),
+but is **not** presented here as a full symbolic dominance proof: it is bounded
+supplementary enumeration evidence, **non-controlling** for the terminal. The other
+62 upper `r_j in {1,2}` top cells (those with an on-grid `k = 3` or `k = 5` helper)
+are exactly representable — not obstructions.
 
-**Upper band no-helper cells `j in {13..18}`, `r_j in {1,2}`** (per-residue subset,
-Section 8). The symmetric certificate holds:
-
-```text
-(P_U)  no represented destination has (Delta a > 0 AND 10 Delta j + 7 Delta i >= 0),
-```
-
-with the analogous dominance bound (a-gain of `Delta a > 0` mass is cancelled by the
-a-drag of the balancing `Delta W > 0` mass, whose worst ratio is again bounded away
-from covering it). Hence the reverse-sliding ray `(+u, -u) ∉ C_rep(s)`.
-**Obstruction (O_U).**
-
-The dominance bounds are stated as exact inequalities; the per-residue cell lists and
-the property checks `P_L` / `P_U` were machine-verified by exact enumeration over
-`N in [190, 260]` (Section 8).
+These additional classes are reported for completeness; the `r_j = 0` certificate of
+Section 4 is closed-form, universal over the `N >= 190` family, and alone forces the
+terminal.
 
 ## 6. Representable band cells (constructive exact-tangent coverage)
 
@@ -167,8 +189,10 @@ j = 0 (a=0 x W):    admissible {mu_a >= 0, mu_W <= 0}
                     = cone{w_RT, w_down}            (reverse sector; mu_b <= 0 forced)
 j = 19 (a_max x W): admissible {mu_a <= 0, mu_W <= 0}
                     = cone{w_left, w_down, w_T}     (T_realloc ∪ R_deplete)
-(19,0) (b_min x W): admissible {mu_a <= 0, mu_b >= 0}
-                    = cone{w_left, w_T}             (T_realloc; mu_W <= 0 automatic)
+(19,0) (b-min face cell: class-19 top, i_t(19) = 0, N in {190..196}):
+    continuous faces {a_max, b_min} (+{W} iff W_max = 8, i.e. N = 190);
+    design cone { mu_a <= 0, mu_b >= 0, mu_W <= 0 }   (W-contact law for W-active cells)
+    = cone{w_left, w_T}             (T_realloc)
 ```
 
 In each case the economic-face multiplier cuts off exactly the drift region that the
@@ -182,14 +206,20 @@ b-min face T_realloc).
 Exact integer/fraction enumeration over `N in [190, 260]` (all seven residues mod 7),
 all deferred top/sub-top cells of classes `j in {0..6}`, `j in {13..19}`, `i <= 9`:
 
-- **Certificate properties `P_L`/`P_U`** (no same-orientation `Delta W >= 0`
-  destination) hold exactly on the obstruction cells listed below, and fail on every
-  other band cell (i.e. the obstruction set is exactly the no-helper set, verified
-  cell-by-cell).
-- **Universality:** every residue `N mod 7` has at least one obstruction cell:
+- **Controlling certificate (`r_j = 0`):** exact separation test, no exceptions —
+  the forward-sliding ray is outside `C_rep` at all 61 lower-band `r_j = 0` cells and
+  the reverse-sliding ray outside at all 60 upper-band `r_j = 0` cells (121/121).
+- **Additional classes:** exact separation test — the forward-sliding ray is outside
+  at all 30 `j = 1, r_1 in {1,2,3}` cells, and the reverse-sliding ray is outside at
+  all 60 upper no-helper cells `{j in {15,16}, r_j = 1} u {j in {17,18}, r_j in
+  {1,2}}`, and **inside** at the other 62 upper `r_j in {1,2}` cells (with an on-grid
+  helper) — i.e. the no-helper condition is exactly the obstruction set on the
+  family (supplementary evidence, non-controlling).
+- **Universality (current `N >= 190` family):** every residue `N mod 7` has at least
+  one obstruction cell:
 
 ```text
-residue 0: upper band j = 14 (r=0)  [plus no-helper (16,1),(18,2) etc.]
+residue 0: upper band j = 14 (r=0)  [plus no-helper (16,1),(18,2)]
 residue 1: lower band j = 5 (r=0)
 residue 2: lower band j = 3 (r=0);  upper band j = 17 (r=0)
 residue 3: lower band j = 1 (r=0);  upper band j = 15 (r=0), 17 (r=1)
@@ -198,8 +228,8 @@ residue 5: lower band j = 1 (r=2), 4 (r=0);  upper band j = 18 (r=0)
 residue 6: lower band j = 1 (r=3), 2 (r=0);  upper band j = 16 (r=0), 18 (r=1)
 ```
 
-  (`r = 0` cells alone already cover every residue; the `r in {1,2}` no-helper cells
-  are additional.)
+  (`r = 0` cells alone already cover every residue for every `N >= 190` in the
+  family; the `r in {1,2}` no-helper cells are additional.)
 - **Exact decompositions** of Section 6 verified with `Fraction` arithmetic
   (moments exactly `(-u, +u)` / `(+u, -u)` with `mu_W = 0`).
 - **Cone equalities** of Section 7 verified algebraically (accepted sector formulas).
@@ -226,9 +256,12 @@ can realize `mu_W = 0` in the missing orientation. The obstruction is a lattice
 ## 10. Scope honesty
 
 - The report proves (a) exact closure for the economic-face classes, (b) exact
-  obstruction for the Section 4 classes (closed-form, universal) and Section 5
-  classes (enumeration-backed dominance), (c) constructive exact-tangent coverage for
-  the remaining band cells. It does **not** claim full closed-form candidate
+  obstruction for the Section 4 classes (closed-form, universal over every `N >= 190`
+  in the current regular-Regime-I family) and for the lower Section 5 class
+  (closed-form dominance), (c) closed-form no-helper certificate plus exact
+  cell-by-cell verification for the upper Section 5 class (bounded supplementary
+  enumeration evidence, non-controlling), and (d) constructive exact-tangent coverage
+  for the remaining band cells. It does **not** claim full closed-form candidate
   contracts for arbitrary admissible drift at the Section 6 cells; the terminal is
   already determined by the obstruction.
 - No clipping, no omitted destination with retained diagonal escape, no ghost/

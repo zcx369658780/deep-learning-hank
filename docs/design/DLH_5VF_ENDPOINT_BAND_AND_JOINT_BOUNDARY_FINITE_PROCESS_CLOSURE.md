@@ -16,9 +16,13 @@ self-accept.
 - Fresh live `main` at this gate: `cff55e7a75a7bb76d3186bc218233dff0c672d95`
   (verified by DSH fresh-fetch before any mutation; Issue #54 already activated in the
   three CURRENT governance files at this commit).
-- Immediately prior accepted gate: Issue #53 / DLH-5V-E (candidate `98872fe…`,
-  acceptance `5632150936`, integration `28e42e4c…`, terminal
-  `DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`).
+- Immediately prior accepted gate: Issue #53 / DLH-5V-E — **accepted candidate**
+  `ff4607ff74ab1e0cea530ba04f17045698f43a62`, acceptance `5632150936`, integration
+  `28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`, terminal
+  `DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`.
+  The earlier candidate `98872fe…` is the **pre-Micro-Rev** candidate of that gate,
+  and reviewer `5631930098` was its pre-acceptance Micro-Rev request (not an
+  acceptance).
 - Accepted household source (immutable/read-only):
   `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`, blob
   `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` (re-verified at this gate).
@@ -56,9 +60,16 @@ Existence conditions (DLH-5T):
 - `b=b_min x W` corner `(W_max - b_min, b_min)` exists iff Regime II
   (`b_min <= W_max < 8`, i.e. `N < 190`); on the grid it is a node only when
   `N = 10 j` for some `j`.
-The symbolic family studied here (regular W-region nonempty, `N >= 190`) is Regime I;
-the `b=b_min`-face W-cells are then confined to `(j, 0)` with `10 j = N` (i.e.
-`N in {190, 191, ..., 199}` gives the single triple-corner cell `(19, 0)`).
+The symbolic family studied here (regular W-region nonempty, `N >= 190`) is Regime I.
+Continuous DLH-5T geometry: in Regime I the W face does **not** intersect
+`b = b_min`; the continuous triple intersection `a = a_max, b = b_min, W` exists
+**only** at the boundary case `W_max = 8`, i.e. exactly `N = 190` (`theta = 0`).
+Discrete restricted-Voronoi W-activity is a separate, cell-level status: the node
+`(19,0)` is a represented node for every `N >= 190`, and it is W-active exactly when
+it is the top cell of class 19 (`i_t(19) = 0`, i.e. `N in {190..196}`). For
+`N in {197..203}` it is the sub-top of class 19 with `i_t(19) = 1 < 2`, which the
+accepted DLH-5V-A sub-top W-activity condition (`i_t(j) >= 2`) excludes, and for
+`N >= 204` it is not a frontier-phase cell at all.
 
 ## 4. Deferred complement (from DLH-5V-E) and the critical distinction
 
@@ -115,13 +126,19 @@ Deferred classes and their outcome:
 |---|---|---|---|
 | `j = 0` (top, sub-top) | `{a=0, W}` | `{mu_a >= 0, mu_W <= 0}` | **Closable** (reverse sector) |
 | `j in {1..6}` top, `r_j = 0` | `{W}` | `T_W` | **Obstruction** (forward-sliding) |
-| `j in {1..6}` top, `j=1 & r_1 in {1,2,3}` | `{W}` | `T_W` | **Obstruction** (forward-sliding) |
+| `j in {1..6}` top, `j=1 & r_1 in {1,2,3}` | `{W}` | `T_W` | **Obstruction** (forward-sliding, closed form) |
 | `j in {1..6}` other top / sub-top | `{W}` | `T_W` | Exact-tangent representable (constructive) |
-| `j = 19` (top, sub-top) | `{a=a_max, W}` | `{mu_a <= 0, mu_W <= 0}` | **Closable** (forward + deplete) |
+| `j = 19` top, `i_t(19) >= 1` (`N >= 197`) | `{a=a_max, W}` | `{mu_a <= 0, mu_W <= 0}` | **Closable** (forward + deplete) |
+| `j = 19` sub-top | `{a=a_max, W}` | `{mu_a <= 0, mu_W <= 0}` | **Closable** (forward + deplete) |
+| `(19,0)` = class-19 top, `i_t(19)=0` (`N in {190..196}`) | continuous `{a=a_max, b=b_min}` (+`{W}` iff `W_max=8`, i.e. `N=190`); discrete W-active | design cone `{mu_a<=0, mu_b>=0, mu_W<=0}` = T_realloc (W-contact law) | **Closable** (T_realloc) |
 | `j in {13..18}` top, `r_j = 0` | `{W}` | `T_W` | **Obstruction** (reverse-sliding) |
-| `j in {13..18}` top, no-helper `r_j in {1,2}` | `{W}` | `T_W` | **Obstruction** (reverse-sliding) |
+| `j in {13..18}` top, no-helper set `{j in {15,16}, r_j=1} u {j in {17,18}, r_j in {1,2}}` | `{W}` | `T_W` | **Obstruction** (reverse-sliding, supplementary evidence) |
 | `j in {13..18}` other top / sub-top | `{W}` | `T_W` | Exact-tangent representable (constructive) |
-| `(19,0)` b-min triple corner (`N in {190..199}`) | `{a=a_max, b=b_min, W}` | `{mu_a<=0, mu_b>=0}` | **Closable** (T_realloc) |
+
+Taxonomy rows are mutually exclusive by class `j` (and top/sub-top phase); the
+`(19,0)` corner is the `i_t(19)=0` sub-case of the `j=19` top row, and the `i <= 9`
+lower-b band is a reachability label whose W-active cells for `N >= 190` are exactly
+the class-`13..19` rows above (no additional cells).
 
 ## 7. Moment-cone audit and obstruction certificate (summary; full proof in the audit report)
 
@@ -143,24 +160,35 @@ same-W rays are forward rays (all with `Delta a < 0`), so the **reverse-sliding 
 **obstruction**.
 
 **Universality.** An exact-frontier top cell exists in a deferred a-interior band for
-every symbolic `N`:
+every `N >= 190` in the current regular-Regime-I symbolic family (no other `W_max`
+regime is claimed in this Issue; no numerical `W_max` is selected):
 - residues `N mod 7 in {1,2,3,4,5,6}`: lower band, `j = (5 N) mod 7 in {1..6}` has
-  `r_j = 0`; its forward-sliding ray is unrepresentable;
-- residue `N mod 7 = 0`: upper band `j = 14` has `r_14 = 0`; its reverse-sliding ray
-  is unrepresentable.
-Exact enumeration over `N in [190, 260]` (all seven residues, both bands) confirms
-the certificate property cell-by-cell (see audit report §7).
+  `r_j = 0`; its forward-sliding ray is unrepresentable (closed form, audit §4);
+- residues `N mod 7 in {0,2,3,4,5,6}`: upper band, `j = 14, 17, 15, 13, 18, 16`
+  respectively has `r_j = 0`; its reverse-sliding ray is unrepresentable (closed
+  form, audit §4).
 
-**Additional exact obstruction classes** (same certificate, dominance argument):
-lower-band top cells `j = 1` with `r_1 in {1,2,3}`; upper-band top cells with
-`r_j in {1,2}` in the no-helper subset (exact cells per residue in the audit report).
-These are reported for completeness; the `r_j = 0` classes already force the
-terminal.
+Every residue `0..6` is covered, so at least one such cell exists for every
+`N >= 190`. Exact enumeration over `N in [190, 260]` (all seven residues, both bands)
+confirms the certificate property cell-by-cell (121/121 exact-frontier cells; see
+audit report §8).
+
+**Additional obstruction classes** (non-controlling; the `r_j = 0` classes already
+force the terminal):
+- lower-band top cells `j = 1` with `r_1 in {1,2,3}`: closed-form dominance proof
+  (audit §5), re-verified exactly over `N in [190, 260]` (30/30);
+- upper-band top cells in the no-helper set `{j in {15,16}, r_j = 1} u {j in {17,18},
+  r_j in {1,2}}`: closed-form no-helper certificate plus exact separation-test
+  verification over `N in [190, 260]` (60/60) — bounded supplementary enumeration
+  evidence, not a full symbolic dominance proof; the other 62 upper `r_j in {1,2}`
+  top cells (with an on-grid helper) are exactly representable and are **not**
+  obstructions.
 
 **Smallest responsible class and frozen assumption.** The smallest exact class is a
 single exact-frontier W-active top cell `(j, i_t(j))` with `j in {1..6}` or
-`j in {13..18}` (each exists for a generic symbolic `N`), with admissible drift the
-exact W-tangent sliding ray of the unavailable orientation. The obstruction is caused
+`j in {13..18}` (each exists for every `N >= 190` in the current family), with
+admissible drift the exact W-tangent sliding ray of the unavailable orientation.
+The obstruction is caused
 by the frozen grid/domain placing the corresponding primitive same-W destination
 off-grid (forward needs `j >= 7`, mirror needs `j <= 12` and `i >= 10`), while the
 frozen exact same-process contract (i) admits only actual represented native-grid
@@ -177,7 +205,7 @@ region (seam-consistent by formula):
 
 ```text
 reverse sector   (j = 0, a=0 x W):   q_RT = 19*mu_a/70,   q_down = 19*(-mu_W)/7      on (w_RT, w_down)
-T_realloc sector (i=0 b-min face, (19,0)): q_in = 19*(-mu_W)/10, q_T = 19*mu_b/70    on (w_left, w_T)
+T_realloc sector (b-min face cell `(19,0)`, class-19 top, `N in {190..196}`): q_in = 19*(-mu_W)/10, q_T = 19*mu_b/70    on (w_left, w_T)
 j = 19 (a_max x W):  mu_b >= 0 -> T_realloc rates;  mu_b < 0 -> deplete rates
                      (q_left = 19*(-mu_a)/10, q_down = 19*(-mu_b)/7) on (w_left, w_down, w_T)
 ```
@@ -208,8 +236,9 @@ no inward-normal first-moment injection** is applied in this Issue.
 The deferred complement is **not** closable under the frozen grid/domain/exact
 same-process contract: at least one continuously admissible deferred-state drift
 class (the exact W-tangent sliding rays at exact-frontier a-interior top cells, which
-exist for every symbolic `N`) cannot be represented by any nonnegative combination of
-actual allowed native-grid destinations. The scientific result is a sharply bounded
+exist for every `N >= 190` in the current regular-Regime-I symbolic family) cannot be
+represented by any nonnegative combination of actual allowed native-grid
+destinations. The scientific result is a sharply bounded
 representability obstruction certificate, not a repair. The terminal is therefore:
 
 ```text

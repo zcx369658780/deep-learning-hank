@@ -16,9 +16,13 @@
   owner decision `APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`)
   and `5632615142` (authoritative activation refresh, final CURRENT sync, fresh main
   `cff55e7a75a7bb76d3186bc218233dff0c672d95`).
-- **Prior accepted gate:** Issue #53 / DLH-5V-E — candidate `98872fe16a355efb24264e5b9211f87cfe4a687b`,
-  reviewer `5631930098`, acceptance `5632150936`, integration `28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`,
-  terminal `DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`.
+- **Prior accepted gate:** Issue #53 / DLH-5V-E — **accepted candidate**
+  `ff4607ff74ab1e0cea530ba04f17045698f43a62`, acceptance `5632150936`, integration
+  `28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`, terminal
+  `DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`.
+  The earlier candidate `98872fe16a355efb24264e5b9211f87cfe4a687b` was the
+  **pre-Micro-Rev** candidate of that gate; reviewer `5631930098` was its
+  pre-acceptance Micro-Rev request (not an acceptance).
 - **Accepted household source (immutable):**
   `src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`, blob
   `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` — re-verified at this gate.
@@ -49,7 +53,9 @@
 continuously admissible deferred-state drift class cannot be represented by any
 nonnegative combination of actual allowed native-grid destinations under the frozen
 exact same-process contract (exact W-tangent sliding rays at exact-frontier
-(`r_j = 0`) a-interior top cells; universal across symbolic `N`).
+(`r_j = 0`) a-interior top cells; universal across every `N >= 190` in the current
+regular-Regime-I symbolic family — no claim is made for other `W_max` regimes, and no
+numerical `W_max` is selected).
 
 **Exact terminal (posted on Issue #54):**
 
@@ -63,9 +69,10 @@ DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION
   represented destination has `Delta W > 0`; `mu_W = 0` forces same-W mass only;
   available same-W rays have the wrong orientation in the endpoint bands.
 - Exact enumeration over `N in [190, 260]` (all seven residues mod 7, both bands,
-  all top/sub-top deferred cells): certificate property verified cell-by-cell;
-  universality verified (every residue has at least one obstruction cell; exact
-  per-residue obstruction-cell tables in the audit report §8).
+  all top/sub-top deferred cells): certificate property verified cell-by-cell
+  (121/121 exact-frontier cells; exact separation test, no exceptions); universality
+  verified for the current `N >= 190` family (every residue has at least one
+  obstruction cell; exact per-residue obstruction-cell tables in the audit report §8).
 - Exact constructive decompositions for representable band cells
   (e.g. forward-sliding at `r_j >= 4` via `q_1*(j-1,i+2) + q_2*(j,i-1)` with
   `q_1 = 19 u/10`, `q_2 = 38 u/35`, exact `(-u, +u)`).
