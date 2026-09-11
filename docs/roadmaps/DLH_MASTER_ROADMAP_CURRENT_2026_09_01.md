@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.30  
+**Version:** V0.31  
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** POST-DLH-5V-B — REGULAR LOCAL SHARED-FACE MOMENT-CONE OBSTRUCTION ACCEPTED / OWNER ROUTE DECISION REQUIRED
+**Status:** CURRENT DLH-5V-C ACTIVE — W1 WIDE-STENCIL EXACT-TANGENT REGULAR FEASIBILITY AUDIT
 
 ---
 
@@ -49,22 +49,17 @@ a=a_max:      mu_a <= 0
 a+b=W_max:    mu_a+mu_b <= 0
 ```
 
-Accepted Route-F restricted-Voronoi framework:
+Accepted Route-F restricted-Voronoi state partition and discrete same-process semantics remain:
 
 ```text
 S = {s=(a_j,b_i): a_j+b_i<=W_max}
 C_s = {x in D_W: ||x-s||<=||x-r|| for all represented r}
-```
-
-Accepted discrete control/adjoint semantics remain:
-
-```text
-H_h(c,l,d) = u(c)-v(l) + sum_r q_{s->r}(c,l,d)[V_r-V_s] + switch
+H_h = u-v + sum_r q_{s->r}[V_r-V_s] + switch
 p_dot = Q^T p
 p = M g
 ```
 
-with MATLAB-style downstream component pin and original-equation residual validation.
+The same `Q` must define backward HJB and forward mass dynamics.
 
 ---
 
@@ -78,7 +73,7 @@ Exact grid:
 da=10/19, db=7/19, da/db=10/7
 ```
 
-Regular phase is period 7. Accepted W-active local adjacency classes in index units:
+Regular W-frontier phase is period 7. Accepted W-active local adjacency classes in index units:
 
 ```text
 A^F: (-1,0), (0,-1), (-1,+1), (+1,-1)
@@ -86,11 +81,11 @@ A^L: (-1,0), (0,-1), (-1,+1)
 B^W: (-1,0), (0,-1), (0,+1), (+1,-1)
 ```
 
-Physical displacement map is `((10/19)Delta j,(7/19)Delta i)`. No oblique or longer **shared-face** regular neighbor is accepted. Endpoints/corners remain deferred.
+Physical displacement map is `((10/19)Delta j,(7/19)Delta i)`. Endpoints/corners remain deferred.
 
 ---
 
-## 3. Accepted geometric obstruction — DLH-5V-B / Issue #50
+## 3. Accepted local shared-face obstruction — DLH-5V-B / Issue #50
 
 Issue #50 is CLOSED completed.
 
@@ -110,7 +105,7 @@ Accepted verdict:
 
 `DLH_5VB_ACCEPTED__OUTCOME_C_CONFIRMED__REGULAR_LOCAL_SHARED_FACE_MOMENT_CONE_OBSTRUCTION_PROVEN__OWNER_ROUTE_DECISION_REQUIRED`
 
-Exact accepted cones:
+Accepted cones:
 
 ```text
 A^F: K = {7 mu_a + 10 mu_b <= 0}
@@ -118,62 +113,78 @@ A^L: K = {mu_a <= 0, 7 mu_a + 10 mu_b <= 0}
 B^W: K = R^2
 ```
 
-The continuous admissible W-boundary reallocation cone contains exact sliding `(-u,+u)`. For recurring top-cell classes `A^F` and `A^L`, the separating functional gives
-
-```text
-7(-u)+10(+u)=3u>0,
-```
-
-so exact physical sliding is outside the local nonnegative shared-face cone. Equivalently the available NW physical diagonal has slope `7/10`, below the required tangent slope `1`.
-
-Therefore the current restricted-Voronoi **local shared-face** transition geometry cannot represent the full continuous tangential cone everywhere on the regular W frontier while preserving monotone nonnegative local CTMC coefficients.
-
-This is a bounded obstruction. It does not prove the W-domain invalid and does not prove every Route-F discretization impossible.
+Exact sliding `(-u,+u)` is outside the recurring top-cell local shared-face cones because `7(-u)+10u=3u>0`. The current local shared-face geometry is therefore insufficient, but this bounded obstruction does not invalidate the W-domain or every W1/Route-F discretization.
 
 ---
 
-## 4. Current branch point — Owner route decision
+## 4. Owner route decision
 
-There is no active Builder Issue.
+Owner approved:
 
-Do **not** proceed to production rate design, strict face-flux audit or boundary-HJB implementation using the rejected local shared-face geometry.
+`APPROVE_ROUTE_F_WIDE__W1_NATIVE_EXACT_TANGENT_REGULAR_AUDIT`
 
-The next bounded scientific task should compare remedy routes before implementation. The leading candidate to audit is:
+The next remedy audit keeps native `(a,b,z)`, the accepted finite W-domain, and the same-process law, but allows a **boundary wide-stencil/non-shared-face Markov transition** rather than requiring every W-boundary transition to follow an actual Voronoi shared face.
 
-### Route F-WIDE — W1/native wide-stencil tangent transport
-
-Retain native `(a,b,z)`, the economic borrowing floor alignment, and the artificial high-wealth W boundary. The minimal exact lattice tangent solves
+Primary exact lattice tangent:
 
 ```text
-10 Delta j + 7 Delta i = 0,
+10 Delta j + 7 Delta i = 0
+(Delta j,Delta i)=(-7,+10)
+Delta x=(-70/19,+70/19)
 ```
 
-with primitive integer solution such as
-
-```text
-Delta j=-7, Delta i=+10,
-```
-
-which maps to physical displacement proportional to `(-70/19,+70/19)` and therefore lies exactly on `mu_a+mu_b=0`.
-
-This is **not accepted and not authorized**. A successor design gate would need to prove represented-destination availability across regular phases, monotonicity, conservation, same-process HJB/KFE compatibility, refinement/locality semantics and whether the long jump is scientifically acceptable.
-
-Alternative bounded routes include augmented boundary/face states and reassessment of transformed-coordinate/W2 constructions. Prior design preference remains to keep numerical geometric complexity at the artificial high-wealth boundary rather than move the economic borrowing floor off-axis, unless evidence overturns that preference.
+This candidate is not yet accepted. Issue #51 must determine whether it is scientifically viable on recurring regular frontier states.
 
 ---
 
-## 5. Current roadmap position
+## 5. Immediate active gate — DLH-5V-C / Issue #51
+
+### Name
+
+**W1 Wide-Stencil Exact-Tangent Regular-Frontier Feasibility Audit**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY`
+
+Dedicated branch:
+
+`dsh/issue-51-dlh-5vc-w1-wide-stencil-tangent-2026-09-11`
+
+### 5.1 Required closure
+
+DLH-5V-C must prove or refute, for recurring regular `A^F`, `A^L`, and `B^W` states away from endpoint/joint-boundary regions:
+
+- primitive/minimal exact tangent construction;
+- represented destination `(j-7,i+10)` and full segment domain admissibility;
+- period-7 phase/class preservation;
+- exact closure of `T_realloc` when the wide tangent is combined with the local inward `(-1,0)` direction;
+- existence of nonnegative CTMC first-moment coefficients as an analytic feasibility certificate;
+- physical locality under the fixed-aspect refinement family `da_h=h*10/19`, `db_h=h*7/19`;
+- smooth-test-function consistency and remainder order;
+- coherent use of the identical wide transition in HJB and KFE without pretending it is a shared-face finite-volume flux.
+
+### 5.2 Explicit ceiling
+
+This gate does not authorize production rate functions, endpoint/corner closure, code implementation, numerical `W_max`, HJB/KFE/stationary execution, aggregates, GE, or neural work.
+
+A regular-region pass only establishes that the wide-stencil remedy is worth carrying into a later rate/endpoint gate.
+
+---
+
+## 6. Current roadmap position
 
 ```text
 MATLAB-faithful two-asset household economics                 ACCEPTED
 finite W-domain + continuous tangent/KKT law                 ACCEPTED
 same-process HJB <=> KFE principle                           ACCEPTED
-restricted-Voronoi finite-volume framework                   ACCEPTED
+restricted-Voronoi state partition                           ACCEPTED
 regular W-frontier phase classification                      ACCEPTED
 regular W-frontier adjacency/displacements                   ACCEPTED
 local shared-face geometric moment cone                      OBSTRUCTION ACCEPTED
-Owner bounded remedy route decision                          CURRENT
-remedy geometry / transition design                          PENDING
+Owner remedy route: W1 wide-stencil exact tangent            SELECTED FOR AUDIT
+regular wide-stencil feasibility                             ACTIVE (DLH-5V-C)
+wide-stencil production rate design                          PENDING
 endpoint/corner closure                                      PENDING
 boundary-HJB / finite-process implementation                 PENDING
 KKT + same-process discrete-generator validation             PENDING
@@ -186,33 +197,40 @@ two-region structural anchor rebuild                         PENDING
 learned regional W^L                                         PENDING
 ```
 
-The project is still in the household-foundation / finite-boundary discrete-process stage. The structural economic core and finite-domain law are substantially established, but stationary KFE, regional GE execution and neural training remain downstream.
+The project remains in the household-foundation / finite-boundary discrete-process stage. Stationary KFE, regional GE and neural training remain downstream.
 
 ---
 
-## 6. Downstream route after a remedy is accepted
+## 7. Branching after DLH-5V-C
 
-If a bounded remedy closes the tangential process consistently:
+If regular wide-stencil feasibility passes:
 
 ```text
-remedy transition geometry accepted
+DLH-5V-C accepted
+-> bounded production rate / control-dependence design
 -> endpoint/corner closure
 -> boundary-HJB / finite-process implementation
 -> KKT + same-process generator validation
 -> Wmax/resolution robustness
 -> conservative stationary-generator validation
--> Issue #27 stationary KFE
--> stationary aggregates C,L,A,B
--> two-region structural anchor rebuild
--> 3–5 province integration
--> learned W^L
+-> stationary KFE
+-> aggregates
+-> regional GE
 ```
 
-If all bounded W1 remedies fail, the Owner should reassess coordinate/domain representation rather than force a KFE-only repair.
+If a recurring regular-region obstruction is proven:
+
+```text
+DLH-5V-C obstruction
+-> Owner route decision
+   (augmented boundary/face states, transformed coordinates/W2, or another bounded alternative)
+```
+
+No fallback remedy is pre-authorized.
 
 ---
 
-## 7. Regional / Deep Learning architecture remains downstream
+## 8. Regional / Deep Learning architecture remains downstream
 
 ```text
 learned regional mapping W^L
@@ -244,8 +262,8 @@ Learned `W^L`, later `W^K`, nominal HANK, automated calibration, policy and welf
 
 ---
 
-## 8. Scientific ceiling
+## 9. Scientific ceiling during DLH-5V-C
 
-Until a successor Owner-authorized Issue is activated, do not mutate accepted economics/source; design production rates on the rejected local geometry; implement/execute HJB/KFE/stationary; select numerical production `W_max`; compute stationary aggregates/GE; enter multi-province/neural/nominal/calibration/policy/welfare/Results.
+Do not mutate accepted household economics/source; change the production grid; implement wide-stencil code; assemble a production generator; freeze production rate functions; close endpoint/corner transitions; execute HJB/KFE/stationary; select numerical production `W_max`; compute stationary aggregates/GE; enter multi-province/neural/nominal/calibration/policy/welfare/Results.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
