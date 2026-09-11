@@ -1,7 +1,8 @@
-# DLH-5V-G — Fixed-Aspect Refinement Family and Layer Geometry
+# DLH-5V-G — Fixed-Aspect Refinement Family and Layer Geometry (Rev 1)
 
-**Design only.** Symbolic family, scaling identities, endpoint-layer geometry and structural facts for Issue #55 /
-DLH-5V-G. All statements are analytic in `m`; tiny exact `%TEMP%` spot-checks are reported as supplementary only.
+**Design only.** Symbolic family, scaling identities, endpoint-layer geometry, structural facts (with exact
+floor/ceiling proofs), corrected interior-layer/corner taxonomy, and the W-active lower-b disappearance fact for
+`W_max > 8`. All statements analytic in `m`; tiny exact `%TEMP%` spot-checks reported as supplementary only.
 
 ## 1. The refinement family (Issue §4, frozen)
 
@@ -14,22 +15,13 @@ N_m = floor(19m*(W_max - b_min))
 represented nodes: 10j + 7i <= N_m
 ```
 
-`m = 1` is the currently accepted native grid. No numerical production `W_max` is selected; `W_max >= 8` (Regime I,
-`N_m >= 190m`) is the controlling accepted regime of the DLH-5V-F certificates.
+`m = 1` is the accepted native grid. Regime I: `W_max >= 8` (`kappa_1 = 19(W_max+2) >= 190`, `N_m >= 190m`).
 
 ## 2. Scaling identities
 
-Let `kappa_1 = 19*(W_max - b_min) = N_1 + theta_1`, `N_1 = floor(kappa_1)`, `theta_1 in [0,1)`. Then
-
-```text
-kappa_m = 19m*(W_max - b_min) = m*kappa_1 = m*N_1 + m*theta_1
-N_m = m*N_1 + floor(m*theta_1),   theta_m = {m*theta_1} in [0,1)
-```
-
-The level-1 node `(j,i)` corresponds to the level-`m` node `(mj, mi)`; its representedness at level `m` is
-`10(mj) + 7(mi) = m(10j + 7i) <= N_m` iff `10j + 7i <= N_1 + floor(m*theta_1)/m`. As at level 1 (DLH-5V-A), the node
-set is fixed by `N_m` while `theta_m` moves only the frontier line — the family is a self-similar refinement of the
-continuous domain `D_W`, not a nested refinement of node sets.
+`kappa_m = 19m(W_max - b_min) = m*kappa_1 = N_m + theta_m`, `N_m = m*N_1 + floor(m*theta_1)`, `theta_m = {m theta_1}`.
+Level-1 node `(j,i)` corresponds to level-`m` node `(mj, mi)`. Native same-W displacements satisfy `10 Delta j + 7 Delta i
+= 0`; primitive same-W moves are `(-7,+10)` (forward) and `(+7,-10)` (mirror).
 
 Physical displacements (level `m`):
 
@@ -38,9 +30,6 @@ w_left = (-10/(19m), 0),   w_down = (0, -7/(19m))
 w_T    = (-70/(19m), +70/(19m)),   w_RT = (+70/(19m), -70/(19m))
 w_right = (+10/(19m), 0),  w_up = (0, +7/(19m))
 ```
-
-Native same-W displacements satisfy `10*Delta j + 7*Delta i = 0`; with gcd(10,7) = 1 the primitive same-W moves are
-`(-7, +10)` (forward) and `(+7, -10)` (mirror).
 
 ## 3. Phase facts at level `m` (scale-free, accepted DLH-5V-A structure)
 
@@ -51,7 +40,7 @@ top cell of class j is always W-active; sub-top (i_t(j) - 1) iff r_j in {0,1,2} 
 cells with i <= i_t(j) - 2 are never W-active (interior)
 ```
 
-## 4. Endpoint stencil layers at level `m`
+## 4. Endpoint stencil layers at level `m` and physical width
 
 ```text
 lower-a layer:  j in {0,...,6}         (a in [0, 60/(19m)])
@@ -59,50 +48,59 @@ upper-a layer:  j in {19m-6,...,19m}   (a in [10 - 60/(19m), 10])
 lower-b layer:  i in {0,...,9}         (b in [b_min, b_min + 63/(19m)])
 ```
 
-Uniform physical-width bound:
+Uniform physical-width bound: `ell_m = 70/(19m) = O(1/m) -> 0`, uniform in `theta` and `N_m mod 7` (membership-based).
+
+## 5. Structural facts (exact proofs; supplementary spot-checks, 0 violations)
+
+- **(F1)** every W-active cell with `j <= 6` satisfies `i >= 10`.
+  Exact proof: `i >= i_t(j) - 1` (W-active cells are top or sub-top); `i_t(j) = floor((N_m - 10j)/7) >= (N_m - 10j - 6)/7
+  >= (N_m - 66)/7`; `N_m >= 190m >= 190`, so `(N_m - 66)/7 >= 124/7 > 10`; hence `i >= i_t(j) - 1 >= 10`.
+  Spot-check: 980 cells over `m in {1..7}`, `N_m = 190m + s`, `s in {0..13}` — 0 violations.
+- **(F2)** every W-active cell with `i <= 9` satisfies `j >= 19m - 7`.
+  Exact proof: `i <= 9` and W-active imply `i in {i_t(j), i_t(j) - 1}`, so `i_t(j) <= 10`, i.e.
+  `floor((N_m - 10j)/7) <= 10`, i.e. `(N_m - 10j)/7 < 11`, i.e. `10j > N_m - 77`, i.e. `j >= floor((N_m - 77)/10) + 1`
+  (j integer). Since `(N_m - 77)/10 >= (190m - 77)/10 = 19m - 7.7`, `floor((N_m - 77)/10) >= 19m - 8`, so
+  `j >= 19m - 7`. The largest a-interior class is `j = 19m - 7` with `i_t = 10` and, when `N_m mod 7 in {0,1,2}`, the
+  W-active sub-top `(19m - 7, 9)`.
+  Spot-check: 931 cells — 0 violations.
+- **(F3)** no W-active cell has `j <= 6` and `i <= 9` (F1 + F2). Spot-check: 0 violations.
+- **(F4)** sector generators are represented destinations at every layer cell (as in Rev 0): 2734 availability checks, 0 missing.
+- **(F5, new)** for fixed `W_max > 8`, W-active lower-b-layer cells disappear for `m > 69/(19*(W_max - 8))`.
+  Exact proof: a W-active cell with `b <= b_min + 63/(19m)` satisfies `a = (a + b) - b >= W_max - (r + theta + 63)/(19m)
+  >= (W_max + 2) - 69/(19m)` (using `a + b >= W_max - (r+theta)/(19m)` for W-active cells); for
+  `m > 69/(19(W_max - 8))` this exceeds `a_max = 10`, contradicting `a <= a_max`. Only at `W_max = 8` can an infinite
+  W-active lower-b sequence converge to the triple corner `(a_max, b_min)`. For `W_max > 8`, lower-b layer cells are
+  non-W-active interior cells for large `m`.
+
+## 6. Interior-layer / corner taxonomy (CORRECTED — reviewer item 6)
+
+- W-active layer cells: `a + b -> W_max`; at fixed `j` (or `j = o(m)`) with `W-dist -> 0` they converge to the corners
+  `(0, W_max)` (lower-a) / `(a_max, W_max - a_max)` (upper-a); at `j ~ alpha m`, `alpha in (0, 19)` they converge to
+  interior W-face points.
+- **Non-W-active cells with bounded `k = i_t(j) - i`** (including `(0, i_t(0) - 2)`): `W-dist = (7k + r_j + theta_m)/(19m)
+  -> 0` — they converge to **corners**, NOT to face interiors (the Rev-0 statement was false and is corrected here).
+- **Non-W-active cells with `k ~ alpha m`, `alpha > 0`**: `W-dist -> 7 alpha/19 > 0` — face-interior limits; the true
+  tangent cone there has full `b`-freedom (e.g. `{mu_a >= 0}` at `(0, b_*)`).
+- **Non-W-active cells with `k = o(m)` but `k -> oo`**: corner limits with `W-dist -> 0` (Family C — the obstruction
+  class of reviewer comment `5634957294`).
+
+## 7. Corner limits of the layer states (corrected true cones, DLH-5T semantics)
 
 ```text
-ell_m = 70/(19m) = O(1/m)  ->  0   (all coordinate bands are <= ell_m)
+(0, W_max):                       a = 0 x W:            {mu_a >= 0, mu_W <= 0}
+(a_max, W_max - a_max):           a_max x W:            {mu_a <= 0, mu_W <= 0}
+(a_max, b_min), W_max > 8:        a_max x b_min only:   {mu_a <= 0, mu_b >= 0}   (W NOT active: a_max + b_min = 8 < W_max)
+(a_max, b_min), W_max = 8:        triple corner:        {mu_a <= 0, mu_b >= 0, mu_W <= 0}
+(0, b_min):                       a = 0 x b_min:        {mu_a >= 0, mu_b >= 0}   (W NOT active: b_min < W_max)
 ```
 
-The layer definitions depend only on grid-coordinate membership, hence the width bound is **uniform in the frontier
-phase** `theta` and in `N_m mod 7`.
+## 8. Supplementary exact spot-checks (tiny `%TEMP%` scripts, never committed)
 
-## 5. Structural facts (proved; spot-verified exactly, 0 violations)
+- F1–F3 over `m in {1..7}`, `s in {0..13}`: 0 violations; F4: 2734 checks, 0 missing.
+- Mandatory counterexample `(0, i_t(0) - 2)`, `mu = (0,1)`: `W-dist = (r_0^m + theta_m + 14)/(19m)` verified from
+  `0.789` (`m=1`) to `0.008` (`m=100`); `q_up = 19m/7`; destination `(0, i+1)` represented at every level.
+- Corner-convergent generalization: `j in {0,3,7,12,30}`, `i = i_t - 2` all give `a -> 0`, `W-dist -> 0`.
+- Escape sequences: `k = sqrt(mK)` beats any fixed `K`; `k = m/f(m)`, `f -> oo` beats any shrinking `delta_m`.
 
-For `m in {1..7}`, all residues `N_m = 190m + s`, `s in {0..13}` (covering `W_max in [8, 8 + 14/19)` — the hardest case;
-larger `W_max` only increases the relevant `i`-values, relaxing availability):
-
-- **(F1)** every W-active cell with `j <= 6` satisfies `i >= 10`. Proof: `i_t(j) >= (N_m - 60)/7 >= (190m - 61)/7 >= 18`
-  for `m >= 1`; the lower-a layer is entirely `b`-interior. Verified 980 cells, 0 violations.
-- **(F2)** every W-active cell with `i <= 9` satisfies `j >= 19m - 7`. Proof: `i_t(j) <= 10` iff `j >= (N_m - 77)/10`;
-  the largest a-interior class is `j = 19m - 7` with `i_t = 10` and, when `N_m mod 7 in {0,1,2}`, the W-active sub-top
-  `(19m - 7, 9)`. All other lower-b W-active cells lie in `j >= 19m - 6`. Verified 931 cells, 0 violations.
-- **(F3)** no W-active cell has `j <= 6` and `i <= 9` (F1 + F2). Verified 0 violations.
-- **(F4)** sector generators are represented destinations at every layer cell:
-  - Case L (`j <= 6`, `i >= 10`): `(j+7, i-10)` has `j + 7 <= 13 <= 19m`, `i - 10 >= 0`, index `10(j+7)+7(i-10) = 10j+7i <= N_m`; `(j, i-1)` index `10j + 7(i-1) = W_idx - 7 <= N_m`.
-  - Case U (`j >= 19m-6`, `i >= 10`): `(j-1, i)` (`W_idx - 10`), `(j, i-1)` (`W_idx - 7`), `(j-7, i+10)` (same-W index `W_idx`, `j - 7 >= 19m - 13 >= 6`, `i + 10 >= 20 >= 0`) all represented.
-  - Case B (`i <= 9`, `j >= 19m-7`): `(j-1, i)` (`W_idx - 10`), `(j-7, i+10)` (same-W index `W_idx`, `j >= 19m - 7 >= 12 >= 7`, `i + 10 in {10,...,19}`) all represented.
-  - Interior cells (`i <= i_t(j) - 2`): `(j+-1, i)` and `(j, i+-1)` indices `W_idx +- 10 <= N_m - 4` and `W_idx +- 7 <= N_m - 7`; face-adjacent positions keep the 3 available neighbors.
-  - Verified: 795 + 931 + 980 + 28 = 2734 availability checks, 0 missing.
-
-## 6. Corner limits of the layer states
-
-- Lower-a layer states: `a -> 0`; W-active ones satisfy `a + b -> W_max`, so `x_* = (0, W_max)`.
-- Upper-a layer states (`i >= 10`): `a -> a_max`, `a + b -> W_max`, so `x_* = (a_max, W_max - a_max)`.
-- Lower-b layer states: `b -> b_min`, `a -> a_max` (they lie in `j >= 19m - 7`), so `x_* = (a_max, b_min)`.
-- Interior layer states: limit points are face interiors (`{a = 0}`, `{a = a_max}`, `{b = b_min}`), not corners.
-
-These limits make the numerical buffer coincide with the true economic tangent cone at the limit points (see the
-buffered-admissibility report, T3/T4).
-
-## 7. Supplementary exact spot-checks (tiny `%TEMP%` scripts, never committed)
-
-- Layer-membership claims F1–F3 over `m in {1..7}`, `s in {0..13}`: 0 violations.
-- Sector-generator availability (F4): 2734 checks, 0 missing.
-- Buffered-drift-in-destination-cone exact separation tests: 158 checks, 0 failures.
-- Width arithmetic and scaling: `ell_m = 70/(19m)` verified numerically for `m in {1,2,5,10}`; second moment `m * S2`
-  constant over `m in {1..32}` (rate `O(m)`, second moment `O(1/m)`).
-
-These checks are supplementary; the controlling results are the closed-form statements above and in the companion
-reports, which hold for all `m >= 1` symbolically.
+These checks are supplementary; the controlling statements are the closed-form proofs above, valid symbolically for all
+`m >= 1`.

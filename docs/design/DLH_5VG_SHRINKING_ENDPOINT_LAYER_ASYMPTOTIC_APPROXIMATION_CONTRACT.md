@@ -3,193 +3,192 @@
 **Issue:** deep-learning-hank #55 (DLH-5V-G) · **Task type:** `SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
 **Branch:** `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11` · **Activation:** comments `5634144909` (+ refresh `5634171277`)
 (`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`), final CURRENT sync `origin/main` = `c8c5c3f8d3a002a7efcb93682ff42d50c3667602`
-**Status:** Route-A numerical candidate-admissibility buffer (A1) constructed and its full consistency theorem proved at the design level — submitted for fresh ChatGPT review, **NOT scientific acceptance**. Owner decision: `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`.
+**Status:** bounded reanalysis of reviewer comment `5634957294` (verdict `DLH_5VG_OUTCOME_A_NOT_ACCEPTED__A1_TANGENT_CONE_GRAPH_CONSISTENCY_COUNTEREXAMPLE__BOUNDED_REANALYSIS_REQUIRED`). The reviewer's counterexample is confirmed and generalized; no permitted Route-A A1 variant and no permitted A2 repair can satisfy the exact Issue-#55 tangent-cone graph-consistency requirements. **Outcome C — bounded Route-A obstruction**, submitted for fresh ChatGPT review, **NOT scientific acceptance**. Owner decision: `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`.
 
 ## 1. Frozen inputs (accepted — consumed, not reopened)
 
 - Accepted DLH-5V-F obstruction (controlling): at exact-frontier `r_j = 0` top states every represented destination has
   `Delta W <= 0`; exact `mu_W = 0` with nonnegative rates requires same-W destinations only; native same-W displacements
   satisfy `10 Delta j + 7 Delta i = 0` and are multiples of `(7,-10)`; lower endpoint bands can miss `(-7,+10)` and upper
-  bands can miss `(+7,-10)`. This is a lattice/discretization obstruction, not a household-source failure. Not reopened.
+  bands can miss `(+7,-10)`. Lattice/discretization obstruction, not a household-source failure. Not reopened.
 - Accepted household source immutable, blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` verified.
 - Domain `D_W(W_max) = {0 <= a <= a_max, b >= b_min, a+b <= W_max}`, `a_max = 10`, `b_min = -2`, no numerical `W_max`.
 - Symbolic fixed-aspect refinement family (`m = 1,2,...`): `da_m = 10/(19m)`, `db_m = 7/(19m)`, `a_j = j*10/(19m)`,
   `b_i = b_min + i*7/(19m)`, `N_m = floor(19m*(W_max-b_min))`, represented nodes `10j + 7i <= N_m`.
-- Accepted regular contracts (DLH-5V-A..E) on the common regular region `7 <= j <= 12`, `i >= 10` (level-1 units) remain
-  exact and frozen; wide stencils: forward `(j,i)->(j-7,i+10)` iff `j >= 7`; mirror `(j,i)->(j+7,i-10)` iff `j <= 12`
-  (`j <= 19m-7` at level `m`) and `i >= 10`; deferred endpoint complement `j in {0..6}`, `j in {19m-6..19m}`,
-  `i in {0..9}` (level-`m` units) + W-active endpoint cells.
-- Accepted sector formulas (level-`m` instances; physical drifts in `(a,b)` units, displacements in physical units):
-  `w_left = (-10/(19m), 0)`, `w_down = (0, -7/(19m))`, `w_T = (-70/(19m), +70/(19m))`, `w_RT = (+70/(19m), -70/(19m))`;
-  `R_reverse = {mu_a > 0, mu_b < 0, mu_W <= 0}` with `q_RT = 19m*mu_a/70`, `q_down = 19m*(-mu_W)/7` on `(w_RT, w_down)`;
-  `T_realloc = {mu_a <= 0, mu_b >= 0, mu_W <= 0}` with `q_T = 19m*mu_b/70`, `q_in = 19m*(-mu_W)/10` on `(w_T, w_left)`;
-  `R_deplete = {mu_a <= 0, mu_b < 0}` with `q_left = 19m*(-mu_a)/10`, `q_down = 19m*(-mu_b)/7` on `(w_left, w_down)`.
+- Accepted regular contracts (DLH-5V-A..E) remain exact and frozen; wide stencils; deferred endpoint complement
+  `j in {0..6}`, `j in {19m-6..19m}`, `i in {0..9}` + W-active endpoint cells. The regular block is NOT reopened.
+- Accepted sector formulas (level-`m` instances): `w_left = (-10/(19m), 0)`, `w_down = (0, -7/(19m))`,
+  `w_T = (-70/(19m), +70/(19m))`, `w_RT = (+70/(19m), -70/(19m))`; `R_reverse` (`q_RT = 19m*mu_a/70`,
+  `q_down = 19m*(-mu_W)/7`), `T_realloc` (`q_T = 19m*mu_b/70`, `q_in = 19m*(-mu_W)/10`), `R_deplete`
+  (`q_left = 19m*(-mu_a)/10`, `q_down = 19m*(-mu_b)/7`).
 
-## 2. Route-A scientific object (Issue §4–§5)
+## 2. What still passes (finite-m algebra inside A1-admitted cones)
 
-Issue #55 tests whether the DLH-5V-F obstruction is only a finite-grid endpoint-layer phenomenon that can be handled by a
-**shrinking numerical candidate-admissibility buffer** (A1) applied **before** candidate scoring, clearly distinguished
-from true economic faces. Only if A1 fails may the successor test an explicit first-moment defect (A2).
+The reviewer confirmed the finite-`m` algebra is coherent. Corrected and retained:
 
-**A1 buffer (this contract).** At a level-`m` state `s = (j,i)`, a continuously admissible drift `mu` is an
-**A1-admitted candidate** iff:
+- **A1 buffer (before scoring):** `(BA1) j <= 6 => mu_a >= 0`; `(BA2) j >= 19m-6 => mu_a <= 0`;
+  `(BA3) i <= 9 => mu_b >= 0`; `(BA4) W-active => mu_W <= 0`.
+- **Case L** (lower-a, W-active, `i >= 10`): `{mu_a >= 0, mu_W <= 0} = cone{w_RT, w_down}` with `q_RT = 19m*mu_a/70`,
+  `q_down = 19m*(-mu_W)/7`; exact moment.
+- **Case U** (upper-a, W-active, `i >= 10`): `{mu_a <= 0, mu_W <= 0} = cone{w_left, w_down, w_T}`; T_realloc/deplete
+  split; exact moment.
+- **Case B** (lower-b, W-active, `i <= 9`, `j >= 19m-7`): buffered cone `{mu_b >= 0, mu_W <= 0} =
+  {mu_a <= 0, mu_b >= 0, mu_W <= 0} = cone{w_left, w_T}` with `q_T = 19m*mu_b/70`, `q_in = 19m*(-mu_W)/10`; exact moment.
+- **Interior layer cells:** buffered cone is a half-plane/full-plane subset of the accepted 3/4-neighbor cone, exactly
+  representable (equality at face-adjacent positions).
+- **Scaling (proved):** jump `O(1/m)`, rate `O(m)`, `sum q|w|^2 = O(1/m)` with explicit constants; conservative rows,
+  `Q_ss = -sum of actual outgoing rates`, `Q_m 1 = 0`; one-Q semantics. All retained.
+- **Corner semantics corrected (reviewer item 6):** see §6.
 
-```text
-(BA1) j <= 6            (lower-a stencil layer):      mu_a >= 0   [numerical; == economic law at j = 0]
-(BA2) j >= 19m - 6      (upper-a stencil layer):      mu_a <= 0   [numerical; == economic law at j = 19m]
-(BA3) i <= 9            (lower-b stencil layer):      mu_b >= 0   [numerical; == economic law at i = 0]
-(BA4) s W-active cell   (W-contact):                  mu_W <= 0   [true W-face law at contact cells]
-```
+## 3. The controlling failure — tangent-cone graph consistency (T3/T4 as submitted is FALSE)
 
-No restriction is imposed away from the layers. The buffer is applied in the candidate-admissibility step, **before**
-`H_h^m` scoring and before the global argmax. No candidate is selected and then clipped; no destination is omitted with a
-retained diagonal; no reflection/ghost/interpolation/KFE-only repair.
+### 3.1 Reviewer counterexample (confirmed; mandatory test)
 
-**A1 result (this contract).** A1 **passes**: every A1-admitted candidate at every state of the frozen family has an
-exact represented native-grid first-moment contract with nonnegative rates, on a physical layer of width
-`ell_m = 70/(19m) -> 0`, recovering the accepted exact regular contract away from endpoints, with tangent-cone,
-generator/operator, scaling, monotonicity, conservation, one-Q and seam consistency. A2 is therefore **not invoked**
-(Issue §5.5: "if A1 succeeds, preserve exact first moments for every admitted candidate and do not invoke A2").
-
-## 3. The A1 contract — case analysis (exact, closed form, `m >= 1`, Regime I `W_max >= 8`)
-
-Layer membership and structural facts (proved in the companion geometry report; spot-verified exactly over
-`m in {1..7}`, all residues `N_m = 190m + s`, `s in {0..13}`, `0` violations):
-
-- **(F1)** every W-active cell with `j <= 6` has `i >= 10` (so the lower-a layer has no lower-b intersection);
-- **(F2)** every W-active cell with `i <= 9` has `j >= 19m - 7` (lower-b cells live in the upper-a layer or at the
-  a-interior boundary `j = 19m - 7`, including the sub-top `(19m-7, 9)` when `N_m mod 7 in {0,1,2}`);
-- **(F3)** no W-active cell has `j <= 6` and `i <= 9`;
-- **(F4)** sector generators are represented destinations at every layer cell (see per-case availability below).
-
-**Case L — lower-a layer, W-active (`j <= 6`, `i >= 10`; top and sub-top).**
-Buffered cone = `{mu_a >= 0, mu_W <= 0}` (BA1 + BA4; `mu_b = mu_W - mu_a <= 0` automatic). Exact equality
-`{mu_a >= 0, mu_W <= 0} = cone{w_RT, w_down}` with `det[w_RT w_down] = -490/(19m)^2 != 0` and rates
+Take the non-W-active lower-a state `s_m = (0, i_t^m(0) - 2)` (`i_t(j) = floor((N_m - 10j)/7)`). It is represented,
+satisfies `i <= i_t - 2` (interior, not W-active), and
 
 ```text
-q_RT = 19m*mu_a/70,   q_down = 19m*(-mu_W)/7,
-q_RT*w_RT + q_down*w_down = (mu_a, mu_W - mu_a) = (mu_a, mu_b)  (exact)
+a_m = 0,
+W_max - b_{i_m} = (theta_m + r_0^m + 14)/(19m) -> 0,   r_0^m = N_m mod 7,
 ```
 
-Destinations `(j+7, i-10)` (mirror; `j+7 <= 13 <= 19m`, `i >= 10`) and `(j, i-1)` (`i >= 1`) are represented (F4).
-This includes the exact-frontier `r_j = 0` cells: the DLH-5V-F obstructing forward-sliding ray `(-u, +u)` has
-`mu_a = -u < 0` and is **excluded by BA1** (numerical restriction before scoring). The contract is identical to the
-accepted closable `j = 0` reverse-sector formula, m-scaled.
-
-**Case U — upper-a layer, W-active (`19m - 6 <= j <= 19m`, `i >= 10`).**
-Buffered cone = `{mu_a <= 0, mu_W <= 0}` (BA2 + BA4) = `cone{w_left, w_down, w_T}` with the accepted split:
-`mu_b >= 0` -> `(q_T, q_in)` on `(w_T, w_left)`; `mu_b < 0` -> `(q_left, q_down)` on `(w_left, w_down)`. Moments exact
-(identical algebra to the accepted regular contracts, m-scaled). Destinations `(j-1, i)`, `(j, i-1)`, `(j-7, i+10)`
-(same-W, `j >= 7`, `j - 7 >= 19m - 13 >= 6`) represented (F4). Includes the `r_j = 0` cells: the obstructing
-reverse-sliding ray `(+u, -u)` is excluded by BA2.
-
-**Case B — lower-b layer, W-active (`i <= 9`, `j >= 19m - 7`; top and sub-top).**
-Buffered cone = `{mu_b >= 0, mu_W <= 0}` (BA3 + BA4). Since `mu_a = mu_W - mu_b <= 0` automatically, this equals
-`{mu_a <= 0, mu_b >= 0, mu_W <= 0} = cone{w_left, w_T}` (the accepted T_realloc cone) with rates
+so `x_m -> (0, W_max)` — the true `a = 0 x W` corner. Under A1: BA1 applies (`mu_a >= 0`), BA4 does **not** (not
+W-active). The drift `mu = (0, +1)` is A1-admitted and exactly represented by the native `w_up = (0, 7/(19m))` transition
+to `(0, i_m + 1)` (represented) with `q_up = 19m/7 >= 0`. But at `(0, W_max)` the true tangent cone is
+`{mu_a >= 0, mu_W <= 0}`, and `mu = (0, +1)` has `mu_W = +1 > 0`. Hence the **outer/limsup** statement fails:
 
 ```text
-q_T = 19m*mu_b/70,   q_in = 19m*(-mu_W)/10,
-q_T*w_T + q_in*w_left = (mu_W - mu_b, mu_b) = (mu_a, mu_b)  (exact)
+limsup admitted discrete drift graph  NOT subset of  true tangent-cone graph at the corner.
 ```
 
-Destinations `(j-1, i)` and `(j-7, i+10)` (`j >= 19m - 7 >= 12 >= 7`, `i + 10 in {10..19}`, same-W) represented (F4).
-Covers the corner cells `(19m, i)`, `i in {0..9}` (incl. the b-min face cell) and the a-interior sub-top `(19m-7, 9)`.
-At `j = 19m` this is the accepted closable `(19,0)`-type T_realloc contract, m-scaled. (For the `U ∩ B` cells the BA2
-constraint `mu_a <= 0` is implied by BA3 + BA4, so the buffered cone is the same `cone{w_left, w_T}` — no conflict.)
+Verified numerically over `m in {1,2,5,20,100}` (exact rational arithmetic; `W-dist` from 0.789 down to 0.008, `q_up = 19m/7`).
 
-**Interior layer cells (`i <= i_t(j) - 2`, any `j`).** Buffered cone is a half-plane/full-plane subset of the accepted
-3- or 4-neighbor adjacency cone (`w_left, w_right, w_down, w_up`; equality at face-adjacent positions such as `j = 0`
--> `cone{w_right, w_down, w_up} = {mu_a >= 0}` and `i = 0` -> `cone{w_left, w_right, w_up} = {mu_b >= 0}`); representable
-by the accepted interior rates, m-scaled. Interior cells in the layers converge to the interior of the corresponding
-economic face (not to the corners), where the buffered half-plane equals the true tangent cone at the limit.
+### 3.2 Generalization — unbounded family of corner-convergent non-W-active cells
 
-**No other W-active endpoint cases exist** in Regime I (F1–F3). Regular W-active cells (`7 <= j <= 19m - 7`, `i >= 10`)
-keep the accepted exact DLH-5V-E contract with no buffer (BA4 there is the true W law).
+For **every fixed `j`** (and for every `j_m = o(m)`), `s_m = (j, i_t^m(j) - 2)` satisfies `a_m = 10j/(19m) -> 0` and
+`W_max - (a_m + b_{i_m}) = (r_j^m + theta_m + 14)/(19m) -> 0`, so `x_m -> (0, W_max)`. These cells are interior
+(non-W-active) for all `m`. In particular `j = 7` (and `j = 8, ..., 12, 30, ...`) lie in the **accepted regular region**
+(`7 <= j <= 19m-7`, `i >= 10`), where the frozen accepted interior process is full-plane: `mu = (0, +1)` is admitted
+there too. **The frozen accepted regular/interior contract itself therefore violates the global outer/limsup condition at
+`(0, W_max)`** — the failure is not caused by the endpoint buffer and cannot be repaired by any endpoint-layer-only
+modification without reopening the frozen regular block (forbidden).
 
-## 4. Consistency theorem (Issue §7) — proved at design level
+The same mechanism occurs at the upper W-corner `(a_max, W_max - a_max)`: `s_m = (19m, i_t^m(19m) - 2)` is non-W-active,
+`x_m -> (a_max, W_max - a_max)`, BA2 applies but BA4 does not; `mu = (-1, +2)` (exact via `w_left` + `w_up`) has
+`mu_W = +1 > 0 notin {mu_a <= 0, mu_W <= 0}` — outer fails.
 
-**T1 (exactness away from endpoints).** Let `K` be a compact set of W-face points at distance `delta > 0` from the
-endpoint set `{a = 0} cup {a = a_max} cup {b = b_min}`. For `m >= ceil(70/(19*delta))`, every W-face state in `K` has
-`7 <= j <= 19m - 7` and `i >= 10` and uses the accepted exact regular contract (no buffer). Exactness is pointwise, not
-approximate, on `K`.
+### 3.3 Impossibility — no per-state numerical rule can satisfy both graph conditions
 
-**T2 (shrinking physical layer).** The buffered region is contained in the coordinate bands
-`a in [0, 60/(19m)] cup [10 - 60/(19m), 10]` and `b in [b_min, b_min + 63/(19m)]`; uniform bound
-`ell_m = 70/(19m) = O(1/m) -> 0`, uniformly in the frontier phase `theta` and in `N_m mod 7` (membership-based
-definition). The stencil width in grid columns stays bounded (7 columns / 10 rows), the physical width vanishes.
+Let `A_m(s)` be any per-state admissible-set rule. Partition the convergent non-W-active sequences into:
 
-**T3 (outer/limsup tangent-cone consistency).** For any sequence of states `s_m` in the layers with physical positions
-`x_m -> x_*`, the buffered admissible cone at `s_m` equals (at corners) or is contained in (toward face interiors) the
-true economic tangent cone at `x_*`:
-- lower-a layer states (W-active or interior) satisfy `a_m -> 0`; BA1 -> the law `mu_a >= 0` at `x_* in {a = 0}`;
-  W-active lower-a states satisfy additionally `a_m + b_m -> W_max`, so `x_* = (0, W_max)` and BA4 -> `mu_W <= 0`;
-  buffered cone `{mu_a >= 0, mu_W <= 0}` **equals** the true joint cone at `(0, W_max)`;
-- upper-a states -> `a_m -> a_max`; lower-b states -> `b_m -> b_min`; their buffers equal the true corner cones
-  `{mu_a <= 0, mu_W <= 0}` and `{mu_a <= 0, mu_b >= 0, mu_W <= 0} = T_realloc` respectively (equality at the limit);
-- interior layer states -> face interiors where the buffered half-plane equals the true tangent cone at the limit.
-Hence every bounded admitted drift sequence clusters in the true tangent cone of the limit point (no inward-normal drift
-is hidden, no outward drift is admitted in the limit).
+- **Family C** (corner/W-face limits): `W-dist(s_m) -> 0`, i.e. `k_m := i_t(j_m) - i_m = o(m)` (growing rows below the
+  W-active top, physical W-distance still tending to zero);
+- **Family F** (face-interior limits): `W-dist(s_m) -> c > 0`, i.e. `k_m ~ 7cm/19` (linearly many rows below the top).
 
-**T4 (recovery/liminf tangent-cone consistency).** The buffered cone at every layer state **equals** the true tangent
-cone at its limit point (cone equalities in §3), so recovery is exact: every drift in the true tangent cone at a limit
-point is A1-admitted and exactly represented by represented native destinations (not merely approximated).
+Outer at `(0, W_max)` (and at every W-face point) requires the W-constraint `mu_W <= 0` to hold **eventually on every
+Family-C sequence**; liminf at every face-interior point `(0, b_*)` with `W-dist = c > 0` requires **no** W-constraint
+eventually on every Family-F sequence converging to it (the true cone there is `{mu_a >= 0}`, full `b`-freedom).
 
-**T5 (jump/rate/second-moment scaling — proved, not assumed).** Every represented displacement is an integer multiple
-of `(10/(19m), 7/(19m))`; max jump `|w| = sqrt(2)*70/(19m) = O(1/m)`. For fixed physical drift `mu = O(1)`, the rates
-are `q ~ 19m*|mu|/c = O(m)`. Second moments (explicit, all cases):
-`L: sum q|w|^2 = (2660*mu_a + 133*(-mu_W))/(361 m)`; `U/B (T_realloc branch)`: `q_T*2*(70/(19m))^2 + q_in*(10/(19m))^2 =
-O(1/m)`; `deplete branch`: `O(1/m)`; interior: `O(1/m)` (rates O(m), jumps O(1/m)). All `= O(1/m)` with constants that
-are uniform in the frontier phase. Verified exactly: `m * (2nd moment)` is constant across `m in {1..32}`.
+Any per-state rule distinguishes states by level-`m` data only, and Families C and F are indistinguishable per-state:
+- a **fixed row-count rule** `k <= K`: escaped by Family-C sequences with `k_m = sqrt(m*K) > K` (still `k_m/m -> 0`,
+  `W-dist -> 0`) — outer fails;
+- a **shrinking W-distance rule** `W-dist < delta_m`, `delta_m -> 0`: escaped by Family-C sequences with
+  `k_m = m/f(m)`, `f(m) -> oo` arbitrarily slowly (`W-dist = 7/(19 f(m)) -> 0` slower than any fixed `delta_m`) — outer fails;
+- a **fixed W-distance rule** `W-dist < delta > 0`: catches all Family-C sequences (outer ok), but over-constrains every
+  Family-F sequence with `c < delta` — liminf fails at `(0, b_*)` with `W-dist = c < delta`;
+- the **W-activity rule** (BA4 on W-active cells only) misses **all** non-W-active Family-C sequences (reviewer's
+  counterexample is of this type) — outer fails.
 
-**T6 (generator/operator consistency).** For `phi in C^2` with `||D^2 phi|| <= M_2`,
-`|L_m phi(s) - mu . grad phi(s)| <= (1/2) (sum q_r |w_r|^2) M_2 + O(m * (1/m)^3) = O(M_2/m)`; the Taylor remainder
-vanishes (third-order terms `sum q |w|^3 = O(1/m^2)`). For smooth test functions the discrete generator converges to
-`mu . grad phi` at every state, with vanishing numerical diffusion of order `1/m`.
+Hence **no per-state admissible-set rule can satisfy the exact Issue-#55 outer/limsup and recovery/liminf graph
+conditions simultaneously**. The tangent-cone multifunction `x -> T(x)` is discontinuous at the boundary (full plane at
+interior points, half-planes at faces, corners at intersections), and the grid provides dense interior approximations of
+every boundary point; the two conditions force the discrete admissible sets to converge to `T` in the Kuratowski sense,
+which the grid's geometry cannot realize per-state.
 
-**T7 (monotonicity, conservation, one-Q same-process).** All rates are nonnegative by construction (sector cones with
-`q >= 0`); rows are conservative: `Q_ss = -sum_{r != s} q_{sr}` with `Q_m 1 = 0`; off-diagonals nonnegative; the
-diagonal equals minus the sum of the ACTUAL represented outgoing rates. The pipeline is the frozen one: continuous
-admissibility + A1 buffer -> candidate-specific represented nonnegative rates -> `H_h^m` score BEFORE selection -> ONE
-global statewise argmax -> selected rates -> ONE conservative backward `Q_m` -> future KFE consumes exactly `Q_m^T`.
+### 3.4 Consequence
 
-**T8 (seam consistency).** On the overlap with the accepted exact regular contracts (and with the accepted closable
-`j = 0`, `j = 19m`, `(19m, 0)` contracts) the rate formulas coincide exactly (m-scaled instances of the same sector
-formulas), so candidates common to a layer cell and a neighboring regular cell receive identical rates — no duplicate
-sector ownership, no hidden discontinuous process switch. The buffer only shrinks the admitted candidate set on the
-shrinking layer, and the restriction at each layer state equals the true tangent cone at its limit point (T3), so no
-drift is excluded that is feasible at the limit and none is admitted that is outward at the limit.
+The submitted statement "the buffered cone at every layer state equals the true tangent cone at its limit point" cannot
+stand: for non-W-active layer states with `W-dist -> 0` the buffered cone (no BA4) is strictly larger than the true cone
+at the corner limit, and no correction within Route A's frozen scope fixes this. **A1 fails the controlling graph
+consistency requirement.** The DLH-5V-F finite-m obstruction is thus NOT removable by a shrinking numerical
+candidate-admissibility buffer of the permitted kind: the buffer either fails the outer condition (as submitted) or,
+when strengthened to catch all corner-convergent cells, breaks recovery at face-interior limits (liminf), and the global
+condition additionally fails on the frozen regular block (§3.2).
 
-## 5. A2 — not invoked
+## 4. A2 cannot repair the admissible-set failure (reviewer item 4)
 
-A1 establishes an exact, asymptotically consistent, monotone, conservative same-process contract for the whole frozen
-family (T1–T8). Per the Issue's binding preference order, the explicit first-moment defect object `e_m(s,u)` of A2 is
-**not** invoked. No pointwise `O(1/m)` moment defect is claimed anywhere; all admitted candidates carry **exact**
-first-moment equality.
+A2 (Issue §5) replaces the exact-moment requirement by an explicit first-moment defect `e_m(s,u)` with a declared error
+object and a proved vanishing operator/boundary-layer consistency statement. It does **not** change the admissible-set
+rule: the counterexample drift `mu = (0, +1)` at `(0, i_t(0) - 2)` remains continuously admissible at the node position
+(the node is strictly inside `D_W` in the W-direction), and remains exactly representable (`q_up = 19m/7`) — the moment
+defect is zero for it, so no defect term can exclude it. The admissible-set outer/limsup failure at the corner is
+therefore not repaired by any permitted A2 moment-defect construction. (This matches the reviewer's explicit note: a
+first-moment defect alone does not automatically repair an admissible-set outer/limsup failure; here it provably cannot.)
 
-## 6. Relation to the DLH-5V-F obstruction (consumed, not reopened)
+## 5. Conclusion — bounded Route-A obstruction (Outcome C)
 
-At exact-frontier `r_j = 0` cells the DLH-5V-F obstruction candidates are precisely the drifts with the missing tangent
-orientation (`(-u,+u)` in the lower band, `(+u,-u)` in the upper band), i.e. `mu_a < 0` resp. `mu_a > 0`. The A1 buffer
-excludes exactly these on the shrinking layer (BA1/BA2) and thereby restores exact representability for every admitted
-candidate; at the limit points `(0, W_max)` and `(a_max, W_max - a_max)` the excluded half-planes coincide with the
-outward (infeasible) drift half-planes, so the buffer is asymptotically equivalent to the true KKT law. The accepted
-obstruction is not argued away: it is consumed as the finite-m reason the buffer is needed.
+No permitted Route-A contract (A1 or A2) can meet the exact Issue-#55 tangent-cone graph-consistency requirements under
+the frozen state/grid family:
 
-## 7. Interpretation ceiling (design only)
+- (O1) the reviewer's counterexample sequence `(0, i_t(0) - 2)`, `mu = (0,1)` violates outer/limsup at `(0, W_max)`;
+- (O2) the mechanism is unbounded (all `j = o(m)` cells) and hits the frozen regular block (`j = 7`, ...), so it cannot
+  be repaired by endpoint-layer changes without reopening the frozen accepted regular contract;
+- (O3) no per-state admissible-set rule can satisfy both outer/limsup and recovery/liminf (§3.3);
+- (O4) A2 cannot repair the admissible-set failure (§4).
 
-This gate establishes a **design-level contract and its consistency theorem** for the frozen family. It does NOT
-authorize: source/economic mutation; production grid/aspect/domain redesign; state augmentation; coordinate
-transformation; numerical production `W_max`; implementation or solver-source mutation; production `Q` assembly/run;
-HJB/KFE/stationary solves (stationary KFE remains NOT AUTHORIZED); numerical production experiments; aggregates/GE/
-regional/neural/nominal/calibration/policy/welfare/Results; PR/merge/close/successor/self-accept. A finite enumeration
-was used only as a supplementary exact spot-check of the closed-form theorem (tiny `%TEMP%` scripts); the theorem is
-analytic in `m` and does not rest on enumeration.
+The finite-m algebra (rates, moments, scaling, monotonicity, conservation, one-Q) remains valid but does not rescue the
+asymptotic theorem. The terminal is the exact Outcome-C terminal:
 
-## 8. File map (exact six-file allowlist)
+```text
+DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED
+```
+
+## 6. DLH-5T corner semantics correction (reviewer item 6)
+
+Corrected true tangent cones at the Regime-I corners:
+
+```text
+(0, W_max):                       a = 0 x W:            {mu_a >= 0, mu_W <= 0}
+(a_max, W_max - a_max):           a_max x W:            {mu_a <= 0, mu_W <= 0}
+(a_max, b_min), W_max > 8:        a_max x b_min only:   {mu_a <= 0, mu_b >= 0}   (W NOT active: a_max + b_min = 8 < W_max)
+(a_max, b_min), W_max = 8:        triple corner:        {mu_a <= 0, mu_b >= 0, mu_W <= 0}
+(0, b_min):                       a = 0 x b_min:        {mu_a >= 0, mu_b >= 0}   (W NOT active: b_min < W_max)
+```
+
+For **fixed `W_max > 8`**, W-active lower-b-layer cells disappear for sufficiently large `m`: a W-active cell with
+`b <= b_min + 63/(19m)` satisfies `a >= W_max - b_min - (r + theta + 63)/(19m) = (W_max + 2) - O(1/m) > a_max = 10` for
+`m > 69/(19(W_max - 8))`, contradicting `a <= a_max`. Only at `W_max = 8` can an infinite W-active lower-b sequence
+converge to the triple corner. For `W_max > 8`, the lower-b layer cells are non-W-active interior cells for large `m`;
+their buffered cone `{mu_a <= 0, mu_b >= 0}` (BA2 + BA3) equals the true `a_max x b_min` corner cone there — that corner
+is graph-consistent (no W constraint is needed or claimed). The obstruction is at the **W-corners** `(0, W_max)` and
+`(a_max, W_max - a_max)` only.
+
+## 7. Interior-layer / corner taxonomy correction (reviewer item 6)
+
+- W-active layer cells: converge to W-face points; at fixed `j` (or `j = o(m)`) with `W-dist -> 0` they converge to the
+  corners `(0, W_max)` / `(a_max, W_max - a_max)`; at `j ~ alpha m`, `alpha in (0, 19)` they converge to interior W-face
+  points. (Buffered cone = true cone: consistent.)
+- Non-W-active layer cells with bounded `k = i_t - i`: `W-dist = (7k + r + theta)/(19m) -> 0` — they converge to
+  **corners**, not face interiors (the previous package statement was false).
+- Non-W-active layer cells with `k ~ alpha m`, `alpha > 0`: `W-dist -> 7 alpha/19 > 0` — face-interior limits; the true
+  cone there has full `b`-freedom (e.g. `{mu_a >= 0}` at `(0, b_*)`).
+- Non-W-active cells with `k = o(m)` but `k -> oo`: corner limits with `W-dist -> 0` — the Family-C obstruction class.
+
+## 8. Interpretation ceiling (design only)
+
+Outcome C is a bounded scientific obstruction: the exact Issue-#55 graph-consistency requirements cannot be met by any
+permitted Route-A contract under the frozen state/grid family. It does NOT authorize: source/economic mutation;
+production grid/aspect/domain redesign; state augmentation; coordinate transformation; numerical production `W_max`;
+implementation or solver-source mutation; production `Q` assembly/run; HJB/KFE/stationary solves (stationary KFE
+remains NOT AUTHORIZED); numerical production experiments; aggregates/GE/regional/neural/nominal/calibration/policy/
+welfare/Results; PR/merge/close/successor/self-accept. The verification used tiny exact `%TEMP%` scripts only; the
+controlling arguments are analytic in `m`.
+
+## 9. File map (exact six-file allowlist, edited on the same dedicated branch)
 
 1. This umbrella design document.
-2. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_AUTHORITY_CAPSULE.md` — authority digest + evidence.
-3. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_FIXED_ASPECT_REFINEMENT_AND_LAYER_GEOMETRY.md` — family, scaling identities, layer geometry, structural facts F1–F4.
-4. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_BUFFERED_ADMISSIBILITY_AND_MOMENT_CONSISTENCY.md` — A1 buffer, case analysis, cone equalities, exact moments, tangent-cone consistency T1–T4, seam T8.
-5. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_MONOTONICITY_CONSERVATION_SAME_Q_AND_OPERATOR_CONSISTENCY.md` — scaling T5, operator consistency T6, monotonicity/conservation/one-Q T7, interpretation ceiling.
-6. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_TERMINAL_AND_FORBIDDEN_CHECK.md` — single terminal (Outcome A) + forbidden-operation check + fresh state report.
+2. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_AUTHORITY_CAPSULE.md`
+3. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_FIXED_ASPECT_REFINEMENT_AND_LAYER_GEOMETRY.md`
+4. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_BUFFERED_ADMISSIBILITY_AND_MOMENT_CONSISTENCY.md`
+5. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_MONOTONICITY_CONSERVATION_SAME_Q_AND_OPERATOR_CONSISTENCY.md`
+6. `reports/dlh_5vg_asymptotic_endpoint_approximation_2026_09_11/DLH_5VG_TERMINAL_AND_FORBIDDEN_CHECK.md`

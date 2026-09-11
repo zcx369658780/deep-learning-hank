@@ -1,32 +1,35 @@
-# DLH-5V-G — Authority Capsule
+# DLH-5V-G — Authority Capsule (Rev 1: bounded reanalysis of comment `5634957294`)
 
 **Issue:** deep-learning-hank #55 / DLH-5V-G — OPEN.
 **Task type:** `SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
 **Owner decision:** `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
 **Activation:** comment `5634144909` (authority marker `DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`) + refresh `5634171277`.
-**Fresh `origin/main` (FINAL CURRENT SYNC):** `c8c5c3f8d3a002a7efcb93682ff42d50c3667602` — recorded at startup, matches the authoritative refresh comment.
-**Dedicated Builder branch:** `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11` (created from `origin/main`, 0 ahead/behind at start).
+**Reviewer verdict (controlling):** `DLH_5VG_OUTCOME_A_NOT_ACCEPTED__A1_TANGENT_CONE_GRAPH_CONSISTENCY_COUNTEREXAMPLE__BOUNDED_REANALYSIS_REQUIRED` (comment `5634957294`).
+**Fresh `origin/main`:** `c8c5c3f8d3a002a7efcb93682ff42d50c3667602` (FINAL CURRENT SYNC, unchanged).
+**Dedicated Builder branch:** `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11` (same branch; Rev 1 edits only the six allowlist files).
 
 ## Digest (authority in 12 lines)
 
-1. Issue #55 is the sole Builder authority; body + comments `5634144909` / `5634171277` are binding.
-2. Current governance (Task Index, Startup Snapshot, Master Roadmap V0.40, all CURRENT rules) identifies Issue #55 / this task type / this branch; no conflict.
-3. Accepted household source immutable; blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` verified at startup.
+1. Issue #55 remains the sole Builder authority; body + comments `5634144909` / `5634171277` / `5634957294` are binding.
+2. Current governance identifies Issue #55 / this task type / this branch; no conflict.
+3. Accepted household source immutable; blob `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e` verified at startup and unchanged.
 4. DLH-5V-F accepted and controlling (candidate `b9dab7b6cf5d724074765ddb88d6f300175f6c6f`, acceptance `5633995486`, integration `4e77d9c753f81eb2517a8b90a0827db6af8faed4`); consumed, not reopened.
-5. Scientific object: symbolic fixed-aspect refinement family `da_m = 10/(19m)`, `db_m = 7/(19m)`, `N_m = floor(19m*(W_max-b_min))`, nodes `10j + 7i <= N_m`; no numerical `W_max`.
-6. Route A tested first: numerical candidate-admissibility buffer (A1), applied before scoring, distinct from true economic faces.
-7. **A1 PASSES**: every admitted endpoint candidate has an exact represented native-grid first-moment contract; endpoint physical width `ell_m = 70/(19m) -> 0`; exact regular contract recovered away from endpoints; tangent-cone, generator/operator, jump/rate/second-moment scaling, monotonicity, conservation, one-Q and seam consistency all proved.
-8. A2 (explicit moment defect) is NOT invoked, per Issue §5.5.
-9. Design only; no implementation, no production `Q`, no HJB/KFE/stationary solve, no numerical production `W_max`.
-10. Terminal (exactly one): `DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_SAME_PROCESS_CONTRACT_FROZEN__READY_FOR_BOUNDARY_HJB_IMPLEMENTATION_GATE`.
-11. Six-file allowlist written; no existing tracked file modified; explicit staging only.
-12. STOP for fresh ChatGPT review. No merge, no close, no successor, no self-accept.
+5. Scientific object: frozen fixed-aspect family `da_m = 10/(19m)`, `db_m = 7/(19m)`, `N_m = floor(19m*(W_max-b_min))`; no numerical `W_max`.
+6. Reviewer counterexample confirmed: `s_m = (0, i_t^m(0) - 2)`, `mu = (0, +1)` is A1-admitted, exactly represented (`q_up = 19m/7`), and `x_m -> (0, W_max)` with `mu_W = +1 > 0` — outer/limsup fails.
+7. Generalization: every fixed-`j` cell `(j, i_t(j) - 2)` (including regular-region `j = 7, ...`) converges to `(0, W_max)`; the frozen accepted interior contract itself violates the global outer condition — not repairable by endpoint-layer changes.
+8. Impossibility: no per-state admissible-set rule (row-count, shrinking/fixed W-distance, W-activity) can satisfy both outer/limsup (Family C, `W-dist -> 0`) and recovery/liminf (Family F, `W-dist -> c > 0`) — §3.3 of the umbrella.
+9. A2 cannot repair: a first-moment defect does not change admissibility; the counterexample drift is exactly representable with zero defect.
+10. **A1 fails; no permitted Route-A contract meets the graph-consistency requirements.**
+11. Terminal (exactly one): `DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`.
+12. Six-file allowlist edited on the same branch; no existing tracked file modified outside it; explicit staging only; STOP for fresh ChatGPT review. No merge, no close, no successor, no self-accept.
 
-## Evidence produced
+## Evidence produced (Rev 1)
 
-- Closed-form analytic proof (in `m`) of the A1 contract: cases L (reverse sector), U (T_realloc/deplete), B (T_realloc) and interior cells; cone equalities with explicit nonnegative rates; exact first moments.
-- Structural facts F1–F4 (layer membership and generator availability) proved and spot-verified exactly (tiny `%TEMP%` scripts, never committed): `m in {1..7}`, all residues `N_m = 190m + s`, `s in {0..13}` — 0 violations; sector-generator availability 795 + 931 + 980 + 28 checks, 0 missing; buffered-drift-in-destination-cone exact separation tests 158 checks, 0 failures.
-- Scaling verified: rate `O(m)`, second moment `O(1/m)` with `m * (2nd moment)` exactly constant over `m in {1..32}`.
+- Mandatory counterexample test (reviewer item 1) verified exactly over `m in {1,2,5,20,100}`: `W-dist = (r_0^m + theta_m + 14)/(19m)` from 0.789 down to 0.008; `q_up = 19m/7`; destination `(0, i+1)` represented at every level.
+- Generalization to all fixed `j` (incl. regular `j = 7, 12, 30`) and to the upper corner `(19m, i_t(19m)-2)` with `mu = (-1, +2)` (exact via `w_left` + `w_up`).
+- Escape-sequence analysis for candidate buffers: fixed row-count `K` escaped by `k = sqrt(mK)`; shrinking `delta_m` escaped by `k = m/f(m)`, `f -> oo` arbitrarily slow; fixed `delta` over-constrains Family F with `c < delta`.
+- Finite-m algebra (rates/moments/scaling/monotonicity/conservation/one-Q) retained from Rev 0; corner and interior-layer taxonomy corrected per reviewer item 6; operator bound made pure `C^2` (item 7); floor proofs rewritten with exact inequalities (item 8).
+- Exact `%TEMP%` spot-checks only (never committed).
 
 ## Governance / binding law (unchanged)
 
@@ -41,6 +44,4 @@ Pinning/normalization may fix scale only; stationary KFE remains NOT AUTHORIZED.
 
 ## Related accepted provenance
 
-- DLH-5V-A (`reports/dlh_5va_regular_voronoi_frontier_2026_09_10/`): phase facts `i_t(j)`, `r_j`, period 7, W-active classes.
-- DLH-5V-E (`docs/design/DLH_5VE_REMAINING_REGULAR_W_BOUNDARY_SECTOR_CLOSURE.md`): regular T_realloc/R_reverse/R_deplete contracts.
-- DLH-5V-F (`docs/design/DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE.md`): accepted endpoint obstruction.
+- DLH-5V-A phase facts; DLH-5V-E regular sector contracts; DLH-5V-F accepted endpoint obstruction; DLH-5T continuous KKT boundary laws (corner semantics per §6 of the umbrella).
