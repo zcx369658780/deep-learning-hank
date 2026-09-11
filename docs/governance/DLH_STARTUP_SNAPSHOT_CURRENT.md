@@ -21,41 +21,35 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VC_ACCEPTED_OUTCOME_A__WIDE_STENCIL_RATE_GATE_PENDING`
 
-**Issue #51 — DLH-5V-C: Audit W1 wide-stencil exact-tangent transport on the regular W frontier**
+There is **no active Builder Issue**. Issue #51 is CLOSED completed. DSH must remain stopped until a successor Issue is separately published and activated.
 
-Task type:
-
-`SCIENTIFIC_DESIGN__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY`
-
-Dedicated branch:
-
-`dsh/issue-51-dlh-5vc-w1-wide-stencil-tangent-2026-09-11`
-
-Owner route decision:
-
-`APPROVE_ROUTE_F_WIDE__W1_NATIVE_EXACT_TANGENT_REGULAR_AUDIT`
-
-Builder authority is active only while Issue #51 remains OPEN, CURRENT Task Index / this Snapshot identity matches, and the authoritative activation comment is present.
-
-## Latest accepted gate — Issue #50 / DLH-5V-B
+## Latest accepted gate — Issue #51 / DLH-5V-C
 
 Accepted candidate:
 
-`6bc8612dc10de6d72d27c9c47d1b4d598a70a15d`
+`2134a4b249eb0a79dc20d60ba1fdee830304f261`
 
 Reviewer acceptance:
 
-`5628629099`
+`5630191586`
 
 Acceptance integration:
 
-`ff0afdf6d3fa0d770654613e42109318d638639d`
+`cdbf1906963a9bf06cf117ba63072d2f1542d501`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Accepted verdict:
 
-`DLH_5VB_ACCEPTED__OUTCOME_C_CONFIRMED__REGULAR_LOCAL_SHARED_FACE_MOMENT_CONE_OBSTRUCTION_PROVEN__OWNER_ROUTE_DECISION_REQUIRED`
+`DLH_5VC_ACCEPTED__OUTCOME_A_CONFIRMED__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY_FROZEN__READY_FOR_WIDE_STENCIL_RATE_GATE`
+
+Accepted terminal:
+
+`DLH_5VC_W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY_FROZEN__READY_FOR_WIDE_STENCIL_RATE_GATE`
 
 ## Controlling household / finite-domain authority
 
@@ -85,53 +79,38 @@ No numerical production `W_max` is selected.
 
 Restricted-Voronoi state partition, weighted mass/density semantics, discrete-Hamiltonian requirement, and one-`Q` HJB/KFE principle remain accepted.
 
-## Accepted obstruction entering Issue #51
+## Accepted DLH-5V-C regular wide-stencil feasibility
 
-DLH-5V-B proved that the local shared-face geometry cannot represent the full continuous tangential cone on recurring top cells:
+The local shared-face obstruction from DLH-5V-B remains accepted, but the bounded W1/native remedy is now scientifically viable on recurring regular W-frontier states away from endpoint/joint-boundary regions.
 
-```text
-A^F: K = {7 mu_a + 10 mu_b <= 0}
-A^L: K = {mu_a <= 0, 7 mu_a + 10 mu_b <= 0}
-B^W: K = R^2
-```
-
-The continuous W-boundary cone contains exact sliding `(-u,+u)`, but the top-cell local shared-face cones are limited to physical slope `7/10`.
-
-## Active DLH-5V-C scientific target
-
-Audit the native W1 wide-stencil exact tangent
+Primitive exact tangent:
 
 ```text
-10 Delta j + 7 Delta i = 0,
-(Delta j,Delta i)=(-7,+10),
-Delta x=(-70/19,+70/19).
+10 Delta j + 7 Delta i = 0
+(Delta j,Delta i)=(-7,+10)
+Delta x_T=(-70/19,+70/19)
 ```
 
-Issue #51 must establish or refute regular-region feasibility across `A^F`, `A^L`, and `B^W`, including:
+Accepted regular-region facts:
 
-- represented destination and finite-domain path;
-- class preservation under the period-7 frontier;
-- cone closure with local inward `(-1,0)`;
-- symbolic nonnegative CTMC moment matching as a proof certificate only;
-- O(h) physical locality under fixed-aspect refinement;
-- smooth-test-function consistency;
-- coherent use of the exact same wide transition in the discrete HJB and forward KFE as a boundary wide-stencil Markov extension.
+- destination `(j-7,i+10)` is represented whenever `j>=7`;
+- the path stays inside `D_W` and preserves `a+b` exactly;
+- `r_{j-7}=r_j`, so regular class and top/sub-top offset are preserved;
+- endpoint band `j in {0,...,6}` is deferred;
+- with local inward `(-1,0)`, the wide tangent spans the full continuous `T_realloc` cone;
+- generic `mu=(-a-b,+a)` has nonnegative analytic coefficients `q_T=19a/70`, `q_in=19b/10` at the base grid;
+- under fixed-aspect refinement the physical wide jump is `O(h)`, rates are `O(1/h)`, first moment is exact, and Taylor remainder is `O(h)`;
+- same wide transition can be used in both the discrete HJB and forward `Q^T p` as a **boundary wide-stencil Markov transition**, not as a shared-face finite-volume flux.
 
-The wide edge must not be described as an ordinary shared-face finite-volume flux.
+## Next bounded scientific object
 
-Endpoint/corner handling is explicitly deferred.
+Recommended successor gate: **wide-stencil production rate / control-dependence design**.
 
-## Context-budget rule
+That future gate should freeze the control-dependent mapping from an HJB-selected admissible boundary drift to nonnegative wide-tangent and local-inward CTMC rates, including activation/tie-breaking semantics, diagonal row-sum conservation, and exact reuse of the same converged `Q` in KFE.
 
-After all CURRENT project rules, Task Index / this Snapshot / Roadmap, and full Issue #51 + comments, required scientific reading is limited to the five accepted DLH-5V-A/B files listed in Issue #51. Do not reread broad DLH-5T/DLH-5U history without a concrete contradiction.
+No successor is active yet.
 
-## Exact allowlist
-
-Five files only, exactly as listed in Issue #51. No existing tracked file may be modified by Builder.
-
-## Scientific ceiling
-
-Do not mutate source/economics; change the production grid; implement wide-stencil code; assemble a production generator; freeze production rate functions; redo broad phase enumeration; close endpoints/corners; execute HJB/KFE/stationary; select numerical `W_max`; compute aggregates/GE; or enter multi-province/neural/nominal/calibration/policy/welfare/Results.
+Endpoint/corner closure, implementation, numerical `W_max`, stationary generator validation, stationary KFE, aggregates, GE, multi-province work and neural training remain unauthorized.
 
 Current Master Roadmap:
 
