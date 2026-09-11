@@ -21,41 +21,41 @@ Priority:
 
 ## Current Builder state
 
-Current published task:
+**No active Builder Issue.**
 
-**Issue #53 — DLH-5V-E: Close remaining regular W-boundary sectors and full regular candidate-scoring contract**
+Current status:
 
-Task type:
+`NO_ACTIVE_BUILDER_ISSUE__DLH_5VE_ACCEPTED__ENDPOINT_JOINT_BOUNDARY_GATE_NEXT`
 
-`SCIENTIFIC_DESIGN__REMAINING_REGULAR_W_BOUNDARY_SECTORS_AND_FULL_REGULAR_SCORING_CLOSURE`
+A successor task is not authorized until it is separately published, synchronized, and activated. Chat text alone is not Builder authority.
 
-Dedicated branch:
+## Latest accepted gate — Issue #53 / DLH-5V-E
 
-`dsh/issue-53-dlh-5ve-remaining-regular-sector-2026-09-11`
+Title:
 
-Owner continuation decision:
-
-`APPROVE_DLH_5VE_REMAINING_REGULAR_W_BOUNDARY_SECTOR_CLOSURE_GATE`
-
-Builder authority becomes active only while Issue #53 remains OPEN, CURRENT Task Index / this Snapshot identity matches, and the authoritative activation comment is present.
-
-## Latest accepted gate — Issue #52 / DLH-5V-D
+`DLH-5V-E: Close remaining regular W-boundary sectors and full regular candidate-scoring contract`
 
 Accepted candidate:
 
-`81705b0c1671a8ee09ee5c2f05953f3e4f9f1e8b`
+`ff4607ff74ab1e0cea530ba04f17045698f43a62`
 
 Reviewer acceptance:
 
-`5631523081`
+`5632150936`
 
 Acceptance integration:
 
-`d58bd962be3acc8b6f646b66643bbc96f121be57`
+`28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`
 
-Acceptance verdict:
+Accepted verdict:
 
-`DLH_5VD_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_REALLOCATION_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT_FROZEN__READY_FOR_REMAINING_REGULAR_SECTOR_GATE`
+`DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
+
+Accepted terminal:
+
+`DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
+
+This closes the recurring **regular W-frontier sector-design block**. Endpoint/joint-boundary states remain separately unresolved.
 
 ## Controlling household / finite-domain authority
 
@@ -67,6 +67,22 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
+Accepted finite production domain:
+
+```text
+D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
+```
+
+with accepted independent upper-a bound:
+
+```text
+a_max = 10
+a_j = j*(10/19)
+j_max = 19
+```
+
+No numerical production `W_max` is selected.
+
 Binding law:
 
 ```text
@@ -75,36 +91,79 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-Accepted finite domain remains:
+## Accepted restricted-Voronoi / mass semantics
+
+Restricted-Voronoi cells remain the state partition / cell-volume geometry. For cell-volume matrix `M`:
 
 ```text
-D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}.
+p = M g
+p_dot = Q^T p
 ```
 
-Restricted-Voronoi state partition, weighted mass/density semantics, discrete-Hamiltonian requirement, and one-`Q` HJB/KFE principle remain accepted. No numerical production `W_max` is selected.
+Aggregates use mass weights. The same backward generator `Q` selected by the discrete HJB must define the forward process.
 
-## Accepted regular W-frontier authority through DLH-5V-D
+Accepted clean/source-free safeguards, reinforced by the independent Chapter-5 project:
 
-Exact grid:
+```text
+Q backward
+Q^T forward
+Q_ij >= 0 for i != j
+Q_ii = -sum of actual represented outgoing rates
+Q1 = 0 by construction
+HJB and KFE consume the SAME Q
+SCC / closed recurrent classes before uniqueness claims
+stationary original-equation Q^T p residual required
+mass normalization and nonnegativity required
+```
+
+The MATLAB-faithful contaminated-row reproduction method from the Chapter-5 project is not imported as production KFE logic.
+
+Issue #27 component-pin semantics remain unchanged: pin/normalization fixes scale only, never leakage; validate the original source-free equation afterward.
+
+## Accepted recurring regular W-frontier science — Issues #49–#53
+
+### DLH-5V-A / Issue #49 — phase / adjacency
+
+Regular W-frontier phase is period 7 under
 
 ```text
 da=10/19
-db=7/19.
+db=7/19
+10j+7i<=N
 ```
 
-Regular W-face tangent cone:
+with accepted formulas
 
 ```text
-T_W={mu_W=mu_a+mu_b<=0}.
+i_t(j)=floor((N-10j)/7)
+r_j=(N-10j) mod 7
+r_{j+7}=r_j.
 ```
 
-Accepted forward-reallocation sector:
+### DLH-5V-B / Issue #50 — local shared-face obstruction
+
+Shared-face-only local geometry cannot represent the exact W-tangent sliding ray on recurring top-cell classes. This obstruction is accepted and bounded; it does not invalidate the W-domain or W1/native coordinates.
+
+### DLH-5V-C / Issue #51 — forward exact-tangent wide stencil
+
+Accepted wide tangent:
 
 ```text
-T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}.
+(Delta j,Delta i)=(-7,+10)
+w_T=(-70/19,+70/19)
 ```
 
-Accepted physical directions/rates:
+Forward destination `(j-7,i+10)` is valid in the recurring regular region with `j>=7`; lower-a band `j in {0,...,6}` is deferred.
+
+### DLH-5V-D / Issue #52 — forward/reallocation rate contract
+
+For
+
+```text
+T_realloc={mu_a<=0,mu_b>=0,mu_W<=0}
+```
+
+accepted canonical rates are
 
 ```text
 w_in=(-10/19,0)
@@ -113,116 +172,110 @@ q_in=19*(-mu_W)/10
 q_T=19*mu_b/70.
 ```
 
-For each admissible candidate in `T_realloc`, these rates are computed before selection and score the candidate in the discrete `H_h`. DLH-5V-D deliberately did not freeze a global regular-boundary argmax because the remaining tangent-admissible sector still lacked a transition/rate contract.
+They score each admissible in-sector candidate in discrete `H_h` before selection.
 
-Conservative one-Q semantics remain:
+### DLH-5V-E / Issue #53 — remaining sectors and full regular closure
 
-```text
-Q_ij>=0 for i!=j
-Q_ii=-sum actual represented outgoing rates
-Q1=0 by construction
-future forward operator = exactly Q^T.
-```
-
-KFE may not reconstruct boundary rates independently. Downstream mass semantics remain `p=Mg`, `p_dot=Q^T p`; Issue #27 component pin remains scale fixing only, never leakage repair.
-
-## Active DLH-5V-E scientific target
-
-The remaining regular sector is
-
-```text
-T_rem={mu_b<0,mu_W<=0},
-```
-
-split into
+Reverse reallocation:
 
 ```text
 R_reverse={mu_a>0,mu_b<0,mu_W<=0}
-R_deplete={mu_a<=0,mu_b<0}.
-```
-
-Candidate reverse-reallocation mirror tangent to audit:
-
-```text
-(Delta j,Delta i)=(+7,-10)
-w_RT=(+70/19,-70/19).
-```
-
-This edge is **not yet accepted**. Builder must prove/refute represented destination/path/class preservation on a precisely declared regular region and identify finite endpoint/joint-boundary exclusions.
-
-Candidate reverse rates to prove/refute:
-
-```text
+w_RT=(+70/19,-70/19)
+w_down=(0,-7/19)
 q_RT=19*mu_a/70
-q_down=19*(-mu_W)/7.
+q_down=19*(-mu_W)/7
 ```
 
-Both-inward depletion should audit the local axial basis
+Mirror transition `(j,i)->(j+7,i-10)` requires the independent conditions
 
 ```text
+j<=12
+i>=10
+```
+
+because `j+7<=j_max=19` and `i-10>=0`.
+
+Both-inward depletion:
+
+```text
+R_deplete={mu_a<=0,mu_b<0}
 w_left=(-10/19,0)
 w_down=(0,-7/19)
-```
-
-with candidate rates
-
-```text
 q_left=19*(-mu_a)/10
 q_down=19*(-mu_b)/7.
 ```
 
-If both sub-sectors pass, Builder may prove full regular coverage of every `mu_W<=0` candidate and freeze the future global composition:
+On the declared common regular region
 
 ```text
-all admissible regular candidates
- -> exactly one sector-specific discrete-H_h score
+7<=j<=12
+i>=10
+```
+
+plus accepted regular W-active/class conditions:
+
+```text
+T_W={mu_W<=0}
+  = T_realloc union R_reverse union R_deplete
+```
+
+with coherent boundary ownership and no omission/double counting.
+
+Future regular selection semantics are frozen:
+
+```text
+all continuously admissible regular W-boundary candidates
+ -> exactly one sector-specific discrete-H_h score BEFORE selection
  -> ONE global regular argmax
  -> selected control + already-defined rates
- -> ONE conservative backward Q
- -> future KFE uses exactly Q^T.
+ -> ONE conservative backward row / generator Q
+ -> future KFE consumes exactly Q^T
 ```
 
-This remains design semantics only. Endpoint/joint-boundary closure is separately downstream.
+This is design semantics only; no HJB/KFE solve has been authorized.
 
-## KFE methodology safeguard
+## Exact unresolved endpoint / joint-boundary objects
 
-The independently stabilized Chapter-5 clean/source-free KFE route is supporting methodology only:
+The next scientific block is the state-space complement of the common regular region where one or both wide transitions are unavailable:
 
 ```text
-Q backward; Q^T forward
-off-diagonal >=0
-diagonal = -sum actual outgoing
-Q1=0
-same Q HJB/KFE
-mass-first stationary object
-SCC/closed classes before uniqueness
-pin/normalization = scale fixing only
-original Q^T p residual required downstream.
+lower-a forward-wide band: j in {0,...,6}
+upper-a mirror-wide band:  j in {13,...,19}
+lower-b mirror-wide band:  i in {0,...,9}
 ```
 
-MATLAB-faithful contaminated-row reproduction logic is not imported.
+plus their intersections/corners and W-active endpoint cells.
 
-## Context-budget rule
+The next gate must respect the jointly active tangent-cone/KKT restrictions at `a=0`, `a=a_max`, `b=b_min`, and `a+b=W_max`; it must not silently clip unavailable transitions or leave diagonal escape rates for omitted destinations.
 
-After all CURRENT project rules, current Task Index / this Snapshot / Roadmap, and full Issue #53 + comments, scientific reading is limited to:
+## Downstream roadmap
 
-1. `docs/design/DLH_5VD_CONTROL_DEPENDENT_WIDE_STENCIL_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT.md`
-2. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_CONTROL_DEPENDENT_RATE_DECOMPOSITION.md`
-3. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_CONSERVATIVE_GENERATOR_AND_KFE_HANDOFF_CONTRACT.md`
-4. `docs/design/DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY.md` only if accepted regular adjacency/class formulas are needed.
+```text
+endpoint / joint-boundary closure
+ -> boundary-HJB / finite-process implementation
+ -> global discrete-HJB implementation
+ -> same-process Q validation + SCC/closed-class diagnostics
+ -> nested Wmax / resolution robustness
+ -> conservative stationary-generator validation
+ -> Issue #27 stationary KFE
+ -> stationary aggregates C,L,A,B
+ -> two-region structural anchor rebuild
+ -> 3–5 province integration
+ -> learned regional W^L
+```
 
-Verify the accepted household source blob only. Do not reread broad DLH-5T/5U/5V-B/5V-C history without a concrete contradiction.
+## Session handoff checkpoint
 
-## Scientific ceiling
+This conversation is handing off immediately after DLH-5V-E acceptance and governance synchronization.
 
-Design only. Do not mutate source/economics; change grid/aspect ratio; implement transitions; numerically assemble `Q`; execute HJB/KFE/stationary; redesign endpoint/joint-boundary states; select numerical `W_max`; redesign Issue #27 pinning; import contaminated-row KFE production logic; compute aggregates/GE; or enter multi-province/neural/nominal/calibration/policy/welfare/Results.
+Dedicated handoff snapshot:
 
-## Planned session handoff checkpoint
+`docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md`
 
-The chosen handoff point is **after Issue #53 is independently reviewed and, if valid, accepted**. Before handing off, update Task Index, this Startup Snapshot, Master Roadmap, and create a dedicated current session/project-source handoff snapshot with live `main`, accepted SHAs, Issue states, unresolved endpoint/joint-boundary work, KFE safeguards, and the exact next route.
+Current Task Index:
+
+`tasks/TASK_INDEX_CURRENT.md`
 
 Current Master Roadmap:
 
 `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-
-Chat text is not Builder authority.
