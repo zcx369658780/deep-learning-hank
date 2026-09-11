@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VF_OUTCOME_C_ACCEPTED__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
+Status: `PUBLISHED_BUILDER_ISSUE_55__DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION__ACTIVATION_PENDING`
 
 Last synchronized: 2026-09-11
 
@@ -8,19 +8,29 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NONE.**
-
-Issue #54 / DLH-5V-F has been independently reviewed and accepted at Outcome C. No successor Builder Issue is authorized by that acceptance. Chat text, this Task Index, or the roadmap alone cannot create successor authority.
-
-## Latest accepted task — Issue #54 / DLH-5V-F
+**Issue #55 / DLH-5V-G is published but activation is pending at this commit.**
 
 Title:
 
-`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
+`DLH-5V-G: Prove/refute shrinking endpoint-layer asymptotic same-process approximation`
 
 Task type:
 
-`SCIENTIFIC_DESIGN__ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE`
+`SCIENTIFIC_DESIGN__SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_MARKOV_APPROXIMATION`
+
+Owner decision:
+
+`APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
+
+Dedicated Builder branch:
+
+`dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
+
+Issue #55 body plus its future authoritative activation comment are the sole Builder task authority. This Task Index cannot expand scope. Builder MUST NOT mutate anything until the activation comment is posted and a fresh startup verifies Issue #55 remains OPEN and all CURRENT governance agrees.
+
+## Latest accepted task — Issue #54 / DLH-5V-F
+
+Issue #54 is CLOSED completed.
 
 Accepted candidate:
 
@@ -29,10 +39,6 @@ Accepted candidate:
 Reviewer acceptance:
 
 `5633995486`
-
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Acceptance integration:
 
@@ -46,61 +52,53 @@ Accepted terminal:
 
 `DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
 
-## Accepted scientific result
+## Accepted obstruction — controlling science
 
-The recurring regular W-frontier contract from DLH-5V-E remains valid on regular W-active states with
-
-```text
-7<=j<=12
-i>=10
-```
-
-but the full deferred endpoint complement cannot be closed under the simultaneously frozen requirements:
+The accepted exact finite-m obstruction is:
 
 ```text
-actual represented native-grid states only
-+ nonnegative Markov transition rates
-+ exact pointwise first-moment matching
-+ exact same-process HJB/KFE law
+actual native represented states only
++ nonnegative Markov rates
++ exact pointwise first-moment equality for every finite endpoint candidate
++ exact one-Q same-process HJB/KFE law
 ```
 
-The controlling obstruction is closed-form. At an exact-frontier top state with `r_j=0`, source W-index equals `N`, so every represented destination has `Delta W<=0`. Exact tangent motion `mu_W=0` therefore can use only same-W destinations. Since
+cannot all hold over the full endpoint complement.
+
+At `r_j=0` exact-frontier top states, every represented destination has `Delta W<=0`; exact tangent `mu_W=0` therefore uses same-W moves only. Since `10 Delta j + 7 Delta i=0`, same-W native moves are multiples of `(7,-10)`. Lower endpoint bands can miss `(-7,+10)` and upper endpoint bands can miss `(+7,-10)`. This is a lattice/discretization obstruction, not a household-source error.
+
+The exact recurring regular W-frontier contract through DLH-5V-E remains accepted and is not reopened.
+
+## Active scientific object after activation — Route A
+
+Issue #55 investigates the least-disruptive Route A only. It keeps household economics, `D_W`, native represented-state family, 10:7 aspect, nonnegative/conservative Markov rows and one-Q semantics, while allowing a deliberately numerical shrinking endpoint-layer approximation.
+
+Symbolic fixed-aspect refinement family:
 
 ```text
-10 Delta j + 7 Delta i = 0
+m=1,2,...
+da_m=10/(19m)
+db_m=7/(19m)
+a_j=j*10/(19m), j=0,...,19m
+b_i=b_min+i*7/(19m)
+N_m=floor(19m*(W_max-b_min))
+10j+7i<=N_m
 ```
 
-implies native same-W displacements are integer multiples of `(7,-10)`, lower a-interior endpoint-band states `j in {1,...,6}` lack the forward same-W orientation and cannot represent the admissible ray `(-u,+u)`, while upper a-interior states `j in {13,...,18}` lack the reverse orientation and cannot represent `(+u,-u)`.
-
-For every `N>=190` in the current regular-Regime-I symbolic family, the period-7 residue structure supplies at least one such obstructed a-interior exact-frontier column. No numerical production `W_max` was selected.
-
-This is a finite-process/lattice representability obstruction, not an accepted-household source error and not a KFE repair opportunity.
-
-## Continuous versus discrete boundary semantics
-
-Reachability bands are not economic faces:
+Endpoint stencil layers have physical thickness bounded by
 
 ```text
-j=0 only      -> actual a=0 face
-j=1,...,6     -> lower-a reachability band but a-interior
-j=19 only     -> actual a=a_max face
-j=13,...,18   -> upper-a reachability band but a-interior
-i=0 only      -> actual b=b_min face
-i=1,...,9     -> lower-b reachability band but b-interior
+ell_m=70/(19m)=O(1/m).
 ```
 
-Continuous active-face laws remain:
+Scientific preference order:
 
-```text
-a=0:       mu_a>=0
-b=b_min:   mu_b>=0
-a=a_max:   mu_a<=0
-W:         mu_a+mu_b<=0
-```
+1. first test a shrinking **numerical candidate-admissibility buffer** that may preserve exact first moments for all admitted candidates;
+2. only if that fails, test an explicit quantified moment-defect approximation.
 
-In Regime I the continuous W face does not intersect `b=b_min`; the continuous `a=a_max x b=b_min x W` triple intersection occurs only at `W_max=8`. Discrete restricted-Voronoi W-contact is a separate cell-level object.
+Required design theorem includes: exactness away from endpoints, shrinking physical layer, tangent-cone/admissible-set graph consistency, generator/operator consistency, vanishing numerical diffusion, monotonicity, conservation, one-Q same-process semantics and seam consistency.
 
-## Controlling household / same-process authority
+## Same-process / mass authority
 
 Accepted household source remains immutable/read-only:
 
@@ -114,40 +112,28 @@ Binding law:
 
 ```text
 HJB boundary policy <=> KFE boundary transition law
-```
-
-The clean/source-free future process contract remains:
-
-```text
-Q = backward controlled generator
-Q^T = forward mass operator
-Q_ij >= 0 for i != j
-Q_ii = -sum of ACTUAL represented outgoing rates
-Q1 = 0 by construction
+Q backward
+Q^T forward
+Q_ij>=0 for i!=j
+Q_ii=-sum of ACTUAL represented outgoing rates
+Q1=0 by construction
 same selected Q for HJB and KFE
-p = M g
-p_dot = Q^T p
+p=M g
+p_dot=Q^T p
 ```
 
-Issue #27 pin/normalization remains scale fixing only and may never repair leakage.
+Pinning/normalization may fix scale only and may not repair leakage.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-## Owner route decision — next scientific object, NOT YET AUTHORIZED
+## Hard ceiling
 
-Outcome C requires the Owner to choose which frozen discretization assumption may be relaxed before implementation. Bounded route families include:
-
-1. relax exact endpoint first-moment matching to an explicitly controlled monotone/conservative asymptotic approximation while preserving one-Q semantics;
-2. augment or boundary-fit the represented state set so the missing tangent orientation becomes representable;
-3. change grid/aspect or use a boundary-fitted lattice;
-4. transform coordinates (for example a future `(a,W)` representation) and re-derive the affected boundary contract.
-
-No route above is selected by this Task Index. No implementation gate is authorized until the Owner selects a route and a new Issue is separately published, synchronized and activated.
+Issue #55 is design-only. It does not authorize source implementation, production generator assembly/run, HJB/KFE/stationary execution, numerical production `W_max`, grid/aspect/domain redesign, state augmentation, coordinate transformation, aggregates/GE/multi-region/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #54 acceptance history.
+- Issue #55 body/comments.
 
-The post-DLH-5V-E handoff snapshot is a historical checkpoint and does not override CURRENT governance.
+Issue #54 acceptance history remains controlling provenance for the obstruction.
