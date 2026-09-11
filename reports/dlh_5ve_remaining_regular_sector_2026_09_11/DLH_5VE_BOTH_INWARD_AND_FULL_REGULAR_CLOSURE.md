@@ -59,8 +59,8 @@ decomposition for every `mu in R_deplete`; equality boundaries are boundary valu
 - `(j,i) -> (j-1,i)`: index `10(j-1)+7i = 10j+7i-10 < N`; available for `j >= 1`.
 - `(j,i) -> (j,i-1)`: index `10j+7(i-1) = 10j+7i-7 < N`; available for `i >= 1`.
 
-Both are interior-type (W strictly decreases) and are represented throughout the declared regular region
-(`j >= 7`, `i >= 10`). Endpoint faces (`j = 0` or `i = 0`) are joint-boundary objects **not redesigned here**.
+Both are interior-type (W strictly decreases) and are represented throughout the declared **common regular region**
+(`7 <= j <= 12`, `i >= 10`). Endpoint faces (`j = 0` or `i = 0`) are joint-boundary objects **not redesigned here**.
 
 ## 3. Depletion-sector scoring semantics (Issue §6.3) — frozen (sector-candidate scoring)
 
@@ -102,6 +102,25 @@ T_W = {mu_W <= 0} = T_realloc  union  R_reverse  union  R_deplete
 `mu_a = mu_W - mu_b <= 0` and `mu in T_realloc`; if `mu_b < 0` then `mu_a > 0` gives `mu in R_reverse` (with
 `mu_W <= 0`) and `mu_a <= 0` gives `mu in R_deplete` (whose `mu_W < 0` automatically).
 
+**State-space domain of the coverage theorem.** The drift-space partition above is applied on the declared
+**common regular region**, away from all wide-stencil endpoint bands:
+
+```
+common regular region = regular W-active states with  7 <= j <= 12  and  i >= 10
+                        (plus the accepted regular W-active / class conditions).
+```
+
+Within this region both wide stencils (forward `j >= 7` and mirror `j <= 12`, `i >= 10`) and the axial both-inward
+edges (`j >= 1`, `i >= 1`) are all available. The following endpoint/joint-boundary objects are **deferred** to the
+endpoint/joint-boundary gate and are **not** part of this contract:
+
+```
+lower-a forward-wide band:   j in {0, ..., 6}      (forward destination (j-7, i+10) would leave the a >= 0 face)
+upper-a mirror-wide band:    j in {13, ..., 19}    (mirror destination (j+7, i-10) would leave the a_max = 10 face)
+lower-b mirror-wide band:    i in {0, ..., 9}      (mirror destination would leave the b_min face)
+their intersections/corners and any W-active endpoint cells.
+```
+
 **Boundary ownership (single-valued):**
 - `B1: mu_b = 0, mu_a < 0` — owned by `T_realloc`; depletion limit identical (`q_left = q_in`, `q_down = q_T = 0`).
 - `B2: mu_a = 0, mu_b < 0` — owned by `R_deplete`; reverse limit identical (`q_left = q_RT = 0`, `q_down` equal).
@@ -110,18 +129,21 @@ T_W = {mu_W <= 0} = T_realloc  union  R_reverse  union  R_deplete
   `19|mu_b|/70`. Single-valued.
 - `mu = (0,0)`: all rates zero (trivial zero-rate case) — consistent.
 
-**Closure statement.** Every continuously admissible **regular** W-face candidate (drift `mu in T_W`, the only
-active continuous constraint on the regular W-face away from endpoints) has **exactly one** applicable
-sector-specific transition/rate/scoring contract; the shared boundary rays are proven equivalent (identical
-rates), so candidate scoring is single-valued, and **no control is omitted or double-counted**. (Tiny exact
-spot-checks: partition classifier + boundary-ray identity — zero mismatches.)
+**Closure statement.** Every continuously admissible **regular** W-face candidate in the declared common regular
+region `7 <= j <= 12`, `i >= 10` (drift `mu in T_W`, the only active continuous constraint on the regular W-face
+away from endpoints) has **exactly one** applicable sector-specific transition/rate/scoring contract; the shared
+boundary rays are proven equivalent (identical rates), so candidate scoring is single-valued, and **no control is
+omitted or double-counted**. (Tiny exact spot-checks: partition classifier + boundary-ray identity — zero
+mismatches.)
 
 ## 6. Future global regular-W-boundary discrete-Hamiltonian composition (Issue §9) — frozen (design semantics only)
 
-Freeze the future composition rule (no HJB/KFE solved here):
+Freeze the future composition rule (no HJB/KFE solved here) — stated on the declared common regular region
+`7 <= j <= 12`, `i >= 10`:
 
 ```
 all continuously admissible regular W-boundary candidate controls
+ (in the common regular region, away from all wide-stencil endpoint bands)
  -> apply exactly one accepted sector-specific rate/scoring contract (T_realloc | R_reverse | R_deplete)
  -> compute each candidate's discrete H_h score BEFORE selection
  -> ONE global argmax over all regular candidates

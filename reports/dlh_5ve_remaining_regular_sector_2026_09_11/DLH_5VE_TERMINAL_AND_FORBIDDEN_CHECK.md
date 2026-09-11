@@ -13,14 +13,16 @@ DLH_5VE_FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT
 
 Rationale (Issue §15 Outcome A — all conditions met):
 - mirror-wide reverse-reallocation regular feasibility **proved** on the precisely declared regular region
-  (`j >= 7`, `i >= 10`); destination/path/class conditions exact (`10(j+7)+7(i-10)=10j+7i`; `i >= 10` binding;
-  upper-a automatic; segment in `D_W`; `r_{j+7}=r_j`; `i_t(j+7)=i_t(j)-10`; offset preserved); finite deferred
-  endpoint/joint bands exact (`j in {0..6}` and `i in {0..9}`);
+  (`7 <= j <= 12`, `i >= 10`); destination/path/class conditions exact (`10(j+7)+7(i-10)=10j+7i`; `i >= 10` and
+  `j <= 12` binding — upper-a is the independent `a_max=10`/`j_max=19` grid face, not `N/10`; segment in `D_W`;
+  `r_{j+7}=r_j`; `i_t(j+7)=i_t(j)-10`; offset preserved); finite deferred endpoint/joint bands exact (lower-a
+  forward-wide `j in {0..6}`, upper-a mirror-wide `j in {13..19}`, lower-b mirror-wide `i in {0..9}`, plus their
+  intersections/corners and W-active endpoint cells);
 - reverse rates `q_RT=19 mu_a/70`, `q_down=19(-mu_W)/7` exact, nonnegative, unique (`det=-490/361 != 0`);
 - both-inward rates `q_left=19(-mu_a)/10`, `q_down=19(-mu_b)/7` exact, nonnegative, unique (`det=70/361 != 0`);
 - all equality/boundary cases consistent (B1/B2/B3 proven identical across adjacent sectors);
-- sector union covers every regular `mu_W <= 0` candidate (`T_W = T_realloc union R_reverse union R_deplete`),
-  single-valued, no omission/double counting;
+- sector union covers every regular `mu_W <= 0` candidate in the common regular region
+  (`T_W = T_realloc union R_reverse union R_deplete`), single-valued, no omission/double counting;
 - future ONE global regular discrete-Hamiltonian argmax is well-defined from the sector-specific scores
   (design semantics only; no HJB solve);
 - conservative one-Q / same-Q KFE semantics coherent (`Q1=0` by construction; future KFE consumes exactly `Q^T`).
@@ -58,7 +60,7 @@ Allowlist files (only these were created/written by the Builder):
 | numerical assembly / execution of production Q | NOT PERFORMED |
 | HJB solve | NOT PERFORMED |
 | KFE solve / stationary distribution | NOT PERFORMED |
-| endpoint / joint-boundary redesign | NOT PERFORMED (bands `j in {0..6}` and `i in {0..9}` + corners identified and deferred only) |
+| endpoint / joint-boundary redesign | NOT PERFORMED (bands lower-a forward `j in {0..6}`, upper-a mirror `j in {13..19}`, lower-b mirror `i in {0..9}` + corners and W-active endpoint cells identified and deferred only) |
 | silent clamping of unavailable mirror transitions | NOT PERFORMED (unavailable band states explicitly deferred, not treated as regular failures) |
 | numerical production `W_max` selection | NOT PERFORMED (symbolic `N`/`W_max` family only) |
 | Issue #27 pin redesign | NOT PERFORMED (pin = downstream scale fixing only, unchanged) |

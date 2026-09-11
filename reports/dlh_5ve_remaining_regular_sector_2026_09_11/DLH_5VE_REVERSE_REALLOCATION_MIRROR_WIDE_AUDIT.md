@@ -25,32 +25,40 @@ w_RT = (+70/19, -70/19),   transition (j,i) -> (j+7, i-10).
 ```
 
 The mirror destination has the **same W-index** as the source, so on the W-frontier (`10j+7i = N`) the destination
-is on the same frontier: W (`a+b`) is preserved **exactly**.
+is on the same frontier: W (`a+b`) is preserved **exactly**. The destination must additionally respect the
+**independent economic grid bounds** `0 <= a <= a_max` (`a_max = 10`, grid `a_j = j·10/19`, so `j_max = 19`) and
+`b >= b_min` (grid `b_i = b_min + i·7/19`, so `i >= 0`).
 
 **Conditions (all proved):**
 
 | condition | exact statement | status |
 |---|---|---|
 | lower-b (`b = b_min` face) | `i - 10 >= 0`, i.e. `i >= 10` | binding constraint |
-| upper-a (`a <= a_max` grid range) | on the frontier, `10(j+7) <= N - 7(i-10) <= N` ⟹ `j+7 <= N/10`, so `a_dest <= a_max` follows from `i >= 10` (accepted indexing: a-max corner = `(N/10, 0)`) | automatic given `i >= 10` |
+| upper-a (`a <= a_max` independent grid face) | `a_dest = (10/19)(j+7) <= a_max = 10` ⟺ `j + 7 <= 19` ⟺ `j <= 12` | binding constraint (independent of `i`; `j_max = 19` since `a_j = j·10/19`) |
 | W-domain membership | `a_dest + b_dest = a_src + b_src <= W_max` (index preserved) | automatic |
-| straight segment in `D_W` | a increases monotonically from `a_src` to `a_src + 70/19` (both in `[0, a_max]`), b decreases monotonically to `b_src - 70/19 >= b_min`; W is constant; `D_W` is convex ⟹ whole segment inside | proved |
-| other economic boundary crossing | a=0 face not crossed (a increasing); b-min face not crossed (given `i >= 10`); W-frontier not crossed (W constant); a-max corner region excluded by the band below | none in the declared regular region |
+| straight segment in `D_W` | a increases monotonically from `a_src` to `a_src + 70/19` (both in `[0, a_max]` given `j <= 12`), b decreases monotonically to `b_src - 70/19 >= b_min`; W is constant; `D_W` is convex ⟹ whole segment inside | proved |
+| other economic boundary crossing | a=0 face not crossed (a increasing); b-min face not crossed (given `i >= 10`); W-frontier not crossed (W constant); a-max grid face not crossed (given `j <= 12`) | none in the declared regular region |
 
-**Exact finite deferred band (endpoint/joint-boundary object, NOT a regular failure):**
+> **Upper-a is NOT implied by the W-mask index bound.** `N` depends on the symbolic `kappa = 19(W_max - b_min)`;
+> no numerical `W_max` is selected, and `N/10` is not generally the a-max grid index `19`. The upper-a condition is
+> the independent constraint `j <= 12`.
+
+**Exact finite deferred bands (endpoint/joint-boundary objects, NOT regular failures):**
 
 ```
-i in {0, ..., 9}   (b-low / a-high end of the W-frontier, including the a-max/b-min joint corner region)
+lower-b mirror-wide band:   i in {0, ..., 9}      (b-low end of the W-frontier)
+upper-a mirror-wide band:   j in {13, ..., 19}    (a-high end; mirror destination would leave the a_max = 10 grid)
 ```
 
-Sources in this band cannot take the mirror-wide transition; they are **deferred** to the endpoint/joint-boundary
-gate and are **not** silently clamped or treated as regular failures. (The symmetric forward band `j in {0..6}` was
-already deferred by accepted DLH-5V-C.)
+together with their intersections/corners and any W-active endpoint cells. Sources in these bands cannot take the
+mirror-wide transition; they are **deferred** to the endpoint/joint-boundary gate and are **not** silently clamped
+or treated as regular failures. (The symmetric lower-a forward-wide band `j in {0..6}` was already deferred by
+accepted DLH-5V-C.)
 
 **Declared regular region for the mirror-wide contract (and for the full closure of Issue §8):**
 
 ```
-regular W-active states on the W-frontier with  j >= 7  and  i >= 10.
+regular W-active states on the W-frontier with  j >= 7,  j <= 12  and  i >= 10.
 ```
 
 ## 3. Phase/class preservation (Issue §5.2) — proved
@@ -66,6 +74,7 @@ r_{j+7}  = (N - 10(j+7)) mod 7 = (N - 10j) mod 7 = r_j.
 For a represented source with subtop offset `k = i_t(j) - i >= 0`, the destination
 `(j+7, i-10)` has `i' = i - 10 = i_t(j) - 10 - k = i_t(j+7) - k`: **same class, same top/sub-top offset**.
 - Destination represented: `i' >= 0` (from `i >= 10`) and `i' <= i_t(j+7)` (from `i <= i_t(j)`).
+- Destination on the accepted a-grid: `j + 7 <= 19` (guaranteed by `j <= 12` in the declared regular region).
 - Destination W-active: top cells are always W-active; sub-top cells are W-active iff `r_{j+7} = r_j in {0,1,2}` —
   preserved by period 7. (Exact spot-checks: `r_{j+7} = r_j`, `i_t(j+7) = i_t(j) - 10`, `i' <= i_t(j+7)` for
   represented sources — zero mismatches.)
@@ -125,7 +134,8 @@ boundary values of the same unique map.
 ## 5. Reverse-sector scoring semantics (Issue §5.4) — frozen (sector-candidate scoring, not a standalone argmax)
 
 For each admissible candidate control with `mu in R_reverse`, with destinations `s_RT = (j+7, i-10)` and
-`s_down = (j, i-1)` (both represented in the declared regular region), freeze the candidate's discrete score
+`s_down = (j, i-1)` (both represented in the declared regular region: `s_RT` requires `j <= 12` and `i >= 10`;
+`s_down` requires `i >= 1`, satisfied in the region), freeze the candidate's discrete score
 
 ```
 H_h^reverse(c,l,d)

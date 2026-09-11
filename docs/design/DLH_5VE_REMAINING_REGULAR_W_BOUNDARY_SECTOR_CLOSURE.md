@@ -13,18 +13,23 @@ scientific acceptance**. Owner decision: `APPROVE_DLH_5VE_REMAINING_REGULAR_W_BO
 `w_in = (-10/19,0)`, `w_T = (-70/19,+70/19)`, `q_in = 19(-mu_W)/10`, `q_T = 19 mu_b/70` (DLH-5V-D).
 Remaining: `T_rem = {mu_b<0, mu_W<=0} = R_reverse union R_deplete` with
 `R_reverse = {mu_a>0, mu_b<0, mu_W<=0}`, `R_deplete = {mu_a<=0, mu_b<0}`.
-Grid: `da=10/19`, `db=7/19`, nodes `10j+7i<=N`; native tangent `10 Delta j + 7 Delta i = 0`;
+Grid: `da=10/19`, `db=7/19`, nodes `10j+7i<=N`; independent grid bounds `a_j = j·10/19 <= a_max = 10`
+(so `j_max = 19`) and `b_i = b_min + i·7/19` (so `i >= 0`); native tangent `10 Delta j + 7 Delta i = 0`;
 accepted class formulas `i_t(j)=floor((N-10j)/7)`, `r_j=(N-10j) mod 7`, `r_{j+7}=r_j` (DLH-5V-A).
-Declared **regular region** (this closure): recurring regular W-active states with `j >= 7` and `i >= 10`.
+Declared **common regular region** (this closure): recurring regular W-active states with `7 <= j <= 12` and
+`i >= 10` — away from all wide-stencil endpoint bands (lower-a forward `j in {0..6}`, upper-a mirror
+`j in {13..19}`, lower-b mirror `i in {0..9}`, plus their intersections/corners and W-active endpoint cells).
 
 ## 2. Reverse-reallocation sector (Issue §5) — proved and frozen
 
 - Mirror exact tangent `(Delta j, Delta i) = (+7,-10)`, `w_RT = (+70/19,-70/19)`, transition `(j,i)->(j+7,i-10)`.
-- **Destination/path proved**: `10(j+7)+7(i-10)=10j+7i` (same W-index; W preserved exactly); binding condition
-  `i >= 10` (lower-b face; upper-a `j+7 <= N/10` follows automatically on the frontier); W-domain membership and
-  full straight segment in `D_W` (monotone a/b with W constant, convex domain); no other economic-boundary
-  crossing in the declared regular region. Finite deferred band: `i in {0..9}` (b-low/a-high end incl. the
-  a-max/b-min joint) — endpoint/joint-boundary object, not a regular failure, not silently clamped.
+- **Destination/path proved**: `10(j+7)+7(i-10)=10j+7i` (same W-index; W preserved exactly); binding conditions
+  `i >= 10` (lower-b face) **and** `j <= 12` (independent upper-a grid face `a_max = 10`, `j_max = 19`; **not**
+  implied by `N/10` — `N` depends on symbolic `W_max-b_min`); W-domain membership and full straight segment in
+  `D_W` (monotone a/b with W constant, convex domain); no other economic-boundary crossing in the declared
+  regular region. Finite deferred bands: lower-b `i in {0..9}` **and** upper-a `j in {13..19}` (incl. their
+  intersections/corners and W-active endpoint cells) — endpoint/joint-boundary objects, not regular failures, not
+  silently clamped.
 - **Class preservation proved**: `r_{j+7}=r_j`; `i_t(j+7)=i_t(j)-10`; same top/sub-top offset `k`; destination
   represented iff `i >= 10` and `i <= i_t(j)`; W-active status preserved.
 - **Rates proved exact**: `q_RT = 19 mu_a/70`, `q_down = 19 (-mu_W)/7` on `w_RT`, `w_down=(0,-7/19)`;
@@ -71,9 +76,11 @@ SCC/closed-class/source-free-residual/mass/density/pin gates recorded only. No H
 
 Outcome A establishes only: every recurring **regular** W-frontier tangent-admissible drift sector
 (`T_W = {mu_W <= 0}`) now has a coherent nonnegative candidate-control transition/rate/scoring contract, and the
-future global regular-sector discrete-Hamiltonian composition is well-defined. It does **not** establish
-endpoint/joint-boundary closure (`j in {0..6}` and `i in {0..9}` bands + corners remain deferred), implementation
-correctness, numerical `W_max` adequacy, stationary existence/uniqueness, or stationary KFE authorization.
+future global regular-sector discrete-Hamiltonian composition is well-defined (on the common regular region
+`7 <= j <= 12`, `i >= 10`). It does **not** establish endpoint/joint-boundary closure (lower-a forward-wide
+`j in {0..6}`, upper-a mirror-wide `j in {13..19}`, lower-b mirror-wide `i in {0..9}` bands + intersections/corners
+and W-active endpoint cells remain deferred), implementation correctness, numerical `W_max` adequacy, stationary
+existence/uniqueness, or stationary KFE authorization.
 
 ## 7. File map (exact five-file allowlist)
 
