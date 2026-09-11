@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE_54__DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE`
+Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VF_OUTCOME_C_ACCEPTED__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
 
 Last synchronized: 2026-09-11
 
@@ -8,49 +8,97 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**ACTIVE — Issue #54 / DLH-5V-F.**
+**NONE.**
 
-Authoritative activation comment:
+Issue #54 / DLH-5V-F has been independently reviewed and accepted at Outcome C. No successor Builder Issue is authorized by that acceptance. Chat text, this Task Index, or the roadmap alone cannot create successor authority.
 
-`5632596303`
+## Latest accepted task — Issue #54 / DLH-5V-F
 
-Authority marker:
+Title:
 
-`DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_AUTHORIZED`
+`DLH-5V-F: Close endpoint bands and joint-boundary finite-process contract`
 
 Task type:
 
 `SCIENTIFIC_DESIGN__ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE`
 
-Owner decision:
-
-`APPROVE_DLH_5VF_ENDPOINT_BAND_AND_JOINT_BOUNDARY_FINITE_PROCESS_CLOSURE_GATE`
-
-Dedicated Builder branch:
-
-`dsh/issue-54-dlh-5vf-endpoint-joint-boundary-2026-09-11`
-
-Issue #54 body plus its authoritative activation comments are the sole Builder task authority. This Task Index only synchronizes identity and cannot expand scope. Builder must fresh-fetch live `origin/main` and verify Issue #54 remains OPEN and all CURRENT governance agrees before mutation.
-
-## Latest accepted task — Issue #53 / DLH-5V-E
-
-Issue #53 is CLOSED completed.
-
 Accepted candidate:
 
-`ff4607ff74ab1e0cea530ba04f17045698f43a62`
+`b9dab7b6cf5d724074765ddb88d6f300175f6c6f`
 
 Reviewer acceptance:
 
-`5632150936`
+`5633995486`
+
+Acceptance level:
+
+`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
 
 Acceptance integration:
 
-`28e42e4c0f65d03aa403cf7aeedb60b83c7837e2`
+`4e77d9c753f81eb2517a8b90a0827db6af8faed4`
 
 Accepted verdict:
 
-`DLH_5VE_ACCEPTED__OUTCOME_A_CONFIRMED__FULL_REGULAR_W_BOUNDARY_SECTOR_CONTRACT_FROZEN__READY_FOR_ENDPOINT_JOINT_BOUNDARY_GATE`
+`DLH_5VF_ACCEPTED__OUTCOME_C_CONFIRMED__EXACT_ENDPOINT_FINITE_PROCESS_REPRESENTABILITY_OBSTRUCTION_FROZEN__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VF_ENDPOINT_JOINT_BOUNDARY_FINITE_PROCESS_OBSTRUCTION__OWNER_ROUTE_DECISION_REQUIRED`
+
+## Accepted scientific result
+
+The recurring regular W-frontier contract from DLH-5V-E remains valid on regular W-active states with
+
+```text
+7<=j<=12
+i>=10
+```
+
+but the full deferred endpoint complement cannot be closed under the simultaneously frozen requirements:
+
+```text
+actual represented native-grid states only
++ nonnegative Markov transition rates
++ exact pointwise first-moment matching
++ exact same-process HJB/KFE law
+```
+
+The controlling obstruction is closed-form. At an exact-frontier top state with `r_j=0`, source W-index equals `N`, so every represented destination has `Delta W<=0`. Exact tangent motion `mu_W=0` therefore can use only same-W destinations. Since
+
+```text
+10 Delta j + 7 Delta i = 0
+```
+
+implies native same-W displacements are integer multiples of `(7,-10)`, lower a-interior endpoint-band states `j in {1,...,6}` lack the forward same-W orientation and cannot represent the admissible ray `(-u,+u)`, while upper a-interior states `j in {13,...,18}` lack the reverse orientation and cannot represent `(+u,-u)`.
+
+For every `N>=190` in the current regular-Regime-I symbolic family, the period-7 residue structure supplies at least one such obstructed a-interior exact-frontier column. No numerical production `W_max` was selected.
+
+This is a finite-process/lattice representability obstruction, not an accepted-household source error and not a KFE repair opportunity.
+
+## Continuous versus discrete boundary semantics
+
+Reachability bands are not economic faces:
+
+```text
+j=0 only      -> actual a=0 face
+j=1,...,6     -> lower-a reachability band but a-interior
+j=19 only     -> actual a=a_max face
+j=13,...,18   -> upper-a reachability band but a-interior
+i=0 only      -> actual b=b_min face
+i=1,...,9     -> lower-b reachability band but b-interior
+```
+
+Continuous active-face laws remain:
+
+```text
+a=0:       mu_a>=0
+b=b_min:   mu_b>=0
+a=a_max:   mu_a<=0
+W:         mu_a+mu_b<=0
+```
+
+In Regime I the continuous W face does not intersect `b=b_min`; the continuous `a=a_max x b=b_min x W` triple intersection occurs only at `W_max=8`. Discrete restricted-Voronoi W-contact is a separate cell-level object.
 
 ## Controlling household / same-process authority
 
@@ -68,153 +116,38 @@ Binding law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED**.
-
-Finite production domain remains:
-
-```text
-D_W(W_max) = {0<=a<=a_max, b>=b_min, a+b<=W_max}
-```
-
-Independent upper-a authority:
-
-```text
-a_max = 10
-a_j = j*(10/19)
-j_max = 19
-```
-
-No numerical production `W_max` is selected.
-
-The downstream clean/source-free process contract remains:
+The clean/source-free future process contract remains:
 
 ```text
 Q = backward controlled generator
 Q^T = forward mass operator
-off-diagonal >= 0
-diagonal = -sum of actual represented outgoing rates
+Q_ij >= 0 for i != j
+Q_ii = -sum of ACTUAL represented outgoing rates
 Q1 = 0 by construction
 same selected Q for HJB and KFE
 p = M g
 p_dot = Q^T p
 ```
 
-Issue #27 component-pin semantics remain scale fixing only; pinning/normalization may not repair leakage.
+Issue #27 pin/normalization remains scale fixing only and may never repair leakage.
 
-## Accepted recurring regular W-frontier block through DLH-5V-E
+Stationary KFE remains **NOT AUTHORIZED**.
 
-Frozen grid:
+## Owner route decision — next scientific object, NOT YET AUTHORIZED
 
-```text
-da = 10/19
-db = 7/19
-```
+Outcome C requires the Owner to choose which frozen discretization assumption may be relaxed before implementation. Bounded route families include:
 
-Common regular W-active region:
+1. relax exact endpoint first-moment matching to an explicitly controlled monotone/conservative asymptotic approximation while preserving one-Q semantics;
+2. augment or boundary-fit the represented state set so the missing tangent orientation becomes representable;
+3. change grid/aspect or use a boundary-fitted lattice;
+4. transform coordinates (for example a future `(a,W)` representation) and re-derive the affected boundary contract.
 
-```text
-7 <= j <= 12
-i >= 10
-```
-
-plus accepted regular W-active/class conditions.
-
-Accepted drift sectors:
-
-```text
-T_W={mu_W=mu_a+mu_b<=0}
- = T_realloc union R_reverse union R_deplete
-```
-
-Forward exact tangent:
-
-```text
-(j,i)->(j-7,i+10)
-w_T=(-70/19,+70/19)
-```
-
-Mirror exact tangent:
-
-```text
-(j,i)->(j+7,i-10)
-w_RT=(+70/19,-70/19)
-```
-
-Regular candidate composition is frozen as:
-
-```text
-candidate control
- -> continuous admissibility
- -> candidate-specific represented rates
- -> discrete H_h score BEFORE selection
- -> ONE global argmax
- -> selected control + its rates
- -> ONE conservative backward Q
- -> future KFE consumes exactly Q^T
-```
-
-No HJB/KFE solve was authorized by these design gates.
-
-## Active scientific object — DLH-5V-F
-
-Deferred reachability bands:
-
-```text
-lower-a forward-wide band: j in {0,...,6}
-upper-a mirror-wide band:  j in {13,...,19}
-lower-b mirror-wide band:  i in {0,...,9}
-```
-
-plus their intersections/corners and W-active endpoint cells.
-
-Binding distinction:
-
-- only `j=0` is the actual `a=0` face; `j=1,...,6` are a-interior unless another face is active;
-- only `j=19` is the actual `a=a_max` face; `j=13,...,18` are a-interior;
-- only `i=0` is the actual `b=b_min` face; `i=1,...,9` are b-interior.
-
-Apply continuous tangent/KKT restrictions only on actually active faces, jointly at intersections:
-
-```text
-a=0:       mu_a>=0
-b=b_min:   mu_b>=0
-a=a_max:   mu_a<=0
-W:         mu_a+mu_b<=0
-```
-
-Issue #54 must classify economic active sets separately from stencil reachability, enumerate only actual represented native-grid destinations, compare their nonnegative moment cones with the continuous admissible cones, derive exact rates/scoring only where feasible, and return a bounded obstruction if exact representation fails.
-
-Hard safeguards:
-
-- no silent clipping of unavailable transitions;
-- no omitted destination with retained diagonal escape;
-- no ghost/interpolation/virtual states or reflected KFE mass;
-- no second KFE boundary process;
-- no grid/domain/economic redesign in this gate;
-- stationary KFE remains NOT AUTHORIZED.
-
-## Downstream route
-
-```text
-DLH-5V-F endpoint/joint finite-process closure
- -> boundary-HJB / finite-process implementation
- -> global discrete-HJB implementation
- -> same-process Q validation + SCC/closed-class diagnostics
- -> nested Wmax / resolution robustness
- -> conservative stationary-generator validation
- -> Issue #27 stationary KFE
- -> stationary aggregates C,L,A,B
- -> two-region structural anchor rebuild
- -> 3–5 province integration
- -> learned regional W^L
-```
+No route above is selected by this Task Index. No implementation gate is authorized until the Owner selects a route and a new Issue is separately published, synchronized and activated.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #54 body/comments.
+- Issue #54 acceptance history.
 
-The post-DLH-5V-E session handoff remains a historical checkpoint and does not override later synchronized CURRENT governance:
-
-`docs/governance/DLH_SESSION_HANDOFF_CURRENT_2026_09_11_POST_5VE.md`
+The post-DLH-5V-E handoff snapshot is a historical checkpoint and does not override CURRENT governance.
