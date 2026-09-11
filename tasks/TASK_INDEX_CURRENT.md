@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `PUBLISHED_BUILDER_ISSUE_55__DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION__ACTIVATION_PENDING`
+Status: `ACTIVE_BUILDER_ISSUE_55__DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION`
 
 Last synchronized: 2026-09-11
 
@@ -8,7 +8,7 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**Issue #55 / DLH-5V-G is published but activation is pending at this commit.**
+**ACTIVE — Issue #55 / DLH-5V-G.**
 
 Title:
 
@@ -22,11 +22,19 @@ Owner decision:
 
 `APPROVE_DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_DESIGN_GATE`
 
+Authoritative activation comment:
+
+`5634144909`
+
+Authority marker:
+
+`DLH_5VG_ROUTE_A_SHRINKING_ENDPOINT_LAYER_ASYMPTOTIC_APPROXIMATION_AUTHORIZED`
+
 Dedicated Builder branch:
 
 `dsh/issue-55-dlh-5vg-asymptotic-endpoint-approximation-2026-09-11`
 
-Issue #55 body plus its future authoritative activation comment are the sole Builder task authority. This Task Index cannot expand scope. Builder MUST NOT mutate anything until the activation comment is posted and a fresh startup verifies Issue #55 remains OPEN and all CURRENT governance agrees.
+Issue #55 body plus authoritative activation comment `5634144909` are the sole Builder task authority. This Task Index cannot expand scope. Builder must fresh-fetch live `origin/main`, verify Issue #55 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, then work only inside the exact six-file allowlist.
 
 ## Latest accepted task — Issue #54 / DLH-5V-F
 
@@ -69,7 +77,7 @@ At `r_j=0` exact-frontier top states, every represented destination has `Delta W
 
 The exact recurring regular W-frontier contract through DLH-5V-E remains accepted and is not reopened.
 
-## Active scientific object after activation — Route A
+## Active scientific object — Route A
 
 Issue #55 investigates the least-disruptive Route A only. It keeps household economics, `D_W`, native represented-state family, 10:7 aspect, nonnegative/conservative Markov rows and one-Q semantics, while allowing a deliberately numerical shrinking endpoint-layer approximation.
 
