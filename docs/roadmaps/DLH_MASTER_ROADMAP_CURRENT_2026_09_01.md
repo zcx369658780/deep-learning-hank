@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.28  
+**Version:** V0.29  
 **Date:** 2026-09-11  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** POST-DLH-5V-A CHECKPOINT — REGULAR RESTRICTED-VORONOI FRONTIER GEOMETRY ACCEPTED / MOMENT-CONE GATE NEXT
+**Status:** CURRENT DLH-5V-B ACTIVE — REGULAR RESTRICTED-VORONOI GEOMETRIC MOMENT-CONE GATE
 
 ---
 
@@ -32,7 +32,7 @@ Binding law:
 HJB boundary policy <=> KFE boundary transition law
 ```
 
-Stationary KFE remains **NOT AUTHORIZED** until one discrete finite controlled household process is fully selected, implemented, and validated.
+Stationary KFE remains **NOT AUTHORIZED**.
 
 Accepted finite production-domain family:
 
@@ -46,7 +46,7 @@ D_W(W_max) = {
 
 No numerical production `W_max` is selected.
 
-Accepted continuous tangent laws remain:
+Accepted continuous tangent laws:
 
 ```text
 a=0:          mu_a >= 0
@@ -62,9 +62,9 @@ S = {s=(a_j,b_i): a_j+b_i<=W_max}
 C_s = {x in D_W: ||x-s||<=||x-r|| for all represented r}
 ```
 
-The cells partition `D_W` a.e. Physical W activity is determined from the actual positive-length restricted-Voronoi cell intersection with `a+b=W_max`, not from the node-mask staircase.
+The cells partition `D_W` a.e. Physical W activity is determined by the actual restricted-Voronoi intersection with `a+b=W_max`, not by the node-mask staircase.
 
-Accepted discrete control / adjoint semantics remain:
+Accepted discrete control/adjoint framework remains:
 
 ```text
 H_h(c,l,d) = u(c)-v(l) + sum_r q_{s->r}(c,l,d)[V_r-V_s] + switch
@@ -72,7 +72,7 @@ p_dot = Q^T p
 p = M g
 ```
 
-with downstream MATLAB-style component pin on mass `p` and original-residual validation.
+with downstream MATLAB-style component pin on mass `p` and validation against the original stationary equation.
 
 ---
 
@@ -94,21 +94,13 @@ Accepted verdict:
 
 `DLH_5U_REV1_ACCEPTED__OUTCOME_B_CONFIRMED__ROUTE_F_FRAMEWORK_ACCEPTED__TANGENTIAL_SAME_PROCESS_CONSISTENCY_REMAINS_THE_SINGLE_BOUNDED_OPEN_OBJECT`
 
-DLH-5U established the restricted-Voronoi Route-F framework but did not close regular W-frontier tangential moment feasibility.
+DLH-5U established the finite restricted-Voronoi Route-F framework, weighted mass/density semantics, discrete-Hamiltonian requirement, and one-`Q` HJB/KFE principle. It did not close tangential same-process consistency.
 
 ---
 
-## 3. Operationally superseded broad DLH-5V / Issue #48
+## 3. Accepted DLH-5V-A / Issue #49
 
-Issue #48 is CLOSED `not_planned` because its scope was too broad for the Builder context budget. It produced no accepted scientific result and carries no negative scientific verdict.
-
-Its objective was split into smaller gates beginning with DLH-5V-A.
-
----
-
-## 4. Accepted DLH-5V-A / Issue #49
-
-Issue #49 result is scientifically accepted.
+Issue #49 is CLOSED completed.
 
 Accepted candidate:
 
@@ -126,113 +118,157 @@ Accepted verdict:
 
 `DLH_5VA_ACCEPTED__OUTCOME_A_CONFIRMED__REGULAR_RESTRICTED_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
 
-Accepted terminal:
+Accepted regular-frontier results:
 
-`DLH_5VA_REGULAR_VORONOI_FRONTIER_PHASE_AND_ADJACENCY_FROZEN__READY_FOR_MOMENT_CONE_GATE`
+- represented node set is theta-independent inside each `kappa=N+theta`, `theta in [0,1)` slab;
+- defect `r_j=(N-10j) mod 7=(N-3j) mod 7` gives period-7 regular phase structure;
+- top A cells are always W-active; sub-top B cells are W-active iff `r_j in {0,1,2}`;
+- regular restricted-Voronoi adjacency contains only axial and NW/SE diagonal neighbors; no oblique or longer shared-face regular neighbor;
+- exact physical displacement map is `((10/19)Delta j,(7/19)Delta i)`.
 
-### 4.1 Accepted regular-frontier phase classification
-
-Exact grid:
-
-```text
-a_j = j*(10/19)
-b_i = b_min + i*(7/19)
-da = 10/19
-db = 7/19
-da/db = 10/7
-```
-
-Symbolic coordinates:
+Accepted W-active regular classes:
 
 ```text
-kappa = 19*(W_max-b_min)
-N = floor(kappa)
-theta = kappa-N
+A^F: (-1,0), (0,-1), (-1,+1), (+1,-1)
+A^L: (-1,0), (0,-1), (-1,+1)
+B^W: (-1,0), (0,-1), (0,+1), (+1,-1)
 ```
 
-Accepted facts:
-
-- represented nodes satisfy `10j+7i<=N`; the node set is independent of `theta in [0,1)`;
-- staircase-top defect is `r_j=(N-10j) mod 7=(N-3j) mod 7`;
-- `r_{j+7}=r_j`: regular discrete phase is period 7 and fixed by `N mod 7`;
-- theta shifts the physical W line affinely and does not create a regular structural phase break on `[0,1)`;
-- each regular column contributes an active top A cell;
-- the sub-top B cell is W-active iff `r_j in {0,1,2}`;
-- deeper regular cells are not W-active;
-- per full regular period: 7 A W-segments plus 3 B W-segments.
-
-### 4.2 Accepted regular-frontier adjacency
-
-For regular cells the accepted shared-face displacement families are:
-
-```text
-(-1,0), (1,0), (0,-1), (0,1), (-1,+1), (+1,-1)
-```
-
-with type-specific subsets:
-
-- `INT`: four axial neighbors;
-- `A^F`: left, below, NW diagonal, SE diagonal;
-- `A^L`: left, below, NW diagonal only; `N_V=3`;
-- W-active `B` (`r in {0,1,2}`): left, below, above, SE diagonal;
-- non-W-active sub-top rectangle (`r in {3,4,5,6}`): four axial neighbors.
-
-No oblique or longer regular shared-face neighbor is accepted.
-
-This classification is now the exact geometric input for the next regular-frontier moment-cone gate.
+Endpoints/corners remain deferred.
 
 ---
 
-## 5. Immediate next scientific object — regular-frontier geometric moment cone
+## 4. Owner continuation decision
 
-No successor Issue is active yet.
+Owner approved:
 
-The recommended next bounded gate should consume only the accepted DLH-5V-A regular type/displacement table and answer:
+`APPROVE_DLH_5VB_REGULAR_VORONOI_GEOMETRIC_MOMENT_CONE_GATE`
 
-> for each accepted regular W-frontier class, does the nonnegative cone generated by its actual shared-face displacement vectors contain the continuous admissible tangential reallocation directions?
-
-Mandatory test object:
-
-```text
-mu_a <= 0
-mu_b >= 0
-mu_a + mu_b <= 0
-```
-
-especially exact sliding:
-
-```text
-mu = (-u,+u),  u>0
-```
-
-The next gate should remain **geometry / moment-cone only** unless the cone result itself is fully closed. It should not simultaneously design rates, audit strict face-flux moments, close endpoints/corners, or implement HJB/KFE.
-
-This continues the successful split-gate strategy adopted after Issue #48.
+The original broad DLH-5V objective remains decomposed into small independently reviewed scientific gates to avoid context-budget failure and to distinguish geometry, cone feasibility, rate design, endpoints and implementation.
 
 ---
 
-## 6. Planned sequence after regular moment-cone closure
+## 5. Immediate active gate — DLH-5V-B / Issue #50
+
+### Name
+
+**Regular Restricted-Voronoi Geometric Moment-Cone Analysis**
+
+Task type:
+
+`SCIENTIFIC_DESIGN__REGULAR_VORONOI_GEOMETRIC_MOMENT_CONE`
+
+Dedicated branch:
+
+`dsh/issue-50-dlh-5vb-regular-voronoi-moment-cone-2026-09-11`
+
+DLH-5V-B is design-only.
+
+### 5.1 Exact object
+
+For each accepted W-active regular class define the nonnegative physical displacement cone
 
 ```text
-accepted DLH-5V-A regular phase + adjacency
--> regular-frontier geometric moment-cone gate
--> boundary-local rate / strict face-flux audit gate if geometrically feasible
+K_s = cone{Delta x_sr}
+```
+
+and compare it with
+
+```text
+T_realloc = {mu_a<=0, mu_b>=0, mu_a+mu_b<=0}.
+```
+
+Mandatory exact sliding ray:
+
+```text
+mu=(-u,+u), u>0.
+```
+
+The gate must determine whether the full continuous tangential cone is representable using nonnegative coefficients on the accepted local shared-face geometry.
+
+### 5.2 Interpretation limit
+
+A failure may establish only that the **current local shared-face restricted-Voronoi transition geometry** is insufficient for a recurring class. It does not by itself prove every possible Route-F discretization impossible.
+
+Possible remedies, if needed, are reserved for a later Owner route decision.
+
+### 5.3 Explicitly deferred
+
+DLH-5V-B does not cover:
+
+- production transition-rate formula;
+- strict source-state face-flux moment audit;
+- endpoint/corner closure;
+- alternative/nonlocal transition construction;
+- HJB/KFE implementation;
+- stationary KFE;
+- numerical `W_max` selection;
+- aggregates / GE / learned modules.
+
+---
+
+## 6. Current roadmap position
+
+The household stationary-foundation route is now:
+
+```text
+MATLAB-faithful two-asset household economics                 ACCEPTED
+finite W-domain + continuous tangent/KKT law                 ACCEPTED
+same-process HJB <=> KFE principle                           ACCEPTED
+restricted-Voronoi finite-volume framework                   ACCEPTED
+regular W-frontier phase classification                      ACCEPTED
+regular W-frontier actual adjacency/displacements            ACCEPTED
+regular geometric moment-cone feasibility                    ACTIVE (DLH-5V-B)
+boundary-local rate / strict face-flux audit                 PENDING
+endpoint/corner closure                                      PENDING
+boundary-HJB / Route-F implementation                        PENDING
+KKT + same-process discrete-generator validation             PENDING
+nested Wmax / resolution robustness                          PENDING
+conservative stationary-generator validation                 PENDING
+Issue #27 stationary KFE                                     NOT AUTHORIZED YET
+stationary C,L,A,B                                           PENDING
+two-region structural anchor rebuild                         PENDING
+3–5 province integration                                     PENDING
+learned regional W^L                                         PENDING
+```
+
+This means the project is **well inside the household-foundation / finite-boundary discretization stage**. The structural economic core is substantially established, but the project has not yet returned to stationary KFE, regional GE execution or neural training.
+
+---
+
+## 7. Branching after DLH-5V-B
+
+If the full regular tangential cone is geometrically representable:
+
+```text
+DLH-5V-B accepted
+-> boundary-local rate / strict face-flux audit
 -> endpoint/corner closure
--> boundary-HJB / Route-F implementation authority
--> KKT + discrete-generator validation
--> Wmax / resolution robustness
--> conservative same-process stationary-generator validation
--> Issue #27 stationary KFE
--> stationary aggregates C,L,A,B
--> two-region structural anchor
--> regional learned W^L
+-> boundary-HJB / Route-F implementation
+-> KKT + same-process generator validation
+-> Wmax/resolution robustness
+-> conservative stationary-generator validation
+-> stationary KFE
+-> aggregates
+-> regional GE
 ```
 
-If the regular moment-cone gate proves a recurring-class obstruction, return to Owner for Route-F vs fallback route choice rather than forcing implementation.
+If a recurring regular-class obstruction is proven:
+
+```text
+DLH-5V-B obstruction
+-> Owner bounded route decision
+   (e.g. whether to alter local transition semantics, consider a nonlocal/augmented boundary construction, or reassess coordinate/domain representation)
+-> only then resume implementation design
+```
+
+No remedy is pre-authorized by this roadmap.
 
 ---
 
-## 7. Regional / Deep Learning architecture remains downstream
+## 8. Regional / Deep Learning route remains downstream
+
+Long-run hybrid architecture remains:
 
 ```text
 learned regional mapping W^L
@@ -252,22 +288,43 @@ outer equilibrium fixed point
 back to HA
 ```
 
-Deep Learning does not initially replace HJB/KFE.
+Scaling hierarchy remains:
+
+```text
+2-region structural/unit anchor
+-> 3–5 province integration fixture
+-> 31-province empirical/source benchmark
+```
+
+Learned `W^L`, later `W^K`, nominal HANK, automated calibration, policy and welfare remain deferred until the controlled household stationary foundation is scientifically accepted.
 
 ---
 
-## 8. Current scientific ceiling
+## 9. Progress by major research layer
 
-Until a successor Issue is activated, do not:
+| Layer | Current state |
+|---|---|
+| Scientific constitution / reproducibility / governance | accepted and operational |
+| Tier-0 baseline / early HANK architecture | accepted foundation |
+| Two-asset MATLAB-faithful household economics | accepted |
+| Finite production-domain economics + continuous boundary law | accepted |
+| Restricted-Voronoi discrete geometry framework | accepted |
+| Regular W-frontier geometry / adjacency | accepted |
+| Regular tangential moment feasibility | active |
+| Boundary transition-rate closure | pending |
+| Endpoint/corner closure | pending |
+| Production boundary HJB / same-process generator implementation | pending |
+| Stationary KFE + aggregates | pending |
+| Two-region / multi-region structural execution rebuild | pending |
+| Learned `W^L` regional network | designed conceptually, not yet implemented/trained |
+| `W^K`, nominal HANK, calibration, policy, welfare | later roadmap |
 
-- mutate accepted household economics/source;
-- compute or implement transition rates;
-- audit/replace the face-flux moment map;
-- close endpoint/corner transition classes;
-- implement Route F / HJB / KFE;
-- execute stationary KFE;
-- choose numerical production `W_max`;
-- compute stationary aggregates or rebuild two-region GE;
-- enter multi-province execution, neural training, nominal HANK, calibration, policy, welfare, or Results.
+The project should therefore not be described as being near final empirical/neural execution yet. It has moved beyond household-equation correctness and domain selection into the final sequence of **finite-boundary discrete-process design gates** required before stationary KFE can safely resume.
+
+---
+
+## 10. Scientific ceiling during DLH-5V-B
+
+Do not mutate accepted household economics/source; redo broad frontier enumeration; design production rates; audit strict face-flux moments; close endpoints/corners; implement/execute HJB/KFE/stationary; select numerical `W_max`; compute stationary aggregates/GE; enter multi-province/neural/nominal/calibration/policy/welfare/Results.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
