@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE__DLH_5VC_ACCEPTED_OUTCOME_A__WIDE_STENCIL_RATE_GATE_PENDING`
+Status: `ACTIVE_BUILDER_ISSUE__DLH_5VD_CONTROL_DEPENDENT_WIDE_STENCIL_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT`
 
 Last synchronized: 2026-09-11
 
@@ -8,21 +8,29 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NONE.**
+Current Issue:
 
-Issue #51 / DLH-5V-C is scientifically accepted and CLOSED completed. DSH must remain stopped until a successor Issue is separately published, CURRENT Task Index / Startup Snapshot are synchronized, and an authoritative activation comment is posted.
-
-Chat text alone does not create Builder authority.
-
-## Latest accepted task — Issue #51 / DLH-5V-C
+**Issue #52 — OPEN**
 
 Title:
 
-`DLH-5V-C: Audit W1 wide-stencil exact-tangent transport on the regular W frontier`
+`DLH-5V-D: Freeze control-dependent W1 wide-stencil rates and conservative same-process generator contract`
 
 Task type:
 
-`SCIENTIFIC_DESIGN__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY`
+`SCIENTIFIC_DESIGN__W1_WIDE_STENCIL_CONTROL_DEPENDENT_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT`
+
+Dedicated branch:
+
+`dsh/issue-52-dlh-5vd-wide-stencil-rate-contract-2026-09-11`
+
+Owner continuation decision:
+
+`APPROVE_DLH_5VD_CONTROL_DEPENDENT_WIDE_STENCIL_RATE_AND_CONSERVATIVE_GENERATOR_GATE`
+
+Issue #52 is the sole DSH Builder authority only while it remains OPEN, CURRENT Task Index / Startup Snapshot identity matches, and the authoritative activation comment is present. Chat text alone does not create Builder authority.
+
+## Latest accepted task — Issue #51 / DLH-5V-C
 
 Accepted candidate:
 
@@ -36,19 +44,9 @@ Acceptance integration:
 
 `cdbf1906963a9bf06cf117ba63072d2f1542d501`
 
-Acceptance level:
-
-`L3_COMMIT_VERIFIED__SCIENTIFIC_DESIGN_ACCEPTED`
-
 Accepted verdict:
 
 `DLH_5VC_ACCEPTED__OUTCOME_A_CONFIRMED__W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY_FROZEN__READY_FOR_WIDE_STENCIL_RATE_GATE`
-
-Accepted terminal:
-
-`DLH_5VC_W1_WIDE_STENCIL_EXACT_TANGENT_REGULAR_FEASIBILITY_FROZEN__READY_FOR_WIDE_STENCIL_RATE_GATE`
-
-## Accepted scientific result
 
 Accepted household source remains immutable/read-only:
 
@@ -66,34 +64,79 @@ HJB boundary policy <=> KFE boundary transition law
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
-The accepted regular-region remedy is an explicit boundary wide-stencil Markov transition based on the primitive exact lattice tangent
+## Accepted wide-stencil regular-region authority entering DLH-5V-D
+
+For accepted regular W-active states with `j>=7`:
 
 ```text
-10 Delta j + 7 Delta i = 0,
-(Delta j,Delta i)=(-7,+10),
-Delta x_T=(-70/19,+70/19).
+w_in = (-10/19, 0)
+w_T  = (-70/19, +70/19)
+(j,i) -> (j-7,i+10)
 ```
 
-For represented regular W-frontier states with `j>=7`:
+The wide tangent preserves represented status, `a+b`, period-7 class and top/sub-top offset. The endpoint band `j in {0,...,6}` remains deferred.
 
-- destination `(j-7,i+10)` is represented;
-- the full straight segment remains inside `D_W` and satisfies `a+b=const`;
-- `r_{j-7}=r_j`, so A^F/A^L/B^W class and top/sub-top offset are preserved;
-- the only excluded object is the finite endpoint band `j in {0,...,6}`;
-- `cone{(-10/19,0),(-70/19,+70/19)} = T_realloc` exactly;
-- for `mu=(-a-b,+a)`, `a,b>=0`, the analytic feasibility coefficients are `q_T=19a/70`, `q_in=19b/10` on the base grid, with `O(1/h)` scaling under refinement;
-- the physical wide jump is `O(h)`, first-moment consistency is exact, and the smooth-test-function remainder is `O(h)`;
-- the same wide edge may enter backward HJB and forward `Q^T p` as one controlled process.
+Accepted reallocation cone:
 
-This acceptance is regular-region feasibility only. It does not freeze production rate/control-dependence semantics, endpoint/corner handling, implementation, numerical `W_max`, or stationary KFE.
+```text
+T_realloc = {mu_a<=0, mu_b>=0, mu_W=mu_a+mu_b<=0}
+cone{w_in,w_T} = T_realloc
+```
 
-## Next bounded scientific object
+## Current DLH-5V-D target
 
-Recommended next gate: **wide-stencil production rate / control-dependence design**.
+For every candidate control `(c,l,d)` inside the discrete boundary-HJB maximization and inside `T_realloc`, freeze the unique control-dependent rate map:
 
-It should freeze how the HJB-selected admissible drift is decomposed into nonnegative local-inward and wide-tangent rates, including control dependence, activation/tie-breaking semantics, row-sum conservation, and exact reuse of the converged rates in KFE. It must remain design-only until separately authorized.
+```text
+q_T  = 19*mu_b/70
+q_in = 19*(-mu_W)/10
+```
 
-Endpoint/corner closure remains a separate downstream gate. HJB/KFE implementation, Wmax robustness, stationary generator validation, stationary KFE, aggregates, GE, multi-province execution and neural training remain unauthorized.
+and the corresponding fixed-aspect refinement scaling divided by `h`.
+
+The gate must freeze:
+
+- exact activation and equality cases;
+- uniqueness / no tie-breaking in the two-ray sector;
+- candidate-control rates inside discrete `H_h` before maximization;
+- canonical no-double-counting semantics;
+- nonnegative off-diagonals and diagonal = negative sum of actually represented outgoing rates;
+- `Q 1 = 0` by construction;
+- same selected backward `Q` handed unchanged to future KFE as `Q^T`;
+- mass-first downstream semantics `p=Mg`, `p_dot=Q^T p`;
+- future SCC/closed-class/original-residual validation requirements.
+
+This Issue freezes **only** the accepted `T_realloc` regular sector. Any other admissible regular W-boundary drift sector must be identified explicitly as unresolved, not silently claimed solved.
+
+## Cross-project KFE methodological safeguards
+
+The Chapter-5 clean/source-free KFE report is used only as supporting methodology consistent with existing project authority:
+
+```text
+Q backward; Q^T forward
+Q_ij>=0 off diagonal
+Q_ii=-sum outgoing
+Q1=0
+same Q for HJB/KFE
+pin/normalization = scale fixing only, never leakage repair
+original source-free residual required downstream
+```
+
+MATLAB-faithful contaminated-row logic is not production authority here. Issue #27 component-pin authority remains unchanged.
+
+## Exact Builder allowlist
+
+1. `docs/design/DLH_5VD_CONTROL_DEPENDENT_WIDE_STENCIL_RATE_AND_CONSERVATIVE_GENERATOR_CONTRACT.md`
+2. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_AUTHORITY_CAPSULE.md`
+3. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_CONTROL_DEPENDENT_RATE_DECOMPOSITION.md`
+4. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_CONSERVATIVE_GENERATOR_AND_KFE_HANDOFF_CONTRACT.md`
+5. `reports/dlh_5vd_wide_stencil_rate_contract_2026_09_11/DLH_5VD_TERMINAL_AND_FORBIDDEN_CHECK.md`
+
+No existing tracked file may be modified by Builder.
+
+## Scientific ceiling
+
+No source/economics mutation, grid/aspect change, code implementation, production generator execution, HJB/KFE/stationary solve, endpoint/corner design, unaccepted regular-sector remedy, numerical `W_max`, Issue #27 pin redesign, aggregates/GE/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
 
 Current Startup Snapshot:
 
