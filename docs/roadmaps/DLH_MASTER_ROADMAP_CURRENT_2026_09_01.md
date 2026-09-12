@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.42  
+**Version:** V0.43  
 **Date:** 2026-09-12  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-H / ISSUE #56 ACTIVE — ROUTE E STATE-CONSTRAINT HJB CONSISTENCY-TARGET AUDIT
+**Status:** DLH-5V-I / ISSUE #57 ACTIVE PENDING FINAL POST-SYNC ACTIVATION — BOUNDARY-HJB PRODUCTION-SCHEME DESIGN
 
 ---
 
@@ -65,8 +65,6 @@ Accepted common regular W-active region at m=1:
 i>=10
 ```
 
-plus accepted W-active/class conditions.
-
 Accepted sector coverage:
 
 ```text
@@ -113,13 +111,11 @@ Accepted verdict:
 
 `DLH_5VF_ACCEPTED__OUTCOME_C_CONFIRMED__EXACT_ENDPOINT_FINITE_PROCESS_REPRESENTABILITY_OBSTRUCTION_FROZEN__OWNER_APPROXIMATION_ROUTE_DECISION_REQUIRED`
 
-At exact-frontier `r_j=0` endpoint states, exact tangent drift can require a same-W lattice orientation unavailable on the native endpoint band. Hence native states + nonnegative rates + exact finite-m first moments for every endpoint candidate + exact same-process semantics cannot all be retained globally.
-
-This is a lattice/discretization obstruction, not a household-source or KFE-repair issue.
+The finite-m native-lattice obstruction remains a true discretization fact. It is not a household-source or KFE repair issue.
 
 ---
 
-## 4. Issue #55 / DLH-5V-G — Route A shrinking-layer audit — OUTCOME C ACCEPTED
+## 4. Issue #55 / DLH-5V-G — Route A strong raw graph target — OUTCOME C ACCEPTED
 
 Accepted candidate: `15f2f81653a847344d2cd647705487cc893af1d7`
 
@@ -135,86 +131,122 @@ Accepted terminal:
 
 `DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
 
-Issue #55 proved that its strong raw admitted-drift graph outer/limsup + recovery/liminf convergence target is impossible on the frozen state family. The controlling example is a non-W-active interior sequence such as
-
-```text
-s_m=(0,i_t^m(0)-2), mu=(0,1),
-```
-
-which converges physically to the true `a=0 x W` corner while still admitting/exactly representing an outward-W drift at finite m.
-
-The strong Issue-#55 result remains accepted. What is not yet established is whether that raw drift-set graph target is itself necessary for state-constraint HJB viscosity convergence.
+Issue #55 proved failure of its strong raw admitted-drift-set graph target. That mathematical fact remains accepted provenance.
 
 ---
 
-## 5. Owner-selected next route — Route E theory audit
+## 5. Issue #56 / DLH-5V-H — state-constraint consistency-target audit — OUTCOME B ACCEPTED
+
+Accepted candidate / integration:
+
+`55e29523e6f1bfefab270c05113984af003ea44b`
+
+Reviewer acceptance:
+
+`5644186157`
+
+Acceptance-integration / Owner route-decision comment:
+
+`5644340159`
+
+Accepted verdict:
+
+`DLH_5VH_ACCEPTED__OUTCOME_B_CONFIRMED__UNBOUNDED_CONTROL_NUMERICAL_SCHEME_AND_STATE_CONSTRAINT_CONVERGENCE_APPLICATION_BLOCK_FROZEN`
+
+Accepted terminal:
+
+`DLH_5VH_THEORY_AUDIT_PARTIAL__ONE_BOUNDED_BOUNDARY_CONSISTENCY_OR_COMPARISON_GAP_REMAINS`
+
+Accepted scientific result:
+
+- the legitimate boundary-consistency route is operator/test-function based, with the transformed Soner one-sided state-constraint orientation;
+- Issue #55's raw graph target is stronger than the local operator-consistency machinery itself requires;
+- on effective-domain smooth tests (`p_b>0`) the frozen process is not refuted at design level;
+- discrete smooth-test optimizer localization, max-level Taylor consistency and boundary restriction/recovery are established locally;
+- one bounded **UNBOUNDED-CONTROL NUMERICAL-SCHEME / STATE-CONSTRAINT CONVERGENCE-APPLICATION BLOCK** remains: global finite-m solution stability/existence, production fixed-point theory, global Bellman finiteness/effective-gradient restriction, and exact Soner/CDL comparison mapping.
+
+This block is explicit and frozen. It is not silently solved.
+
+---
+
+## 6. Owner Route B decision — proceed without making a complete analytic convergence theorem a prerequisite
 
 Owner approved:
 
-`APPROVE_DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT`
+`APPROVE_ROUTE_B_FREEZE_OUTCOME_B_THEORY_LIMIT_AND_PROCEED_TO_BOUNDARY_HJB_SCHEME_DESIGN`
 
-Scientific rationale: before paying the much larger cost of boundary-state augmentation, grid redesign or coordinate transformation, audit the actual mathematical boundary-consistency object required by state-constraint HJB / viscosity-solution / monotone-scheme convergence theory.
+Scientific interpretation:
 
-This route does **not** pre-accept that Issue #55 was over-strong. It must prove/refute that proposition.
+- Kaplan-style / two-asset HA HJBs are numerical nonlinear fixed-point/PDE objects; no closed-form value function is required;
+- future implementation acceptance is numerical: iterative convergence to declared tolerance + residual + policy/drift + regression + robustness evidence;
+- Owner empirical experience that convergence is often available around `r_b=0.02` and roughly `0.05<r_a<0.12` is non-binding diagnostic guidance only, not calibration authority or an acceptance interval;
+- the Issue #56 theory limitation remains visible in all downstream interpretation.
 
 ---
 
-## 6. DLH-5V-H / Issue #56 — ACTIVE
+## 7. DLH-5V-I / Issue #57 — ACTIVE DESIGN GATE
 
 Title:
 
-`DLH-5V-H: Audit state-constraint HJB boundary consistency target before geometry redesign`
+`DLH-5V-I: Freeze boundary-HJB production scheme contract under accepted Outcome-B theory ceiling`
 
 Task type:
 
-`SCIENTIFIC_THEORY_AUDIT__STATE_CONSTRAINT_HJB_BOUNDARY_CONSISTENCY_TARGET`
+`SCIENTIFIC_DESIGN__BOUNDARY_HJB_SCHEME_CONTRACT_AND_IMPLEMENTATION_READINESS`
 
-Authoritative activation comment:
+Owner decision:
 
-`5641527846`
+`APPROVE_ROUTE_B_FREEZE_OUTCOME_B_THEORY_LIMIT_AND_PROCEED_TO_BOUNDARY_HJB_SCHEME_DESIGN`
 
 Authority marker:
 
-`DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT_AUTHORIZED`
+`DLH_5VI_BOUNDARY_HJB_SCHEME_DESIGN_AUTHORIZED`
 
 Dedicated Builder branch:
 
-`dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
+`dsh/issue-57-dlh-5vi-boundary-hjb-scheme-design-2026-09-12`
 
-### 6.1 Theory-first sequence
+Authoritative activation comment: **PENDING POST-SYNC**.
 
-The gate must proceed in this order:
+### 7.1 Design objective
+
+Freeze an implementation-ready chain:
 
 ```text
-continuous state-constraint HJB / viscosity target
- -> primary-theory sign + hypothesis mapping
- -> necessity audit of Issue-55 raw graph condition
- -> weakest defensible monotone-scheme boundary consistency target
- -> design-level frozen-process test under that legitimate target
+represented state
+ -> exhaustive state-family classifier
+ -> true continuously admissible controls
+ -> numerical search/bracket semantics
+ -> represented destinations
+ -> candidate-specific rates from LOCAL drift
+ -> candidate H_h score
+ -> ONE statewise selection
+ -> selected control + selected rates
+ -> conservative backward Q row
+ -> implicit/pseudo-time HJB integration contract
+ -> numerical convergence/residual/failure diagnostics
 ```
 
-It may not begin by redesigning stencils or geometry.
+The design must preserve the true unbounded household control domain and distinguish economic admissibility from finite numerical optimizer brackets.
 
-### 6.2 Mandatory primary anchors
+### 7.2 Key safeguards
 
-The Issue requires applicability audits of Soner (1986) state-space constraint Parts I/II and Barles–Souganidis (1991), with additional primary references allowed when required. Generic theorem citation without state-constraint boundary/sign/comparison/stability mapping is not evidence.
+- no optimize-then-clip;
+- no artificial hard control bounds promoted into economics;
+- no unavailable destination retained as diagonal escape;
+- no KFE-only process;
+- no normalization/pinning leakage repair;
+- deterministic tie handling may choose among score-equal candidates but must not change represented drift/rates;
+- accepted interior household source remains read-only in this gate;
+- no analytic `V` is required; the next implementation gate will use numerical convergence evidence.
 
-### 6.3 Mandatory falsification
+### 7.3 Design-only ceiling
 
-The Issue-#55 lower/upper corner counterexamples must be retested under the legitimate viscosity/operator consistency notion. A minimal state-constraint toy scheme must discriminate whether interior nodes approaching a boundary may retain interior/outward controls while a monotone scheme remains viscosity-consistent through the correct boundary test.
-
-### 6.4 Possible outcomes
-
-- freeze a weaker legitimate consistency target and preserve design-level viability of the frozen process;
-- isolate one bounded theory/comparison gap;
-- show the weaker legitimate target still rejects the frozen process;
-- or confirm that the strong graph obstruction (or an equivalent necessary condition) truly requires geometry redesign.
-
-No outcome self-authorizes implementation.
+Issue #57 may specify future smoke/regression/robustness tests, including diagnostic rate cases informed by Owner experience, but may not implement or execute production HJB/Q/KFE/stationary solves and may not select numerical production `W_max`.
 
 ---
 
-## 7. Current roadmap position
+## 8. Current roadmap position
 
 ```text
 MATLAB-faithful two-asset household economics                 ACCEPTED
@@ -226,9 +258,10 @@ shared-face-only local process                               OBSTRUCTION ACCEPTE
 regular exact-tangent wide-stencil process                   ACCEPTED
 regular control-dependent rates / global scoring             ACCEPTED
 endpoint exact finite-process closure                         OBSTRUCTION ACCEPTED — ISSUE #54
-Route A strong graph-consistency target                       OBSTRUCTION ACCEPTED — ISSUE #55
-Route E state-constraint HJB consistency-target audit         ACTIVE — ISSUE #56
-boundary-HJB scheme design / implementation                  BLOCKED PENDING 5V-H
+Route A strong raw graph target                               OBSTRUCTION ACCEPTED — ISSUE #55
+state-constraint operator-consistency audit                   OUTCOME B ACCEPTED — ISSUE #56
+boundary-HJB production-scheme design                         ACTIVE — ISSUE #57
+boundary-HJB implementation + local HJB validation            PENDING
 same-process Q validation + SCC diagnostics                  PENDING
 nested Wmax / resolution robustness                          PENDING
 conservative stationary-generator validation                 PENDING
@@ -241,7 +274,7 @@ learned regional W^L                                         PENDING
 
 ---
 
-## 8. Same-process safeguards — frozen
+## 9. Same-process safeguards — frozen
 
 ```text
 Q backward
@@ -249,7 +282,7 @@ Q^T forward
 Q_ij>=0 for i!=j
 Q_ii=-sum of ACTUAL represented outgoing rates
 Q1=0 by construction
-same selected Q for HJB and KFE
+same selected Q for HJB and future KFE
 p=M g
 p_dot=Q^T p
 ```
@@ -260,18 +293,16 @@ Stationary KFE remains explicitly blocked.
 
 ---
 
-## 9. Interpretation ceiling
+## 10. Interpretation ceiling
 
-DLH-5V-H is analytic/theory-design only. It does not authorize source implementation, production generator assembly/run, HJB/KFE/stationary computation, numerical production `W_max`, state augmentation, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, multi-region, neural, nominal, calibration, policy, welfare or Results prose.
+DLH-5V-I is design-only. It does not authorize solver/source mutation, production generator assembly/run, HJB/KFE/stationary computation, numerical production `W_max`, state augmentation, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, multi-region, neural, nominal, calibration, policy, welfare or Results prose.
 
 ---
 
-## 10. Current governance pointers
+## 11. Current governance pointers
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #56 body/comments.
-
-Issue #54 and #55 acceptance histories remain controlling provenance for the two distinct obstructions.
+- Issue #57 body/comments.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
