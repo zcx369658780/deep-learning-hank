@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.45  
+**Version:** V0.46  
 **Date:** 2026-09-12  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-J / ISSUE #58 TERMINAL B ACCEPTED — EFFECTIVE-DOMAIN STABILIZATION ROUTE DECISION PENDING
+**Status:** DLH-5V-K / ISSUE #59 ACTIVE — FIXED-HOUSEHOLD EXTERNAL-PRICE ENVELOPE DIAGNOSTIC
 
 ---
 
@@ -71,73 +71,58 @@ continuous admissibility
 
 ---
 
-## 3. Issue #54 / DLH-5V-F — endpoint finite-m representability obstruction — ACCEPTED
+## 3. Issues #54–#56 — accepted boundary theory provenance
+
+### Issue #54 / DLH-5V-F
+
+Endpoint exact finite-process representability obstruction accepted.
 
 Accepted candidate: `b9dab7b6cf5d724074765ddb88d6f300175f6c6f`  
 Reviewer acceptance: `5633995486`  
-Acceptance integration: `4e77d9c753f81eb2517a8b90a0827db6af8faed4`
+Integration: `4e77d9c753f81eb2517a8b90a0827db6af8faed4`
 
-The exact finite-m native-lattice obstruction remains a true discretization fact. Certified unrepresentable candidate rays may not be silently clipped or converted into diagonal leakage.
+### Issue #55 / DLH-5V-G
 
----
-
-## 4. Issue #55 / DLH-5V-G — strong raw graph target obstruction — ACCEPTED
+Strong raw admitted-drift-set graph target obstruction accepted.
 
 Accepted candidate: `15f2f81653a847344d2cd647705487cc893af1d7`  
 Reviewer acceptance: `5635802416`  
-Acceptance integration: `8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
+Integration: `8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
 
-Issue #55 remains accepted under the strong raw admitted-drift-set graph target it was assigned.
+### Issue #56 / DLH-5V-H
 
----
+State-constraint operator-consistency audit accepted at Outcome B.
 
-## 5. Issue #56 / DLH-5V-H — state-constraint operator-consistency audit — OUTCOME B ACCEPTED
-
-Accepted candidate / integration:
-
-`55e29523e6f1bfefab270c05113984af003ea44b`
-
+Accepted candidate / integration: `55e29523e6f1bfefab270c05113984af003ea44b`  
 Reviewer acceptance: `5644186157`  
-Acceptance integration / Owner route decision: `5644340159`
+Owner route decision / integration: `5644340159`
 
 Accepted verdict:
 
 `DLH_5VH_ACCEPTED__OUTCOME_B_CONFIRMED__UNBOUNDED_CONTROL_NUMERICAL_SCHEME_AND_STATE_CONSTRAINT_CONVERGENCE_APPLICATION_BLOCK_FROZEN`
 
-Accepted result:
-
-- Issue #55 raw graph target is stronger than the legitimate local operator/test-function consistency machinery;
-- frozen process is not refuted on effective-domain smooth tests;
-- discrete optimizer localization / max-level Taylor consistency / boundary restriction-recovery are established locally;
-- one bounded unbounded-control/state-constraint convergence-application block remains unresolved.
-
-Owner selected Route B: preserve that theory ceiling and proceed numerically rather than require a global analytic convergence theorem before implementation.
+One bounded unbounded-control/state-constraint convergence-application block remains explicit and unsolved.
 
 ---
 
-## 6. Issue #57 / DLH-5V-I — boundary-HJB production-scheme design — OUTCOME A ACCEPTED
+## 4. Issue #57 / DLH-5V-I — boundary-HJB production-scheme design — OUTCOME A ACCEPTED
 
 Accepted candidate / integration:
 
 `3e450cf8ae177015e68ee7e05ecc5d6be7b2f8ec`
 
-Reviewer acceptance:
-
-`5644767550`
-
-Acceptance integration:
-
-`5644769439`
+Reviewer acceptance: `5644767550`  
+Acceptance integration: `5644769439`
 
 Accepted verdict:
 
 `DLH_5VI_ACCEPTED__OUTCOME_A_CONFIRMED__BOUNDARY_HJB_SCHEME_CONTRACT_FROZEN__IMPLEMENTATION_GATE_READY_UNDER_ACCEPTED_OUTCOME_B_THEORY_CEILING`
 
-Frozen implementation authority includes unique Route-A F0–F11 ownership, explicit representability exclusions, algorithm-only numerical brackets, rates from local drift before scoring, ONE deterministic global selection, same selected rates in conservative backward Q, accepted `grid.switch_matrix`, pseudo-time HJB integration, separate iterate convergence / final Bellman residual, and named failures with no silent fallback.
+Frozen authority includes unique Route-A F0–F11 ownership, explicit representability exclusions, algorithm-only numerical brackets, rates from local drift before scoring, ONE deterministic global selection, same selected rates in conservative backward Q, accepted `grid.switch_matrix`, pseudo-time HJB integration, separate iterate convergence/final Bellman residual, and named failures with no silent fallback.
 
 ---
 
-## 7. Issue #58 / DLH-5V-J — boundary-HJB implementation + local validation — TERMINAL B ACCEPTED
+## 5. Issue #58 / DLH-5V-J — boundary-HJB implementation + local validation — TERMINAL B ACCEPTED
 
 Accepted candidate / integration:
 
@@ -147,6 +132,10 @@ Reviewer acceptance:
 
 `5646205500`
 
+Acceptance integration:
+
+`5646215533`
+
 Accepted verdict:
 
 `DLH_5VJ_ACCEPTED__TERMINAL_B_CONFIRMED__BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__EFFECTIVE_DOMAIN_EXIT_FROZEN__OWNER_STABILIZATION_ROUTE_DECISION_REQUIRED`
@@ -155,30 +144,98 @@ Accepted terminal:
 
 `DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__ONE_BOUNDED_NUMERICAL_OR_CONTRACT_GAP_REMAINS`
 
-### 7.1 Accepted implementation evidence
+Accepted implementation evidence:
 
-- new boundary-HJB selected-Q implementation is materially accepted;
-- Gate 1A common-input F0 local regression passes;
-- Gate 2 classifier / sector / representability / first-moment algebra passes;
-- first-iteration selected backward Q is conservative and deterministic;
-- on the frozen Gate-3 validation instance, iteration 1 remains inside the positive-liquid-marginal effective domain and has `max|Q1|≈7.11e-15`;
-- iteration 2 deterministically reaches F3 `(13,13)`, `z=0`, with `p_b≈-0.365224`;
-- the corrected implementation raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` before raw candidate/bracket search;
-- no final Bellman residual is available because convergence is not reached.
+- F0 common-input regression PASS;
+- Route-A family/sector/representability/first-moment checks PASS;
+- first-iteration selected backward Q conservative and deterministic;
+- frozen Gate-3 validation exits the `p_b>0` effective domain at iteration 2;
+- first failure F3 `(13,13)`, `z=0`, `p_b≈-0.365224`;
+- corrected implementation raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` before candidate/bracket search;
+- no final Bellman residual because convergence is not reached.
 
-### 7.2 Scientific interpretation
+This is not accepted as a household-equation, geometry, or sector-algebra contradiction.
 
-The failure is not a household-HJB equation error, finite-domain geometry contradiction, or F3 sector-algebra contradiction. It is a concrete production-iteration manifestation of the Issue #56 Outcome-B convergence-application block:
+---
 
-> the pseudo-time / policy-update iteration leaves the accepted `p_b>0` effective domain before HJB convergence.
+## 6. Owner route decision after Issue #58 — diagnose external-price envelope BEFORE stabilization
 
-The previously observed unbounded R_DEPLETE Bellman score is the consequence of the invalid effective-domain iterate, not a small search-bracket root cause.
+Owner scientific experience from prior multi-province HANK work:
 
-### 7.3 Next route decision — PENDING, no successor yet
+- keep the household HJB structure, preference/adjustment parameters, and asset-domain bounds fixed;
+- HJB convergence can depend materially on endogenous GE inputs such as `r_a`, `r_b`, and regional wage `w_jt`;
+- economically reasonable values (illustratively `r_b≈0.02`, `r_a≈0.07`, `w≈1`) often converge, while sufficiently extreme values (illustratively high `r_a`, e.g. around `0.13`) can drive boundary-like policies or nonconvergence;
+- earlier multi-province workflows sometimes constrained GE search iterates for `r_a` and `w_jt`, while final steady states remained interior to those search ranges;
+- varying `b_max` or other household-domain bounds while diagnosing prices changes the household fixed-point problem and should therefore be avoided.
 
-The next scientific gate should investigate an **effective-domain-preserving / invariant-region HJB numerical stabilization route** before SCC/global-Q/KFE work.
+Owner decision:
 
-Potential method classes include damping, pseudo-time-step control, continuation/safeguarded policy iteration, or another monotonicity/effective-domain-preserving construction. These are research candidates only; none is yet authorized, and no method may be selected by silent tuning-to-pass.
+`APPROVE_FIXED_HOUSEHOLD_EXTERNAL_PRICE_ENVELOPE_DIAGNOSTIC_BEFORE_STABILIZATION`
+
+This is a hypothesis to test, not a frozen conclusion.
+
+---
+
+## 7. DLH-5V-K / Issue #59 — ACTIVE DIAGNOSTIC
+
+Title:
+
+`DLH-5V-K: Diagnose fixed-household external-price convergence envelope before HJB stabilization`
+
+Task type:
+
+`SCIENTIFIC_DIAGNOSTIC__FIXED_HOUSEHOLD_EXTERNAL_PRICE_CONVERGENCE_ENVELOPE`
+
+Authority marker:
+
+`DLH_5VK_FIXED_HOUSEHOLD_PRICE_ENVELOPE_DIAGNOSTIC_AUTHORIZED`
+
+Dedicated Builder branch:
+
+`dsh/issue-59-dlh-5vk-fixed-household-price-envelope-2026-09-12`
+
+Initial activation comment:
+
+`PENDING_INITIAL_ACTIVATION_COMMENT`
+
+### 7.1 Legacy-oracle diagnostic
+
+Hold fixed:
+
+```text
+a grid: 0..10, 20 points
+b grid: -2..5, 20 points
+b_max = 5
+household preference/adjustment parameters
+solver tolerances
+initialization rule
+```
+
+Map only the bounded predeclared external-price cases in `(r_a,r_b,w)`, including the Owner safe/high `r_a` anchors. Conditional maximum-four midpoint evaluations may localize an `r_a` PASS/FAIL transition only if the predeclared line contains a clear bracket.
+
+### 7.2 Current selected-Q diagnostic
+
+Hold fixed:
+
+```text
+m=1
+W_max=10
+r_b=0.02
+w=1
+all household / numerical settings
+```
+
+Evaluate only `r_a={0.07,0.10,0.13}` as cross-scheme sentinels.
+
+The rectangle and triangular domain are not the same geometry; convergence differences are diagnostic and must not be attributed causally to geometry without a later dedicated comparison.
+
+### 7.3 Interpretation targets
+
+- **H1:** external-price envelope materially explains fixed-household HJB convergence;
+- **H2:** external-price region matters but selected-Q effective-domain instability remains at central/safe prices;
+- **H3:** expected external-price convergence pattern is not supported on the frozen fixture.
+
+No stabilization mechanism is authorized in this Issue.
 
 ---
 
@@ -195,10 +252,11 @@ Route A strong raw graph target                               OBSTRUCTION ACCEPT
 state-constraint operator-consistency audit                   OUTCOME B ACCEPTED — ISSUE #56
 boundary-HJB production-scheme design                         OUTCOME A ACCEPTED — ISSUE #57
 boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTED — ISSUE #58
-effective-domain-preserving HJB stabilization route          OWNER / REVIEWER DECISION PENDING
-same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB STABILIZATION
-nested Wmax / resolution robustness                          BLOCKED UNTIL HJB STABILIZATION
-conservative stationary-generator validation                 BLOCKED UNTIL HJB STABILIZATION
+fixed-household external-price convergence envelope           ACTIVE — ISSUE #59
+effective-domain-preserving HJB stabilization route          PENDING AFTER #59
+same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
+nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
+conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
 Issue #27 stationary KFE                                     NOT AUTHORIZED
 stationary C,L,A,B                                           PENDING
 two-region structural anchor rebuild                         PENDING
@@ -229,12 +287,12 @@ Stationary KFE remains explicitly blocked.
 
 ## 10. Current governance position
 
-**NO ACTIVE BUILDER ISSUE.** Builder STOP remains binding until Owner / ChatGPT authorizes a successor route.
+**ACTIVE BUILDER ISSUE: #59**, but execution begins only after initial activation + activation-ID CURRENT synchronization + final activation-refresh comment.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #58 body/comments.
+- Issue #59 body/comments.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
