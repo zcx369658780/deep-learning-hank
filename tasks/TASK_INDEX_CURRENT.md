@@ -30,9 +30,11 @@ Dedicated Builder branch:
 
 `dsh/issue-57-dlh-5vi-boundary-hjb-scheme-design-2026-09-12`
 
-Authoritative activation comment: **PENDING POST-SYNC**.
+Authoritative activation comment:
 
-Builder authority exists only after the final Issue #57 activation comment is posted. Builder must then fresh-fetch live `origin/main`, verify Issue #57 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, and work only inside Issue #57's exact six-file allowlist.
+`5644365170`
+
+Builder authority exists only while Issue #57 remains OPEN, CURRENT governance agrees with this task type/branch/authority, and the final activation-refresh comment confirms the post-sync live main. Builder must fresh-fetch live `origin/main`, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, and work only inside Issue #57's exact six-file allowlist.
 
 ## Latest accepted task — Issue #56 / DLH-5V-H
 
