@@ -32,9 +32,9 @@ Dedicated Builder branch:
 
 Authoritative activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5646298166`
 
-Builder authority becomes operative only after the initial activation comment, activation-ID synchronization, and final activation-refresh comment confirm the post-sync live main.
+Builder authority becomes operative only after the activation-ID synchronization and final activation-refresh comment confirm the post-sync live main.
 
 ## Latest accepted task — Issue #58 / DLH-5V-J
 
