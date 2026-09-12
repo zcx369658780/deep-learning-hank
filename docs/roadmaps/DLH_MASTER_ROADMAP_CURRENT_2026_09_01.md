@@ -148,7 +148,7 @@ Dedicated Builder branch:
 
 Initial activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5649259224`
 
 ### 6.1 Frozen central selected-Q case
 
@@ -252,7 +252,7 @@ Stationary KFE remains explicitly blocked.
 
 ## 9. Current governance position
 
-**ACTIVE BUILDER ISSUE: #60**, but execution begins only after initial activation comment + CURRENT activation-ID synchronization + final activation-refresh comment.
+**ACTIVE BUILDER ISSUE: #60**, but execution begins only after CURRENT activation-ID synchronization + final activation-refresh comment.
 
 Current governance pointers:
 
