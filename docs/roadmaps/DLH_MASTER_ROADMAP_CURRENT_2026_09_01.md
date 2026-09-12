@@ -196,7 +196,7 @@ Dedicated Builder branch:
 
 Initial activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5646298166`
 
 ### 7.1 Legacy-oracle diagnostic
 
@@ -287,7 +287,7 @@ Stationary KFE remains explicitly blocked.
 
 ## 10. Current governance position
 
-**ACTIVE BUILDER ISSUE: #59**, but execution begins only after initial activation + activation-ID CURRENT synchronization + final activation-refresh comment.
+**ACTIVE BUILDER ISSUE: #59**, but execution begins only after activation-ID CURRENT synchronization + final activation-refresh comment.
 
 Current governance pointers:
 
