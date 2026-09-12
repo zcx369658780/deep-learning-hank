@@ -1,6 +1,6 @@
-# DLH-5V-H — Continuous State-Constraint HJB and Viscosity Target (Micro-Rev Rev 2)
+# DLH-5V-H — Continuous State-Constraint HJB and Viscosity Target (Micro-Rev Rev 3)
 
-**Sequence step A of Issue #56; Micro-Rev tasks A and B.** This report fixes the continuous state-constraint HJB object and its viscosity semantics BEFORE any numerical target is defined, records Soner's actual sign convention and derives the project transform explicitly (Task A), and demotes the tangent-cone-restricted Hamiltonian to an auxiliary object (Task B). Rev 2 adds the corrected boundary-transfer statement (the subsolution on the closure is obtained via the restriction H_lim ≤ H_proj, not via any constrained characterization) and updates the auxiliary-role list of H_T accordingly. No grid, aspect or stencil redesign is performed; the frozen geometry is consumed as given.
+**Sequence step A of Issue #56; Micro-Rev tasks A and B.** This report fixes the continuous state-constraint HJB object and its viscosity semantics BEFORE any numerical target is defined, records Soner's actual sign convention and derives the project transform explicitly (Task A), demotes the tangent-cone-restricted Hamiltonian to an auxiliary object (Task B), and establishes the Hamiltonian regularity/effective-compactness facts (Route R1 of the Rev-3 review) on which the boundary-transfer limit passage rests. No grid, aspect or stencil redesign is performed; the frozen geometry is consumed as given.
 
 ---
 
@@ -107,18 +107,33 @@ Accepted corner semantics (Issue #55 Rev 1, consumed): (0, W_max): {μ_a ≥ 0, 
 
 The supersolution side at boundary points (when the comparison class requires it) is sustained by *tangent* controls: drifts in T_D(x̂) keep the state inside D_W for small times. The constraint's content lives in the one-sided subsolution side. The following are **NOT established in this audit and form the single bounded Outcome-B block**:
 
-1. **Project-specific state-constraint comparison/unique-continuation theorem** for the project's continuous limit problem (subsolution on the closure w.r.t. H_proj vs supersolution in the interior w.r.t. H_proj — the Soner II / Capuzzo-Dolcetta–Lions maximal-subsolution form): needed to pass from the halves ū, u̲ to u_m → V. Its applicability under project hypotheses (bounded continuous V, H_proj continuous in (x,p) and Lipschitz in p, compact D_W, ρ > 0) is plausible but requires the primary-text theorem application.
-2. **Constrained characterization `ρV ≤ H_T` at the boundary** (the Soner⟷H_T equivalence content): a coupled sublemma of the same block — NOT needed for the transfer (the transfer closes via the restriction H_lim ≤ H_proj, monotone-scheme report §D.2), but needed to identify the boundary limit as the H_T-constrained solution.
+1. **Project-specific state-constraint comparison/unique-continuation theorem** for the project's continuous limit problem (subsolution on the closure w.r.t. H_proj vs supersolution in the interior w.r.t. H_proj — the Soner II / Capuzzo-Dolcetta–Lions maximal-subsolution form): needed to pass from the halves ū, u̲ to u_m → V. The regularity hypotheses on H_proj are established below (§3.5: finiteness for all (x,p), USC in (x,p), Lipschitz in p, joint continuity on the interior-feasibility region); the exact primary-theorem application and the degenerate-corner continuity cases are the remaining verification.
+2. **Constrained characterization `ρV ≤ H_T` at the boundary** (the Soner⟷H_T equivalence content): a coupled sublemma of the same block — NOT needed for the transfer (the transfer closes via the restriction H_lim ≤ H_proj plus USC, monotone-scheme report §D.3), but needed to identify the boundary limit as the H_T-constrained solution.
 
-The audit does not assume either; the W-contact-state branch of the boundary subsolution transfer is closed without them (§D.2).
+The audit does not assume either; the W-contact-state branch of the boundary subsolution transfer is closed without them (§D.3).
 
-## 4. What the continuous target requires of a scheme (Rev 2)
+### 3.5 Hamiltonian regularity / effective compactness (Rev-3 Task B — Route R1)
+
+**Effective feasible control correspondence.** The household's feasibility structure (the budget is part of the household problem, not a new object): at x ∈ D̄_W the feasible controls are
+
+```text
+Γ(x) = { (c, l, d) : c ≥ 0, l ∈ Π_j [0, l_j,max], d ∈ [d_min(x), d_max(x)],
+          c + χ(a,d) + d ≤ y(a,b,l) + r_b·b + τ }
+```
+
+with the source-verified components (r_a_eff(a) = r_a(1 − 0.1(a/a_max)^9) ≥ 0.9 r_a ≥ 0; χ(a,d) = χ_0|d| + ½χ_1 d²/max(a,a_bar), χ_0 ≥ 0, χ_1 > 0, a_bar > 0; y(a,b,l) = Σ_j net_wage_j·z·l_j linear in l with continuous coefficients; r_b, τ constants; v(l) = Σ ω_j l_j^{1+φ}/(1+φ), φ > 0).
+
+**Effective compactness / coercivity (PROVED):** Γ(x) is compact-valued and ∪_{x ∈ D̄_W} Γ(x) is compact: (i) the quadratic adjustment cost coerces d in both directions (χ + d → +∞ as |d| → ∞ for every χ_0 ≥ 0); (ii) c is bounded by the budget c ≤ y + r_b·b + τ − χ − d; (iii) the labor disutility (1+φ)-power coerces l for bounded p_b. Hence H_proj(x, p) := max_{α ∈ Γ(x)} {u(c) − v(l) + p·μ(x,α)} is **finite for every (x, p) ∈ D̄_W × R²** — the formal sup over an unbounded c would be +∞ for p_b < 0; the authority's sup is over the FEASIBLE controls, which is the explicit effective-control clarification (no p-region restriction needed for finiteness).
+
+**Regularity (PROVED):** Γ is upper hemicontinuous and compact-valued (closed graph, locally bounded — continuous constraint functions); Φ(x, α, p) = u(c) − v(l) + p·μ(x, α) is continuous on D̄_W × Γ(D̄_W) × R²; Berge's maximum theorem (upper-hemicontinuous version) gives H_proj **upper semicontinuous in (x, p)** and continuous in p for each x; **Lipschitz in p** with constant M = sup|μ| on the compact D̄_W × Γ. The joint continuity in (x, p) holds on the interior-feasibility region (full Berge, Γ lower hemicontinuous there); the degenerate corners (c = 0 with a binding budget) belong to the comparison block. The uniform moment bound sup_α Σ_r q_α |w_r|² = O(1/m) follows from |μ| ≤ M on the compact set (the Taylor remainder through max is uniform). Details: monotone-scheme report §D.4.
+
+## 4. What the continuous target requires of a scheme (Rev 3)
 
 A monotone scheme S_m for this problem is judged against the operator/test-function object:
 
 1. Interior consistency at interior states (both inequalities, via test functions).
-2. One-sided boundary consistency at boundary-contact states: the half-relaxed-limit subsolution `ρφ(x̂) ≤ H_lim(x̂, Dφ(x̂))` with H_lim ≤ H_proj at the visited states (restriction argument) — i.e., the discrete Hamiltonian at the W-contact states must not exceed the full Hamiltonian's limit (buffered candidate sets ⊆ full candidate sets), and the recovery side liminf H_R ≥ H_T holds at the corners/faces (local-state same-candidate recovery — the exact statement and its control-level content are in the monotone-scheme report §D.2, §E.4).
+2. One-sided boundary consistency at boundary-contact states: the half-relaxed-limit subsolution `ρφ(x̂) ≤ H_lim(x̂, Dφ(x̂))` with H_lim ≤ H_proj at the visited states (restriction argument + H_proj USC — §3.5), and the recovery side liminf H_R ≥ H_T at the corners/faces (local-state same-candidate recovery — monotone-scheme report §E.4).
 3. No requirement that interior states approaching a boundary have admissible sets equal to the boundary tangent cone (the raw Issue-#55 graph condition is not part of this target — necessity audit report).
-4. A comparison hypothesis for the limit problem (the Outcome-B block).
+4. A comparison hypothesis for the limit problem (the Outcome-B block; the H_proj regularity hypotheses are established in §3.5).
 
-The next report (strong-graph-target necessity audit) shows the raw graph condition is over-strong; the monotone-scheme report shows the consistency components, the local-state recovery bridge, and isolates the Outcome-B comparison block.
+The next report (strong-graph-target necessity audit) shows the raw graph condition is over-strong; the monotone-scheme report shows the consistency components, the local-state recovery bridge with the true χ algebra, and isolates the Outcome-B comparison block.

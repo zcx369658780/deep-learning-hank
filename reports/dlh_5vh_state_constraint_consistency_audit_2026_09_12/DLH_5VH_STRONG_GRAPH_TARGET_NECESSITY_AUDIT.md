@@ -1,6 +1,6 @@
-# DLH-5V-H — Strong-Graph-Target Necessity Audit (Micro-Rev Rev 2)
+# DLH-5V-H — Strong-Graph-Target Necessity Audit (Micro-Rev Rev 3)
 
-**Sequence step C of Issue #56; Micro-Rev tasks C and F.** Question: is the Issue-#55 raw Kuratowski admissible-drift-set graph target *genuinely necessary* for state-constraint HJB scheme convergence, *merely sufficient / over-strong*, or *unanswered and needing a project-specific lemma*? Issue #55's Outcome C remains accepted under the target it was assigned; this audit answers the distinct necessity question. Rev 2 incorporates the quantifier-corrected half-relaxed-limit algebra (monotone-scheme report §D.2) and the local-state same-candidate recovery lemma (§E.4), and re-scopes the raw-graph claim to exactly the level those support.
+**Sequence step C of Issue #56; Micro-Rev tasks C and F.** Question: is the Issue-#55 raw Kuratowski admissible-drift-set graph target *genuinely necessary* for state-constraint HJB scheme convergence, *merely sufficient / over-strong*, or *unanswered and needing a project-specific lemma*? Issue #55's Outcome C remains accepted under the target it was assigned; this audit answers the distinct necessity question. Rev 3 incorporates the quantifier-corrected half-relaxed-limit algebra, the local-state same-candidate recovery with the true χ algebra, and the Hamiltonian-regularity block (USC of H_proj), and keeps the raw-graph claim scoped to exactly the level those support.
 
 ---
 
@@ -23,7 +23,7 @@ Issue #55 Outcome C proved (accepted): no per-state buffer rule satisfies both t
 
 **(ii) Toy falsification of necessity.** The 1D toy discriminator (monotone-scheme report §Part F) is a monotone scheme with interior grid points near the constrained boundary that admit outward drift (raw graph failure) yet satisfies all operator-consistency components and converges (quantifier-corrected proof; boundary treatment at the boundary node with the exact constrained operator). A necessary condition cannot fail on such a scheme; the toy therefore falsifies necessity directly. No project-specific lemma is required for the necessity answer.
 
-## 3. Operator-level restatement (Rev 2 — corrected transfer chain)
+## 3. Operator-level restatement (Rev 3 — transfer via USC + restriction + recovery)
 
 The legitimate object is not the geometric jump cone but the **discrete Bellman Hamiltonian** — the max over candidates of {running payoff + drift score} — and the boundary consistency test is the one-sided subsolution inequality derived in the monotone-scheme report §D.2:
 
@@ -32,11 +32,11 @@ The legitimate object is not the geometric jump cone but the **discrete Bellman 
 **Boundary transfer (both branches, closed without a constrained characterization):**
 
 - **Interior-state branch:** H_lim = H_proj (interior recovery + restriction), so ρφ(x̂) ≤ H_proj(x̂, Dφ) — the Soner-form subsolution on the closure.
-- **W-contact-state branch:** H_m(s_m, p) ≤ H_proj(s_m, p) → H_proj(x̂, p) (buffered candidate sets ⊆ full candidate sets; Hausdorff convergence of the feasibility bounds), so ρφ(x̂) ≤ H_lim(x̂, Dφ) ≤ H_proj(x̂, Dφ) — again the Soner-form subsolution.
+- **W-contact-state branch:** H_m(s_m, p) ≤ H_proj(s_m, p) (buffered candidate sets ⊆ full feasible sets) and H_proj is **upper semicontinuous in (x, p)** (Berge, from the effective compactness — continuous-target report §3.5), so `ρφ(x̂) ≤ H_lim(x̂, Dφ) ≤ limsup H_proj(s_m, Dφ) ≤ H_proj(x̂, Dφ)` — again the Soner-form subsolution.
 
-The recovery-side statement liminf H_R ≥ H_T (the tangent-cone values are attained at the discrete level) is established by the local-state same-candidate recovery lemma (monotone-scheme report §E.4: α_m at the actual states s_m, rates from μ(s_m, α_m), exact first moment, O(1/m) second moment — source-verified drift continuity) and identifies the geometric content of the boundary operators: H_T ≤ liminf H_R ≤ limsup H_R ≤ H_proj at the corners/faces. It is not the load-bearing piece of the transfer.
+The recovery-side statement liminf H_R ≥ H_T (the tangent-cone values attained at the discrete level) is established by the local-state same-candidate recovery lemma with the true χ algebra (monotone-scheme report §E.4 — PROVED for all strict and tangent controls at every family: Δμ_a = −ε, Δμ_b = +ε − Δχ, Δμ_W = −Δχ under d → d − ε, with coupled (ε, δ) constructions at the triple corner and b_min×W) and identifies the geometric content of the boundary operators: H_T ≤ liminf H_R ≤ limsup H_R ≤ H_proj at the corners/faces. It is not the load-bearing piece of the transfer.
 
-**Remaining for convergence:** passing from the halves ū (subsolution on the closure w.r.t. H_proj) and u̲ (supersolution in the interior) to u_m → V requires a **comparison/unique-continuation theorem for the project's continuous state-constrained problem** — the single bounded Outcome-B gap (§E.6 of the monotone-scheme report). The constrained characterization ρV ≤ H_T at the boundary is a coupled sublemma of the same block (not established; not needed for the transfer).
+**Remaining for convergence:** passing from the halves ū (subsolution on the closure w.r.t. H_proj) and u̲ (supersolution in the interior) to u_m → V requires the **comparison/unique-continuation theorem for the project's continuous state-constrained problem** — the single bounded Outcome-B block (§E.6 of the monotone-scheme report; the H_proj regularity hypotheses it needs are established, the exact theorem-application and degenerate-corner cases remain). The constrained characterization ρV ≤ H_T at the boundary is a coupled sublemma of the same block (not established; not needed for the transfer).
 
 **Consequence:** the raw Issue-#55 graph condition is over-strong for the operator-consistency components; the remaining obstruction is the comparison block — a *different* object from the raw graph condition and not what Issue #55 proved.
 
@@ -56,10 +56,10 @@ The recovery-side statement liminf H_R ≥ H_T (the tangent-cone values are atta
 - This audit answers the distinct necessity question: the raw target is **over-strong** (sufficient, not necessary) for the operator-consistency components — established by the structural argument (i) and the toy (ii), both at the operator level.
 - The frozen process's operator-consistency components are verified in the monotone-scheme report (§E); the boundary subsolution transfer on the closure is closed via the restriction H_lim ≤ H_proj; the single bounded comparison block is declared as Outcome B (§E.6).
 
-## 6. Scope discipline for the raw-graph claim (Rev 2)
+## 6. Scope discipline for the raw-graph claim (Rev 3)
 
-The conclusion "the raw graph target is stronger than the operator-consistency object" is asserted **only to the level supported by**: (i) the Barles–Souganidis operator/test-function consistency structure; (ii) the corrected toy discriminator (quantifier-corrected proof, §Part F); (iii) the corrected half-relaxed-limit algebra (§D.2). The unresolved 2D project boundary comparison is NOT used as evidence for the raw-graph claim — the two are independent objects (the raw-graph claim is established; the comparison block is the separate Outcome-B gap).
+The conclusion "the raw graph target is stronger than the operator-consistency object" is asserted **only to the level supported by**: (i) the Barles–Souganidis operator/test-function consistency structure; (ii) the corrected toy discriminator (quantifier-corrected proof, §Part F); (iii) the corrected half-relaxed-limit algebra (§D.2). The unresolved 2D project boundary comparison block is NOT used as evidence for the raw-graph claim — the two are independent objects (the raw-graph claim is established; the comparison block is the separate Outcome-B gap).
 
 ## 7. Conclusion
 
-The raw graph target is sufficient but over-strong (trichotomy option 2). The legitimate target is the operator/test-function consistency target of step D; the frozen process passes its consistency components (including the local-state same-candidate recovery bridge); the boundary subsolution transfer on the closure is closed via the restriction argument; the single bounded Outcome-B gap is the project-specific state-constraint comparison/unique-continuation application (with the constrained characterization as a coupled sublemma), declared explicitly rather than carried forward.
+The raw graph target is sufficient but over-strong (trichotomy option 2). The legitimate target is the operator/test-function consistency target of step D; the frozen process passes its consistency components (including the local-state same-candidate recovery bridge with the true χ algebra and the H_proj regularity block); the boundary subsolution transfer on the closure is closed via the restriction + USC argument; the single bounded Outcome-B gap is the project-specific state-constraint comparison/unique-continuation application (with the constrained characterization as a coupled sublemma), declared explicitly rather than carried forward.
