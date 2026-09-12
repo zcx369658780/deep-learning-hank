@@ -21,70 +21,63 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #56 / DLH-5V-H.**
+**ACTIVE — Issue #57 / DLH-5V-I, pending final post-sync activation comment.**
 
 Title:
 
-`DLH-5V-H: Audit state-constraint HJB boundary consistency target before geometry redesign`
+`DLH-5V-I: Freeze boundary-HJB production scheme contract under accepted Outcome-B theory ceiling`
 
 Task type:
 
-`SCIENTIFIC_THEORY_AUDIT__STATE_CONSTRAINT_HJB_BOUNDARY_CONSISTENCY_TARGET`
+`SCIENTIFIC_DESIGN__BOUNDARY_HJB_SCHEME_CONTRACT_AND_IMPLEMENTATION_READINESS`
 
 Owner decision:
 
-`APPROVE_DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT`
-
-Authoritative activation comment:
-
-`5641527846`
+`APPROVE_ROUTE_B_FREEZE_OUTCOME_B_THEORY_LIMIT_AND_PROCEED_TO_BOUNDARY_HJB_SCHEME_DESIGN`
 
 Authority marker:
 
-`DLH_5VH_ROUTE_E_STATE_CONSTRAINT_HJB_CONSISTENCY_TARGET_AUDIT_AUTHORIZED`
+`DLH_5VI_BOUNDARY_HJB_SCHEME_DESIGN_AUTHORIZED`
 
 Dedicated Builder branch:
 
-`dsh/issue-56-dlh-5vh-state-constraint-consistency-audit-2026-09-12`
+`dsh/issue-57-dlh-5vi-boundary-hjb-scheme-design-2026-09-12`
 
-Builder must fresh-fetch live `origin/main`, verify Issue #56 remains OPEN, read all CURRENT rules/governance and the full Issue/comments, confirm exact task type/branch/activation comment, verify the accepted household blob, then work only inside the Issue allowlist.
+Authoritative activation comment: **PENDING POST-SYNC**.
 
-## Latest accepted gate — Issue #55 / DLH-5V-G
+Builder must not begin until the final activation comment is posted. After activation, Builder must fresh-fetch live `origin/main`, verify Issue #57 remains OPEN, read all CURRENT rules/governance and full Issue/comments, confirm exact task type/branch/authority, verify the accepted household blob, then work only inside the six new design files authorized by Issue #57.
 
-Accepted candidate: `15f2f81653a847344d2cd647705487cc893af1d7`
+## Latest accepted gate — Issue #56 / DLH-5V-H
 
-Reviewer acceptance: `5635802416`
+Issue #56 is CLOSED completed at accepted Outcome B.
 
-Acceptance integration: `8dd5e9c444d7356736f28a29b9ffe492bbe81caa`
+Accepted candidate / integration:
+
+`55e29523e6f1bfefab270c05113984af003ea44b`
+
+Reviewer acceptance:
+
+`5644186157`
+
+Acceptance-integration / Owner route decision:
+
+`5644340159`
 
 Accepted verdict:
 
-`DLH_5VG_ACCEPTED__OUTCOME_C_CONFIRMED__ROUTE_A_TANGENT_CONE_GRAPH_CONSISTENCY_OBSTRUCTION_FROZEN__OWNER_ROUTE_REDECISION_REQUIRED`
+`DLH_5VH_ACCEPTED__OUTCOME_B_CONFIRMED__UNBOUNDED_CONTROL_NUMERICAL_SCHEME_AND_STATE_CONSTRAINT_CONVERGENCE_APPLICATION_BLOCK_FROZEN`
 
 Accepted terminal:
 
-`DLH_5VG_ROUTE_A_ASYMPTOTIC_ENDPOINT_APPROXIMATION_OBSTRUCTION__OWNER_ROUTE_REDECISION_REQUIRED`
+`DLH_5VH_THEORY_AUDIT_PARTIAL__ONE_BOUNDED_BOUNDARY_CONSISTENCY_OR_COMPARISON_GAP_REMAINS`
 
-The controlling Issue-#55 result remains: under its exact raw admitted-drift graph outer/limsup + recovery/liminf target, Route A is impossible on the frozen state family. This result is not reopened by Issue #56; only the necessity of that mathematical target for state-constraint HJB convergence is being audited.
+The remaining unbounded-control numerical-scheme / state-constraint convergence-application block stays explicit. Owner selected Route B: preserve this theory ceiling and proceed to boundary-HJB scheme design rather than making a complete global convergence theorem an implementation prerequisite.
 
-## Prior accepted finite-m obstruction — Issue #54 / DLH-5V-F
+## Numerical-HJB interpretation
 
-The finite endpoint native-lattice representability obstruction remains accepted and frozen. Issue #56 may not reinterpret it as a coding error or KFE repair opportunity.
+The project does **not** require a closed-form value function for the two-asset HA HJB. Kaplan-style heterogeneous-agent HJBs are treated as numerical nonlinear fixed-point/PDE problems whose future implementation evidence is iterative convergence to declared tolerance plus residual, policy, drift, regression and robustness diagnostics.
 
-## Owner-selected Route E — active theory audit
-
-Issue #56 asks whether a valid state-constraint HJB convergence proof actually requires the strong raw drift-set graph criterion from Issue #55, or instead uses viscosity/operator consistency with state-constraint boundary inequalities, half-relaxed limits/test functions, monotonicity, stability and comparison hypotheses.
-
-The audit must:
-
-- formalize the project’s continuous constrained HJB and sign convention;
-- map Soner state-constraint viscosity theory and monotone-scheme convergence theory to the project rather than citing them generically;
-- determine whether Issue #55’s graph target is necessary, merely sufficient/over-strong, or unresolved;
-- if over-strong, state the weakest defensible replacement consistency target;
-- retest the frozen finite-process architecture, including the Issue-#55 counterexample, under that legitimate target;
-- construct a minimal state-constraint toy scheme as a falsification/theory discriminator.
-
-Primary anchors required by Issue #56 include Soner (1986) Parts I/II and Barles–Souganidis (1991). Public repo may cite metadata/DOI and concise theorem paraphrase only; copyrighted PDFs are forbidden.
+Owner empirical experience that convergence is often obtainable around `r_b=0.02` and approximately `0.05<r_a<0.12` is non-binding diagnostic guidance only. It is not calibration authority, a theorem assumption or an acceptance window.
 
 ## Continuous boundary authority remains intact
 
@@ -105,7 +98,7 @@ a=a_max:   mu_a<=0
 W:         mu_a+mu_b<=0
 ```
 
-Route E audits the numerical convergence target; it does not change these economic/state-constraint laws.
+True household control domain remains `c>0, l>=0, d in R`, with state tangent restrictions only on actual active faces. No false global static budget constraint and no artificial hard household control bounds are authorized.
 
 ## Same-process / mass authority
 
@@ -124,7 +117,7 @@ Q^T forward
 Q_ij>=0 for i!=j
 Q_ii=-sum of ACTUAL represented outgoing rates
 Q1=0 by construction
-HJB and KFE consume the SAME Q
+HJB and future KFE consume the SAME selected Q
 p=M g
 p_dot=Q^T p
 ```
@@ -133,12 +126,28 @@ Pinning/normalization may never repair leakage.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
+## Active design objective
+
+Issue #57 must freeze an implementation-ready contract for:
+
+- exhaustive represented-state family classification;
+- true-control versus numerical-search-bracket semantics;
+- derivative/effective-domain diagnostics;
+- candidate-specific discrete Bellman scoring with rates generated from local drift before selection;
+- ONE global statewise selection and deterministic tie handling;
+- conservative selected Q-row construction;
+- mapping into the accepted implicit/pseudo-time HJB iteration pattern;
+- numerical convergence, residual, policy and failure diagnostics;
+- a staged validation hierarchy for the next implementation gate.
+
+No source implementation or production solve is authorized in this gate.
+
 ## Interpretation ceiling
 
-Issue #56 is theory/design only. It does not authorize implementation, production-Q assembly/run, HJB/KFE/stationary solves, numerical `W_max`, new states/ghosts, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, regional/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
+Issue #57 is design-only. It does not authorize implementation, production-Q assembly/run, HJB/KFE/stationary solves, numerical production `W_max`, new states/ghosts, grid/aspect/domain redesign, coordinate transformation, aggregates, GE, regional/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #56 body/comments.
+- Issue #57 body/comments.
