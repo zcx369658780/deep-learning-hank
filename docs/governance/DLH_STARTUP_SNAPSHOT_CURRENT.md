@@ -21,7 +21,7 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #60 / DLH-5V-L**, pending activation-comment synchronization and final refresh.
+**ACTIVE — Issue #60 / DLH-5V-L**, pending final activation refresh.
 
 Title:
 
@@ -45,9 +45,9 @@ Dedicated branch:
 
 Initial activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5649259224`
 
-Builder must not begin until the initial activation comment is recorded in CURRENT and a final activation-refresh comment confirms the post-sync live main.
+Builder must not begin until CURRENT records this activation ID and a final activation-refresh comment confirms the post-sync live main.
 
 ## Latest accepted gate — Issue #59 / DLH-5V-K
 
