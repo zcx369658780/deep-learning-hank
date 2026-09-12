@@ -6,8 +6,10 @@
 **Branch:** `dsh/issue-58-dlh-5vj-boundary-hjb-implementation-2026-09-12`
 **Base:** fresh `origin/main` at activation `7d6a11e7110a88b4c2f9e6e992283c940c282071`
 **Activation comments:** `5644789118` (activation), `5644795353` (final refresh)
+**Reviewer comment (controlling this Micro-Rev):** `5645920346`
+**Candidate history (same branch, no reset/rebase):** `d0e5267ea57c8674cccfb8ccd90326735dd1920c` (parent, accepted in material part) → this Micro-Rev commit on top.
 **Source blob (read-only facts):** `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
-**Date:** 2026-09-12
+**Date:** 2026-09-12 (Micro-Rev)
 
 ---
 
@@ -16,20 +18,29 @@
 > **B — `DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__ONE_BOUNDED_NUMERICAL_OR_CONTRACT_GAP_REMAINS`**
 
 The boundary-HJB selected-Q solver is fully implemented and faithful to the accepted Issue #57 contract.
-Gate 1A (common-input local regression) and Gate 2 (boundary/family algebra) **pass**.
-Gate 3 (the exactly-one predeclared deterministic HJB smoke on the frozen instance) **fails deterministically
-at iteration 2** with `OPTIMIZER_SEARCH_FAILURE` (family F3, cell (13,13), z=0): the Bellman score of the
-admissible candidate set is **unbounded above** on the non-monotone iteration-2 value iterate, so no finite
-algorithmic bracket localizes the argmax. This is **exactly the frozen Issue #56 Outcome-B
-unbounded-control convergence-application block** that the accepted design explicitly froze as unsolved and
-classified under the `OPTIMIZER_SEARCH_FAILURE` failure name. The gap is ONE bounded, well-understood,
-documented numerical gap (the convergence-application block); no code bug, no design contradiction, no
-tuning, no instance change was made to force a pass.
+Gate 1A (common-input local regression) and Gate 2 (boundary/family algebra) **pass** (accepted by the
+Reviewer and unchanged by this Micro-Rev).
 
-Terminal A (smoke pass) is NOT claimed. Terminal C (design contradiction) is NOT claimed: the accepted design
-predicted and classified this exact outcome (`OPTIMIZER_SEARCH_FAILURE` for persistent artificial bracket
-binding; the unbounded-control convergence block frozen in every design report). Terminal Blocked is not
-applicable (no authority or dependency conflict).
+This Micro-Rev applies the **accepted boundary effective-domain guard** (frozen Issue #57 Rev-2 rule):
+when the boundary optimizer requires positive effective liquid marginal evidence and the evidence is
+non-finite or non-positive, the run must surface `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` before any raw
+candidate/bracket search. With the guard, the frozen Gate-3 smoke now fails deterministically at
+iteration 2 with `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` at the **same** state as candidate `d0e5267`
+(F3, `(j,i)=(13,13)`, z=0), recorded `p_b = -0.3652 < 0` — the iteration-2 value iterate has left the
+accepted positive-liquid-marginal effective domain. The previously documented unbounded `R_DEPLETE`
+Bellman score is the **consequence** of that invalid effective-domain state, not a standalone
+optimizer-localization defect and not a small-bracket artifact.
+
+The bounded remaining gap is:
+
+> the implemented production HJB iteration leaves the accepted positive-liquid-marginal effective
+> domain before convergence — an **effective-domain / unbounded-control production-iteration failure
+> within the frozen Issue #56 Outcome-B convergence-application block**.
+
+Terminal A (smoke pass) is NOT claimed. Terminal C (design contradiction) is NOT claimed: `p_b < 0` on
+a rough iterate is the design's own predicted effective-domain exit, classified under
+`DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE`, and does not contradict the sector algebra, the finite-domain
+geometry, or the household HJB. Terminal Blocked is not applicable.
 
 ---
 
@@ -57,6 +68,14 @@ New module `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (public
   selection via `np.lexsort((sector-rank, c, l, d))` over the ONE global statewise argmax of the
   Bellman score `H = u(c) - v(l) + sum_r q_r [V(dest_r) - V(s)] + sum_z' kappa[z,z'] [V(z',s) - V(z,s)]`
   with rates computed from the local drift BEFORE maximization and sector as representation only.
+- **Boundary effective-domain guard (Micro-Rev addition):** at the top of every boundary row, before
+  candidate/bracket search, the accepted boundary optimizer/coercivity contract requires positive
+  effective liquid marginal evidence `p_b = vb_b` (declared backward derivative, marginal at `i = 0`);
+  non-finite or non-positive `p_b` raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` with
+  family/state/z and the offending derivative recorded (iteration attached by the HJB step). `p_b` is
+  never clipped or floored; the accepted interior-source derivative floor remains interior authority
+  only (the F0 path via the oracle is untouched); no bracket enlargement disguises an invalid
+  effective-domain state.
 - **Conservative Q rows:** selected rates carried unchanged; off-diagonals are the actual represented
   transitions (within-z), diagonal = -sum of actual outgoing; z-switch via
   `kron(switch, eye(n))` with z as the SLOW index (`row = nz*n + node`); row sums zero;
@@ -73,7 +92,7 @@ New module `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (public
 
 ---
 
-## 3. Gate 1A — common-input local regression (PASS)
+## 3. Gate 1A — common-input local regression (PASS, unchanged)
 
 For every interior node whose row is identical to the accepted rectangle machinery (no triangle
 truncation difference; `i <= 18`), the module's F0 row is **bit-identical** to the accepted oracle's
@@ -82,13 +101,13 @@ local policy and row assembly given the SAME state and derivative inputs:
 - 504 rows checked (252 shared F0 nodes x 2 z).
 - Exact identity: classifier family, `transfer_label`, consumption, labor, transfer, `mu_a`, `mu_b`,
   utility, all four iteration rates, destinations, and `diagonal == -(rb + rf + ab + af)`.
-- Evidence: `tests/test_dlh_5vj_interior_regression.py` (passes).
+- Evidence: `tests/test_dlh_5vj_interior_regression.py` (passes; unchanged by the Micro-Rev).
 
 Independent construction-level check (not part of the test suite): the module's F0 rows also match a
 separately-built rectangle reference to ~1e-14 (float noise from 1-ulp coordinate rounding), with all
 rates and destinations equal; the common-input test above is the exact Gate-1A claim.
 
-## 4. Gate 2 — boundary/family algebra (PASS)
+## 4. Gate 2 — boundary/family algebra (PASS, unchanged)
 
 - Classifier ownership sweep over `W_max in {8.0 + k/19, k = 0..7, 10.0, 8 + 8/19}` (`N_m = 190..198,
   228`): F9 exclusive at N_m=190, F4 at (19,0) for N_m=191..196, F11 from N_m=197, F8 at (12,9) for
@@ -100,11 +119,13 @@ rates and destinations equal; the common-input test above is the exact Gate-1A c
   obstruction); `drift_admissible` tangent laws exact.
 - Every dispatched destination represented (W-index preservation) — no defensive
   `REPRESENTATION_FAILURE` trips on the served classes.
-- Evidence: `tests/test_dlh_5vj_classifier_dispatch.py` (passes).
+- Evidence: `tests/test_dlh_5vj_classifier_dispatch.py` (passes; unchanged by the Micro-Rev).
 
-## 5. Gate 3 — exactly ONE predeclared deterministic HJB smoke (FAILS deterministically; Terminal B)
+---
 
-### 5.1 Complete frozen configuration (predeclared before the first run; unchanged by every retry)
+## 5. Gate 3 — exactly ONE predeclared deterministic HJB smoke (deterministic FAILURE; Terminal B)
+
+### 5.1 Complete frozen configuration (predeclared before the first run; unchanged by every retry and by the Micro-Rev)
 
 | parameter | value |
 |---|---|
@@ -123,47 +144,61 @@ rates and destinations equal; the common-input test above is the exact Gate-1A c
 | initial V, labor0 | deterministic fixture construction (brentq labor0; utility-based V) |
 | iteration | implicit/pseudo-time with per-iteration re-selection (accepted pattern) |
 
-### 5.2 Smoke outcome (deterministic, reproduced identically on every run)
+### 5.2 Smoke outcome after the Micro-Rev guard (deterministic, reproduced identically on every run)
 
-- Iteration 1 operator: 186 boundary rows + 596 F0 rows; 0 expansions; 0 artificial bindings;
-  66 economic (cone-seam) bindings; `max |Q row sum| = 7.11e-15`; V1 finite,
-  range `[-70.71, -53.66]`.
-- **Iteration 2 (first failing row):** `OPTIMIZER_SEARCH_FAILURE` —
-  `family 'F3' at (j,i)=(13,13) z=0: artificial bracket binding after 3 expansions`,
-  `detail = {'iteration': 2}`.
-- **Mechanism (verified numerically):** the iteration-2 value iterate has
-  `V1(13,13) - V1(13,12) = -0.1346` (z=0) — i.e. `V(down) - V(s) = +0.135 > 0`. The F3
-  `R_DEPLETE` candidate class has `q_down = 19m (-mu_b)/7` with `-mu_b = c + |d| + chi(d) - S`; as
-  `|d| -> inf` (and `c -> inf`) along the admissible class, `q_down -> inf` and the score term
-  `q_down [V(down) - V(s)] -> +inf`. The score is **unbounded above over the admissible candidate
-  set**, so no finite algorithmic bracket contains the argmax; expansion x4 x3 (c_hi 100 -> 6400,
-  d_wide 20 -> 1280) keeps binding and the search raises `OPTIMIZER_SEARCH_FAILURE` (hand-verified
-  score reproduction: contribution 101,652 vs printed 101,769 at d=-1280, c=6400, l=0).
-- **Config-independence:** the identical failure signature (F3, (13,13), z=0, iteration 2) occurs for
-  the frozen instance, for the accepted fixture instance (r_a=0.03, r_b=0.015, gap=0.01), and for
-  smoke rates with gap=0.01 — the failure is a property of the scheme on the validation geometry, not
-  an instance artifact.
-- **Accepted-oracle cross-check on the frozen instance:** the accepted rectangle oracle itself does
-  NOT converge on the frozen instance (`solve_matlab_faithful_hjb`: converged=False after 1000
-  iterations, statistic 0.0172 — a limit cycle), while it converges in 11 iterations on the fixture
-  instance. The frozen instance is intrinsically non-convergent for the accepted machinery.
-- **Classification:** this is the accepted design's own `OPTIMIZER_SEARCH_FAILURE` (persistent
-  artificial bracket binding; no finite bracket localizes the discrete argmax), i.e. the frozen
-  Issue #56 Outcome-B unbounded-control convergence-application block (authority report §40;
-  Bellman-selection report §145; every 5V-I design report). The iteration never reaches the iterate
-  convergence / final Bellman residual stage; no tuning of rates/W_max/delta/tolerances/brackets/
-  optimizer resolution was performed.
-- Evidence: `tests/test_dlh_5vj_hjb_smoke.py` (frozen config; deterministic failure signature;
-  deterministic repeat with `max|V1a - V1b| == 0.0`), `tests/test_dlh_5vj_bellman_q_rows.py`
-  (conservative rows, represented destinations, exact first moments, z-switch entries, score
-  recomputation, iteration-1 binding-free determinism).
+- **Iteration 1 — unchanged and fully inside the effective domain:** 186 boundary rows + 596 F0 rows;
+  0 expansions; 0 artificial bindings; 66 economic (cone-seam) bindings; `max |Q row sum| = 7.11e-15`;
+  V1 finite, range `[-70.71, -53.66]`; minimum boundary `p_b` at V0 is `+0.4575 > 0` (the guard never
+  trips on iteration 1; the iteration-1 operator is conservative and deterministic).
+- **Iteration 2 (first failing row):** `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` —
+  `family 'F3' at (j,i)=(13,13): z=0: non-positive effective liquid marginal p_b=-0.365224
+  (boundary optimizer effective-domain guard, before candidate/bracket search)`,
+  `detail = {'iteration': 2, 'family': 'F3', 'j': 13, 'i': 13, 'z': 0, 'p_b': -0.36522}`.
+- **Mechanism (effective-domain interpretation):** on the iteration-2 value iterate,
+  `V(13,13) - V(13,12) = -0.1346` (z=0), so the declared backward liquid derivative is
+  `p_b = (V(s) - V(down))/db = -0.3652 < 0`. The accepted boundary optimizer/coercivity contract
+  requires **positive** effective liquid marginal evidence; `p_b <= 0` means the iterate has left the
+  accepted effective domain, and the guard surfaces the frozen failure **before** any raw
+  candidate/bracket search — no bracket expansion is used to disguise the invalid effective-domain
+  state. The previously documented unbounded `R_DEPLETE` Bellman score is the **consequence** of this
+  state: with `q_down = (19m/7)(-mu_b)` and `-mu_b` growing quadratically through `chi(d, a)` for large
+  negative `d`, while `V(down) - V(s) > 0`, the score term `q_down [V(down) - V(s)] -> +inf` — no
+  finite bracket could localize the argmax, but the guard now classifies the root cause correctly
+  before that raw search is entered.
+- **Failure taxonomy change (Micro-Rev):** the frozen smoke no longer pins
+  `OPTIMIZER_SEARCH_FAILURE`; the corrected classification is `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE`
+  (persistent `p_b <= 0` on the production iterate), per the frozen Issue #57 Rev-2 effective-domain
+  rule. This is an effective-domain / unbounded-control production-iteration failure within the frozen
+  Issue #56 Outcome-B convergence-application block; the run never reaches the iterate-convergence or
+  final Bellman residual stage. No final Bellman residual is manufactured.
+- Evidence: `tests/test_dlh_5vj_hjb_smoke.py` (frozen config; pinned corrected signature incl.
+  family/state/z/iteration/offending `p_b`; deterministic repeat with `max|V1a - V1b| == 0.0`),
+  `tests/test_dlh_5vj_bellman_q_rows.py` (conservative rows, represented destinations, exact first
+  moments, z-switch entries, score recomputation, iteration-1 binding-free determinism).
+
+### 5.3 POST-FAILURE OUT-OF-SCOPE OBSERVATIONS — NOT ACCEPTANCE EVIDENCE
+
+The following were disclosed by the initial completion report but were performed **after** the frozen
+scientific failure had been reached, i.e. beyond the explicit STOP-scientific-execution instruction.
+They are retained for full disclosure only and are **not acceptance evidence**:
+
+- alternate rate/gap executions (frozen instance with gap=0.01; accepted fixture instance
+  r_a=0.03/r_b=0.015/gap=0.01) that showed the pre-guard failure signature repeated across
+  configurations;
+- accepted-oracle frozen-instance cross-check (`solve_matlab_faithful_hjb` on the frozen instance:
+  converged=False after 1000 iterations, statistic 0.0172, a limit cycle; 11 iterations on the
+  fixture instance).
+
+No further alternate-config / parameter / W_max / resolution / oracle-convergence executions are
+performed in this Micro-Rev (authorized execution is limited to the targeted tests, static checks, and
+the SAME frozen Gate-3 configuration for classification verification and deterministic repeat).
 
 ---
 
 ## 6. Bounded engineering retries (frozen smoke config unchanged)
 
-Six bounded code-bug repairs were made during implementation and debugging; each is documented, the
-frozen smoke configuration was never changed:
+Six bounded code-bug repairs were made during the original implementation (accepted by the Reviewer);
+each is documented and the frozen smoke configuration was never changed:
 
 1. **F7 FACE geometry pairing** — first-moment mismatch at (1,0) fixed by semantic q1/q2 pairing and
    assembly via the mask-owning geometry entry (no FACE double-count).
@@ -179,13 +214,23 @@ frozen smoke configuration was never changed:
 6. **F3 dispatch exclusion** — `sector_dispatch` for F3 with `mu_b < 0, mu_a > 0` now returns `None`
    (reverse-sliding obstruction, whole-candidate exclusion per the F3 contract), matching F8.
 
-After all repairs the smoke fails with the SAME deterministic signature — the residual failure is the
-frozen convergence-application block, not a code defect.
+**Micro-Rev bounded contract fix (7th, this commit):**
+
+7. **Boundary effective-domain guard** — per the frozen Issue #57 Rev-2 rule and Reviewer comment
+   `5645920346`: the boundary optimizer requires positive effective liquid marginal evidence; the
+   implementation previously continued the raw candidate/bracket search when `p_b <= 0` (setting
+   `c_anchor = None, l_anchor = 0`), eventually surfacing `OPTIMIZER_SEARCH_FAILURE` only after
+   bracket expansion. The guard now raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` at the top of every
+   boundary row, before candidate/bracket search, with family/state/z/iteration/`p_b` recorded;
+   `p_b` is never clipped/floored; the F0 interior path is untouched. After this fix the frozen smoke
+   fails at the SAME F3 (13,13) z=0 state at iteration 2 with the corrected classification — the
+   residual failure is the frozen convergence-application block, not a code defect.
 
 ## 7. Deterministic repeat
 
-- Smoke: two full runs raise identical failure (same name, message, detail); iteration-1 value
-  iterates bit-identical (`max|V1a - V1b| == 0.0`).
+- Smoke: two full runs raise identical failure (same name, message, detail —
+  `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE`, `p_b = -0.36522`); iteration-1 value iterates bit-identical
+  (`max|V1a - V1b| == 0.0`).
 - Operator build: repeated builds bit-identical (`Q.data`, `Q.indices`, `u`, diagnostics equal).
 - Selection: repeated row builds return identical selected identities / controls / rates / entries.
 
@@ -196,7 +241,9 @@ aspect redesign; no ghost states; no interpolated missing destinations; no coord
 silent reinterpretation of the 5V-F exclusions; no KFE and NO call to `solve_household_steady_state`
 or `solve_matlab_faithful_stationary_kfe`; no production W_max; no W_max/resolution/parameter sweep;
 no post-failure tuning; no SCC/global stationary-generator validation; no aggregates/GE/regional/
-neural/nominal/calibration/policy/welfare/Results; no PR/merge/close/successor/self-accept.
+neural/nominal/calibration/policy/welfare/Results; no PR/merge/close/successor/self-accept. In this
+Micro-Rev: no rate/gap/W_max/resolution variation, no bracket enlargement to hide `p_b <= 0`, no
+clipping/flooring of the new boundary `p_b`, no new alternate-config or oracle-convergence runs.
 
 ## 9. Execution evidence (Issue #58 §16)
 
@@ -209,18 +256,20 @@ neural/nominal/calibration/policy/welfare/Results; no PR/merge/close/successor/s
   `::test_contaminated_row_index_reference`).
 - **(C) Static/source check:** `py_compile` clean on all six files; module contains no debug output.
 - **(D) Exactly one predeclared deterministic HJB smoke + deterministic repeat:** §5 (fails
-  deterministically at iteration 2 with the classified failure; repeat identical).
+  deterministically at iteration 2 with `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE`; repeat identical).
 - Invocation convention: `$env:PYTHONPATH = "D:\deep-learning-hank\src"` then
   `python -m pytest ...` (reported for reproducibility).
 
-## 10. Deliverables (cumulative diff = exactly the six allowlist paths)
+## 10. Deliverables (cumulative diff vs branch base = exactly the six allowlist paths)
 
-1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (new)
+1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (new; Micro-Rev guard added)
 2. `tests/test_dlh_5vj_classifier_dispatch.py` (new)
 3. `tests/test_dlh_5vj_bellman_q_rows.py` (new)
 4. `tests/test_dlh_5vj_interior_regression.py` (new)
-5. `tests/test_dlh_5vj_hjb_smoke.py` (new)
+5. `tests/test_dlh_5vj_hjb_smoke.py` (new; corrected failure-signature pin)
 6. `reports/dlh_5vj_boundary_hjb_implementation_2026_09_12/DLH_5VJ_IMPLEMENTATION_AND_LOCAL_VALIDATION_REPORT.md` (this file)
 
 No `__init__.py` or household-oracle modification; no seventh tracked file; the four pre-existing
-untracked handoff files are not staged. Remote verified equal to local after push.
+untracked handoff files are not staged. The Micro-Rev commit sits directly on top of candidate
+`d0e5267` on the same dedicated branch (no reset/rebase/discard); remote verified equal to local
+after push.

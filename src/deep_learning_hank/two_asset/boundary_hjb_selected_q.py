@@ -605,6 +605,25 @@ class BoundaryHJBSolver:
         a, b = float(g.a_arr[node]), float(g.b_arr[node])
         family = g.families[node]
         p_b = float(vb_b[node, nz])  # declared backward convention (marginal at i=0)
+        # Accepted boundary effective-domain guard (frozen Issue #57 Rev-2 rule):
+        # the boundary optimizer/coercivity contract requires POSITIVE effective
+        # liquid marginal evidence; non-finite or non-positive p_b means the value
+        # iterate has left the accepted effective domain. Surface the frozen
+        # DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE BEFORE any raw unbounded
+        # candidate/bracket search. p_b is NEVER clipped or floored here; the
+        # accepted interior-source derivative-floor behavior remains interior
+        # authority only (the F0 path via the oracle is untouched), and no
+        # bracket enlargement is used to disguise an invalid effective-domain
+        # state. Detail carries family/state/z and the offending derivative
+        # evidence; iteration is attached by _step.
+        if not np.isfinite(p_b) or p_b <= 0.0:
+            raise BoundaryHJBFailure(
+                "DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE",
+                "family '{}' at (j,i)=({},{}): z={}: non-positive effective liquid "
+                "marginal p_b={:.6g} (boundary optimizer effective-domain guard, "
+                "before candidate/bracket search)".format(family, j, i, nz, p_b),
+                {"family": family, "j": j, "i": i, "z": nz, "p_b": float(p_b)},
+            )
         net_wage = float(
             cfg.inputs.wages[0] * (1.0 - cfg.inputs.tau - cfg.inputs.migration_costs[0]) * cfg.z[nz]
         )
@@ -1040,7 +1059,8 @@ class BoundaryHJBSolver:
                 old, labor0, transfer_income, borrowing_rate_gap, final=False
             )
         except BoundaryHJBFailure as exc:
-            if exc.failure_name == "OPTIMIZER_SEARCH_FAILURE":
+            if exc.failure_name in ("OPTIMIZER_SEARCH_FAILURE",
+                                    "DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE"):
                 raise BoundaryHJBFailure(
                     exc.failure_name, exc.message,
                     {"iteration": iteration, **exc.detail},
