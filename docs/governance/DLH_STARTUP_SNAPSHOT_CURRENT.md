@@ -21,7 +21,7 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #58 / DLH-5V-J, pending final post-sync activation.**
+**ACTIVE — Issue #58 / DLH-5V-J.**
 
 Title:
 
@@ -43,9 +43,11 @@ Dedicated Builder branch:
 
 `dsh/issue-58-dlh-5vj-boundary-hjb-implementation-2026-09-12`
 
-Authoritative activation comment: **PENDING POST-SYNC**.
+Authoritative activation comment:
 
-Builder must not begin until final activation refresh is posted. After activation it must fresh-fetch `origin/main`, verify Issue #58 remains OPEN, read all CURRENT rules/governance and full Issue/comments, verify accepted authority and household blob, create/use the exact branch from fresh synchronized main, and stay inside Issue #58's exact six-path allowlist.
+`5644789118`
+
+Builder must wait for the final activation-refresh comment confirming the post-ID-sync live main. After activation it must fresh-fetch `origin/main`, verify Issue #58 remains OPEN, read all CURRENT rules/governance and full Issue/comments, verify accepted authority and household blob, create/use the exact branch from fresh synchronized main, and stay inside Issue #58's exact six-path allowlist.
 
 ## Latest accepted gate — Issue #57 / DLH-5V-I
 
