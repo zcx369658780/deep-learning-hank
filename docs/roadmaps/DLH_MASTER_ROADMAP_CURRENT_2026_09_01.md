@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.44  
+**Version:** V0.45  
 **Date:** 2026-09-12  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-J / ISSUE #58 ACTIVE — BOUNDARY-HJB IMPLEMENTATION + LOCAL VALIDATION
+**Status:** DLH-5V-J / ISSUE #58 TERMINAL B ACCEPTED — EFFECTIVE-DOMAIN STABILIZATION ROUTE DECISION PENDING
 
 ---
 
@@ -56,7 +56,7 @@ db_m=7/(19m)
 10j+7i<=N_m
 ```
 
-Accepted W-frontier sector semantics include exact represented wide/local moves and candidate-specific rates generated from local drift before maximization. The frozen global composition remains:
+Accepted W-frontier sector semantics include exact represented wide/local moves and candidate-specific rates generated from local drift before maximization. The frozen composition remains:
 
 ```text
 continuous admissibility
@@ -133,90 +133,52 @@ Accepted verdict:
 
 `DLH_5VI_ACCEPTED__OUTCOME_A_CONFIRMED__BOUNDARY_HJB_SCHEME_CONTRACT_FROZEN__IMPLEMENTATION_GATE_READY_UNDER_ACCEPTED_OUTCOME_B_THEORY_CEILING`
 
-Accepted terminal:
-
-`DLH_5VI_BOUNDARY_HJB_SCHEME_CONTRACT_FROZEN__IMPLEMENTATION_GATE_READY_UNDER_ACCEPTED_OUTCOME_B_THEORY_CEILING`
-
-Frozen implementation authority includes:
-
-- unique Route-A F0–F11 state-family ownership and deterministic dispatch;
-- explicit candidate representability exclusions with no lost-diagonal escape;
-- true unbounded economic control domain separated from finite numerical search brackets;
-- rates from local drift before scoring;
-- ONE deterministic global statewise selection;
-- same selected rates used in the conservative backward Q row;
-- accepted `grid.switch_matrix` as switching authority;
-- pseudo-time implicit HJB iteration;
-- Gate 1A common-input local regression vs Gate 1B boundary-influence diagnostic;
-- separate iterate convergence and mandatory final Bellman residual after re-selection on final V;
-- exact/machine-identical tie semantics;
-- named failure taxonomy with no silent fallback.
+Frozen implementation authority includes unique Route-A F0–F11 ownership, explicit representability exclusions, algorithm-only numerical brackets, rates from local drift before scoring, ONE deterministic global selection, same selected rates in conservative backward Q, accepted `grid.switch_matrix`, pseudo-time HJB integration, separate iterate convergence / final Bellman residual, and named failures with no silent fallback.
 
 ---
 
-## 7. DLH-5V-J / Issue #58 — ACTIVE IMPLEMENTATION + LOCAL VALIDATION GATE
+## 7. Issue #58 / DLH-5V-J — boundary-HJB implementation + local validation — TERMINAL B ACCEPTED
 
-Title:
+Accepted candidate / integration:
 
-`DLH-5V-J: Implement boundary-HJB selected-Q solver and pass local validation gates`
+`7b564d1b7d7aaf76b808135b192646e0ec1f5f08`
 
-Task type:
+Reviewer acceptance:
 
-`SCIENTIFIC_IMPLEMENTATION__BOUNDARY_HJB_SELECTED_Q_AND_LOCAL_VALIDATION`
+`5646205500`
 
-Owner decision:
+Accepted verdict:
 
-`APPROVE_DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_AND_LOCAL_VALIDATION_GATE`
+`DLH_5VJ_ACCEPTED__TERMINAL_B_CONFIRMED__BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__EFFECTIVE_DOMAIN_EXIT_FROZEN__OWNER_STABILIZATION_ROUTE_DECISION_REQUIRED`
 
-Authority marker:
+Accepted terminal:
 
-`DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_AND_LOCAL_VALIDATION_AUTHORIZED`
+`DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__ONE_BOUNDED_NUMERICAL_OR_CONTRACT_GAP_REMAINS`
 
-Dedicated Builder branch:
+### 7.1 Accepted implementation evidence
 
-`dsh/issue-58-dlh-5vj-boundary-hjb-implementation-2026-09-12`
+- new boundary-HJB selected-Q implementation is materially accepted;
+- Gate 1A common-input F0 local regression passes;
+- Gate 2 classifier / sector / representability / first-moment algebra passes;
+- first-iteration selected backward Q is conservative and deterministic;
+- on the frozen Gate-3 validation instance, iteration 1 remains inside the positive-liquid-marginal effective domain and has `max|Q1|≈7.11e-15`;
+- iteration 2 deterministically reaches F3 `(13,13)`, `z=0`, with `p_b≈-0.365224`;
+- the corrected implementation raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` before raw candidate/bracket search;
+- no final Bellman residual is available because convergence is not reached.
 
-Authoritative activation comment:
+### 7.2 Scientific interpretation
 
-`5644789118`
+The failure is not a household-HJB equation error, finite-domain geometry contradiction, or F3 sector-algebra contradiction. It is a concrete production-iteration manifestation of the Issue #56 Outcome-B convergence-application block:
 
-Builder authority becomes operative only after the final activation-refresh comment confirms the post-ID-sync live main.
+> the pseudo-time / policy-update iteration leaves the accepted `p_b>0` effective domain before HJB convergence.
 
-### 7.1 Implementation objective
+The previously observed unbounded R_DEPLETE Bellman score is the consequence of the invalid effective-domain iterate, not a small search-bracket root cause.
 
-Implement Issue #57 in a new module without changing the accepted household oracle:
+### 7.3 Next route decision — PENDING, no successor yet
 
-```text
-represented D_W validation grid
- -> exact F0..F11 classifier
- -> admissibility / representability
- -> algorithmic bracket search
- -> candidate local drift / destinations / rates
- -> Bellman score
- -> ONE deterministic selection
- -> conservative selected backward Q
- -> implicit HJB iteration
- -> final re-selection
- -> final Bellman residual
-```
+The next scientific gate should investigate an **effective-domain-preserving / invariant-region HJB numerical stabilization route** before SCC/global-Q/KFE work.
 
-### 7.2 Bounded validation scope
-
-Execute only:
-
-- Gate 1A common-input F0 local regression;
-- Gate 2 local boundary algebra for all families / obstruction / corner classes;
-- Gate 3 one predeclared deterministic finite-domain HJB smoke + repeat.
-
-The Issue may assemble the full backward Q needed by that HJB smoke and check conservation. It may not run KFE, stationary KFE, or the downstream SCC/global generator-validation gate.
-
-The Issue body recommends a validation-only `m=1`, `W_max=10`, `r_b=0.02`, `r_a=0.08` smoke unless a stronger already-accepted fixture justifies another predeclared choice. No post-failure parameter/tolerance/bracket/delta tuning is allowed to manufacture PASS.
-
-### 7.3 Implementation ceiling
-
-No production `W_max`, no Wmax/resolution study, no broad parameter sweep, no SCC/global stationary-generator gate, no aggregates/GE/regional/neural/nominal/calibration/policy/welfare/Results.
-
-Stationary KFE remains NOT AUTHORIZED.
+Potential method classes include damping, pseudo-time-step control, continuation/safeguarded policy iteration, or another monotonicity/effective-domain-preserving construction. These are research candidates only; none is yet authorized, and no method may be selected by silent tuning-to-pass.
 
 ---
 
@@ -232,10 +194,11 @@ endpoint exact finite-process closure                         OBSTRUCTION ACCEPT
 Route A strong raw graph target                               OBSTRUCTION ACCEPTED — ISSUE #55
 state-constraint operator-consistency audit                   OUTCOME B ACCEPTED — ISSUE #56
 boundary-HJB production-scheme design                         OUTCOME A ACCEPTED — ISSUE #57
-boundary-HJB implementation + local HJB validation            ACTIVE — ISSUE #58
-same-process Q global validation + SCC diagnostics            PENDING
-nested Wmax / resolution robustness                          PENDING
-conservative stationary-generator validation                 PENDING
+boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTED — ISSUE #58
+effective-domain-preserving HJB stabilization route          OWNER / REVIEWER DECISION PENDING
+same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB STABILIZATION
+nested Wmax / resolution robustness                          BLOCKED UNTIL HJB STABILIZATION
+conservative stationary-generator validation                 BLOCKED UNTIL HJB STABILIZATION
 Issue #27 stationary KFE                                     NOT AUTHORIZED
 stationary C,L,A,B                                           PENDING
 two-region structural anchor rebuild                         PENDING
@@ -264,7 +227,11 @@ Stationary KFE remains explicitly blocked.
 
 ---
 
-## 10. Current governance pointers
+## 10. Current governance position
+
+**NO ACTIVE BUILDER ISSUE.** Builder STOP remains binding until Owner / ChatGPT authorizes a successor route.
+
+Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
