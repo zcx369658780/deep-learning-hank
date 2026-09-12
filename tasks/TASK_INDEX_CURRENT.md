@@ -8,7 +8,7 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**ACTIVE — Issue #60 / DLH-5V-L**, subject to activation-comment synchronization and final refresh.
+**ACTIVE — Issue #60 / DLH-5V-L**, subject to final activation refresh.
 
 Title:
 
@@ -32,9 +32,9 @@ Dedicated Builder branch:
 
 Authoritative activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5649259224`
 
-Builder authority becomes operative only after the initial activation comment, CURRENT activation-ID synchronization, and final activation-refresh comment confirm the post-sync live main.
+Builder authority becomes operative only after CURRENT activation-ID synchronization and a final activation-refresh comment confirms the post-sync live main.
 
 ## Latest accepted task — Issue #59 / DLH-5V-K
 
