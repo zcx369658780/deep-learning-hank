@@ -1,82 +1,85 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE_59__DLH_5VK_FIXED_HOUSEHOLD_PRICE_ENVELOPE_DIAGNOSTIC`
+Status: `ACTIVE_BUILDER_ISSUE_60__DLH_5VL_INVARIANT_DOMAIN_SAFEGUARD_DIAGNOSTIC`
 
-Last synchronized: 2026-09-12
+Last synchronized: 2026-09-13
 
 Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**ACTIVE — Issue #59 / DLH-5V-K.**
+**ACTIVE — Issue #60 / DLH-5V-L**, subject to activation-comment synchronization and final refresh.
 
 Title:
 
-`DLH-5V-K: Diagnose fixed-household external-price convergence envelope before HJB stabilization`
+`DLH-5V-L: Test invariant-domain safeguarded value-update line search on the central selected-Q HJB case`
 
 Task type:
 
-`SCIENTIFIC_DIAGNOSTIC__FIXED_HOUSEHOLD_EXTERNAL_PRICE_CONVERGENCE_ENVELOPE`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__EFFECTIVE_DOMAIN_PRESERVING_VALUE_UPDATE`
 
-Owner decision:
+Owner / Reviewer route decision:
 
-`APPROVE_FIXED_HOUSEHOLD_EXTERNAL_PRICE_ENVELOPE_DIAGNOSTIC_BEFORE_STABILIZATION`
+`APPROVE_CONTROLLED_INVARIANT_DOMAIN_SAFEGUARDED_VALUE_UPDATE_DIAGNOSTIC`
 
 Authority marker:
 
-`DLH_5VK_FIXED_HOUSEHOLD_PRICE_ENVELOPE_DIAGNOSTIC_AUTHORIZED`
+`DLH_5VL_INVARIANT_DOMAIN_SAFEGUARD_DIAGNOSTIC_AUTHORIZED`
 
 Dedicated Builder branch:
 
-`dsh/issue-59-dlh-5vk-fixed-household-price-envelope-2026-09-12`
+`dsh/issue-60-dlh-5vl-invariant-domain-safeguard-2026-09-13`
 
 Authoritative activation comment:
 
-`5646298166`
+`PENDING_INITIAL_ACTIVATION_COMMENT`
 
-Builder authority becomes operative only after the activation-ID synchronization and final activation-refresh comment confirm the post-sync live main.
+Builder authority becomes operative only after the initial activation comment, CURRENT activation-ID synchronization, and final activation-refresh comment confirm the post-sync live main.
 
-## Latest accepted task — Issue #58 / DLH-5V-J
+## Latest accepted task — Issue #59 / DLH-5V-K
 
-Issue #58 is CLOSED completed at accepted Terminal B.
+Issue #59 is CLOSED completed at Terminal B / H2.
 
 Accepted candidate / integration:
 
-`7b564d1b7d7aaf76b808135b192646e0ec1f5f08`
+`08f0135de5a60d05eda7184c367e1705da69757d`
 
 Reviewer acceptance:
 
-`5646205500`
+`5649245347`
 
 Acceptance integration:
 
-`5646215533`
+`5649248162`
 
 Accepted verdict:
 
-`DLH_5VJ_ACCEPTED__TERMINAL_B_CONFIRMED__BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__EFFECTIVE_DOMAIN_EXIT_FROZEN__OWNER_STABILIZATION_ROUTE_DECISION_REQUIRED`
+`DLH_5VK_ACCEPTED__TERMINAL_B_H2_CONFIRMED__LEGACY_EXTERNAL_PRICE_SENSITIVITY_REAL__SELECTED_Q_EFFECTIVE_DOMAIN_GAP_REMAINS__STABILIZATION_DIAGNOSTIC_NEXT`
 
-Accepted terminal:
+Accepted scientific interpretation:
 
-`DLH_5VJ_BOUNDARY_HJB_IMPLEMENTATION_PARTIAL__ONE_BOUNDED_NUMERICAL_OR_CONTRACT_GAP_REMAINS`
+- external prices materially affect the frozen legacy solver;
+- the sampled legacy `r_a` evidence is an observed convergent span / transition bracket, not a proof that every point in `[0.07,0.12]` converges;
+- legacy convergence is not economic-quality or exact-unbounded-HJB validation because the accepted legacy derivative floor is active at nontrivial state shares and non-positive finite-difference `V_b` occurs even at converged points;
+- the accepted selected-Q solver still exits its `p_b>0` boundary effective domain at the central tested sentinel `r_a=0.07`;
+- cross-solver differences do not identify a geometry cause or a globally price-independent failure.
 
-Accepted evidence remains frozen: Gate 1A PASS; Gate 2 PASS; first-iteration selected-Q conservative/deterministic; Gate-3 smoke exits `p_b>0` effective domain at iteration 2 (F3 `(13,13)`, `z=0`, `p_b≈-0.365224`) and correctly raises `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` before raw candidate/bracket search.
+## Active scientific object — value-update invariant safeguard
 
-## Active scientific object — fixed household, fixed domain, external-price envelope
+Issue #60 tests exactly one controlled numerical mechanism on the single frozen central selected-Q case:
 
-Issue #59 tests the Owner's empirical hypothesis that HJB convergence is materially conditioned by the external equilibrium-input region even when the household equations/parameters/domain are held fixed.
+```text
+V_raw = accepted implicit selected-Q update
+V_trial(lambda) = V_old + lambda*(V_raw - V_old)
+lambda in {1,1/2,...,2^-20}
+choose largest lambda with all required boundary p_b > 1e-12
+```
 
-The active diagnostic varies only bounded, predeclared cases in `(r_a,r_b,w)` while freezing:
+This changes the iteration path only. It does not change household economics, external prices, candidate scoring, controls, rates, Q construction, grid/domain, or the fixed-point equation.
 
-- household preference/adjustment parameters;
-- solver tolerances and initialization within each diagnostic solver;
-- accepted legacy rectangle `a∈[0,10]`, `b∈[-2,5]` with `b_max=5`;
-- selected-Q validation geometry `m=1`, `W_max=10`;
-- no stabilization mechanism.
+Frozen central case includes `m=1`, `W_max=10`, `r_a=0.07`, `r_b=0.02`, `w=1`, `gap=0`, `delta=1000`, accepted Issue #58 tolerances/search settings.
 
-Legacy-oracle HJB and current selected-Q HJB are compared only as separately fixed-geometry diagnostics. Raw convergence differences are not automatically attributed to geometry.
-
-No KFE/distribution `g` is authorized in this gate.
+Exactly one safeguarded run + one deterministic repeat are authorized. No price sweep or alternative damping/margin experiment is authorized.
 
 ## Frozen household / same-process authority
 
@@ -86,11 +89,15 @@ Accepted household oracle remains immutable/read-only:
 
 Git blob:
 
-`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+`76ae5b149993a7edeeb337f1b02b3fe33c51e`
 
-Accepted selected-Q implementation also remains read-only:
+Accepted selected-Q implementation remains immutable/read-only:
 
 `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
+
+Git blob:
+
+`7ea342ccbe15d852b90743b14bb4b02977c2d78b`
 
 Binding law remains:
 
@@ -101,17 +108,17 @@ future KFE exactly Q^T
 Q_ij>=0 for i!=j
 Q_ii=-sum of ACTUAL represented outgoing rates
 Q1=0 by construction
-same selected candidate/rates for HJB score and Q
+same selected candidate/rates for HJB and future KFE
 ```
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-Issue #59 is diagnostic only. It does not authorize source/oracle mutation, selected-Q mutation, damping/line-search/continuation/pseudo-time adaptation, variation of `b_max`/`W_max`/resolution, household-parameter tuning, KFE/stationary KFE, distribution `g`, SCC/global-Q validation, aggregates/GE/multi-region/neural/nominal/calibration/policy/welfare/Results, PR/merge/close/successor/self-accept.
+Issue #60 does not authorize mutation of accepted solvers, price sweeps, alternative damping factors/margins, pseudo-time adaptation, continuation, hard control bounds, KFE/stationary KFE, SCC/global-Q, production Wmax/resolution, GE, multi-region, neural, nominal, calibration, policy, welfare, or Results work.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #59 body/comments.
+- Issue #60 body/comments.
