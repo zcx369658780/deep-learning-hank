@@ -45,7 +45,7 @@ Dedicated Builder branch:
 
 Initial activation comment:
 
-`PENDING_INITIAL_ACTIVATION_COMMENT`
+`5646298166`
 
 Builder must wait for the final activation-refresh comment confirming the post-ID-sync live main before beginning execution.
 
