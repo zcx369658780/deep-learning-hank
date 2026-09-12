@@ -6,6 +6,13 @@
 **Activation comments:** `5644365170` (authoritative activation) + `5644371668` (final CURRENT sync refresh)
 **Authority marker:** `DLH_5VI_BOUNDARY_HJB_SCHEME_DESIGN_AUTHORIZED`
 **Owner route decision:** `APPROVE_ROUTE_B_FREEZE_OUTCOME_B_THEORY_LIMIT_AND_PROCEED_TO_BOUNDARY_HJB_SCHEME_DESIGN`
+**Micro-Rev (Rev 2, committed on top of candidate `816a817a04f0bb7fbcb0fdc4f8690fab41eddb61`):**
+Reviewer `5644585238` verdict
+`DLH_5VI_OUTCOME_A_NOT_YET_ACCEPTED__STATE_FAMILY_OWNERSHIP_AND_VALIDATION_SEMANTICS_FIX_REQUIRED` —
+repaired in this revision: ONE state-family ownership convention (Route A, §5), scratch
+classifier truth-table (report 3 §11), Gate 1A/1B split (report 5 §5), two-residual contract
+(report 5 §3), exact-tie semantics (report 4 §4), z-switch authority wording (report 4 §1).
+Initial candidate remains in the branch history (NOT reset/rebased/discarded).
 
 **Status: DESIGN / PROVENANCE ONLY.** No source mutation, no implementation, no
 HJB/Q/KFE/stationary execution, no numerical `W_max`, no PR/merge/close/successor/self-accept.
@@ -93,20 +100,29 @@ Economic admissibility is strictly separated from numerical search mechanics (re
 
 ## 5. State-family classifier — summary (full table in report 3)
 
-| Family | Membership | Active tangent laws | Sector contract(s) | Destination offsets |
+**Micro-Rev (Reviewer `5644585238`):** ONE ownership convention — **Route A** — with explicit
+precedence: **F9 (triple corner, `N_m = 190m` exactly) checked first and exclusive; F4
+(`i = 0` W-contact) before F3; corner cells before face families.** F2/F3/F4 own their ENTIRE
+endpoint bands; F8 is the genuinely residual disjoint set of W-active cells inside the regular
+j-band below the `i ≥ 10` floor. The scratch classifier truth-table (TEMP, not committed)
+verified `family_count == 1` for every represented state and
+`dispatch_contract_count == 1` (or 0 with documented exclusion) per admissible drift-sign
+class over 74 `(m, N_m)` cases / 120,272 states / 50,036 classes (report 3 §11).
+
+| Family | Membership (Route A) | Active tangent laws | Sector contract(s) | Destination offsets |
 |---|---|---|---|---|
-| F0 interior / W-inactive | not W-active, no face | none (full plane) | accepted interior path (UNCHANGED) | 4-neighbor upwind |
-| F1 regular W-active | 7 ≤ j ≤ 19m−7, i ≥ 10, W-active | μ_W ≤ 0 | T_realloc ∪ R_reverse ∪ R_deplete | w_T, w_RT, w_left, w_down |
-| F2 lower-a × W | W-active, j ∈ {0..6} | j=0: {μ_a ≥ 0, μ_W ≤ 0}; band: {μ_W ≤ 0} | REV (q_RT = 19m·μ_a/70, q_down = 19m·(−μ_W)/7) | w_RT, w_down |
-| F3 upper-a × W | W-active, j ∈ {19m−6..19m} | j=19m: {μ_a ≤ 0, μ_W ≤ 0}; band: {μ_W ≤ 0} | TDEP (T_realloc / R_deplete split) | w_T, w_left, w_down |
-| F4 lower-b × W | W-active, i ∈ {0..9} | i=0: {μ_b ≥ 0, μ_W ≤ 0}; band: {μ_W ≤ 0} | Case B (q_T = 19m·μ_b/70, q_in = 19m·(−μ_W)/10) | w_T, w_left |
-| F5 non-W lower-a face | j=0, W-inactive | {μ_a ≥ 0} | interior face (q_right = 19m·μ_a/10 + b-moves) | w_right, w_up, w_down |
-| F6 non-W upper-a face | j=19m, W-inactive | {μ_a ≤ 0} | interior face (q_left = 19m·(−μ_a)/10 + b-moves) | w_left, w_up, w_down |
-| F7 non-W lower-b face | i=0, W-inactive | {μ_b ≥ 0} | interior face (q_up = 19m·μ_b/7 + a-moves) | w_up, w_right, w_left |
-| F8 W-active endpoint/reachability | residual W-active (j∈{1..6}, j∈{19m−6..19m−1}, i∈{1..9}) | {μ_W ≤ 0} | REV/TDEP/Case-B by band with exact availability | as applicable |
-| F9 triple corner (W_max=8) | cells (19m−7, 9), (19m, 0) | {μ_a ≤ 0, μ_b ≥ 0, μ_W ≤ 0} | TREA: Case-B at (19m−7, 9); T_realloc at (19m, 0) | w_T, w_left |
-| F10 corner (0, b_min) | non-W | {μ_a ≥ 0, μ_b ≥ 0} | cone{w_right, w_up} | w_right, w_up |
-| F11 corner (a_max, b_min) | non-W (W_max > 8) | {μ_a ≤ 0, μ_b ≥ 0} | cone{w_left, w_up} | w_left, w_up |
+| F0 interior / W-inactive | not W-active, no face, no corner | none (full plane) | accepted interior path (local rows UNCHANGED for same input; global iterate NOT claimed bit-identical — Gate 1A/1B) | 4-neighbor upwind |
+| F1 regular W-active | W-active, 7 ≤ j ≤ 19m−7, i ≥ 10 | μ_W ≤ 0 | T_realloc ∪ R_reverse ∪ R_deplete (unique by μ_b/μ_a signs) | w_T, w_RT, w_left, w_down |
+| F2 lower-a × W | W-active, j ∈ {0..6} (entire band) | j=0: {μ_a ≥ 0, μ_W ≤ 0}; j∈{1..6}: {μ_W ≤ 0} | j=0: REV (q_RT = 19m·μ_a/70, q_down = 19m·(−μ_W)/7); band: R_reverse / R_deplete by signs; μ_b ≥ 0 excluded (5V-F forward-sliding content) | w_RT, w_down; w_left, w_down |
+| F3 upper-a × W | W-active, j ∈ {19m−6..19m}, i ≥ 1 (entire band; i=0 is F4/F9) | j=19m: {μ_a ≤ 0, μ_W ≤ 0}; band: {μ_W ≤ 0} | TDEP split: μ_b ≥ 0 → T_realloc; μ_b < 0 → R_deplete; R_reverse excluded (j+7 > 19m; 5V-F reverse-sliding content) | w_T, w_left, w_down |
+| F4 b_min × W W-contact | W-active, i = 0 (Regime-I instance: (19m, 0), i_t(19m) = 0, N_m ∈ {191m..196m}; at N_m = 190m → F9) | {μ_b ≥ 0, μ_W ≤ 0} | Case B / T_realloc (q_T = 19m·μ_b/70, q_in = 19m·(−μ_W)/10) | w_T, w_left |
+| F5 non-W lower-a face | j = 0, W-inactive, i ≥ 1 (corner (0,0) → F10) | {μ_a ≥ 0} | interior face (q_right = 19m·μ_a/10 + b-moves) | w_right, w_up, w_down |
+| F6 non-W upper-a face | j = 19m, W-inactive, i ≥ 1 (corner (19m,0) → F11) | {μ_a ≤ 0} | interior face (q_left = 19m·(−μ_a)/10 + b-moves) | w_left, w_up, w_down |
+| F7 non-W lower-b face | i = 0, W-inactive, 1 ≤ j ≤ 19m−1 (corners → F10/F11) | {μ_b ≥ 0} | interior face (q_up = 19m·μ_b/7 + a-moves) | w_up, w_right, w_left |
+| F8 residual W-active | W-active, 7 ≤ j ≤ 19m−7, 1 ≤ i ≤ 9 (sub-tops with i_t(j) = 10; residual, disjoint) | {μ_W ≤ 0} | μ_b ≥ 0 → T_realloc; μ_b < 0, μ_a ≤ 0 → R_deplete; μ_b < 0, μ_a > 0 excluded (mirror needs i ≥ 10) | w_T, w_left, w_down |
+| F9 triple corner (W_max=8) | N_m = 190m exactly, cells (19m−7, 9), (19m, 0) — EXCLUSIVE, checked first | {μ_a ≤ 0, μ_b ≥ 0, μ_W ≤ 0} | TREA: Case-B at (19m−7, 9) (no mirror); T_realloc at (19m, 0) | w_T, w_left |
+| F10 corner (0, b_min) | non-W, always W-inactive (i_t(0) ≥ 10) | {μ_a ≥ 0, μ_b ≥ 0} | cone{w_right, w_up} | w_right, w_up |
+| F11 corner (a_max, b_min) | non-W, N_m ≥ 197m (i_t(19m) ≥ 1); N_m ∈ {191m..196m} → F4; N_m = 190m → F9 | {μ_a ≤ 0, μ_b ≥ 0} | cone{w_left, w_up} | w_left, w_up |
 
 Every family fixes destination-availability conditions, rate formulas, zero-rate ownership
 (`μ_a = 0`, `μ_W = 0`, `μ_b = 0`, `μ = (0,0)` equality cases owned by exactly one sector),
@@ -127,26 +143,39 @@ never kept in the diagonal as a lost exit. Classifier completeness/determinism: 
   represented candidate / no conservative row — each a named failure, never clipped.
 - **Bellman + ONE selection (report 4 §1–§4):** `H_h = u − v + Σ q [V(dest)−V(s)] + Σ κ[V(z′)−V(z)]`;
   rates from local drift before maximization; no optimize-then-clip; sector = representation
-  only; ONE global argmax; deterministic tie rule (sector precedence, then lexicographic
-  controls) that does not perturb score/first moment; selected rates = scored rates;
-  z-switch combined without double counting (controlled vs switching transition types disjoint).
+  only; ONE global argmax; **tie semantics = exact/machine-identical maxima (Option A, no
+  positive score tolerance; epsilon-optimal semantics explicitly not adopted)**, deterministic
+  tie rule (sector precedence, then lexicographic controls) that does not perturb
+  score/first moment; selected rates = scored rates; z-switch authority = the accepted
+  `grid.switch_matrix` / exogenous switching generator supplied to the oracle (no claim of a
+  `mu_z, sigma_z`-derived mapping); combined without double counting (controlled vs switching
+  transition types disjoint).
 - **Conservative ONE Q row (report 4 §6):** `Q[row,col] > 0` iff actual represented
   transition; `Q[row,row] = −Σ` actual outgoing; row sums zero by construction; no
   normalization/pinning; HJB score and Q row same candidate/rates; mandatory structural
   checks (row sums, offdiag signs, destination membership, first moments, score
   recomputation, deterministic repeat, candidate identity, switch orientation).
 - **HJB iteration (report 5 §1–§4):** accepted `[(1/δ+ρ)I − Q_selected]V_new = u_selected +
-  V_old/δ` structure preserved; F0 rows unchanged (interior path); boundary-family rows
-  conservative; z-switch `kron(switch, I)` added to both; initial δ semantics preserved;
-  iterate-change convergence + SEPARATE HJB residual statistic; max-iteration → nonconvergence;
-  non-finite/singular solve failure; policy/family switching diagnostics near convergence;
-  post-convergence recomputation of policies + final Q from the final V.
-- **Validation hierarchy (report 5 §5):** Gate 1 unaffected-interior regression (F0 vs
-  accepted oracle); Gate 2 local boundary algebra per family (incl. obstruction cells and
-  triple corner); Gate 3 deterministic finite-domain smoke (convergence, finite V, c > 0,
-  finite l/d/drifts, conservative Q, no bracket-binding artifact); Gate 4 diagnostic rate
-  cases (Owner experience labelled DIAGNOSTIC/VALIDATION, not calibration; no sweep);
-  Gate 5 resolution/`W_max` downstream.
+  V_old/δ` structure preserved; F0 rows unchanged (interior path, local-row semantics); 
+  boundary-family rows conservative; z-switch `kron(switch, I)` added to both; initial δ
+  semantics preserved; **TWO separate residuals**: per-iteration fixed-policy/policy-evaluation
+  residual `R_policy_iter = (ρI − Q_selected(V_old))V_new − u_selected(V_old)` (diagnostic
+  only) and mandatory final Bellman residual `R_Bellman(V) = ρV − [u_selected(V) +
+  Q_selected(V)V]` from the post-convergence re-selection, with predeclared
+  `tolerance_Bellman` (iterate-change `tolerance_iter` kept separate); max-iteration →
+  nonconvergence; non-finite/singular solve failure; policy/family switching diagnostics near
+  convergence; post-convergence recomputation of policies + final Q from the final V.
+- **Validation hierarchy (report 5 §5):** **Gate 1A exact local/common-input F0 regression**
+  (same frozen V; local row/policy/rates match the accepted oracle path to declared
+  semantics; failure → `REGRESSION_FAILURE`); **Gate 1B global boundary-influence diagnostic**
+  (interior V/policies compared only as localization diagnostic with predeclared
+  subset/tolerances; NOT automatic regression failure); Gate 2 local boundary algebra per
+  family incl. exactly-one family/dispatch checks, obstruction cells and triple corner;
+  Gate 3 deterministic finite-domain smoke (iterate convergence, final Bellman residual ≤
+  predeclared `tolerance_Bellman`, finite V, c > 0, finite l/d/drifts, conservative Q, no
+  bracket-binding artifact, deterministic repeat); Gate 4 diagnostic rate cases (Owner
+  experience labelled DIAGNOSTIC/VALIDATION, not calibration; no sweep); Gate 5
+  resolution/`W_max` downstream.
 - **Failure taxonomy (report 4 §7 / report 5 §4):** `SCIENTIFIC_ADMISSIBILITY_FAILURE`,
   `REPRESENTATION_FAILURE`, `OPTIMIZER_SEARCH_FAILURE`,
   `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE`, `GENERATOR_CONSERVATION_FAILURE`,

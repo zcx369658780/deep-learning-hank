@@ -27,10 +27,14 @@ with:
   sector contract (state-family report §2–§9), generated from `mu(s, alpha)` — the local
   drift at the CURRENT state — **before** maximization. `dest_r` are the exact represented
   destinations of the sector; `V(dest_r) - V(s)` the current iterate value differences.
-- **z-switch part:** `kappa(z -> z') >= 0` are the accepted exogenous switching rates of the
-  two-state `z` process (derived from the accepted `mu_z, sigma_z` Markov structure as
-  instantiated in the oracle's `switch_matrix`); the switching transitions move only in `z`,
-  with no `(a,b)` displacement and no dependence on `alpha`.
+- **z-switch part:** `kappa(z -> z') >= 0` are the switching rates of the **accepted
+  `grid.switch_matrix` — the exogenous switching generator supplied to the household oracle**
+  (the controlling switching authority; the oracle's operator assembly adds
+  `kron(switch_matrix, eye(state_size))`). The switching transitions move only in `z`, with no
+  `(a,b)` displacement and no dependence on `alpha`. **Authority wording:** the production
+  switching rates are the oracle's switch-matrix entries; NO claim is made that they are
+  derived from `mu_z, sigma_z` — that mapping is not an accepted repository contract and is
+  not asserted here (provenance fix per Reviewer `5644585238`).
 - **No double counting:** controlled transitions and switching transitions are disjoint
   transition types; a transition `(z, x) -> (z', x')` with `z' != z` is EXACTLY the switching
   transition (controlled rates carry `z` unchanged), and `(z, x) -> (z, x_r)` is EXACTLY the
@@ -96,24 +100,37 @@ Freeze for the implementation gate (design contract, not code):
 1. **Candidate generation:** (a) FOC-seeded candidates from the effective gradients of the
    active face(s) (5T KKT forms — the constrained optimum seeds); (b) a declared grid/refinement
    of `c`, `l`, `d` inside the brackets; (c) deterministic order. Generation must be dense
-   enough that the discrete score's selection is stable under refinement within the declared
-   tolerance (validation plan Gate 3 checks selection stability).
+   enough that the discrete score's selection is stable under refinement (declared refinement
+   checks confirm the selected candidate identity does not change; validation plan Gate 3
+   checks selection stability). Generation density is NOT a tie tolerance — ties are exact
+   (§4).
 2. **Scoring:** every generated admissible + representable candidate is scored with §1; the
    score is finite (non-finite score → `DERIVATIVE_EFFECTIVE_DOMAIN_FAILURE` or
    `OPTIMIZER_SEARCH_FAILURE` per §4/§6 — never clipped).
 3. **ONE selection:** `alpha* = argmax H_h(s; alpha)` over all scored candidates; the
-   maximizer set may be a continuum; selection uses the deterministic tie rule (§4).
+   maximizer set may be a continuum; selection uses the deterministic exact-tie rule (§4).
+   **Dispatch determinism:** the family's dispatch table (§10.2 of the state-family report)
+   assigns each admissible drift-sign class exactly one sector contract (verified by the
+   scratch classifier truth-table) — the selection never depends on evaluation order.
 4. **Determinism:** the whole pipeline (family classification → generation → scoring →
    selection) is deterministic for fixed inputs; Gate-2/3 checks include a deterministic
    repeat (same inputs ⟹ same selected candidate, same Q row, bitwise or exact-to-tolerance).
 
-## 4. Deterministic tie handling and ONE selection (Issue §8)
+## 4. Deterministic tie handling and ONE selection (Issue §8; Micro-Rev — exact-tie semantics)
 
-- **Tie rule:** among candidates whose scores equal the maximum within the declared score
-  tolerance, select by a fixed precedence order: (1) sector id (fixed order: T_realloc,
-  R_reverse, R_deplete, REV, TDEP, Case B, interior); (2) lexicographic `(c, l_1, ..., l_J, d)`
-  with a fixed comparison order. The rule is a pure selection among exact maximizers: it does
-  NOT perturb the chosen candidate, does NOT re-score, does NOT mix candidates.
+- **Tie semantics — Option A (exact / machine-identical maxima, chosen):** the tie set at a
+  state contains ONLY candidates whose score is **exactly equal to the maximum under the
+  declared deterministic numeric representation** (identical machine value of `H_h` after the
+  declared fixed evaluation order). There is NO positive score tolerance in the tie definition:
+  every member of the tie set is an **exact maximizer** of the discrete score as evaluated.
+  (An epsilon-optimal tie semantics with a positive `epsilon_score` is explicitly NOT adopted,
+  because it would make "exact maximizer / score-invariant" wording inapplicable and is less
+  reproducible to audit; the exact-tie convention is the auditable default.)
+- **Selection:** among exact maximizers, choose by a fixed precedence order: (1) sector id
+  (fixed order: T_realloc, R_reverse, R_deplete, REV, TDEP, Case B, interior); (2) lexicographic
+  `(c, l_1, ..., l_J, d)` with a fixed comparison order. The rule is a pure selection among
+  exact maximizers: it does NOT perturb the chosen candidate, does NOT re-score, does NOT mix
+  candidates.
 - **First-moment / score invariance:** the tie rule changes neither the score nor the first
   moment of the SELECTED candidate (it selects, it does not modify). If two exact maximizers
   have different first moments, the rule still selects one deterministically (economic
@@ -169,8 +186,9 @@ Q[row, row] = -sum_{row != col} Q[row, col]        (exact, by construction)
 ```
 
 - **Off-diagonal nonnegativity:** every controlled rate from the sector contract is
-  nonnegative on its sector (frozen formulas); every switching rate nonnegative (accepted
-  Markov structure).
+  nonnegative on its sector (frozen formulas); every switching rate nonnegative (entries of
+  the accepted `grid.switch_matrix` — the exogenous switching generator supplied to the
+  oracle, §1).
 - **Destination represented:** every off-diagonal target is a represented node of the frozen
   grid (state-family report availability conditions) — enforced by the representability
   contract (§10 of state-family report) BEFORE row construction; no unavailable outward
@@ -197,7 +215,9 @@ Q[row, row] = -sum_{row != col} Q[row, col]        (exact, by construction)
 4. First moments: `sum_col Q[row, col] * (x_col - x_row) = mu(s, alpha*)` (controlled part)
    and `0` in `(a,b)` for the switching part — within the frozen drift tolerance.
 5. Selected-score recomputation: recompute `H_h(s; alpha*)` from the row's own rates and the
-   current `V`; it must equal the recorded maximizer score within the score tolerance.
+   current `V`; under the exact-tie semantics (§4) it must equal the recorded maximizer score
+   EXACTLY (identical machine value under the declared evaluation order; no positive score
+   tolerance).
 6. Deterministic repeat: re-running the pipeline on the same inputs reproduces the same
    selected candidate identity and the same row.
 7. Candidate identity: the recorded `(c, l, d)` matches the rates' drift (first-moment

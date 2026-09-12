@@ -6,6 +6,12 @@ This report freezes the controlling authority, the accepted scientific inputs th
 boundary-HJB production-scheme design consumes, and the binding Route-B interpretation
 ceiling. Everything here is consumed, not reopened.
 
+**Micro-Rev (Rev 2, Reviewer `5644585238`):** this revision adds the z-switch authority
+wording fix (§5 — the controlling switching object is the accepted `grid.switch_matrix`,
+with no claim of a `mu_z, sigma_z`-derived mapping) and records the single ownership
+convention consumed by the classifier (Route A, report 3 §1). Committed on top of initial
+candidate `816a817a04f0bb7fbcb0fdc4f8690fab41eddb61` (NOT reset/rebased/discarded).
+
 ---
 
 ## 1. Controlling authority
@@ -95,6 +101,12 @@ Read-only facts from `src/deep_learning_hank/two_asset/matlab_faithful_two_asset
   **truncation of entries but NOT of the diagonal** (documented
   `MATLAB_FAITHFUL_HJB_ITERATION_BB_MAY_HAVE_SIGNED_OFFDIAGONALS_AND_NONZERO_BOUNDARY_ROW_SUMS`),
   plus exogenous z-switch via `kron(switch_matrix, eye(state_size))`.
+- **Z-switch authority (Micro-Rev provenance fix, Reviewer `5644585238`):** the controlling
+  switching object is the accepted `grid.switch_matrix` — the exogenous switching generator
+  **supplied to the household oracle**. Production switching rates ARE the switch-matrix
+  entries; the design makes **no claim** that they are derived from `mu_z, sigma_z` (that
+  mapping is not an accepted repository contract and is not asserted anywhere in this gate).
+  (`mu_z, sigma_z >= 0` remain frozen parameter-positivity facts only, §3.)
 - Local policy selection: MATLAB-faithful FOC candidates (consumption FOC `c = v_b^(-1/gamma_c)`
   with the accepted `1e-6` derivative floor; labor FOC; bare-`a` transfer candidate evaluated on
   the RAW `v_a/v_b` with no positivity guard — exact-zero/non-finite denominators yield IEEE
