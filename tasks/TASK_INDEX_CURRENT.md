@@ -8,7 +8,7 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**ACTIVE — Issue #58 / DLH-5V-J, pending final post-sync activation.**
+**ACTIVE — Issue #58 / DLH-5V-J.**
 
 Title:
 
@@ -30,9 +30,11 @@ Dedicated Builder branch:
 
 `dsh/issue-58-dlh-5vj-boundary-hjb-implementation-2026-09-12`
 
-Authoritative activation comment: **PENDING POST-SYNC**.
+Authoritative activation comment:
 
-Builder authority exists only after the final Issue #58 activation-refresh comment is posted. Builder must then fresh-fetch live `origin/main`, verify Issue #58 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, create/use the exact branch from fresh synchronized main, and work only inside Issue #58's exact six-path allowlist.
+`5644789118`
+
+Builder authority becomes fully operative only after the final activation-refresh comment confirms the post-ID-sync live main. Builder must then fresh-fetch live `origin/main`, verify Issue #58 remains OPEN and all CURRENT governance agrees, read all CURRENT rules plus full Issue/comments, verify the accepted household blob, create/use the exact branch from fresh synchronized main, and work only inside Issue #58's exact six-path allowlist.
 
 ## Latest accepted task — Issue #57 / DLH-5V-I
 
