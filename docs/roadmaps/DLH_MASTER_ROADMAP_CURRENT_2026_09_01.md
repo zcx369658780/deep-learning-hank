@@ -4,7 +4,7 @@
 **Date:** 2026-09-12  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-I / ISSUE #57 ACTIVE PENDING FINAL POST-SYNC ACTIVATION — BOUNDARY-HJB PRODUCTION-SCHEME DESIGN
+**Status:** DLH-5V-I / ISSUE #57 ACTIVE — BOUNDARY-HJB PRODUCTION-SCHEME DESIGN
 
 ---
 
@@ -206,7 +206,11 @@ Dedicated Builder branch:
 
 `dsh/issue-57-dlh-5vi-boundary-hjb-scheme-design-2026-09-12`
 
-Authoritative activation comment: **PENDING POST-SYNC**.
+Authoritative activation comment:
+
+`5644365170`
+
+Builder authority becomes operative only after the final activation-refresh comment confirms the post-ID-sync live main.
 
 ### 7.1 Design objective
 
