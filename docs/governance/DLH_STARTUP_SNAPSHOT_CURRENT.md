@@ -21,7 +21,7 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #57 / DLH-5V-I, pending final post-sync activation comment.**
+**ACTIVE — Issue #57 / DLH-5V-I.**
 
 Title:
 
@@ -43,9 +43,11 @@ Dedicated Builder branch:
 
 `dsh/issue-57-dlh-5vi-boundary-hjb-scheme-design-2026-09-12`
 
-Authoritative activation comment: **PENDING POST-SYNC**.
+Authoritative activation comment:
 
-Builder must not begin until the final activation comment is posted. After activation, Builder must fresh-fetch live `origin/main`, verify Issue #57 remains OPEN, read all CURRENT rules/governance and full Issue/comments, confirm exact task type/branch/authority, verify the accepted household blob, then work only inside the six new design files authorized by Issue #57.
+`5644365170`
+
+Builder must wait for the final activation-refresh comment confirming the post-ID-sync live main. After that, Builder must fresh-fetch live `origin/main`, verify Issue #57 remains OPEN, read all CURRENT rules/governance and full Issue/comments, confirm exact task type/branch/authority, verify the accepted household blob, then work only inside the six new design files authorized by Issue #57.
 
 ## Latest accepted gate — Issue #56 / DLH-5V-H
 
