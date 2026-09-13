@@ -45,6 +45,41 @@ operator — NOT a claim of global uniqueness, of the first positive crossing
 over all positive delta, or of a viable next HJB iterate. A next-iterate /
 continuation design remains a separate, NOT YET AUTHORIZED question.
 
+> **R1 repair record (Reviewer `5652072976`):** bounded implementation/
+> evidence repair on the same branch, no change to the frozen experiment or
+> the Terminal-A crossing result.
+>
+> 1. **Real b=b_min face directional derivative.** The accepted
+>    `compute_derivatives` map is NOT globally linear in V: at `i == 0` it
+>    overwrites `vb_b` with the V-independent resource marginal
+>    `resources**(-gamma_c)`. The directional diagnostic previously read
+>    `compute_derivatives(dV, ...).vb_b` directly, which returned that positive
+>    constant instead of the true directional derivative (exactly 0). Now
+>    `boundary_direction_matrix` constructs `dp_b/delta|_0` per the accepted
+>    semantics: backward finite-difference of `dV` for regular states
+>    (identical to the accepted `vb_b` linear difference), and **exactly 0** on
+>    the accepted V-independent boundary rule (`i == 0`). The accepted
+>    selected-Q source is NOT modified. Focused regression tests prove on a
+>    real `i == 0` required state that `p_b` is V-independent (exact under a
+>    perturbation) and its directional derivative is exactly 0, while the
+>    regular finite-difference path is unchanged.
+> 2. **Non-finite crossing evidence fails closed.** `g_delta` previously
+>    returned `+inf` for non-finite required boundary evidence, which would be
+>    misread as `g > 0` (feasible) if it reached the feasibility path. Now
+>    non-finite required boundary evidence in `g_delta` / the crossing path
+>    RAISES `LocalGeometryFailure` (surfaced explicitly); the root, below-root
+>    and above-root state recordings also guard on finiteness. Regression test:
+>    a non-finite trial raises and can never be classified as below-root
+>    feasible / Outcome A.
+>
+> Corrected directional evidence (all headline numbers unchanged): 105/186
+> negative/required boundary states; most negative `dp_b/delta|_0 = −22.5000582300`
+> at node 332, F3 (13,13), z=0; `dpb_zero_count = 40` (20 required `i == 0`
+> nodes × 2 z, V-independent, exactly 0); min first-order prediction
+> `delta_margin_linear = 7.5943e-4` at F3 (13,13), z=1. Crossing/root/
+> below-above evidence and Terminal A are unchanged and bit-identical on the
+> deterministic repeat. Tests now 24/24.
+
 ## 2. Authority and scope record
 
 - Fresh live `main` at execution: `68ddc2b08132c7b95ecd15168be824d91738b938` (unchanged during execution).
@@ -116,11 +151,17 @@ dV/delta|_0 = u_* + Q_* V_* - rho V_*
 
 ## 6. Boundary dp_b/delta|_0 diagnostic and first-order margin prediction
 
-Using the accepted boundary derivative semantics (`compute_derivatives` is
-linear in V; the b_min face p_b is V-independent so its directional derivative
-is 0):
+Directional derivatives are constructed per the ACCEPTED derivative semantics
+(selected-Q source not modified): regular backward finite-difference states use
+the linear difference of `dV` (identical to the accepted `vb_b` difference of
+`dV`); the accepted V-independent boundary rule at the b_min face (`i == 0`,
+`vb_b = resources**(-gamma_c)`) has directional derivative **exactly 0**
+(corrected in R1).
 
 - required (non-F0) boundary states: **186**;
+- V-independent (`i == 0`) required states: **40** (20 nodes × 2 z), all with
+  `dp_b/delta|_0 = 0` exactly (pinned by test: `p_b` unchanged under a V
+  perturbation);
 - states with negative directional derivative: **105** (all finite);
 - most negative finite `dp_b/delta|_0 = −22.5000582300` at **node 332,
   F3 (13,13), z=0** (distinct quantity from the crossing state, recorded
@@ -179,7 +220,7 @@ Issue #61 delta ladder and NOT a new HJB iteration.
   continuation design is a separate question, NOT YET AUTHORIZED); anything
   beyond the single frozen state/operator.
 
-## 9. Tests (all pass — 21/21)
+## 9. Tests (all pass — 24/24, incl. R1 regression tests)
 
 `tests/test_dlh_5vn_local_resolvent_geometry.py`:
 - frozen central configuration exact (params/inputs/z/switch/m/W/b_min/a_max/
@@ -198,11 +239,18 @@ Issue #61 delta ladder and NOT a new HJB iteration.
   representative deltas;
 - infinitesimal direction equals `u_* + Q_*V_* − rho V_*` and matches a
   small finite-difference check within 1e-4 relative;
-- non-finite required boundary p_b / directional evidence fails closed
-  (synthetic NaN solvers);
+- R1: real `i == 0` required boundary state is V-independent (p_b exact under
+  a perturbation) and its directional derivative is exactly 0;
+  `dpb_zero_count` matches the V-independent states; the regular
+  finite-difference directional path is unchanged;
+- R1: non-finite required boundary p_b / directional evidence fails closed —
+  `g_delta` RAISES `LocalGeometryFailure` (never returns `+inf` misread as
+  feasible) and a non-finite trial in the crossing path is explicitly rejected
+  (never below-root feasible / Outcome A);
 - g(0) > 0 and g(1000·2^-20) < 0 reproduce accepted evidence;
 - bracketed root deterministic, strictly inside the fixed bracket, below-root
-  feasible / above-root infeasible (real and synthetic);
+  feasible / above-root infeasible (real and synthetic; synthetic crossing at
+  a non-`i == 0` state);
 - worst state at root / below / above = the same wall state F3 (13,13), z=1
   (no policy re-selection, no state switching near the crossing);
 - static integrity: no unbounded loop / continuation / next-iterate logic;
@@ -219,11 +267,15 @@ Issue #61 delta ladder and NOT a new HJB iteration.
 - Commands:
   - `$env:PYTHONPATH = "D:\deep-learning-hank\src"`
   - `python -m pytest tests/test_dlh_5vn_local_resolvent_geometry.py -q`
-    (21/21 pass, ~12 s)
+    (24/24 pass, ~12 s)
   - diagnostic driver: `run_local_geometry_diagnostic_twice()` executed once
     (ONE run + ONE deterministic repeat, bit-identical;
     `deterministic_repeat_identical: true`; ~1 s);
     `DLH_5VN_LOCAL_GEOMETRY_SUMMARY.csv` written from the first run.
+  - After the R1 repair the same diagnostic was re-executed: crossing/root/
+    below-above evidence and the terminal are unchanged (bit-identical);
+    the only new quantity is `direction.dpb_zero_count = 40` (the
+    V-independent `i == 0` states).
 - Run counts: exactly ONE deterministic reconstruction of the accepted Issue #61
   trajectory (2 accepted updates); ONE local infinitesimal-direction
   diagnostic; ONE bracketed continuous crossing solve on `[0, 1000·2^-20]`;

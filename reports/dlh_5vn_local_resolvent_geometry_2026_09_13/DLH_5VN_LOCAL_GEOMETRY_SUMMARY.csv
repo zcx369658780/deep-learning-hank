@@ -12,6 +12,7 @@ direction.dpb_most_negative,-22.50005823
 direction.dpb_most_negative_state,node=332,j=13,i=13,z=0,family=F3
 direction.dpb_negative_count,105
 direction.dpb_required_count,186
+direction.dpb_zero_count,40
 direction.min_delta_margin_linear,0.000759427458789
 direction.min_delta_margin_linear_state,node=332,j=13,i=13,z=1,family=F3
 direction.delta_margin_linear_count,105

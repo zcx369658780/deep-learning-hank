@@ -121,6 +121,7 @@ class LocalGeometryResult:
     dpb_most_negative_state: Optional[dict]
     dpb_negative_count: int
     dpb_required_count: int
+    dpb_zero_count: int
     min_delta_margin_linear: Optional[float]
     min_delta_margin_linear_state: Optional[dict]
     delta_margin_linear_count: int
@@ -169,6 +170,7 @@ class LocalGeometryResult:
             ("direction.dpb_most_negative_state", st(self.dpb_most_negative_state)),
             ("direction.dpb_negative_count", str(self.dpb_negative_count)),
             ("direction.dpb_required_count", str(self.dpb_required_count)),
+            ("direction.dpb_zero_count", str(self.dpb_zero_count)),
             ("direction.min_delta_margin_linear",
              "" if self.min_delta_margin_linear is None else f"{self.min_delta_margin_linear:.12g}"),
             ("direction.min_delta_margin_linear_state", st(self.min_delta_margin_linear_state)),
@@ -332,6 +334,51 @@ def reconstruct_issue61_terminal_state() -> dict:
 # ---------------------------------------------------------------------------
 # Local diagnostics on the frozen (V_*, Q_*, u_*)
 # ---------------------------------------------------------------------------
+def boundary_direction_matrix(solver: BoundaryHJBSolver,
+                              dV: np.ndarray) -> np.ndarray:
+    """Manual ``dp_b/delta|_0`` over (n_nodes, n_z) per the ACCEPTED boundary
+    derivative semantics.
+
+    The accepted ``compute_derivatives`` map is linear in V on the regular
+    backward finite-difference states, but at the b_min face (``i == 0``) it
+    OVERWRITES ``vb_b`` with the resource-based marginal
+    ``resources**(-gamma_c)``, which is INDEPENDENT of V.  Hence the true
+    directional derivative there is exactly 0 and must NOT be read from
+    ``compute_derivatives(dV, ...).vb_b`` (that would return the positive
+    constant resource marginal instead of the directional derivative).
+
+    Construction (accepted selected-Q source is NOT modified):
+
+    - regular backward finite-difference state (i > 0, down exists):
+      ``dp_b/delta|_0 = (dV[node] - dV[down]) / db`` — identical to the
+      accepted ``vb_b`` linear difference of ``dV``;
+    - accepted V-independent boundary rule (i == 0): ``dp_b/delta|_0 = 0``
+      exactly.
+
+    FAIL-CLOSED: non-finite input dV at a required state raises
+    ``LocalGeometryFailure`` (surfaced explicitly).
+    """
+    g = solver.grid
+    db = float(solver.db)
+    dp = np.zeros((solver.n, solver.nz), dtype=float)
+    for node in range(solver.n):
+        j, i = int(g.j_arr[node]), int(g.i_arr[node])
+        if i == 0:
+            continue                      # V-independent boundary rule -> 0
+        down = g.node_of.get((j, i - 1))
+        if down is None:
+            raise LocalGeometryFailure(
+                f"no backward neighbor for required state node {node} (i={i})")
+        for nz in range(solver.nz):
+            v = float((dV[node, nz] - dV[down, nz]) / db)
+            if not np.isfinite(v):
+                raise LocalGeometryFailure(
+                    f"non-finite directional evidence at node {node} z {nz}: "
+                    f"{v!r}")
+            dp[node, nz] = v
+    return dp
+
+
 def boundary_direction_diagnostic(solver: BoundaryHJBSolver,
                                   V_star: np.ndarray, labor0: np.ndarray,
                                   dV: np.ndarray) -> dict:
@@ -346,9 +393,10 @@ def boundary_direction_diagnostic(solver: BoundaryHJBSolver,
             f"non-finite required boundary p_b(V_star): {pb_star!r} at "
             f"node {node0} z {nz0}")
     _, pb_matrix, _, _ = solver.compute_derivatives(V_star, labor0, 0.0, 0.0)
-    _, vb_b_dir, _, _ = solver.compute_derivatives(dV, labor0, 0.0, 0.0)
+    dp_matrix = boundary_direction_matrix(solver, dV)
     g = solver.grid
     required = 0
+    zero_count = 0
     most_neg: Optional[float] = None
     most_neg_node = -1
     most_neg_nz = -1
@@ -358,15 +406,13 @@ def boundary_direction_diagnostic(solver: BoundaryHJBSolver,
             continue
         for nz in range(solver.nz):
             required += 1
-            dp = float(vb_b_dir[node, nz])
-            if not np.isfinite(dp):
-                raise LocalGeometryFailure(
-                    f"non-finite directional evidence at node {node} z {nz}: "
-                    f"{dp!r}")
             p = float(pb_matrix[node, nz])
             if not np.isfinite(p):
                 raise LocalGeometryFailure(
                     f"non-finite boundary p_b at node {node} z {nz}: {p!r}")
+            dp = float(dp_matrix[node, nz])
+            if dp == 0.0:
+                zero_count += 1           # V-independent boundary rule (i == 0)
             if dp < 0.0:
                 lin = (p - PB_MARGIN) / (-dp)
                 linear_items.append((lin, node, nz))
@@ -389,6 +435,7 @@ def boundary_direction_diagnostic(solver: BoundaryHJBSolver,
             else _state_info(solver, most_neg_node, most_neg_nz),
         "dpb_negative_count": len(linear_items),
         "dpb_required_count": required,
+        "dpb_zero_count": zero_count,      # V-independent (i == 0) required states
         "min_delta_margin_linear": None if best_lin is None else float(best_lin[0]),
         "min_delta_margin_linear_state":
             None if best_lin is None
@@ -403,10 +450,15 @@ def g_delta(solver: BoundaryHJBSolver, Q: sparse.csr_matrix, u: np.ndarray,
             delta: float) -> float:
     """g(delta) = min_required_boundary p_b(V(delta)) - PB_MARGIN.
 
-    Non-finite required boundary evidence is returned as +inf (fail closed).
+    FAIL-CLOSED: non-finite required boundary evidence RAISES
+    ``LocalGeometryFailure`` — it is never returned as ``+inf`` (which would
+    be misread as g > 0, i.e. feasible).
     """
     Vd = solve_scaled_resolvent(Q, u, V_star, delta, rho)
     pb = min_boundary_pb(solver, Vd, labor0)
+    if not np.isfinite(pb):
+        raise LocalGeometryFailure(
+            f"non-finite required boundary p_b at delta={delta:.12g}: {pb!r}")
     return float(pb) - PB_MARGIN
 
 
@@ -440,6 +492,9 @@ def continuous_crossing_diagnostic(solver: BoundaryHJBSolver,
 
     Vr = solve_scaled_resolvent(Q, u, V_star, root, rho)
     pr, nr, zr = min_boundary_pb_state(solver, Vr, labor0)
+    if not np.isfinite(pr):
+        raise LocalGeometryFailure(
+            f"non-finite required boundary p_b at delta_cross: {pr!r}")
     cross_worst_state = _state_info(solver, nr, zr)
 
     below_delta = max(delta_lo, (1.0 - EPS_VERIFY) * root)
@@ -448,11 +503,17 @@ def continuous_crossing_diagnostic(solver: BoundaryHJBSolver,
     g_below = _g(below_delta)
     Vb = solve_scaled_resolvent(Q, u, V_star, below_delta, rho)
     pb_below, nb, zb = min_boundary_pb_state(solver, Vb, labor0)
+    if not np.isfinite(pb_below):
+        raise LocalGeometryFailure(
+            f"non-finite required boundary p_b at delta_below: {pb_below!r}")
     below_state = _state_info(solver, nb, zb)
 
     g_above = _g(above_delta)
     Va = solve_scaled_resolvent(Q, u, V_star, above_delta, rho)
     pb_above, na, za = min_boundary_pb_state(solver, Va, labor0)
+    if not np.isfinite(pb_above):
+        raise LocalGeometryFailure(
+            f"non-finite required boundary p_b at delta_above: {pb_above!r}")
     above_state = _state_info(solver, na, za)
 
     return {
@@ -574,6 +635,7 @@ def run_local_geometry_diagnostic() -> LocalGeometryResult:
         dpb_most_negative_state=bd["dpb_most_negative_state"],
         dpb_negative_count=bd["dpb_negative_count"],
         dpb_required_count=bd["dpb_required_count"],
+        dpb_zero_count=bd["dpb_zero_count"],
         min_delta_margin_linear=bd["min_delta_margin_linear"],
         min_delta_margin_linear_state=bd["min_delta_margin_linear_state"],
         delta_margin_linear_count=bd["delta_margin_linear_count"],

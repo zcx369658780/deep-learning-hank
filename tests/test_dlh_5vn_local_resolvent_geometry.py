@@ -62,12 +62,16 @@ ACCEPTED_G_HI_MIN_PB = -0.002078969753188379   # smallest authorized-delta trial
 # Small linear fake solver (p_b = V elementwise; all states required)
 # ---------------------------------------------------------------------------
 class _FakeSolver:
+    """3-node line: (j=0, i=0/1/2). p_b = V elementwise; db = 1.0."""
+
     def __init__(self, n=3, nz=1):
         self.n, self.nz, self.state_size = n, nz, n * nz
+        self.db = 1.0
         self.grid = types.SimpleNamespace(
             families=["F1"] * n,
             j_arr=np.zeros(n, dtype=int),
             i_arr=np.arange(n, dtype=int),
+            node_of={(0, 0): 0, (0, 1): 1, (0, 2): 2},
         )
         self.config = types.SimpleNamespace(
             params=types.SimpleNamespace(rho=0.02),
@@ -79,15 +83,16 @@ class _FakeSolver:
 
 
 def _synthetic_case():
-    """Q = 0, u = [-11, 0, 0], V_star = 0.01 everywhere: node-0 value
-    V0(delta) = (0.01 - 11*delta)/(1 + 0.02*delta) crosses the margin inside
+    """Q = 0, u = [0, -11, 0], V_star = 0.01 everywhere. The b_min-face node 0
+    (i=0) is V-independent (dp = 0); node 1 (i=1) value
+    V1(delta) = (0.01 - 11*delta)/(1 + 0.02*delta) crosses the margin inside
     [0, DELTA_FLOOR] (root ~9.09e-4, i.e. ~95% of the floor)."""
     n, nz = 3, 1
     rho = 0.02
     solver = _FakeSolver(n, nz)
     V_star = np.full((n, nz), 0.01)
     u = np.zeros((n, nz))
-    u[0, 0] = -11.0
+    u[1, 0] = -11.0
     Q = sparse.csr_matrix((n, n))
     return solver, Q, u, V_star, rho
 
@@ -243,23 +248,6 @@ def test_infinitesimal_direction_formula_and_finite_difference():
 # ---------------------------------------------------------------------------
 # 8. Fail-closed non-finite boundary / directional evidence
 # ---------------------------------------------------------------------------
-class _NaNDirectionSolver(_FakeSolver):
-    """compute_derivatives: first call (V_star) finite; second call (dV)
-    has NaN at (node 1, z 0)."""
-
-    def __init__(self, n=3, nz=1):
-        super().__init__(n, nz)
-        self.calls = 0
-
-    def compute_derivatives(self, V, labor0, ti, gap):
-        self.calls += 1
-        V = np.asarray(V, float).reshape(self.n, self.nz)
-        out = V.copy()
-        if self.calls == 2:
-            out[1, 0] = np.nan
-        return (np.zeros_like(V), out, np.zeros_like(V), np.zeros_like(V))
-
-
 class _AlwaysNaNSolver(_FakeSolver):
     def compute_derivatives(self, V, labor0, ti, gap):
         V = np.asarray(V, float).reshape(self.n, self.nz)
@@ -268,18 +256,102 @@ class _AlwaysNaNSolver(_FakeSolver):
 
 
 def test_nonfinite_directional_evidence_fails_closed():
-    solver = _NaNDirectionSolver()
+    solver = _FakeSolver()
     V_star = np.full((solver.n, solver.nz), 0.01)
     dV = np.full((solver.n, solver.nz), -0.5)
+    dV[1, 0] = np.nan          # node 1 (i=1): backward difference of dV -> NaN
     with pytest.raises(LocalGeometryFailure):
         boundary_direction_diagnostic(solver, V_star, np.zeros_like(V_star), dV)
 
 
 def test_nonfinite_boundary_pb_evidence_fails_closed_in_g():
+    # R1: non-finite required boundary p_b must RAISE in g_delta — never be
+    # returned as +inf (which would be misread as g > 0, i.e. feasible).
     solver = _AlwaysNaNSolver()
     _, Q, u, V_star, rho = _synthetic_case()
-    g = g_delta(solver, Q, u, V_star, np.zeros_like(V_star), rho, 1e-4)
-    assert g == float("inf")   # fail closed: never accepted as positive-feasible
+    with pytest.raises(LocalGeometryFailure):
+        g_delta(solver, Q, u, V_star, np.zeros_like(V_star), rho, 1e-4)
+
+
+def test_nonfinite_crossing_evidence_rejected_not_feasible():
+    # R1 regression: a non-finite trial in the crossing path must be explicitly
+    # rejected — it can never be classified as below-root feasible / Outcome A.
+    solver = _AlwaysNaNSolver()
+    _, Q, u, V_star, rho = _synthetic_case()
+    labor0 = np.zeros_like(V_star)
+    with pytest.raises(LocalGeometryFailure):
+        continuous_crossing_diagnostic(solver, Q, u, V_star, labor0, rho)
+
+
+# ---------------------------------------------------------------------------
+# R1 fix 1: real b=b_min face directional derivative is exactly zero
+# (accepted V-independent boundary rule), while the regular finite-difference
+# path is unchanged.
+# ---------------------------------------------------------------------------
+def test_real_bmin_face_pb_is_v_independent_and_dp_is_zero():
+    from deep_learning_hank.two_asset.local_resolvent_domain_geometry import (
+        boundary_direction_matrix,
+    )
+    from deep_learning_hank.two_asset.adaptive_resolvent_hjb import (
+        CENTRAL_CONFIG,
+    )
+    from deep_learning_hank.two_asset.boundary_hjb_selected_q import (
+        BoundaryHJBSolver,
+    )
+    solver = BoundaryHJBSolver(CENTRAL_CONFIG)
+    labor0 = solver.build_labor0(0.0, 0.0)
+    V_star = solver.build_initial_value(labor0, 0.0, 0.0)
+    # find a required (non-F0) b_min-face state (i == 0)
+    bmin_nodes = [node for node in range(solver.n)
+                  if solver.grid.families[node] != "F0"
+                  and int(solver.grid.i_arr[node]) == 0]
+    assert len(bmin_nodes) > 0
+    node = bmin_nodes[0]
+    pb_ref = solver.compute_derivatives(V_star, labor0, 0.0, 0.0)[1]
+    # 1) p_b on the b_min face is V-independent: a perturbation changes it not
+    perturb = np.zeros_like(V_star)
+    perturb[:] = 0.5
+    pb_pert = solver.compute_derivatives(V_star + perturb, labor0, 0.0, 0.0)[1]
+    for nz in range(solver.nz):
+        assert float(pb_ref[node, nz]) == float(pb_pert[node, nz])  # exact
+    # 2) the corrected directional matrix gives exactly 0 there
+    dV = np.full_like(V_star, -1.0)
+    dp = boundary_direction_matrix(solver, dV)
+    for nz in range(solver.nz):
+        assert float(dp[node, nz]) == 0.0                      # exact zero
+    # 3) regular (non i==0) backward finite-difference path unchanged: equals
+    #    compute_derivatives(dV).vb_b at a non-b_min required state
+    g = solver.grid
+    reg = [nd for nd in range(solver.n)
+           if g.families[nd] != "F0" and int(g.i_arr[nd]) > 0][0]
+    j, i = int(g.j_arr[reg]), int(g.i_arr[reg])
+    down = g.node_of.get((j, i - 1))
+    assert down is not None
+    vb_b_dir = solver.compute_derivatives(dV, labor0, 0.0, 0.0)[1]
+    for nz in range(solver.nz):
+        manual = float((dV[reg, nz] - dV[down, nz]) / solver.db)
+        assert manual == pytest.approx(float(vb_b_dir[reg, nz]), abs=1e-15)
+
+
+def test_direction_diagnostic_zero_count_matches_v_independent_states():
+    from deep_learning_hank.two_asset.adaptive_resolvent_hjb import (
+        CENTRAL_CONFIG,
+    )
+    from deep_learning_hank.two_asset.boundary_hjb_selected_q import (
+        BoundaryHJBSolver,
+    )
+    solver = BoundaryHJBSolver(CENTRAL_CONFIG)
+    labor0 = solver.build_labor0(0.0, 0.0)
+    V_star = solver.build_initial_value(labor0, 0.0, 0.0)
+    required_bmin = sum(
+        1 for nd in range(solver.n)
+        if solver.grid.families[nd] != "F0" and int(solver.grid.i_arr[nd]) == 0)
+    assert required_bmin > 0
+    # non-constant dV so regular states have non-zero backward differences
+    bd = boundary_direction_diagnostic(
+        solver, V_star, labor0, V_star.copy())
+    assert bd["dpb_zero_count"] >= required_bmin
+    assert bd["dpb_required_count"] > bd["dpb_zero_count"]
 
 
 # ---------------------------------------------------------------------------
@@ -307,14 +379,23 @@ def test_synthetic_crossing_root_inside_bracket_and_verification():
     root = cr["delta_cross"]
     assert cr["bracket_lo"] < root < cr["bracket_hi"]
     assert abs(cr["g_cross"]) < 1e-9
-    # analytic root of (0.01 - 11*delta)/(1 + 0.02*delta) = 1e-12
+    # analytic root of (0.01 - 11*delta)/(1 + 0.02*delta) = 1e-12 at node 1
     analytic = (0.01 - 1e-12 * (1.0 + 2e-14)) / 11.0
     assert root == pytest.approx(analytic, rel=1e-4)
     assert cr["below_delta"] == pytest.approx((1.0 - EPS_VERIFY) * root, rel=1e-12)
     assert cr["above_delta"] == pytest.approx((1.0 + EPS_VERIFY) * root, rel=1e-12)
     assert cr["below_g"] > 0.0 and cr["above_g"] < 0.0
-    assert cr["below_state"]["node"] == 0 and cr["above_state"]["node"] == 0
-    assert cr["cross_worst_state"]["node"] == 0
+    # crossing state is node 1 (i=1); the b_min-face node 0 stays V-independent
+    assert cr["below_state"]["node"] == 1 and cr["above_state"]["node"] == 1
+    assert cr["cross_worst_state"]["node"] == 1
+    # boundary direction: node 0 (i=0) has exactly zero directional derivative;
+    # node 1 has the steepest negative dp and the min first-order prediction
+    dV = infinitesimal_direction(Q, u, V_star, rho)
+    bd = boundary_direction_diagnostic(solver, V_star, labor0, dV)
+    assert bd["dpb_zero_count"] >= 1           # the V-independent b_min state
+    assert bd["dpb_most_negative_state"]["node"] == 1
+    assert bd["min_delta_margin_linear_state"]["node"] == 1
+    assert bd["min_delta_margin_linear"] == pytest.approx(analytic, rel=1e-4)
 
 
 def test_real_crossing_root_deterministic_and_subfloor():
@@ -361,6 +442,7 @@ def test_direction_diagnostic_records_separate_quantities():
     assert bd["terminal_state"]["node"] == ACCEPTED_TERMINAL_NODE
     assert bd["dpb_negative_count"] > 0
     assert bd["dpb_required_count"] > bd["dpb_negative_count"]
+    assert bd["dpb_zero_count"] > 0            # V-independent b_min-face states
     assert bd["dpb_most_negative"] < 0.0
     assert bd["min_delta_margin_linear"] > 0.0
     # most-negative slope may be at a different z than the crossing state;
@@ -432,7 +514,7 @@ def _result_for_outcome(outcome=None, **overrides) -> LocalGeometryResult:
         direction_max_abs=10.4, dpb_most_negative=-22.5,
         dpb_most_negative_state={"node": 332, "j": 13, "i": 13, "z": 0,
                                  "family": "F3"},
-        dpb_negative_count=105, dpb_required_count=186,
+        dpb_negative_count=105, dpb_required_count=186, dpb_zero_count=24,
         min_delta_margin_linear=0.000759, min_delta_margin_linear_state={
             "node": 332, "j": 13, "i": 13, "z": 1, "family": "F3"},
         delta_margin_linear_count=105,
