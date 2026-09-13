@@ -21,39 +21,49 @@ Priority:
 
 ## Current Builder state
 
-**NEXT ACTIVE — Issue #61 / DLH-5V-M**, NOT YET OPERATIVE.
+**NO ACTIVE BUILDER ISSUE.** The two tested stabilization routes are both CLOSED
+with negative (Terminal-C) evidence on the frozen central selected-Q case:
+- Issue #60 / DLH-5V-L value-update damping (accepted Terminal C);
+- Issue #61 / DLH-5V-M adaptive pseudo-time/resolvent (accepted Terminal C).
 
-Initial authoritative activation comment:
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**. A successor
+issue is **NOT YET AUTHORIZED**; no Builder branch or scientific execution may start
+before a new authorized Issue.
 
-`5650244803`
+## Latest accepted gate — Issue #61 / DLH-5V-M
 
-Governance synchronization blocker record:
+Issue #61 is CLOSED completed at Terminal C.
 
-`5650249190`
+Accepted candidate / integration:
 
-Title:
+`2721dadbfd0ad49813f12c8424f6be77fcaf3f85`
 
-`DLH-5V-M: Adaptive pseudo-time / resolvent safeguard diagnostic on the central selected-Q HJB case`
+Reviewer acceptance:
 
-Task type:
+`5651495744`
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__ADAPTIVE_PSEUDO_TIME_RESOLVENT_EFFECTIVE_DOMAIN`
+Acceptance integration:
 
-Authority marker:
+`5651496951`
 
-`DLH_5VM_ADAPTIVE_RESOLVENT_DIAGNOSTIC_AUTHORIZED`
+Accepted verdict:
 
-Dedicated future Builder branch:
+`DLH_5VM_ACCEPTED__TERMINAL_C_CONFIRMED__ADAPTIVE_RESOLVENT_LADDER_EXHAUSTED_ON_FROZEN_CENTRAL_TRAJECTORY__ROUTE_RECONSIDERATION_REQUIRED`
 
-`dsh/issue-61-dlh-5vm-adaptive-resolvent-2026-09-13`
+Accepted terminal:
 
-Builder must not begin until CURRENT records this activation ID and a final authoritative activation-refresh comment confirms the post-sync live `main`. Builder execution remains **NOT OPERATIVE** until then.
+`DLH_5VM_ADAPTIVE_RESOLVENT__NO_VIABLE_EFFECTIVE_DOMAIN_RESOLVENT_STEP__ROUTE_RECONSIDERATION_REQUIRED`
 
-Reference handoff:
+Accepted interpretation (trajectory-bounded):
 
-`docs/handoffs/DLH_SESSION_HANDOFF_POST_5VL_2026_09_13.md`
+- the adaptive pseudo-time/resolvent route accepted 2 positive-domain iterations on the frozen central trajectory;
+- at the third update request every authorized delta on the ladder {1000·2^-k, k=0..20} is infeasible (the smallest-delta limiting failure is at F3 (13,13), z=1);
+- this does NOT prove global nonexistence or uniqueness of a positive-domain HJB fixed point;
+- it does NOT exclude another basin, a continuation/homotopy path, or another fixed-point-preserving operator;
+- the R1 fail-closed non-finite-boundary handling is part of the accepted implementation;
+- together with Issue #60 value damping, the two tested stabilization routes are BOTH negative evidence on the frozen central selected-Q case.
 
-## Latest accepted gate — Issue #60 / DLH-5V-L
+## Prior accepted gate — Issue #60 / DLH-5V-L
 
 Issue #60 is CLOSED completed at Terminal C.
 
@@ -79,47 +89,6 @@ Accepted interpretation:
 - 17 accepted iterations remain in-domain, then no authorized dyadic value-damping step exists;
 - this is trajectory-bounded evidence only and does NOT prove global nonexistence of a positive-domain HJB fixed point;
 - external-price sensitivity from Issue #59 remains real but does not resolve the selected-Q invariant-domain problem.
-
-## Next active diagnostic route
-
-Issue #61 tests whether adapting the pseudo-time/resolvent parameter `delta` INSIDE the implicit solve preserves the accepted boundary effective domain, instead of damping an already-computed `delta=1000` value update.
-
-Frozen central case:
-
-```text
-m=1
-W_max=10
-r_a=0.07
-r_b=0.02
-w=1.00
-borrowing_rate_gap=0
-rho=0.02
-gamma_c=2
-phi=5
-chi_0=0.1
-chi_1=2
-a_bar=1e-6
-tau=0.15
-z=[0.8,1.3]
-delta=1000
-tolerance_iter=1e-7
-tolerance_Bellman=1e-3
-max_iterations=1000
-n_c=n_d=9
-```
-
-Authorized adaptive resolvent only:
-
-```text
-[(1/delta + rho)I - Q(V_old)] V_delta = u(V_old) + V_old/delta
-delta_k = 1000*2^-k, k = 0..20, descending
-choose the largest delta whose V_trial satisfies all required boundary p_b > 1e-12
-accept V_trial directly — NO additional value damping
-```
-
-The `1e-12` margin is an iterate-acceptance tolerance only; no derivative clipping/flooring is allowed and the margin never enters FOCs or Bellman scoring.
-
-Exactly one adaptive-resolvent run and one deterministic repeat are authorized. Final PASS requires the accepted final Bellman residual criterion, not merely a tiny delta-induced update.
 
 ## Frozen household / same-process authority
 
@@ -155,10 +124,14 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-No price sweep, no alternative delta ladder/margin, no value damping, no Bellman-residual-driven delta selection, no continuation/homotopy, no hard economic bounds, no KFE/stationary KFE, no SCC/global-Q, no production Wmax/resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/Results.
+No continuation/homotopy, no new delta / price / grid / margin / damping
+experiments, no KFE/stationary KFE, no SCC/global-Q, no production Wmax/
+resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/Results,
+and no successor Issue may start before an Owner/ChatGPT scientific design and a
+new authorized Issue.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #61 body/comments.
+- Issue #61 body/comments (accepted/closed).

@@ -4,7 +4,7 @@
 **Date:** 2026-09-13  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-M / ISSUE #61 NEXT ACTIVE — ADAPTIVE PSEUDO-TIME RESOLVENT EFFECTIVE-DOMAIN DIAGNOSTIC (BUILDER NOT YET OPERATIVE)
+**Status:** NO ACTIVE BUILDER ISSUE — ISSUE #61 / DLH-5V-M ACCEPTED / CLOSED (TERMINAL C); NEXT SCIENTIFIC ROUTE = OWNER / CHATGPT DESIGN REQUIRED (SUCCESSOR NOT YET AUTHORIZED)
 
 ---
 
@@ -155,7 +155,7 @@ Accepted scientific interpretation:
 
 ---
 
-## 7. Issue #61 / DLH-5V-M — NEXT ACTIVE adaptive pseudo-time / resolvent diagnostic
+## 7. Issue #61 / DLH-5V-M — adaptive pseudo-time / resolvent diagnostic — TERMINAL C ACCEPTED / CLOSED
 
 Title:
 
@@ -169,21 +169,38 @@ Authority marker:
 
 `DLH_5VM_ADAPTIVE_RESOLVENT_DIAGNOSTIC_AUTHORIZED`
 
-Dedicated future Builder branch:
+Accepted candidate / integration:
 
-`dsh/issue-61-dlh-5vm-adaptive-resolvent-2026-09-13`
+`2721dadbfd0ad49813f12c8424f6be77fcaf3f85`
 
-Initial authoritative activation comment:
+Reviewer acceptance:
 
-`5650244803`
+`5651495744`
 
-Governance synchronization blocker record:
+Acceptance integration:
 
-`5650249190`
+`5651496951`
 
-Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all three CURRENT governance files are synchronized to Issue #61 (this roadmap included), this activation ID is recorded, and a final authoritative activation-refresh comment confirms the post-sync live `main`. Reference handoff: `docs/handoffs/DLH_SESSION_HANDOFF_POST_5VL_2026_09_13.md`.
+Accepted verdict:
 
-### 7.1 Frozen central selected-Q case
+`DLH_5VM_ACCEPTED__TERMINAL_C_CONFIRMED__ADAPTIVE_RESOLVENT_LADDER_EXHAUSTED_ON_FROZEN_CENTRAL_TRAJECTORY__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted Terminal C:
+
+`DLH_5VM_ADAPTIVE_RESOLVENT__NO_VIABLE_EFFECTIVE_DOMAIN_RESOLVENT_STEP__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted scientific interpretation (trajectory-bounded):
+
+- the adaptive pseudo-time/resolvent route accepted 2 positive-domain iterations on the frozen central trajectory;
+- at the third update request every authorized delta on the ladder {1000·2^-k, k=0..20} is infeasible (the smallest-delta limiting failure is at F3 (13,13), z=1);
+- this does NOT prove global nonexistence or uniqueness of a positive-domain HJB fixed point;
+- it does NOT exclude another basin, a continuation/homotopy path, or another fixed-point-preserving operator;
+- the R1 fail-closed non-finite-boundary handling is part of the accepted implementation;
+- together with Issue #60 value damping, the two tested stabilization routes are BOTH negative evidence on the frozen central selected-Q case.
+
+Reference handoff: `docs/handoffs/DLH_SESSION_HANDOFF_POST_5VL_2026_09_13.md`.
+
+### 7.1 Frozen central selected-Q case (executed design, unchanged)
 
 ```text
 m=1
@@ -255,7 +272,8 @@ boundary-HJB production-scheme design                         OUTCOME A ACCEPTED
 boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTED — ISSUE #58
 fixed-household external-price envelope                       TERMINAL B/H2 ACCEPTED — ISSUE #59
 invariant-domain safeguarded HJB update                       TERMINAL C ACCEPTED/CLOSED — ISSUE #60
-adaptive pseudo-time / resolvent diagnostic                   NEXT ACTIVE — ISSUE #61 (BUILDER NOT YET OPERATIVE)
+adaptive pseudo-time / resolvent diagnostic                   TERMINAL C ACCEPTED/CLOSED — ISSUE #61
+next stabilization route                                      OWNER/CHATGPT SCIENTIFIC DESIGN REQUIRED (successor NOT YET AUTHORIZED)
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -289,12 +307,14 @@ Stationary KFE remains explicitly blocked.
 
 ## 10. Current governance position
 
-**NEXT ACTIVE BUILDER ISSUE: #61** (initial activation comment `5650244803` recorded; governance synchronization blocker record `5650249190`). Builder execution becomes operative only after all three CURRENT governance files are synchronized to Issue #61 and a final authoritative activation-refresh comment confirms the post-sync live `main`.
+**NO ACTIVE BUILDER ISSUE.** Issue #61 / DLH-5V-M is ACCEPTED / CLOSED (Terminal C; reviewer acceptance `5651495744`; acceptance integration `5651496951`; accepted candidate `2721dadbfd0ad49813f12c8424f6be77fcaf3f85`). Together with Issue #60 value damping, the two tested stabilization routes are both negative evidence on the frozen central selected-Q case.
+
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**; a successor issue is **NOT YET AUTHORIZED** (no successor Issue, no Builder scientific branch, no continuation/homotopy, no new delta/price/grid/margin experiments, no KFE/stationary KFE).
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #61 body/comments.
+- Issue #61 body/comments (accepted/closed).
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
