@@ -4,7 +4,7 @@
 **Date:** 2026-09-13  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-L / ISSUE #60 ACTIVE — INVARIANT-DOMAIN SAFEGUARDED HJB UPDATE DIAGNOSTIC
+**Status:** DLH-5V-M / ISSUE #61 NEXT ACTIVE — ADAPTIVE PSEUDO-TIME RESOLVENT EFFECTIVE-DOMAIN DIAGNOSTIC (BUILDER NOT YET OPERATIVE)
 
 ---
 
@@ -124,33 +124,66 @@ Therefore future GE work should preserve external-price search discipline, but p
 
 ---
 
-## 6. Issue #60 / DLH-5V-L — ACTIVE invariant-domain safeguard diagnostic
+## 6. Issue #60 / DLH-5V-L — invariant-domain safeguard diagnostic — TERMINAL C ACCEPTED / CLOSED
+
+Accepted candidate / integration:
+
+`9b1538feabe2cc4634653721e725ee3e46d449bb`
+
+Reviewer acceptance:
+
+`5650057012`
+
+Acceptance integration:
+
+`5650059195`
+
+Accepted verdict:
+
+`DLH_5VL_ACCEPTED__TERMINAL_C_CONFIRMED__VALUE_UPDATE_ONLY_INVARIANT_SAFEGUARD_FAILS_ON_FROZEN_CENTRAL_TRAJECTORY__RAW_OPERATOR_ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted Terminal C:
+
+`DLH_5VL_INVARIANT_DOMAIN_SAFEGUARD__NO_VIABLE_POSITIVE_EFFECTIVE_DOMAIN_UPDATE__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted scientific interpretation:
+
+- pure value-update damping preserves the positive-`p_b` domain for a short path but is not a viable convergence route on the frozen central trajectory;
+- 17 accepted iterations remain in-domain, then no authorized dyadic value-damping step exists;
+- this is trajectory-bounded evidence only and does NOT prove global nonexistence of a positive-domain HJB fixed point;
+- external-price sensitivity from Issue #59 remains real but does not resolve the selected-Q invariant-domain problem.
+
+---
+
+## 7. Issue #61 / DLH-5V-M — NEXT ACTIVE adaptive pseudo-time / resolvent diagnostic
 
 Title:
 
-`DLH-5V-L: Test invariant-domain safeguarded value-update line search on the central selected-Q HJB case`
+`DLH-5V-M: Adaptive pseudo-time / resolvent safeguard diagnostic on the central selected-Q HJB case`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__EFFECTIVE_DOMAIN_PRESERVING_VALUE_UPDATE`
-
-Owner / Reviewer route decision:
-
-`APPROVE_CONTROLLED_INVARIANT_DOMAIN_SAFEGUARDED_VALUE_UPDATE_DIAGNOSTIC`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__ADAPTIVE_PSEUDO_TIME_RESOLVENT_EFFECTIVE_DOMAIN`
 
 Authority marker:
 
-`DLH_5VL_INVARIANT_DOMAIN_SAFEGUARD_DIAGNOSTIC_AUTHORIZED`
+`DLH_5VM_ADAPTIVE_RESOLVENT_DIAGNOSTIC_AUTHORIZED`
 
-Dedicated Builder branch:
+Dedicated future Builder branch:
 
-`dsh/issue-60-dlh-5vl-invariant-domain-safeguard-2026-09-13`
+`dsh/issue-61-dlh-5vm-adaptive-resolvent-2026-09-13`
 
-Initial activation comment:
+Initial authoritative activation comment:
 
-`5649259224`
+`5650244803`
 
-### 6.1 Frozen central selected-Q case
+Governance synchronization blocker record:
+
+`5650249190`
+
+Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all three CURRENT governance files are synchronized to Issue #61 (this roadmap included), this activation ID is recorded, and a final authoritative activation-refresh comment confirms the post-sync live `main`. Reference handoff: `docs/handoffs/DLH_SESSION_HANDOFF_POST_5VL_2026_09_13.md`.
+
+### 7.1 Frozen central selected-Q case
 
 ```text
 m=1
@@ -159,6 +192,14 @@ r_a=0.07
 r_b=0.02
 w=1.00
 borrowing_rate_gap=0
+rho=0.02
+gamma_c=2
+phi=5
+chi_0=0.1
+chi_1=2
+a_bar=1e-6
+tau=0.15
+z=[0.8,1.3]
 delta=1000
 tolerance_iter=1e-7
 tolerance_Bellman=1e-3
@@ -168,43 +209,38 @@ n_c=n_d=9
 
 All household parameters, grid/domain, initialization, Q/candidate rules and search-bracket semantics remain frozen.
 
-### 6.2 Authorized safeguard only
+### 7.2 Authorized adaptive resolvent only
 
-The raw accepted selected-Q update remains the only operator update:
-
-```text
-V_raw=T(V_old)
-```
-
-The new diagnostic may only replace immediate acceptance of `V_raw` by:
+At each accepted `V_old`, build the accepted selected policy, utility and conservative backward `Q` from `V_old` exactly once, then:
 
 ```text
-V_trial(lambda)=V_old+lambda*(V_raw-V_old)
-lambda in {1,1/2,...,2^-20}
-choose the largest lambda with all required boundary p_b > 1e-12
+[(1/delta + rho)I - Q(V_old)] V_delta = u(V_old) + V_old/delta
+delta_k = 1000*2^-k, k = 0..20, descending
+choose the largest delta whose V_trial satisfies all required boundary p_b > 1e-12
+accept V_trial directly — NO additional value damping
 ```
 
-The margin is an iterate-acceptance numerical tolerance only; no derivative is clipped/floored and no economics is changed.
+The `1e-12` margin is an iterate-acceptance tolerance only; no derivative is clipped/floored and the margin never enters FOCs or Bellman scoring. No value-update line search from Issue #60 may be layered on top.
 
 Exactly one central-case run and one deterministic repeat are authorized.
 
-### 6.3 PASS standard
+### 7.3 PASS standard
 
 Outcome A requires:
 
 - accepted iterates stay inside the boundary effective domain;
-- convergence within 1000 accepted iterations;
+- convergence `max|V_new-V_old| < 1e-7` within 1000 accepted iterations;
 - final re-selection on final V;
-- final `||R_Bellman||_inf <= 1e-3`;
-- conservative selected Q;
+- final `||rho V - [u_selected(V)+Q_selected(V)V]||_inf <= 1e-3`;
+- conservative selected Q within accepted row-sum tolerance;
 - no accepted artificial bracket binding;
 - deterministic repeat.
 
-A tiny damped step without Bellman residual PASS is stagnation, not convergence.
+A tiny delta-induced update without final Bellman residual PASS is stagnation (`RESOLVENT_STAGNATION`), not convergence.
 
 ---
 
-## 7. Current roadmap position
+## 8. Current roadmap position
 
 ```text
 MATLAB-faithful two-asset household economics                 ACCEPTED
@@ -218,7 +254,8 @@ state-constraint operator-consistency audit                   OUTCOME B ACCEPTED
 boundary-HJB production-scheme design                         OUTCOME A ACCEPTED — ISSUE #57
 boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTED — ISSUE #58
 fixed-household external-price envelope                       TERMINAL B/H2 ACCEPTED — ISSUE #59
-invariant-domain safeguarded HJB update                       ACTIVE — ISSUE #60
+invariant-domain safeguarded HJB update                       TERMINAL C ACCEPTED/CLOSED — ISSUE #60
+adaptive pseudo-time / resolvent diagnostic                   NEXT ACTIVE — ISSUE #61 (BUILDER NOT YET OPERATIVE)
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -231,7 +268,7 @@ learned regional W^L                                         PENDING
 
 ---
 
-## 8. Same-process safeguards — frozen
+## 9. Same-process safeguards — frozen
 
 ```text
 Q backward
@@ -250,14 +287,14 @@ Stationary KFE remains explicitly blocked.
 
 ---
 
-## 9. Current governance position
+## 10. Current governance position
 
-**ACTIVE BUILDER ISSUE: #60**, but execution begins only after CURRENT activation-ID synchronization + final activation-refresh comment.
+**NEXT ACTIVE BUILDER ISSUE: #61** (initial activation comment `5650244803` recorded; governance synchronization blocker record `5650249190`). Builder execution becomes operative only after all three CURRENT governance files are synchronized to Issue #61 and a final authoritative activation-refresh comment confirms the post-sync live `main`.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #60 body/comments.
+- Issue #61 body/comments.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.

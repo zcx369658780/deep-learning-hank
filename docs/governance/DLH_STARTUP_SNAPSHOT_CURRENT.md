@@ -21,63 +21,68 @@ Priority:
 
 ## Current Builder state
 
-**ACTIVE — Issue #60 / DLH-5V-L**, pending final activation refresh.
+**NEXT ACTIVE — Issue #61 / DLH-5V-M**, NOT YET OPERATIVE.
+
+Initial authoritative activation comment:
+
+`5650244803`
+
+Governance synchronization blocker record:
+
+`5650249190`
 
 Title:
 
-`DLH-5V-L: Test invariant-domain safeguarded value-update line search on the central selected-Q HJB case`
+`DLH-5V-M: Adaptive pseudo-time / resolvent safeguard diagnostic on the central selected-Q HJB case`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__EFFECTIVE_DOMAIN_PRESERVING_VALUE_UPDATE`
-
-Owner / Reviewer route decision:
-
-`APPROVE_CONTROLLED_INVARIANT_DOMAIN_SAFEGUARDED_VALUE_UPDATE_DIAGNOSTIC`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__ADAPTIVE_PSEUDO_TIME_RESOLVENT_EFFECTIVE_DOMAIN`
 
 Authority marker:
 
-`DLH_5VL_INVARIANT_DOMAIN_SAFEGUARD_DIAGNOSTIC_AUTHORIZED`
+`DLH_5VM_ADAPTIVE_RESOLVENT_DIAGNOSTIC_AUTHORIZED`
 
-Dedicated branch:
+Dedicated future Builder branch:
 
-`dsh/issue-60-dlh-5vl-invariant-domain-safeguard-2026-09-13`
+`dsh/issue-61-dlh-5vm-adaptive-resolvent-2026-09-13`
 
-Initial activation comment:
+Builder must not begin until CURRENT records this activation ID and a final authoritative activation-refresh comment confirms the post-sync live `main`. Builder execution remains **NOT OPERATIVE** until then.
 
-`5649259224`
+Reference handoff:
 
-Builder must not begin until CURRENT records this activation ID and a final activation-refresh comment confirms the post-sync live main.
+`docs/handoffs/DLH_SESSION_HANDOFF_POST_5VL_2026_09_13.md`
 
-## Latest accepted gate — Issue #59 / DLH-5V-K
+## Latest accepted gate — Issue #60 / DLH-5V-L
+
+Issue #60 is CLOSED completed at Terminal C.
 
 Accepted candidate / integration:
 
-`08f0135de5a60d05eda7184c367e1705da69757d`
+`9b1538feabe2cc4634653721e725ee3e46d449bb`
 
 Reviewer acceptance:
 
-`5649245347`
+`5650057012`
 
 Acceptance integration:
 
-`5649248162`
+`5650059195`
 
 Accepted verdict:
 
-`DLH_5VK_ACCEPTED__TERMINAL_B_H2_CONFIRMED__LEGACY_EXTERNAL_PRICE_SENSITIVITY_REAL__SELECTED_Q_EFFECTIVE_DOMAIN_GAP_REMAINS__STABILIZATION_DIAGNOSTIC_NEXT`
+`DLH_5VL_ACCEPTED__TERMINAL_C_CONFIRMED__VALUE_UPDATE_ONLY_INVARIANT_SAFEGUARD_FAILS_ON_FROZEN_CENTRAL_TRAJECTORY__RAW_OPERATOR_ROUTE_RECONSIDERATION_REQUIRED`
 
 Accepted interpretation:
 
-- the frozen legacy solver has reproducible external-price sensitivity;
-- tested convergent `r_a` points include `0.07,0.09,0.11,0.12`, with sampled failures immediately outside at `0.065` and `0.125`; this is a sampled span/bracket, not a continuous-interval theorem;
-- legacy convergence alone is not economic-quality or exact-unbounded-HJB validation: the accepted legacy `v_b` floor is materially active and non-positive finite-difference `V_b` occurs at converged points;
-- the selected-Q solver exits its boundary effective domain at iteration 2 even at the central historical sentinel `r_a=0.07`;
-- therefore external-price discipline and a selected-Q invariant-domain numerical issue both remain relevant.
+- pure value-update damping preserves the positive-`p_b` domain for a short path but is not a viable convergence route on the frozen central trajectory;
+- 17 accepted iterations remain in-domain, then no authorized dyadic value-damping step exists;
+- this is trajectory-bounded evidence only and does NOT prove global nonexistence of a positive-domain HJB fixed point;
+- external-price sensitivity from Issue #59 remains real but does not resolve the selected-Q invariant-domain problem.
 
-## Active diagnostic route
+## Next active diagnostic route
 
-Issue #60 tests whether a deterministic safeguarded value update can keep every accepted selected-Q iterate inside the required boundary `p_b>0` effective domain without changing the target fixed-point equation.
+Issue #61 tests whether adapting the pseudo-time/resolvent parameter `delta` INSIDE the implicit solve preserves the accepted boundary effective domain, instead of damping an already-computed `delta=1000` value update.
 
 Frozen central case:
 
@@ -103,17 +108,18 @@ max_iterations=1000
 n_c=n_d=9
 ```
 
-Authorized safeguard only:
+Authorized adaptive resolvent only:
 
 ```text
-V_trial(lambda)=V_old+lambda*(V_raw-V_old)
-lambda in {1,1/2,...,2^-20}
-accept largest lambda with all required boundary p_b > 1e-12
+[(1/delta + rho)I - Q(V_old)] V_delta = u(V_old) + V_old/delta
+delta_k = 1000*2^-k, k = 0..20, descending
+choose the largest delta whose V_trial satisfies all required boundary p_b > 1e-12
+accept V_trial directly — NO additional value damping
 ```
 
-The `1e-12` margin is an iterate-acceptance tolerance only; no derivative clipping/flooring is allowed.
+The `1e-12` margin is an iterate-acceptance tolerance only; no derivative clipping/flooring is allowed and the margin never enters FOCs or Bellman scoring.
 
-Exactly one safeguarded run and one deterministic repeat are authorized. Final PASS requires the accepted final Bellman residual criterion, not merely a tiny damped step.
+Exactly one adaptive-resolvent run and one deterministic repeat are authorized. Final PASS requires the accepted final Bellman residual criterion, not merely a tiny delta-induced update.
 
 ## Frozen household / same-process authority
 
@@ -123,7 +129,7 @@ Accepted household oracle remains immutable/read-only:
 
 Git blob:
 
-`76ae5b149993a7edeeb337f1b02b3fe33c51e`
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
 Accepted selected-Q source remains immutable/read-only:
 
@@ -149,10 +155,10 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-No price sweep, no alternative lambda grid/margin, no pseudo-time adaptation, no continuation, no hard economic bounds, no KFE/stationary KFE, no SCC/global-Q, no production Wmax/resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/Results.
+No price sweep, no alternative delta ladder/margin, no value damping, no Bellman-residual-driven delta selection, no continuation/homotopy, no hard economic bounds, no KFE/stationary KFE, no SCC/global-Q, no production Wmax/resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/Results.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #60 body/comments.
+- Issue #61 body/comments.
