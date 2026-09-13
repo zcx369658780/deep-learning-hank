@@ -21,11 +21,18 @@ Interpretation (trajectory-bounded):
   effective domain for the two accepted iterates (2/2 in-domain; min accepted
   boundary p_b = 0.00985) — including one full iteration more than the undamped
   baseline, which exits at iteration 2.
-- But the resolvent trial direction at the domain wall is materially steeper than
-  the value-update damping direction of Issue #60: at the binding wall state
-  F3 (13,13) z=1 the accepted iterate's p_b is still 0.00985 (far from the wall),
-  yet even the SMALLEST authorized delta trial (1000·2^-20 ≈ 9.54e-4) already
-  drives that state's p_b to −0.00208, below the margin.
+- At the third update request, NO authorized delta on the deterministic ladder is
+  feasible (each of the 21 ladder trials leaves the effective domain somewhere).
+  At the binding wall state F3 (13,13) z=1 the accepted iterate's p_b is still
+  0.00985 (far from the wall), yet even the SMALLEST authorized delta trial
+  (1000·2^-20 ≈ 9.54e-4) already drives that state's p_b to −0.00208, below the
+  margin; the recorded worst states of larger-delta trials differ (the delta=1000
+  reference trial's worst state is F3 (17,7), z=1).
+- Direct cross-route comparison (accepted iterations before the terminal event):
+  2 accepted iterations on this adaptive-resolvent route vs 17 under the
+  Issue #60 value-damping route on the same frozen central case. No cross-route
+  per-unit-parameter "steepness" ratio is claimed (delta and lambda are different
+  update parameters with different scales).
 - Hence the adaptive-pseudo-time/resolvent route does NOT provide a viable
   positive-domain iteration route on the frozen central case; the tested
   deterministic delta ladder is exhausted at the third update request.
@@ -41,6 +48,20 @@ not claimed (the run reaches the gate's own terminal failure `RESOLVENT_STEP_FAI
 at the third update request — no viable authorized resolvent step exists; it does not
 stall short of convergence, it cannot even take a next in-domain step). Blocked is
 not applicable.
+
+> **R1 repair record (Reviewer `5651311810`):** bounded engineering/evidence repair
+> on the same branch, no scientific reconfiguration and no change to the Terminal-C
+> interpretation. (1) `min_boundary_pb_state` made FAIL-CLOSED: any required (non-F0)
+> boundary p_b that is non-finite (NaN/Inf) deterministically fails the domain check
+> (returns +inf at that state) instead of being silently ignored by the min
+> comparison; regression tests added. (2) Report wording tightened: the evidence
+> supports "no ladder delta is feasible" and "the smallest-delta limiting failure is
+> at F3 (13,13), z=1"; it does NOT claim all 21 deltas fail at the same state (the
+> delta=1000 reference trial's worst state is F3 (17,7), z=1). (3) The cross-route
+> "steepness/sensitivity per-unit-delta vs per-unit-lambda" ratio is removed; the
+> direct empirical comparison (2 accepted iterations here vs 17 under Issue #60
+> value damping) is retained. The frozen central run + deterministic repeat were
+> re-executed to confirm the scientific result is unchanged (bit-identical).
 
 ## 2. Authority and scope record
 
@@ -103,13 +124,16 @@ configuration). Persisted trace: `DLH_5VM_RESOLVENT_TRACE.csv` (header + 2 rows)
 | min p_b of the smallest-delta trial | **−0.002078969753188379** (< 1e-12 margin) |
 | smallest-delta trial worst state | node 332, family **F3**, (13, 13), z = 1 (SAME wall state) |
 | delta=1000 trial min p_b (aggressive reference) | −0.7117516766123627 at F3 (17, 7), z = 1 |
-| any allowed delta viable? | **NO** — all 21 ladder deltas leave the domain at the wall state |
+| any allowed delta viable? | **NO** — all 21 ladder deltas are infeasible; the recorded worst state differs across ladder points (only the smallest-delta trial's worst state is F3 (13,13) z=1) |
 
 At the binding wall state F3 (13,13) z=1, the accepted iterate's p_b is 0.00985
-(far from the 1e-12 margin), yet the resolvent trial direction is so steep that the
-smallest authorized delta (9.54e-4) drives p_b to −0.00208 — the continuous
-delta-crossing (where the trial would stay above the margin) lies below
-1000·2^-20, i.e. outside the authorized ladder. No authorized delta exists.
+(far from the 1e-12 margin), yet the smallest authorized delta trial (9.54e-4)
+already drives that state's p_b to −0.00208 — the continuous delta-crossing
+(where the trial would stay above the margin) lies below 1000·2^-20, i.e.
+outside the authorized ladder. This is the recorded limiting failure of the
+smallest authorized delta; larger-delta trials have worst states that may differ
+(for example the delta=1000 reference trial's worst state is F3 (17,7), z=1).
+No authorized delta exists.
 
 ## 5. Scientific interpretation (trajectory-bounded)
 
@@ -119,11 +143,14 @@ delta-crossing (where the trial would stay above the margin) lies below
   and the failure occurs at the third request).
 - **The tested adaptive-pseudo-time route is NOT a viable convergence route on the
   frozen central case**: the accepted delta collapses by a factor 8 per iteration
-  (k 15 → 18), and the third update request cannot take any authorized in-domain
-  step because the resolvent direction at the wall state F3 (13,13) z=1 is
-  materially steeper than the value-update damping direction of Issue #60
-  (sensitivity ≈ −12.5 per unit delta at the wall, vs the #60 raw direction's
-  ≈ −1e-6 per unit lambda at its wall state).
+  (k 15 → 18), and at the third update request every authorized delta is
+  infeasible — the smallest-delta limiting failure is at wall state F3 (13,13)
+  z=1 (accepted p_b there 0.00985, smallest-delta trial p_b −0.00208).
+- **Direct cross-route observation**: this route accepted 2 in-domain iterations
+  before the terminal event, vs 17 under the Issue #60 value-damping route on the
+  same frozen central case. No per-unit-parameter "steepness/sensitivity" ratio
+  between delta and lambda is claimed (they are different update parameters with
+  different scales).
 - The wall state F3 (13,13) is the same family/position that blocks the undamped
   baseline (iteration-2 exit) — the F3 sector boundary of the frozen triangle is
   the domain constraint, independent of the numerical route.
@@ -156,7 +183,7 @@ undamped exit at iteration 2, F3 (13,13), z=0) and Issue #60 accepted facts
 (value-damping preserves the domain for 17 accepted iterations; no authorized dyadic
 step at iteration 18) are used only as frozen references.
 
-## 7. Tests (all pass — 12/12)
+## 7. Tests (all pass — 14/14, incl. R1 regression tests)
 
 `tests/test_dlh_5vm_adaptive_resolvent.py`:
 - frozen central configuration exact (household params, inputs r_a=0.07/r_b=0.02/
@@ -178,8 +205,12 @@ step at iteration 18) are used only as frozen references.
   material residual is never a PASS);
 - deterministic full repeat (bit-identical outcome/trace/failure detail);
 - real frozen central run reproduces Terminal C (RESOLVENT_STEP_FAILURE, 2
-  iterations, k=15 then k=18, wall state F3 (13,13) z=1, smallest-delta trial
-  p_b < 0);
+  iterations, k=15 then k=18, smallest-delta limiting failure at F3 (13,13) z=1,
+  smallest-delta trial p_b < 0);
+- R1 fail-closed regression: when earlier required boundary p_b values are finite
+  and a later required state is NaN, `min_boundary_pb_state` returns +inf at that
+  state and `_domain_ok` returns False (NaN is never silently ignored); the
+  all-finite path is unchanged;
 - no KFE / stationary KFE / steady-state invocation (AST name scan);
 - margin is acceptance-only (PB_MARGIN never enters derivative or Bellman-scoring
   paths).
@@ -188,11 +219,14 @@ step at iteration 18) are used only as frozen references.
 
 - Commands:
   - `$env:PYTHONPATH = "D:\deep-learning-hank\src"`
-  - `python -m pytest tests/test_dlh_5vm_adaptive_resolvent.py -q` (12/12 pass, ~2.5 s)
+  - `python -m pytest tests/test_dlh_5vm_adaptive_resolvent.py -q` (14/14 pass, ~2.5 s)
   - diagnostic driver: `run_adaptive_resolvent_central()` executed exactly twice;
     the two results and full traces are bit-identical
     (`deterministic_repeat_identical: true`); `DLH_5VM_RESOLVENT_TRACE.csv` written
-    from the first run (2 rows).
+    from the first run (2 rows). Re-executed once more after the R1 fail-closed
+    repair to confirm the scientific result is unchanged (bit-identical outcome,
+    trace and failure detail; NaN evidence never occurs on the frozen central
+    trajectory).
 - Run counts: 2 adaptive-resolvent executions; each = 2 accepted iterations + 1
   failing update request (each iteration: 1 operator build + (k+2) resolvent solves,
   k = 15, 18, then 22+2 on the failing request; ~0.5 s per run). No other

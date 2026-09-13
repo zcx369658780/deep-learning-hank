@@ -35,6 +35,8 @@ from deep_learning_hank.two_asset.adaptive_resolvent_hjb import (
     _domain_ok,
     delta_ladder,
     final_bellman_validation,
+    min_boundary_pb,
+    min_boundary_pb_state,
     run_adaptive_resolvent_central,
     select_largest_feasible_delta,
 )
@@ -158,10 +160,44 @@ class _FakeSolver:
         return Q, u, diag, [None] * self.state_size
 
 
+class _NaNStateSolver(_FakeSolver):
+    """Like _FakeSolver but vb_b is NaN at (node 1, z 0) — AFTER finite
+    values at node 0 — to exercise the fail-closed path."""
+
+    def compute_derivatives(self, V, labor0, ti, gap):
+        vb_f, vb_b, va_f, va_b = super().compute_derivatives(
+            V, labor0, ti, gap)
+        vb_b[1, 0] = np.nan
+        return vb_f, vb_b, va_f, va_b
+
+
 def _feasible_condition(V0: float, delta: float,
                         rho: float = 0.02, margin: float = PB_MARGIN) -> bool:
     # with Q = 0, u = 0: V_delta[0,0] = V0 / (1 + rho*delta)
     return V0 / (1.0 + rho * delta) > margin
+
+
+# ---------------------------------------------------------------------------
+# R1: any non-finite required boundary p_b fails closed (never ignored)
+# ---------------------------------------------------------------------------
+def test_domain_check_fails_closed_on_nan_boundary_state():
+    solver = _NaNStateSolver()
+    labor0 = np.zeros((solver.n, solver.nz))
+    V = np.full((solver.n, solver.nz), 1.0)      # finite at all earlier states
+    pb, node, nz = min_boundary_pb_state(solver, V, labor0)
+    assert pb == float("inf")
+    assert (node, nz) == (1, 0)
+    assert min_boundary_pb(solver, V, labor0) == float("inf")
+    assert not _domain_ok(solver, V, labor0)      # fail closed on NaN
+
+
+def test_domain_check_all_finite_unchanged():
+    solver = _FakeSolver()
+    labor0 = np.zeros((solver.n, solver.nz))
+    V = np.full((solver.n, solver.nz), 0.5)
+    pb, node, nz = min_boundary_pb_state(solver, V, labor0)
+    assert pb == pytest.approx(0.5)
+    assert _domain_ok(solver, V, labor0) is True
 
 
 # ---------------------------------------------------------------------------

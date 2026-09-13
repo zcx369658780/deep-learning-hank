@@ -176,7 +176,11 @@ def min_boundary_pb(solver: BoundaryHJBSolver, V: np.ndarray,
 def min_boundary_pb_state(solver: BoundaryHJBSolver, V: np.ndarray,
                           labor0: np.ndarray) -> tuple[float, int, int]:
     """Minimum effective boundary liquid marginal p_b plus the worst (node, nz).
-    Non-finite evidence is reported as +inf with the first non-finite state."""
+
+    FAIL-CLOSED: any required (non-F0) boundary p_b that is non-finite
+    (NaN/Inf) deterministically fails the check by returning +inf at that
+    state — it is never silently ignored by the min comparison, even when
+    earlier boundary states are finite."""
     vb_f, vb_b, va_f, va_b = solver.compute_derivatives(V, labor0, 0.0, 0.0)
     g = solver.grid
     best: Optional[tuple[float, int, int]] = None
@@ -185,6 +189,10 @@ def min_boundary_pb_state(solver: BoundaryHJBSolver, V: np.ndarray,
             continue
         for nz in range(solver.nz):
             v = float(vb_b[node, nz])
+            if not np.isfinite(v):
+                # fail closed: non-finite required boundary evidence is never
+                # accepted as positive, regardless of other finite values
+                return float("inf"), node, nz
             if best is None or v < best[0]:
                 best = (v, node, nz)
     if best is None:
