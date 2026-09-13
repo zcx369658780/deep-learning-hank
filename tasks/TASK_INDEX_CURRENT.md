@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE`
+Status: `ISSUE_64_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
 
 Last synchronized: 2026-09-13
 
@@ -8,22 +8,109 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NO ACTIVE BUILDER ISSUE.** Issue #63 / DLH-5V-O is ACCEPTED / CLOSED at
-Terminal B. The continuous fraction-to-boundary pseudo-transient controller
-preserves the effective domain on the frozen central selected-Q case but
-stagnates at the boundary with a material final Bellman residual; validated
-HJB convergence was not reached.
+**Issue #64 / DLH-5V-P is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
+execution for Issue #64 becomes operative only after all three CURRENT
+governance files are synchronized to Issue #64 (this file included), the
+initial activation comment ID is recorded, and a final authoritative
+activation-refresh comment confirms the post-sync live `main`.
 
-Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**. The next
-route must NOT be merely continuing to shrink delta or tuning `TAU_FTB`.
-Residual-aware / policy-Newton / semismooth / boundary-tangent direction
-successors are **NOT YET AUTHORIZED** — they await a ChatGPT scientific
-design and a new authorized Issue (no successor Issue, no Builder scientific
-branch, no accepted new HJB iterate).
+Initial authoritative activation comment:
 
-## Latest accepted task — Issue #63 / DLH-5V-O
+`5652648524`
 
-Issue #63 is CLOSED completed at Terminal B.
+Owner / Reviewer route decision:
+
+`APPROVE_FTB_STAGNATION_RESIDUAL_DECOMPOSITION_AND_FROZEN_POLICY_NEWTON_GEOMETRY_AFTER_5VO_TERMINAL_B`
+
+Authority marker:
+
+`DLH_5VP_STAGNATION_NEWTON_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__FTB_STAGNATION_RESIDUAL_DECOMPOSITION_AND_FROZEN_POLICY_NEWTON_GEOMETRY`
+
+Dedicated future Builder branch:
+
+`dsh/issue-64-dlh-5vp-stagnation-newton-geometry-2026-09-13`
+
+Issue #63 / DLH-5V-O remains ACCEPTED / CLOSED at Terminal B (controlling
+accepted evidence for the FTB-stagnation state reconstructed by Issue #64).
+
+## Next active task — Issue #64 / DLH-5V-P
+
+Title:
+
+`DLH-5V-P: Diagnose Issue #63 stagnation residual decomposition and frozen-policy Newton boundary geometry`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__FTB_STAGNATION_RESIDUAL_DECOMPOSITION_AND_FROZEN_POLICY_NEWTON_GEOMETRY`
+
+Scientific question: at the accepted Issue #63 FTB-stagnation state, is the
+obstruction mainly (1) a boundary-normal geometry problem that also makes a
+frozen-policy Newton direction essentially unusable, or (2) a pseudo-time
+direction problem, where a Newton-like frozen-policy direction has a
+meaningful positive domain-safe step and materially reduces the re-selected
+HJB residual? A second required question: why the accepted final-validation
+residual (~490.756) is much larger than the iteration-operator residual scale
+(~10.43) — decompose by F0 versus boundary rows and by iteration versus
+final-validation operator semantics.
+
+### Frozen scientific boundary (binding)
+
+- reconstruct ONLY the accepted Issue #63 stagnation state: deterministic
+  reconstruction of the accepted trajectory, STOP immediately after accepted
+  FTB step 8, before any new HJB iterate is accepted; reproduce the final step
+  statistic ≈ `3.6614352438846254e-08`, final min boundary
+  `p_b ≈ 4.8089461301970005e-09`, wall state F3 (13,13), z=1, and the final
+  accepted Bellman validation residual ≈ `490.7560425919994`;
+- only: iteration-vs-final residual/operator decomposition (`R_iter =
+  rho*V_* - [u_iter + Q_iter V_*]` vs `R_final = rho*V_* - [u_final +
+  Q_final V_*]`); F0-vs-boundary residual decomposition; ONE frozen-policy
+  Newton direction `J_iter d_N = -R_iter` with `J_iter = rho I - Q_iter`;
+  ONE boundary-crossing calculation; exactly TWO diagnostic trial fractions
+  (`alpha_half`, `alpha_near`); ONE deterministic repeat;
+- frozen diagnostic constants: `PB_MARGIN=1e-12`, `EPS_ALPHA=1e-6`,
+  `HALF_ALPHA=0.5`, `MATERIAL_REDUCTION_RATIO=0.50`;
+- `alpha_near = min(1, (1-EPS_ALPHA)*alpha_cross)` if a finite positive
+  crossing exists, otherwise `1`; `alpha_half = 0.5*alpha_near`; NO line
+  search, NO alpha tuning, NO material-threshold tuning;
+- trial states are diagnostic only — NOT accepted HJB iterates;
+- no multi-step Newton / policy-iteration / semismooth / trust-region solver;
+- no adaptive line search; no economics / prices / grid / domain / `PB_MARGIN`
+  change; no Issue #63 controller change; no clip/floor of `p_b`;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+### Execution design and terminals
+
+Execute exactly: ONE deterministic reconstruction of the accepted Issue #63
+stagnation state; ONE residual/operator decomposition at `V_*`; ONE
+frozen-policy Newton direction solve; ONE boundary-crossing calculation;
+exactly TWO trial fractions; ONE deterministic repeat of the full diagnostic.
+A trial is a material nonlinear residual reduction only if BOTH
+`||R_reselect||_inf / ||R_iter||_inf <= 0.50` and
+`||R_final_trial||_inf / ||R_final||_inf <= 0.50` (frozen ex ante diagnostic
+threshold for this Issue, not a convergence criterion).
+
+Exactly ONE terminal:
+
+- A `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__BOUNDARY_SAFE_NEWTON_DIRECTION_MATERIALLY_REDUCES_RESELECTED_RESIDUALS__NEWTON_TRUST_REGION_DESIGN_GATE_READY`
+- B `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__POSITIVE_BOUNDARY_SAFE_NEWTON_STEP_BUT_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+- C `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_BOUNDARY_SAFE_NEWTON_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VP_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+### Builder allowlist (four new paths only)
+
+1. `src/deep_learning_hank/two_asset/stagnation_newton_geometry.py`
+2. `tests/test_dlh_5vp_stagnation_newton_geometry.py`
+3. `reports/dlh_5vp_stagnation_newton_geometry_2026_09_13/DLH_5VP_STAGNATION_NEWTON_GEOMETRY_REPORT.md`
+4. `reports/dlh_5vp_stagnation_newton_geometry_2026_09_13/DLH_5VP_NEWTON_GEOMETRY_SUMMARY.csv`
+
+## Prior accepted task — Issue #63 / DLH-5V-O (ACCEPTED / CLOSED)
+
+Issue #63 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the FTB-stagnation state reconstructed by Issue #64.
 
 Accepted candidate / integration:
 
@@ -200,6 +287,14 @@ Git blob:
 
 `cb6533475d0ba115e6f52bd73e61aeb85c9b6ea7`
 
+Accepted Issue #63 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/continuous_ftb_resolvent_hjb.py`
+
+Git blob:
+
+`746799509c517746ba6a321e5526c57a8f4698e4`
+
 Binding law remains:
 
 ```text
@@ -216,16 +311,21 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-No successor Issue is authorized; no further delta-shrinking or `TAU_FTB`
-tuning as the next route; no residual-aware / policy-Newton / semismooth /
-boundary-tangent direction work, no continuous continuation variant, no
-accepted new HJB iterate, no extension of any delta ladder as an experiment, no
-new price / grid / margin experiments, no KFE/stationary KFE, no SCC/global-Q,
-no GE/multi-region/neural/nominal/calibration/policy/welfare/Results work may
-start before an Owner/ChatGPT scientific design and a new authorized Issue.
+Issue #64 / DLH-5V-P is the authorized local diagnostic scope only: exactly
+ONE frozen-policy Newton direction on the frozen iteration operator and exactly
+TWO diagnostic trial fractions (`alpha_half`, `alpha_near`); trial states are
+diagnostic only and NOT accepted HJB iterates. A multi-step Newton /
+policy-iteration / semismooth / trust-region solver, an adaptive line search,
+alpha / material-threshold tuning, further delta-shrinking or `TAU_FTB`
+tuning, a continuous continuation variant, an extension of any delta ladder as
+an experiment, and any new price / grid / margin experiments remain **NOT
+AUTHORIZED** without a further Owner/ChatGPT scientific design and a new
+authorized Issue. No KFE/stationary KFE, no SCC/global-Q, no GE/multi-region/
+neural/nominal/calibration/policy/welfare/Results work.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- Issue #64 body/comments (next active; initial activation `5652648524`).
 - Issue #63 body/comments (accepted/closed).
