@@ -21,115 +21,181 @@ Priority:
 
 ## Current Builder state
 
-**Issue #64 / DLH-5V-P is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
-execution for Issue #64 becomes operative only after all three CURRENT
-governance files are synchronized to Issue #64 (this file included), the
+**Issue #65 / DLH-5V-Q is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
+execution for Issue #65 becomes operative only after all three CURRENT
+governance files are synchronized to Issue #65 (this file included), the
 initial activation comment ID is recorded, and a final authoritative
 activation-refresh comment confirms the post-sync live `main`.
 
 Initial authoritative activation comment:
 
-`5652648524`
+`5653199929`
 
 Owner / Reviewer route decision:
 
-`APPROVE_FTB_STAGNATION_RESIDUAL_DECOMPOSITION_AND_FROZEN_POLICY_NEWTON_GEOMETRY_AFTER_5VO_TERMINAL_B`
+`APPROVE_F0_FINAL_VALIDATION_OPERATOR_CONSISTENCY_AUDIT_AFTER_5VP_TERMINAL_B`
 
 Authority marker:
 
-`DLH_5VP_STAGNATION_NEWTON_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
+`DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS_AUDIT_AUTHORIZED`
 
 Dedicated future Builder branch:
 
-`dsh/issue-64-dlh-5vp-stagnation-newton-geometry-2026-09-13`
+`dsh/issue-65-dlh-5vq-f0-final-validation-audit-2026-09-13`
 
-Issue #63 / DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 /
-DLH-5V-L remain ACCEPTED / CLOSED. The value-damping (#60), adaptive-resolvent
-(#61), local-geometry (#62) and continuous-FTB (#63) gates are closed.
+Issue #64 / DLH-5V-P, Issue #63 / DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 /
+DLH-5V-M and Issue #60 / DLH-5V-L are ACCEPTED / CLOSED. The value-damping
+(#60), adaptive-resolvent (#61), local-geometry (#62), continuous-FTB (#63)
+and frozen-policy-Newton-geometry (#64) gates are closed.
 
-## Next active gate — Issue #64 / DLH-5V-P
+## Next active gate — Issue #65 / DLH-5V-Q
 
 Title:
 
-`DLH-5V-P: Diagnose Issue #63 stagnation residual decomposition and frozen-policy Newton boundary geometry`
+`DLH-5V-Q: Audit F0 final-validation operator semantics at the accepted Issue #63 stagnation state`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__FTB_STAGNATION_RESIDUAL_DECOMPOSITION_AND_FROZEN_POLICY_NEWTON_GEOMETRY`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_FINAL_VALIDATION_OPERATOR_CONSISTENCY_AUDIT`
 
-Scientific question: at the accepted Issue #63 FTB-stagnation state, is the
-obstruction mainly (1) a boundary-normal geometry problem that also makes a
-frozen-policy Newton direction essentially unusable, or (2) a pseudo-time
-direction problem, where a Newton-like frozen-policy direction has a
-meaningful positive domain-safe step and materially reduces the re-selected
-HJB residual? Second required question: why the accepted final-validation
-residual (~490.756) is much larger than the iteration-operator residual scale
-(~10.43) — decompose by F0 versus boundary rows and by iteration versus
-final-validation operator semantics. Local diagnostic only; does NOT authorize
-a multi-step Newton / policy-iteration / semismooth solver.
+Scientific question: the accepted Issue #64 decomposition established that the
+~490.756 final-validation residual gap is entirely an F0 phenomenon. Before
+any further nonlinear-direction design, determine which F0 semantic change is
+responsible: (1) **stale-record effect** — `final=True` uses F0 policy records
+preserved from the pre-step-8 accepted iterate rather than policies
+re-selected at the stagnation state `V_*`; (2) **final-rate/discretization
+effect** — even using current `V_*`-selected F0 controls, the accepted
+`final=True` F0 upwind-rate construction defines a materially different
+residual/operator from `final=False` iteration semantics; (3) both. This is a
+scientific consistency audit of the accepted validation operator; it does NOT
+authorize changing the accepted source or convergence criterion. Local
+diagnostic only.
 
 ### Frozen scientific boundary (binding)
 
-- reconstruct ONLY the accepted Issue #63 stagnation state: deterministic
-  reconstruction of the accepted trajectory, STOP immediately after accepted
-  FTB step 8, before any new HJB iterate is accepted; reproduce the final step
-  statistic ≈ `3.6614352438846254e-08`, final min boundary
-  `p_b ≈ 4.8089461301970005e-09`, wall state F3 (13,13), z=1, and the final
-  accepted Bellman validation residual ≈ `490.7560425919994`;
-- only: iteration-vs-final residual/operator decomposition (`R_iter =
-  rho*V_* - [u_iter + Q_iter V_*]` vs `R_final = rho*V_* - [u_final +
-  Q_final V_*]`, iteration semantics built exactly once with accepted
-  `final=False` semantics, final-validation semantics exactly as accepted in
-  Issue #63); F0-vs-boundary residual decomposition; ONE frozen-policy Newton
-  direction `J_iter d_N = -R_iter` with `J_iter = rho I - Q_iter`; ONE
-  boundary-crossing calculation; exactly TWO diagnostic trial fractions
-  (`alpha_half`, `alpha_near`); ONE deterministic repeat;
-- frozen diagnostic constants: `PB_MARGIN=1e-12`, `EPS_ALPHA=1e-6`,
-  `HALF_ALPHA=0.5`, `MATERIAL_REDUCTION_RATIO=0.50`;
-- boundary derivative semantics from accepted Issue #62: backward
-  finite-difference of `d_N` for regular boundary states; directional
-  derivative exactly 0 on V-independent `i==0` `p_b` states;
-- `alpha_cross = min` positive finite
-  `alpha_cross_i = (p_b(V_*) - PB_MARGIN)/(-dp_b(d_N))` over required boundary
-  states with `dp_b(d_N) < 0`;
-- `alpha_near = min(1, (1-EPS_ALPHA)*alpha_cross)` if a finite positive
-  crossing exists, otherwise `1`; `alpha_half = 0.5*alpha_near`; NO line
-  search, NO alpha tuning, NO material-threshold tuning;
-- trial states are diagnostic only — NOT accepted HJB iterates; at each trial:
-  directly verify all required boundary `p_b` finite and `> PB_MARGIN`, frozen
-  residual scales as `(1-alpha)`, exactly ONE nonlinear policy re-selection
-  with `final=False` semantics, and a final-validation-style residual at the
-  trial using the trial re-selected records;
-- no multi-step Newton / policy-iteration / semismooth / trust-region solver;
-- no adaptive line search; no economics / prices / grid / domain / `PB_MARGIN`
-  change; no Issue #63 controller change; no clip/floor of `p_b`;
+- reconstruct ONLY the exact accepted Issue #63 stagnation state `V_*` using
+  the accepted Issue #64 reconstruction path and STOP before any new HJB
+  iterate is accepted; reproduce 8 accepted FTB steps, final statistic ≈
+  `3.6614352438846254e-08`, min boundary `p_b ≈ 4.8089461301970005e-09`, wall
+  state F3 (13,13), z=1, and accepted stale-record final residual ≈
+  `490.7560425919994`; preserve `records_pre_step8` (the accepted pre-step-8
+  records used by Issue #63 final validation) and `records_current` (the
+  `final=False` policies re-selected exactly once at `V_*`);
+- at the SAME fixed `V_*`, construct exactly three residual/operator objects
+  and do not conflate them:
+  - A. iteration operator: build once with `final=False` at `V_*` →
+    `Q_iter, u_iter, records_current`; `R_iter = rho V_* - [u_iter + Q_iter
+    V_*]` (reproduce `||R_iter||_inf ≈ 10.435094313164921`);
+  - B. accepted stale-record final operator: `final=True` with
+    `f0_policies = records_pre_step8` → `Q_final_stale, u_final_stale`;
+    `R_final_stale = rho V_* - [u_final_stale + Q_final_stale V_*]`
+    (reproduce `||R_final_stale||_inf = 490.7560425919994`);
+  - C. diagnostic current-record final operator: `final=True` with
+    `f0_policies = records_current` → `Q_final_current, u_final_current`;
+    `R_final_current = rho V_* - [u_final_current + Q_final_current V_*]`
+    (diagnostic counterfactual operator at the same state, NOT an accepted
+    replacement validation rule);
+- exact decomposition: `D_total = R_final_stale - R_iter`;
+  `D_stale = R_final_stale - R_final_current`;
+  `D_rate = R_final_current - R_iter`; verify numerically
+  `D_total = D_stale + D_rate` within declared tolerance; for each residual /
+  difference record total / F0-only / non-F0 boundary-only infinity norms with
+  argmax state/family/z, conservative-Q row-sum diagnostic, optimizer
+  expansions / artificial bindings; persist no large matrices;
+- F0 policy/control provenance audit (F0 rows only): compare
+  `records_pre_step8` vs `records_current`; record the count of rows with
+  changed sector/transfer label and max |Δ consumption|, |Δ labor|, |Δ
+  transfer|, |Δ mu_a|, |Δ mu_b|, |Δ utility|; do NOT treat "same sector label"
+  as "same continuous control"; also compare `Q_final_stale - Q_final_current`
+  and `Q_final_current - Q_iter` rowwise max absolute operator differences and
+  `u_final_stale - u_final_current` / `u_final_current - u_iter` max absolute
+  differences;
+- frozen attribution rule (ex ante): `STALE_RECORD_DOMINANT` iff
+  `||D_stale||_inf > ||D_rate||_inf`;
+  `FINAL_RATE_SEMANTICS_DOMINANT_OR_TIED` iff
+  `||D_rate||_inf >= ||D_stale||_inf`; separately record whether
+  `||R_final_current||_inf < ||R_final_stale||_inf`; local attribution only —
+  dominance does NOT imply either diagnostic counterfactual is already the
+  correct convergence criterion;
+- execute exactly: ONE deterministic reconstruction; ONE iteration-operator
+  build; ONE stale-record `final=True` build; ONE current-record `final=True`
+  build; ONE compact F0 policy/control provenance audit; ONE deterministic
+  repeat; no trial value states; no Newton step; no continuation; no source
+  modification;
+- no economics / prices / grid / domain / `PB_MARGIN` change; no accepted
+  final-validation-semantics change in accepted source; no clip/floor of
+  `p_b`;
 - non-finite / inconsistent evidence fails closed;
 - Stationary KFE remains **NOT AUTHORIZED**.
 
 ### Execution design and terminals
 
-Execute exactly: ONE deterministic reconstruction of the accepted Issue #63
-stagnation state; ONE residual/operator decomposition at `V_*`; ONE
-frozen-policy Newton direction solve; ONE boundary-crossing calculation;
-exactly TWO trial fractions; ONE deterministic repeat of the full diagnostic.
-A trial is a material nonlinear residual reduction only if BOTH
-`||R_reselect||_inf / ||R_iter||_inf <= 0.50` and
-`||R_final_trial||_inf / ||R_final||_inf <= 0.50` (frozen ex ante diagnostic
-threshold for this Issue, not a convergence criterion).
+Execute exactly the six steps above with ONE deterministic repeat of the full
+diagnostic. Exactly ONE terminal (Issue #65 body):
 
-Exactly ONE terminal:
-
-- A `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__BOUNDARY_SAFE_NEWTON_DIRECTION_MATERIALLY_REDUCES_RESELECTED_RESIDUALS__NEWTON_TRUST_REGION_DESIGN_GATE_READY`
-- B `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__POSITIVE_BOUNDARY_SAFE_NEWTON_STEP_BUT_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
-- C `DLH_5VP_STAGNATION_NEWTON_GEOMETRY__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_BOUNDARY_SAFE_NEWTON_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
-- Blocked `BLOCKED_DLH_5VP_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+- A `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__STALE_F0_RECORDS_DOMINATE_ACCEPTED_VALIDATION_GAP__FINAL_VALIDATION_RECORD_REFRESH_REVIEW_GATE_READY` (finite/consistent and `||D_stale||_inf > ||D_rate||_inf`)
+- B `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__FINAL_RATE_SEMANTICS_DOMINATE_OR_TIE_ACCEPTED_VALIDATION_GAP__F0_FINAL_OPERATOR_REVIEW_REQUIRED` (finite/consistent and `||D_rate||_inf >= ||D_stale||_inf`)
+- C `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__NONFINITE_OR_INCONSISTENT_DECOMPOSITION__BOUNDARY_HJB_VALIDATION_ROUTE_REVIEW_REQUIRED` (reconstruction failure, non-finite evidence, provenance ambiguity, failed additive decomposition, or operator inconsistency)
+- Blocked `BLOCKED_DLH_5VQ_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
 ### Builder allowlist (four new paths only)
 
-1. `src/deep_learning_hank/two_asset/stagnation_newton_geometry.py`
-2. `tests/test_dlh_5vp_stagnation_newton_geometry.py`
-3. `reports/dlh_5vp_stagnation_newton_geometry_2026_09_13/DLH_5VP_STAGNATION_NEWTON_GEOMETRY_REPORT.md`
-4. `reports/dlh_5vp_stagnation_newton_geometry_2026_09_13/DLH_5VP_NEWTON_GEOMETRY_SUMMARY.csv`
+1. `src/deep_learning_hank/two_asset/f0_final_validation_semantics_audit.py`
+2. `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py`
+3. `reports/dlh_5vq_f0_final_validation_semantics_2026_09_13/DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS_REPORT.md`
+4. `reports/dlh_5vq_f0_final_validation_semantics_2026_09_13/DLH_5VQ_F0_FINAL_VALIDATION_SUMMARY.csv`
+
+## Prior accepted gate — Issue #64 / DLH-5V-P (ACCEPTED / CLOSED)
+
+Issue #64 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the F0 final-validation semantic gap audited by Issue
+#65.
+
+Accepted candidate / integration:
+
+`5db144a65796ff6a7e0f59d2d2a75a0446c13b83`
+
+Reviewer acceptance:
+
+`5653190792`
+
+Acceptance integration:
+
+`5653192646`
+
+Accepted verdict:
+
+`DLH_5VP_ACCEPTED__TERMINAL_B_CONFIRMED__F0_FINAL_SEMANTICS_DOMINATE_VALIDATION_GAP__FROZEN_POLICY_NEWTON_IS_BOUNDARY_SAFE_BUT_GEOMETRICALLY_CAPPED_AND_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VP_STAGNATION_NEWTON_GEOMETRY__POSITIVE_BOUNDARY_SAFE_NEWTON_STEP_BUT_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+
+Accepted scientific interpretation (trajectory-bounded / local evidence only):
+
+- the accepted Issue #63 stagnation state is reconstructed exactly (8
+  root-controlled FTB steps; final step statistic ≈
+  `3.6614352438846254e-08`; final min boundary `p_b ≈
+  4.8089461301970005e-09`; wall state F3 (13,13), z=1; accepted
+  final-validation residual ≈ `490.7560425919994`);
+- `||R_iter||_inf = 10.435094313164921`;
+- accepted `||R_final_stale||_inf = 490.7560425919994`;
+- `||R_final_stale - R_iter||_inf = 488.0988429898615`;
+- the residual difference is entirely on F0 rows; non-F0 boundary-row
+  difference is exactly zero;
+- frozen-policy Newton solve is finite/correct
+  (`||J_iter d_N + R_iter||_inf ≈ 6.96e-11`);
+- `alpha_cross ≈ 1.8667384893e-4`; limiting state remains F3 (13,13), z=1;
+- `alpha_half` / `alpha_near` both strictly domain-safe;
+- authorized trials yield iteration/final residual ratios ≈ 0.9998–0.9999;
+- dual material-reduction threshold 0.50 not met;
+- plain frozen-policy Newton direction therefore not a viable local
+  residual-reducing route under this wall geometry;
+- does NOT prove HJB fixed point nonexistence or failure of future
+  constrained/tangent directions;
+- sector-switch count 0 must not be interpreted as proof continuous controls
+  unchanged;
+- Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Prior accepted gate — Issue #63 / DLH-5V-O (ACCEPTED / CLOSED)
 
@@ -316,6 +382,14 @@ Git blob:
 
 `746799509c517746ba6a321e5526c57a8f4698e4`
 
+Accepted Issue #64 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/stagnation_newton_geometry.py`
+
+Git blob:
+
+`3ca2371c7da1939d1fed55df5728baefb27d8aa7`
+
 ```text
 HJB boundary policy <=> KFE boundary transition law
 Q backward
@@ -332,23 +406,27 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-Issue #64 / DLH-5V-P is the authorized local diagnostic scope only: exactly
-ONE frozen-policy Newton direction on the frozen iteration operator and exactly
-TWO diagnostic trial fractions (`alpha_half`, `alpha_near`); trial states are
-diagnostic only and NOT accepted HJB iterates. A multi-step Newton /
-policy-iteration / semismooth / trust-region solver, an adaptive line search,
-alpha / material-threshold tuning, further delta-shrinking or `TAU_FTB`
-tuning, a continuous continuation variant, an extension of any delta ladder as
-an experiment, and any new price / grid / margin experiments remain **NOT
-AUTHORIZED** without a further Owner/ChatGPT scientific design and a new
-authorized Issue. No KFE/stationary KFE, no SCC/global-Q, no production
-Wmax/resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/
-Results, and no Builder scientific branch beyond the Issue #64 dedicated
-branch may start before that.
+Issue #65 / DLH-5V-Q is the authorized local diagnostic scope only: exactly
+three residual/operator builds at the same fixed accepted Issue #63 stagnation
+state `V_*` (iteration `final=False`; accepted stale-record `final=True`;
+current-record diagnostic `final=True`), the exact `D_total = D_stale +
+D_rate` decomposition with F0/boundary attribution, and the F0
+continuous-control provenance audit; the current-record final operator is
+diagnostic only and NOT an accepted replacement validation rule. No Newton /
+policy-iteration / semismooth / trust-region / continuation execution; no
+source mutation of the accepted final-validation semantics; no adaptive line
+search; no alpha / threshold tuning; no economics / prices / grid / domain /
+`PB_MARGIN` change; no new HJB iterate; no clip/floor of `p_b`. Any further
+nonlinear-direction design remains **NOT AUTHORIZED** without a further
+Owner/ChatGPT scientific design and a new authorized Issue. No KFE/stationary
+KFE, no SCC/global-Q, no production Wmax/resolution, no
+GE/multi-region/neural/nominal/calibration/policy/welfare/Results, and no
+Builder scientific branch beyond the Issue #65 dedicated branch may start
+before that.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #64 body/comments (next active; initial activation `5652648524`).
-- Issue #63 body/comments (accepted/closed).
+- Issue #65 body/comments (next active; initial activation `5653199929`).
+- Issue #64 body/comments (accepted/closed).
