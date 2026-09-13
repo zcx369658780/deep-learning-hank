@@ -4,7 +4,7 @@
 **Date:** 2026-09-13  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-N / ISSUE #62 NEXT ACTIVE — LOCAL CONTINUOUS RESOLVENT / DOMAIN-MARGIN GEOMETRY DIAGNOSTIC (BUILDER NOT YET OPERATIVE)
+**Status:** NO_ACTIVE_BUILDER_ISSUE — DLH-5V-N / ISSUE #62 OUTCOME A ACCEPTED / CLOSED (local continuous resolvent / domain-margin geometry gate complete)
 
 ---
 
@@ -257,7 +257,7 @@ A tiny delta-induced update without final Bellman residual PASS is stagnation (`
 
 ---
 
-## 8. Issue #62 / DLH-5V-N — NEXT ACTIVE local continuous resolvent / domain-margin geometry diagnostic
+## 8. Issue #62 / DLH-5V-N — local continuous resolvent / domain-margin geometry — OUTCOME A ACCEPTED / CLOSED
 
 Title:
 
@@ -275,23 +275,81 @@ Authority marker:
 
 `DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
 
-Dedicated future Builder branch:
+Builder branch (integrated into `main`):
 
 `dsh/issue-62-dlh-5vn-local-resolvent-geometry-2026-09-13`
 
 Initial authoritative activation comment:
 
-`5651730413`
+`5651730413` (final authoritative activation-refresh `5651801939`)
 
-Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all three CURRENT governance files are synchronized to Issue #62 (this roadmap included), this activation ID is recorded, and a final authoritative activation-refresh comment confirms the post-sync live `main`.
+Accepted candidate / integration:
 
-### 8.1 Scientific question
+`7ba2d75978033064c588230b15d760b60bec9e00`
 
-At the last accepted Issue #61 state immediately before its terminal third update request, does the frozen selected-Q resolvent possess a strictly positive local effective-domain-safe step below the Issue #61 ladder floor, and what is the local domain-margin geometry? The Issue distinguishes ladder-floor exhaustion (sufficiently small positive continuous delta remains locally feasible) from a deeper local operator/domain pathology (non-finite, inconsistent, or no reproducible positive local step).
+Reviewer acceptance:
 
-### 8.2 Frozen terminal-state provenance and object
+`5652208157`
 
-Exactly the accepted Issue #61 frozen central configuration and initialization (`m=1, W_max=10, b_min=-2, a_max=10; r_a=0.07, r_b=0.02, w=1.00, gap=0; rho=0.02, gamma_c=2, phi=5, chi_0=0.1, chi_1=2, a_bar=1e-6; tau=0.15; z=[0.8,1.3]; n_c=n_d=9, bracket expansion x4 max 3; PB_MARGIN=1e-12`). Reconstruct the accepted Issue #61 trajectory deterministically and STOP at its last accepted state after exactly 2 accepted updates; verify the reconstruction reproduces the accepted Issue #61 trace and terminal-state boundary minimum. At this frozen `V_*`, build selected policy / utility / conservative backward `Q_*` exactly once; the same frozen `(V_*, Q_*, u_*)` is used for every local delta evaluation; no policy re-selection as delta varies.
+Acceptance integration:
+
+`5652209372`
+
+Accepted verdict:
+
+`DLH_5VN_ACCEPTED__OUTCOME_A_CONFIRMED__POSITIVE_SUBFLOOR_LOCAL_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+Accepted terminal:
+
+`DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+### 8.0 Accepted scientific interpretation (trajectory-bounded / local evidence)
+
+- the Issue #61 terminal event is identified as authorized **ladder-floor
+  exhaustion**;
+- the frozen Issue #61 terminal operator possesses a strictly positive
+  sub-floor local safe delta;
+- the continuous margin crossing is reproducible inside the fixed bracket
+  `[0, 1000·2^-20]`;
+- `delta_cross ≈ 7.8246e-4`; `delta_cross / old ladder floor ≈ 0.8205`;
+- first-order prediction `delta_margin_linear ≈ 7.5943e-4`;
+  `delta_cross / delta_margin_linear ≈ 1.0303`;
+- the limiting state near root / below / above is F3 (13,13), z=1;
+- corrected directional accounting: 186 required boundary states, 105
+  negative-direction, and 40 `i == 0` V-independent states with
+  `dp_b/delta|_0` exactly 0;
+- the R1 true fail-closed non-finite handling is part of the accepted
+  implementation;
+- this is trajectory-bounded / local evidence only: it does NOT prove global
+  uniqueness, does NOT prove the mathematically first positive crossing, does
+  NOT prove any actual next HJB iterate is acceptable, does NOT prove
+  continuation convergence, and does NOT authorize KFE / stationary KFE.
+
+### 8.1 Executed design — scientific question
+
+At the last accepted Issue #61 state immediately before its terminal third
+update request, does the frozen selected-Q resolvent possess a strictly
+positive local effective-domain-safe step below the Issue #61 ladder floor, and
+what is the local domain-margin geometry? The Issue distinguishes ladder-floor
+exhaustion (sufficiently small positive continuous delta remains locally
+feasible) from a deeper local operator/domain pathology (non-finite,
+inconsistent, or no reproducible positive local step). Executed and accepted:
+the terminal event was ladder-floor exhaustion, not a local operator/domain
+pathology.
+
+### 8.2 Executed design — frozen terminal-state provenance and object
+
+Exactly the accepted Issue #61 frozen central configuration and initialization
+(`m=1, W_max=10, b_min=-2, a_max=10; r_a=0.07, r_b=0.02, w=1.00, gap=0;
+rho=0.02, gamma_c=2, phi=5, chi_0=0.1, chi_1=2, a_bar=1e-6; tau=0.15;
+z=[0.8,1.3]; n_c=n_d=9, bracket expansion x4 max 3; PB_MARGIN=1e-12`). The
+accepted Issue #61 trajectory was reconstructed deterministically and STOPPED
+at its last accepted state after exactly 2 accepted updates; the reconstruction
+reproduces the accepted Issue #61 trace and terminal-state boundary minimum
+(min accepted boundary p_b = 0.009853744163134845 at F3 (13,13), z=1 node 332).
+At this frozen `V_*`, selected policy / utility / conservative backward `Q_*`
+was built exactly once; the same frozen `(V_*, Q_*, u_*)` was used for every
+local delta evaluation; no policy re-selection as delta varies.
 
 Equivalent continuous resolvent representation (well-defined at delta=0):
 
@@ -300,27 +358,56 @@ Equivalent continuous resolvent representation (well-defined at delta=0):
 V(0) = V_*
 ```
 
-### 8.3 Authorized local diagnostics only
+### 8.3 Executed design — authorized local diagnostics only
 
-- exact infinitesimal direction `dV/delta|_0 = u_* + Q_* V_* - rho V_*`;
-- directional derivatives `dp_b/delta|_0` for every required non-F0 boundary state;
-- first-order margin-crossing predictions `delta_margin_linear = (p_b(V_*) - PB_MARGIN)/(-dp_b/delta|_0)` for every negative-direction state; minimum positive finite `delta_margin_linear` and its state;
-- ONE deterministic bracketed continuous root solve of `g(delta) = min_required_boundary p_b(V(delta)) - PB_MARGIN` on the fixed bracket `[0, 1000*2^-20]` (scipy.optimize.brentq or equivalent), after verifying `g(0) > 0` and `g(1000*2^-20) < 0`; record bracket endpoints, reproducible root `delta_cross`, `g(delta_cross)`, worst state at/near the root, direct verification at `(1-eps)*delta_cross` and `(1+eps)*delta_cross` (fixed `eps=1e-6`, when inside the bracket), ratio `delta_cross/(1000*2^-20)`, and the ratio to the minimum finite first-order `delta_margin_linear` when both are well-defined.
+- exact infinitesimal direction `dV/delta|_0 = u_* + Q_* V_* - rho V_*`
+  (finite; max abs 10.45);
+- directional derivatives `dp_b/delta|_0` for every required non-F0 boundary
+  state, per the accepted derivative semantics: backward finite-difference of
+  `dV` for regular states and EXACTLY 0 on the accepted V-independent b_min
+  face (`i == 0`; R1-corrected, 40 states);
+- first-order margin-crossing predictions
+  `delta_margin_linear = (p_b(V_*) - PB_MARGIN)/(-dp_b/delta|_0)` for every
+  negative-direction state; minimum positive finite
+  `delta_margin_linear = 7.5943e-4` at F3 (13,13), z=1 (the wall state);
+- ONE deterministic bracketed continuous root solve of
+  `g(delta) = min_required_boundary p_b(V(delta)) - PB_MARGIN` on the fixed
+  bracket `[0, 1000*2^-20]`, after verifying `g(0) > 0`
+  (+0.009853744162134845) and `g(1000*2^-20) < 0`
+  (−0.002078969754188379); reproducible root `delta_cross = 7.8246e-4`
+  strictly inside the bracket; `g(delta_cross) ≈ -1.64e-14`; worst state at
+  root / below / above = F3 (13,13), z=1; direct verification at
+  `(1-1e-6)*delta_cross` (`g = +9.56e-9 > 0`, feasible) and
+  `(1+1e-6)*delta_cross` (`g = -9.56e-9 < 0`, infeasible);
+  `delta_cross/(1000*2^-20) = 0.8205`; ratio to the minimum finite first-order
+  `delta_margin_linear = 1.0303`.
 
-Non-finite required boundary or directional evidence must fail closed and be surfaced explicitly. The linear prediction is a local diagnostic only. A bracketed root is a reproducible sign-changing crossing of the global boundary margin on the frozen local operator — not a claim of global uniqueness or of the first positive crossing unless further evidence proves it.
+Non-finite required boundary or directional evidence fails closed (RAISES
+`LocalGeometryFailure` — R1; never misread as feasible). The linear prediction
+is a local diagnostic only. The bracketed root is a reproducible
+sign-changing crossing of the global boundary margin on the frozen local
+operator — not a claim of global uniqueness or of the first positive crossing.
 
-Execute exactly: ONE deterministic reconstruction of the accepted Issue #61 trajectory; ONE local infinitesimal-direction diagnostic; ONE bracketed continuous crossing solve on `[0, 1000*2^-20]`; ONE deterministic repeat of the full local diagnostic.
+Executed exactly: ONE deterministic reconstruction of the accepted Issue #61
+trajectory; ONE local infinitesimal-direction diagnostic; ONE bracketed
+continuous crossing solve on `[0, 1000*2^-20]`; ONE deterministic repeat of
+the full local diagnostic (bit-identical).
 
-### 8.4 Terminal set (exactly ONE)
+### 8.4 Executed design — terminal set (exactly ONE reported)
 
-- A `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+- A `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY` — **ACCEPTED**
 - B `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_LOCAL_FEASIBILITY_WITH_STIFF_OR_NONUNIQUE_MARGIN_GEOMETRY__FURTHER_DESIGN_REQUIRED`
 - C `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__NONFINITE_OR_INCONSISTENT_LOCAL_DIRECTION_OR_MARGIN_EVIDENCE__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
 - Blocked `BLOCKED_DLH_5VN_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
-### 8.5 Forbidden
+### 8.5 Executed design — forbidden (respected)
 
-No accepted third HJB iterate; no multi-step continuation/homotopy; no extension of the Issue #61 discrete ladder as the experiment; no economics/prices/grid/domain/`PB_MARGIN` change; no mutation of the household oracle, selected-Q source, or accepted Issue #61 implementation (all read-only); no KFE/stationary KFE; no successor; no PR/merge/close/self-accept.
+No accepted third HJB iterate; no multi-step continuation/homotopy; no
+extension of the Issue #61 discrete ladder as the experiment; no
+economics/prices/grid/domain/`PB_MARGIN` change; no mutation of the household
+oracle, selected-Q source, or accepted Issue #61 implementation (all
+read-only); no KFE/stationary KFE; no successor; no PR/merge/close/self-accept
+by the Builder.
 
 ---
 
@@ -340,7 +427,7 @@ boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTE
 fixed-household external-price envelope                       TERMINAL B/H2 ACCEPTED — ISSUE #59
 invariant-domain safeguarded HJB update                       TERMINAL C ACCEPTED/CLOSED — ISSUE #60
 adaptive pseudo-time / resolvent diagnostic                   TERMINAL C ACCEPTED/CLOSED — ISSUE #61
-local continuous resolvent / domain-margin geometry          NEXT ACTIVE — ISSUE #62 (BUILDER NOT YET OPERATIVE)
+local continuous resolvent / domain-margin geometry          OUTCOME A ACCEPTED/CLOSED — ISSUE #62
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -374,16 +461,48 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**NEXT ACTIVE BUILDER ISSUE: #62 / DLH-5V-N** (initial activation comment `5651730413` recorded). Builder execution becomes operative only after all three CURRENT governance files are synchronized to Issue #62 and a final authoritative activation-refresh comment confirms the post-sync live `main`. Until then Builder execution remains **NOT YET OPERATIVE**.
+**NO ACTIVE BUILDER ISSUE.** Issue #62 / DLH-5V-N is ACCEPTED / CLOSED at
+Outcome A (accepted candidate / integration `7ba2d75978033064c588230b15d760b60bec9e00`;
+reviewer acceptance `5652208157`; acceptance integration `5652209372`).
 
-Issue #61 / DLH-5V-M is ACCEPTED / CLOSED (Terminal C; reviewer acceptance `5651495744`; acceptance integration `5651496951`; accepted candidate `2721dadbfd0ad49813f12c8424f6be77fcaf3f85`). Together with Issue #60 value damping, the two tested stabilization routes are both negative evidence on the frozen central selected-Q case.
+Accepted verdict:
 
-Scientific boundary of Issue #62 (binding): the ONLY object is the local continuous resolvent/domain-margin geometry at the frozen Issue #61 last accepted state; no third HJB iterate; no multi-step continuation/homotopy; no extension of the Issue #61 discrete ladder as the experiment; no economics/prices/grid/domain/`PB_MARGIN` change; oracle / selected-Q / accepted Issue #61 implementation all read-only; Stationary KFE remains **NOT AUTHORIZED**; successor NOT YET AUTHORIZED.
+`DLH_5VN_ACCEPTED__OUTCOME_A_CONFIRMED__POSITIVE_SUBFLOOR_LOCAL_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+Accepted terminal:
+
+`DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+The Issue #61 terminal event is identified as authorized ladder-floor
+exhaustion: the frozen Issue #61 terminal operator possesses a strictly
+positive sub-floor local safe delta and the continuous margin crossing is
+reproducible inside the fixed bracket `[0, 1000·2^-20]`
+(`delta_cross ≈ 7.8246e-4`, `delta_cross / old ladder floor ≈ 0.8205`;
+first-order prediction `delta_margin_linear ≈ 7.5943e-4`,
+`delta_cross / delta_margin_linear ≈ 1.0303`; limiting state near root /
+below / above = F3 (13,13), z=1; corrected directional accounting: 186
+required boundary states, 105 negative-direction, 40 `i == 0` V-independent
+states with `dp_b/delta|_0` exactly 0; the R1 true fail-closed non-finite
+handling is part of the accepted implementation). This is trajectory-bounded /
+local evidence only: it does NOT prove global uniqueness, does NOT prove the
+mathematically first positive crossing, does NOT prove any actual next HJB
+iterate is acceptable, does NOT prove continuation convergence, and does NOT
+authorize KFE / stationary KFE.
+
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**. A
+continuation / trust-region / pseudo-transient successor is
+**NOT YET AUTHORIZED** (no successor Issue, no Builder scientific branch, no
+continuous continuation / trust-region / pseudo-transient iteration, no
+accepted new HJB iterate, no extension of any delta ladder as an experiment, no
+new price / grid / margin experiments). Stationary KFE remains
+**NOT AUTHORIZED**. Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L remain
+ACCEPTED / CLOSED at Terminal C; the three tested stabilization-route gates
+are closed.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #62 body/comments.
+- Issue #62 body/comments (accepted/closed).
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.

@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ACTIVE_BUILDER_ISSUE_62__DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC`
+Status: `NO_ACTIVE_BUILDER_ISSUE`
 
 Last synchronized: 2026-09-13
 
@@ -8,45 +8,65 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NEXT ACTIVE — Issue #62 / DLH-5V-N**, subject to final authoritative activation-refresh comment.
+**NO ACTIVE BUILDER ISSUE.** Issue #62 / DLH-5V-N is ACCEPTED / CLOSED at
+Outcome A. The local geometry question is resolved: a strictly positive
+sub-floor local safe step exists and the continuous margin crossing is
+reproducible on the frozen Issue #61 terminal operator.
 
-Initial authoritative activation comment:
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**.
+A continuation / trust-region / pseudo-transient successor is
+**NOT YET AUTHORIZED** (no successor Issue, no Builder scientific branch, no
+continuous continuation / trust-region / pseudo-transient iteration, no
+accepted new HJB iterate).
 
-`5651730413`
+## Latest accepted task — Issue #62 / DLH-5V-N
 
-Title:
+Issue #62 is CLOSED completed at Outcome A.
 
-`DLH-5V-N: Diagnose local continuous resolvent/domain-margin geometry at the Issue #61 terminal accepted state`
+Accepted candidate / integration:
 
-Task type:
+`7ba2d75978033064c588230b15d760b60bec9e00`
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY`
+Reviewer acceptance:
 
-Owner / Reviewer route decision:
+`5652208157`
 
-`APPROVE_LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AFTER_5VM_TERMINAL_C`
+Acceptance integration:
 
-Authority marker:
+`5652209372`
 
-`DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
+Accepted verdict:
 
-Dedicated future Builder branch:
+`DLH_5VN_ACCEPTED__OUTCOME_A_CONFIRMED__POSITIVE_SUBFLOOR_LOCAL_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
 
-`dsh/issue-62-dlh-5vn-local-resolvent-geometry-2026-09-13`
+Accepted terminal:
 
-Builder authority becomes operative ONLY after all three CURRENT governance files are synchronized to Issue #62, this activation ID is recorded here, and a final authoritative activation-refresh comment confirms the post-sync live `main`. Until then Builder execution remains **NOT YET OPERATIVE**.
+`DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
 
-Scientific boundary (binding):
+Accepted scientific interpretation (trajectory-bounded / local evidence):
 
-- the ONLY object is the local continuous resolvent/domain-margin geometry at the Issue #61 last accepted state with frozen `Q_*`, `u_*`;
-- no third HJB iterate is accepted;
-- no multi-step continuation/homotopy;
-- no extension of the Issue #61 discrete delta ladder as the experiment;
-- no change to economics / prices / grid / domain / `PB_MARGIN`;
-- household oracle, selected-Q source, and the accepted Issue #61 implementation are all read-only;
-- Stationary KFE remains **NOT AUTHORIZED**.
+- the Issue #61 terminal event is identified as authorized **ladder-floor
+  exhaustion**;
+- the frozen Issue #61 terminal operator possesses a strictly positive
+  sub-floor local safe delta;
+- the continuous margin crossing is reproducible inside the fixed bracket
+  `[0, 1000·2^-20]`;
+- `delta_cross ≈ 7.8246e-4`;
+- `delta_cross / old ladder floor ≈ 0.8205`;
+- first-order prediction `delta_margin_linear ≈ 7.5943e-4`;
+- `delta_cross / delta_margin_linear ≈ 1.0303`;
+- the limiting state near root / below / above is F3 (13,13), z=1;
+- corrected directional accounting: 186 required boundary states, 105
+  negative-direction, and 40 `i == 0` V-independent states with
+  `dp_b/delta|_0` exactly 0;
+- the R1 true fail-closed non-finite handling is part of the accepted
+  implementation;
+- this is trajectory-bounded / local evidence only: it does NOT prove global
+  uniqueness, does NOT prove the mathematically first positive crossing, does
+  NOT prove any actual next HJB iterate is acceptable, does NOT prove
+  continuation convergence, and does NOT authorize KFE / stationary KFE.
 
-## Latest accepted task — Issue #61 / DLH-5V-M
+## Prior accepted task — Issue #61 / DLH-5V-M
 
 Issue #61 is CLOSED completed at Terminal C.
 
@@ -128,6 +148,10 @@ Accepted Issue #61 implementation remains read-only evidence:
 
 `src/deep_learning_hank/two_asset/adaptive_resolvent_hjb.py`
 
+Git blob:
+
+`043e146ef499e985a49d256c4cec2f397f93e4e1`
+
 Binding law remains:
 
 ```text
@@ -144,10 +168,15 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-Issue #62 does not authorize accepting a third HJB iterate, multi-step continuation/homotopy, extension of the Issue #61 discrete delta ladder, mutation of accepted solvers/implementations, price sweeps, alternative margins, hard control bounds, KFE/stationary KFE, SCC/global-Q, production Wmax/resolution, GE, multi-region, neural, nominal, calibration, policy, welfare, or Results work.
+No successor issue is authorized yet; no continuous continuation / trust-region /
+pseudo-transient iteration, no accepted new HJB iterate, no extension of any
+delta ladder as an experiment, no new price / grid / margin experiments, no
+KFE/stationary KFE, no SCC/global-Q, no GE/multi-region/neural/nominal/
+calibration/policy/welfare/Results work may start before an Owner/ChatGPT
+scientific design and a new authorized Issue.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #62 body/comments.
+- Issue #62 body/comments (accepted/closed).
