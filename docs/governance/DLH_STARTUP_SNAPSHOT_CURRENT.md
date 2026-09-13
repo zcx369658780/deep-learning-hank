@@ -21,96 +21,79 @@ Priority:
 
 ## Current Builder state
 
-**Issue #63 / DLH-5V-O is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
-execution for Issue #63 becomes operative only after all three CURRENT
-governance files are synchronized to Issue #63 (this file included) and a final
-authoritative activation-refresh comment confirms the post-sync live `main`.
+**NO ACTIVE BUILDER ISSUE.** Issue #63 / DLH-5V-O is ACCEPTED / CLOSED at
+Terminal B; Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L
+remain ACCEPTED / CLOSED. The value-damping (#60), adaptive-resolvent (#61),
+local-geometry (#62) and continuous-FTB (#63) gates are closed.
 
-Initial authoritative activation comment:
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**. The next
+route must NOT be merely continuing to shrink delta or tuning `TAU_FTB`.
+Residual-aware / policy-Newton / semismooth / boundary-tangent direction
+successors are **NOT YET AUTHORIZED** — they await a ChatGPT scientific design
+and a new authorized Issue; no Builder branch or scientific execution may start
+before that.
 
-`5652277509`
+## Latest accepted gate — Issue #63 / DLH-5V-O
 
-Route decision:
+Issue #63 is CLOSED completed at Terminal B.
 
-`APPROVE_CONTINUOUS_FRACTION_TO_BOUNDARY_RESOLVENT_CONTINUATION_AFTER_5VN_OUTCOME_A`
+Accepted candidate / integration:
 
-Dedicated future Builder branch:
+`a552dc6ebb2c82ad19fe26cd747d362ceecdfdcc`
 
-`dsh/issue-63-dlh-5vo-continuous-ftb-resolvent-2026-09-13`
+Reviewer acceptance:
 
-## Next active gate — Issue #63 / DLH-5V-O
+`5652576918`
 
-Title:
+Acceptance integration:
 
-`DLH-5V-O: Test continuous fraction-to-boundary pseudo-transient continuation on the frozen central selected-Q HJB case`
+`5652579072`
 
-Task type:
+Accepted verdict:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__CONTINUOUS_FRACTION_TO_BOUNDARY_RESOLVENT_CONTINUATION`
+`DLH_5VO_ACCEPTED__TERMINAL_B_CONFIRMED__CONTINUOUS_FTB_PRESERVES_EFFECTIVE_DOMAIN_BUT_STAGNATES_AT_BOUNDARY_WITH_MATERIAL_BELLMAN_RESIDUAL__ROUTE_RECONSIDERATION_REQUIRED`
 
-Scientific question: can a fixed-point-preserving pseudo-transient resolvent
-iteration converge on the single frozen central selected-Q HJB case when each
-accepted step is chosen by a continuous fraction-to-boundary rule rather than
-by a pre-truncated discrete delta ladder? First authorized multi-step
-continuation test after Issue #62 established a positive local safe radius.
+Accepted terminal:
 
-### Frozen scientific boundary
+`DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
 
-- single frozen central selected-Q case, exactly the accepted Issue #61/#62
-  configuration and initialization (unchanged parameters/prices/grid/domain/
-  tolerances/`PB_MARGIN=1e-12`);
-- continuous fraction-to-boundary pseudo-transient controller ONLY per Issue
-  #63 frozen rules;
-- at every accepted iterate `V_n`, `Q_n,u_n` built exactly once and reused for
-  ALL delta/controller evaluations within that iterate (no policy re-selection
-  as delta varies); trial solves only
-  `[I + delta*(rho I - Q_n)] V_n(delta) = V_n + delta*u_n`;
-- controller constants frozen: `DELTA_CAP=1000`, `TAU_FTB=0.90`,
-  `RETAIN=0.10`, `EPS_FTB=1e-6`, `MAX_BRACKET_HALVINGS=60`;
-- `m0 = min_required_boundary p_b(V_n) - PB_MARGIN` (require finite `m0 > 0`);
-  `m_target = RETAIN*m0`; `h_n(delta) = min_required_boundary p_b(V_n(delta))
-  - PB_MARGIN - m_target`; cap accepted directly when finite `h_n(DELTA_CAP)
-  >= 0`; otherwise deterministic halving `1000, 500, 250, ...` is BRACKET
-  CONSTRUCTION ONLY (not an accepted ladder; no probe accepted merely because
-  feasible) until the first sign-changing bracket, then deterministic `brentq`
-  on `h_n = 0`; `delta_selected = (1 - EPS_FTB)*delta_ftb`; directly verify
-  finite `p_b`, `min p_b > PB_MARGIN`, retained margin `>= m_target`; accept
-  `V_{n+1} = V_n(delta_selected)` directly — NO value damping;
-- Bellman residual never used for step selection;
-- no controller-parameter tuning after seeing results;
-- no economics/prices/grid/domain/`PB_MARGIN` change; no value damping; no
-  clip/floor of `p_b`;
-- Stationary KFE remains **NOT AUTHORIZED**.
+Accepted interpretation (trajectory-bounded):
 
-### Execution design and terminals
+- the continuous FTB controller successfully preserves the effective domain on
+  the frozen central selected-Q case;
+- 8 accepted root-controlled FTB steps; cap-direct = 0, root-controlled = 8;
+- the limiting wall state is locked to F3 (13,13), z=1 on the accepted path;
+- selected delta and the boundary margin shrink approximately geometrically;
+- final min boundary p_b ≈ 4.81e-9, still > `PB_MARGIN=1e-12`;
+- accepted-step trigger fired at iteration 8:
+  `max|V_{n+1}-V_n| ≈ 3.66e-8 < 1e-7`;
+- but final re-selection / validation: Bellman residual ≈ 490.756 >> 1e-3;
+- raw fixed-point direction norm stays ≈ 10.43-10.88 on the trajectory, NOT
+  approaching 0;
+- accepted interpretation = **FTB_STAGNATION**: a tiny step caused by
+  boundary-following geometry, NOT validated HJB convergence;
+- Q conservative, 0 artificial bindings, 0 optimizer expansions;
+- deterministic repeat identical;
+- the Issue #62 positive local safe radius is real but does NOT suffice for
+  validated convergence under this frozen FTB controller;
+- trajectory-bounded evidence only: does NOT prove all FTB controllers
+  globally fail to converge; does NOT prove the absence of another
+  fixed-point-preserving direction/operator; does NOT prove the HJB fixed
+  point does not exist; does NOT authorize KFE / stationary KFE.
 
-Exactly ONE continuation run + ONE deterministic repeat. Convergence trigger
-`max|V_{n+1}-V_n| < 1e-7`; final validation requires all required boundary
-`p_b > 1e-12`, `||rho V - [u_selected(V)+Q_selected(V)V]||_inf <= 1e-3`,
-conservative Q, no artificial bracket binding, deterministic repeat. Step
-criterion without final Bellman PASS = `FTB_STAGNATION` (not convergence);
-1000 accepted iterations without validated convergence = bounded
-non-convergence; no finite feasible bracket within 60 halvings or non-finite
-required evidence = `FTB_STEP_CONSTRUCTION_FAILURE` and STOP (fail closed).
+Non-blocking metadata observation:
 
-Exactly ONE terminal:
-
-- A `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__CENTRAL_HJB_CONVERGES_WITH_FINAL_BELLMAN_PASS__ROBUSTNESS_GATE_READY`
-- B `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
-- C `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__NO_VIABLE_FRACTION_TO_BOUNDARY_STEP__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
-- Blocked `BLOCKED_DLH_5VO_AUTHORITY_OR_DEPENDENCY_CONFLICT`
-
-### Builder allowlist (four new paths only)
-
-1. `src/deep_learning_hank/two_asset/continuous_ftb_resolvent_hjb.py`
-2. `tests/test_dlh_5vo_continuous_ftb_resolvent.py`
-3. `reports/dlh_5vo_continuous_ftb_resolvent_2026_09_13/DLH_5VO_CONTINUOUS_FTB_RESOLVENT_REPORT.md`
-4. `reports/dlh_5vo_continuous_ftb_resolvent_2026_09_13/DLH_5VO_CONTINUATION_TRACE.csv`
+- the candidate result field `converged=True` means ONLY that the
+  accepted-step statistic trigger was reached;
+- scientific validated convergence = FALSE (final Bellman validation failed);
+- CURRENT / roadmap must NOT phrase that field as HJB convergence;
+- recommended wording:
+  `step-size convergence trigger reached; validated HJB convergence failed (FTB_STAGNATION)`.
 
 ## Prior accepted gate — Issue #62 / DLH-5V-N (ACCEPTED / CLOSED)
 
 Issue #62 is CLOSED completed at Outcome A and remains the controlling
-authority for the frozen central case and local geometry facts.
+authority for the frozen central case and the local geometry facts.
 
 Accepted candidate / integration:
 
@@ -145,7 +128,8 @@ Accepted local facts (trajectory-bounded / local evidence only):
   directional derivative;
 - R1 true fail-closed non-finite handling is part of the accepted
   implementation;
-- does NOT prove continuation convergence.
+- does NOT prove continuation convergence (Issue #63 confirms the FTB
+  continuation stagnates at the boundary on the frozen central case).
 
 ## Prior accepted gate — Issue #61 / DLH-5V-M (ACCEPTED / CLOSED)
 
@@ -241,14 +225,17 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-Until Issue #63 is operative (final activation-refresh confirms post-sync
-`main`): no Builder scientific branch creation, no Issue #63 continuation
-execution, no successor, no PR / merge / Issue close / self-accept. Beyond the
-Issue #63 allowlist, nothing may start before Owner/ChatGPT scientific design
-and a new authorized Issue.
+No successor Issue; no further delta-shrinking or `TAU_FTB` tuning as the next
+route; no residual-aware / policy-Newton / semismooth / boundary-tangent
+direction work, no continuous continuation variant, no accepted new HJB
+iterate, no extension of any delta ladder as an experiment, no new price / grid
+/ margin experiments, no KFE/stationary KFE, no SCC/global-Q, no production
+Wmax/resolution, no GE/multi-region/neural/nominal/calibration/policy/welfare/
+Results, and no Builder scientific branch may start before an Owner/ChatGPT
+scientific design and a new authorized Issue.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #63 body/comments (authoritative).
+- Issue #63 body/comments (accepted/closed).

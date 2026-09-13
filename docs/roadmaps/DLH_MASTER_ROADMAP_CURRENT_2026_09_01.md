@@ -4,7 +4,7 @@
 **Date:** 2026-09-13  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-O / ISSUE #63 NEXT ACTIVE — CONTINUOUS FRACTION-TO-BOUNDARY PSEUDO-TRANSIENT CONTINUATION (BUILDER NOT YET OPERATIVE)
+**Status:** NO_ACTIVE_BUILDER_ISSUE — DLH-5V-O / ISSUE #63 TERMINAL B ACCEPTED / CLOSED (continuous FTB continuation stagnates at boundary; next = scientific design required)
 
 ---
 
@@ -411,7 +411,7 @@ by the Builder.
 
 ---
 
-## 8.6 Issue #63 / DLH-5V-O — NEXT ACTIVE continuous fraction-to-boundary pseudo-transient continuation
+## 8.6 Issue #63 / DLH-5V-O — continuous fraction-to-boundary pseudo-transient continuation — TERMINAL B ACCEPTED / CLOSED
 
 Title:
 
@@ -431,18 +431,64 @@ Authority marker:
 
 Initial authoritative activation comment:
 
-`5652277509`
+`5652277509` (final authoritative activation-refresh `5652449297`)
 
-Dedicated future Builder branch:
+Builder branch (integrated into `main`):
 
 `dsh/issue-63-dlh-5vo-continuous-ftb-resolvent-2026-09-13`
 
-Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all
-three CURRENT governance files are synchronized to Issue #63 (this roadmap
-included), this activation ID is recorded, and a final authoritative
-activation-refresh comment confirms the post-sync live `main`.
+Accepted candidate / integration:
 
-### 8.6.1 Scientific question
+`a552dc6ebb2c82ad19fe26cd747d362ceecdfdcc`
+
+Reviewer acceptance:
+
+`5652576918`
+
+Acceptance integration:
+
+`5652579072`
+
+Accepted verdict:
+
+`DLH_5VO_ACCEPTED__TERMINAL_B_CONFIRMED__CONTINUOUS_FTB_PRESERVES_EFFECTIVE_DOMAIN_BUT_STAGNATES_AT_BOUNDARY_WITH_MATERIAL_BELLMAN_RESIDUAL__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
+
+### 8.6.0 Accepted scientific interpretation (trajectory-bounded)
+
+- the continuous FTB controller successfully preserves the effective domain on
+  the frozen central selected-Q case;
+- 8 accepted root-controlled FTB steps; cap-direct = 0, root-controlled = 8;
+- the limiting wall state is locked to F3 (13,13), z=1 on the accepted path;
+- selected delta and the boundary margin shrink approximately geometrically;
+- final min boundary p_b ≈ 4.81e-9, still > `PB_MARGIN=1e-12`;
+- the accepted-step trigger fired at iteration 8:
+  `max|V_{n+1}-V_n| ≈ 3.66e-8 < 1e-7`;
+- but the final re-selection / validation shows Bellman residual
+  ≈ 490.756 >> 1e-3;
+- the raw fixed-point direction norm stays ≈ 10.43-10.88 on the trajectory and
+  does NOT approach 0;
+- accepted interpretation = **FTB_STAGNATION**: a tiny step caused by
+  boundary-following geometry, NOT validated HJB convergence;
+- Q conservative, 0 artificial bindings, 0 optimizer expansions;
+- deterministic repeat identical;
+- the Issue #62 positive local safe radius is real but does NOT suffice for
+  validated convergence under this frozen FTB controller;
+- trajectory-bounded evidence only: does NOT prove all FTB controllers
+  globally fail to converge; does NOT prove the absence of another
+  fixed-point-preserving direction/operator; does NOT prove the HJB fixed
+  point does not exist; does NOT authorize KFE / stationary KFE.
+
+Non-blocking metadata observation (CURRENT / roadmap wording): the candidate
+result field `converged=True` means ONLY that the accepted-step statistic
+trigger was reached; scientific validated convergence = FALSE (final Bellman
+validation failed). Recommended wording:
+`step-size convergence trigger reached; validated HJB convergence failed (FTB_STAGNATION)`.
+
+### 8.6.1 Executed design — scientific question
 
 Can a fixed-point-preserving pseudo-transient resolvent iteration converge on
 the single frozen central selected-Q HJB case when each accepted step is chosen
@@ -450,7 +496,7 @@ by a continuous fraction-to-boundary rule, rather than by a pre-truncated
 discrete delta ladder? This is the first authorized multi-step continuation
 test after Issue #62 established a positive local safe radius.
 
-### 8.6.2 Frozen central case and fixed-point-preserving resolvent
+### 8.6.2 Executed design — frozen central case and fixed-point-preserving resolvent
 
 Exactly the accepted Issue #61/#62 central configuration and initialization
 (`m=1, W_max=10, b_min=-2, a_max=10; r_a=0.07, r_b=0.02, w=1.00, gap=0;
@@ -469,7 +515,7 @@ solve only:
 For positive delta this is algebraically equivalent to the accepted Issue #61
 resolvent and preserves the same HJB fixed-point equation.
 
-### 8.6.3 Authorized continuous fraction-to-boundary controller (frozen)
+### 8.6.3 Executed design — authorized continuous fraction-to-boundary controller (frozen)
 
 Controller constants frozen: `DELTA_CAP=1000`, `TAU_FTB=0.90`,
 `RETAIN=1-TAU_FTB=0.10`, `EPS_FTB=1e-6`, `MAX_BRACKET_HALVINGS=60`.
@@ -497,7 +543,7 @@ Controller constants frozen: `DELTA_CAP=1000`, `TAU_FTB=0.90`,
   evidence: surface `FTB_STEP_CONSTRUCTION_FAILURE` and STOP (fail closed);
 - no controller-parameter tuning after seeing trajectory results.
 
-### 8.6.4 Convergence, stagnation, final validation, execution design
+### 8.6.4 Executed design — convergence, stagnation, final validation, execution design
 
 Accepted-iterate convergence trigger: `max|V_{n+1}-V_n| < 1e-7` (a tiny step is
 not sufficient). On trigger, recompute the complete selected policy/rates/Q
@@ -520,14 +566,14 @@ case, no Wmax/resolution case.
 3. `reports/dlh_5vo_continuous_ftb_resolvent_2026_09_13/DLH_5VO_CONTINUOUS_FTB_RESOLVENT_REPORT.md`
 4. `reports/dlh_5vo_continuous_ftb_resolvent_2026_09_13/DLH_5VO_CONTINUATION_TRACE.csv`
 
-### 8.6.6 Terminal set (exactly ONE)
+### 8.6.6 Executed design — terminal set (exactly ONE reported)
 
 - A `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__CENTRAL_HJB_CONVERGES_WITH_FINAL_BELLMAN_PASS__ROBUSTNESS_GATE_READY`
-- B `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
+- B `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED` — **ACCEPTED**
 - C `DLH_5VO_CONTINUOUS_FTB_RESOLVENT__NO_VIABLE_FRACTION_TO_BOUNDARY_STEP__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
 - Blocked `BLOCKED_DLH_5VO_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
-### 8.6.7 Forbidden
+### 8.6.7 Executed design — forbidden (respected)
 
 No mutation of the household oracle, selected-Q source, or Issue #61 / Issue #62
 accepted implementations (all read-only); no economics/prices/grid/domain/
@@ -557,7 +603,8 @@ fixed-household external-price envelope                       TERMINAL B/H2 ACCE
 invariant-domain safeguarded HJB update                       TERMINAL C ACCEPTED/CLOSED — ISSUE #60
 adaptive pseudo-time / resolvent diagnostic                   TERMINAL C ACCEPTED/CLOSED — ISSUE #61
 local continuous resolvent / domain-margin geometry          OUTCOME A ACCEPTED/CLOSED — ISSUE #62
-continuous fraction-to-boundary pseudo-transient continuation  NEXT ACTIVE — ISSUE #63 (BUILDER NOT YET OPERATIVE)
+continuous fraction-to-boundary pseudo-transient continuation  TERMINAL B ACCEPTED/CLOSED — ISSUE #63
+next scientific route (fixed-point-preserving successor)        SCIENTIFIC DESIGN REQUIRED — OWNER/CHATGPT
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -591,42 +638,54 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**NEXT ACTIVE BUILDER ISSUE: #63 / DLH-5V-O** (initial activation comment
-`5652277509` recorded). Route decision:
-`APPROVE_CONTINUOUS_FRACTION_TO_BOUNDARY_RESOLVENT_CONTINUATION_AFTER_5VN_OUTCOME_A`;
-authority marker:
-`DLH_5VO_CONTINUOUS_FTB_RESOLVENT_CONTINUATION_AUTHORIZED`. Builder execution
-becomes operative only after all three CURRENT governance files are synchronized
-to Issue #63 and a final authoritative activation-refresh comment confirms the
-post-sync live `main`. Until then Builder execution remains
-**NOT YET OPERATIVE**.
+**NO ACTIVE BUILDER ISSUE.** Issue #63 / DLH-5V-O is ACCEPTED / CLOSED at
+Terminal B (accepted candidate / integration
+`a552dc6ebb2c82ad19fe26cd747d362ceecdfdcc`; reviewer acceptance `5652576918`;
+acceptance integration `5652579072`).
 
-Issue #62 / DLH-5V-N is ACCEPTED / CLOSED at Outcome A (accepted candidate /
-integration `7ba2d75978033064c588230b15d760b60bec9e00`; reviewer acceptance
-`5652208157`; acceptance integration `5652209372`) and remains the controlling
-authority for the frozen central case and the local geometry facts
-(`delta_cross ≈ 7.8246e-4`, 0.8205 of the old ladder floor; first-order
-prediction `delta_margin_linear ≈ 7.5943e-4`, ratio 1.0303; limiting state
-F3 (13,13), z=1; 186 required / 105 negative-direction / 40 `i == 0`
-V-independent boundary states; trajectory-bounded / local evidence only — does
-NOT prove continuation convergence).
+Accepted verdict:
 
-Scientific boundary of Issue #63 (binding): single frozen central selected-Q
-case; continuous fraction-to-boundary pseudo-transient controller ONLY per
-Issue #63 frozen rules; `Q_n,u_n` built exactly once per accepted iterate and
-reused across all delta/controller evaluations in that iterate; controller
-constants frozen (`DELTA_CAP=1000`, `TAU_FTB=0.90`, `RETAIN=0.10`,
-`EPS_FTB=1e-6`, `MAX_BRACKET_HALVINGS=60`); halving used only for continuous
-root bracket construction (not an accepted ladder); no controller-parameter
-tuning after results; no economics/prices/grid/domain/`PB_MARGIN` change; no
-value damping; no clip/floor of `p_b`; oracle / selected-Q / Issue #61 / Issue
-#62 implementations all read-only; Stationary KFE remains **NOT AUTHORIZED**;
-no successor; no PR / merge / Issue close / self-accept.
+`DLH_5VO_ACCEPTED__TERMINAL_B_CONFIRMED__CONTINUOUS_FTB_PRESERVES_EFFECTIVE_DOMAIN_BUT_STAGNATES_AT_BOUNDARY_WITH_MATERIAL_BELLMAN_RESIDUAL__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
+
+The continuous FTB controller preserved the effective domain on the frozen
+central selected-Q case (8 accepted root-controlled steps; cap-direct = 0;
+limiting wall state F3 (13,13), z=1; selected delta and margin shrinking ≈
+geometrically; final min p_b ≈ 4.81e-9 > 1e-12), but the accepted-step trigger
+at iteration 8 (`max|V_{n+1}-V_n| ≈ 3.66e-8 < 1e-7`) is a tiny step caused by
+boundary-following geometry: the final Bellman residual ≈ 490.756 >> 1e-3 with
+the raw fixed-point direction norm ≈ 10.43-10.88 not approaching 0 →
+**FTB_STAGNATION**, NOT validated HJB convergence. Q conservative, 0/0
+bindings/expansions, deterministic repeat identical. The Issue #62 positive
+local safe radius is real but does NOT suffice for validated convergence under
+this frozen FTB controller. Trajectory-bounded evidence only: does NOT prove
+all FTB controllers globally fail, does NOT prove the absence of another
+fixed-point-preserving direction/operator, does NOT prove the HJB fixed point
+does not exist.
+
+Metadata note (wording): the candidate result field `converged=True` means
+ONLY that the accepted-step statistic trigger was reached; scientific
+validated convergence = FALSE. Recommended wording:
+`step-size convergence trigger reached; validated HJB convergence failed (FTB_STAGNATION)`.
+
+Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**. The next
+route must NOT be merely continuing to shrink delta or tuning `TAU_FTB`.
+Residual-aware / policy-Newton / semismooth / boundary-tangent direction
+successors are **NOT YET AUTHORIZED** — they await a ChatGPT scientific design
+and a new authorized Issue (no successor Issue, no Builder scientific branch,
+no accepted new HJB iterate, no continuous continuation variant, no extension
+of any delta ladder as an experiment, no new price / grid / margin
+experiments). Stationary KFE remains **NOT AUTHORIZED**. Issue #62 / DLH-5V-N,
+Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L remain ACCEPTED / CLOSED; the
+four tested stabilization-route gates are closed.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #63 body/comments (authoritative).
+- Issue #63 body/comments (accepted/closed).
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
