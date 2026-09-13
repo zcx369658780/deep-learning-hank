@@ -4,7 +4,7 @@
 **Date:** 2026-09-13  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** NO ACTIVE BUILDER ISSUE — ISSUE #61 / DLH-5V-M ACCEPTED / CLOSED (TERMINAL C); NEXT SCIENTIFIC ROUTE = OWNER / CHATGPT DESIGN REQUIRED (SUCCESSOR NOT YET AUTHORIZED)
+**Status:** DLH-5V-N / ISSUE #62 NEXT ACTIVE — LOCAL CONTINUOUS RESOLVENT / DOMAIN-MARGIN GEOMETRY DIAGNOSTIC (BUILDER NOT YET OPERATIVE)
 
 ---
 
@@ -257,7 +257,74 @@ A tiny delta-induced update without final Bellman residual PASS is stagnation (`
 
 ---
 
-## 8. Current roadmap position
+## 8. Issue #62 / DLH-5V-N — NEXT ACTIVE local continuous resolvent / domain-margin geometry diagnostic
+
+Title:
+
+`DLH-5V-N: Diagnose local continuous resolvent/domain-margin geometry at the Issue #61 terminal accepted state`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY`
+
+Owner / Reviewer route decision:
+
+`APPROVE_LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AFTER_5VM_TERMINAL_C`
+
+Authority marker:
+
+`DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
+
+Dedicated future Builder branch:
+
+`dsh/issue-62-dlh-5vn-local-resolvent-geometry-2026-09-13`
+
+Initial authoritative activation comment:
+
+`5651730413`
+
+Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all three CURRENT governance files are synchronized to Issue #62 (this roadmap included), this activation ID is recorded, and a final authoritative activation-refresh comment confirms the post-sync live `main`.
+
+### 8.1 Scientific question
+
+At the last accepted Issue #61 state immediately before its terminal third update request, does the frozen selected-Q resolvent possess a strictly positive local effective-domain-safe step below the Issue #61 ladder floor, and what is the local domain-margin geometry? The Issue distinguishes ladder-floor exhaustion (sufficiently small positive continuous delta remains locally feasible) from a deeper local operator/domain pathology (non-finite, inconsistent, or no reproducible positive local step).
+
+### 8.2 Frozen terminal-state provenance and object
+
+Exactly the accepted Issue #61 frozen central configuration and initialization (`m=1, W_max=10, b_min=-2, a_max=10; r_a=0.07, r_b=0.02, w=1.00, gap=0; rho=0.02, gamma_c=2, phi=5, chi_0=0.1, chi_1=2, a_bar=1e-6; tau=0.15; z=[0.8,1.3]; n_c=n_d=9, bracket expansion x4 max 3; PB_MARGIN=1e-12`). Reconstruct the accepted Issue #61 trajectory deterministically and STOP at its last accepted state after exactly 2 accepted updates; verify the reconstruction reproduces the accepted Issue #61 trace and terminal-state boundary minimum. At this frozen `V_*`, build selected policy / utility / conservative backward `Q_*` exactly once; the same frozen `(V_*, Q_*, u_*)` is used for every local delta evaluation; no policy re-selection as delta varies.
+
+Equivalent continuous resolvent representation (well-defined at delta=0):
+
+```text
+[I + delta*(rho I - Q_*)] V(delta) = V_* + delta*u_*
+V(0) = V_*
+```
+
+### 8.3 Authorized local diagnostics only
+
+- exact infinitesimal direction `dV/delta|_0 = u_* + Q_* V_* - rho V_*`;
+- directional derivatives `dp_b/delta|_0` for every required non-F0 boundary state;
+- first-order margin-crossing predictions `delta_margin_linear = (p_b(V_*) - PB_MARGIN)/(-dp_b/delta|_0)` for every negative-direction state; minimum positive finite `delta_margin_linear` and its state;
+- ONE deterministic bracketed continuous root solve of `g(delta) = min_required_boundary p_b(V(delta)) - PB_MARGIN` on the fixed bracket `[0, 1000*2^-20]` (scipy.optimize.brentq or equivalent), after verifying `g(0) > 0` and `g(1000*2^-20) < 0`; record bracket endpoints, reproducible root `delta_cross`, `g(delta_cross)`, worst state at/near the root, direct verification at `(1-eps)*delta_cross` and `(1+eps)*delta_cross` (fixed `eps=1e-6`, when inside the bracket), ratio `delta_cross/(1000*2^-20)`, and the ratio to the minimum finite first-order `delta_margin_linear` when both are well-defined.
+
+Non-finite required boundary or directional evidence must fail closed and be surfaced explicitly. The linear prediction is a local diagnostic only. A bracketed root is a reproducible sign-changing crossing of the global boundary margin on the frozen local operator — not a claim of global uniqueness or of the first positive crossing unless further evidence proves it.
+
+Execute exactly: ONE deterministic reconstruction of the accepted Issue #61 trajectory; ONE local infinitesimal-direction diagnostic; ONE bracketed continuous crossing solve on `[0, 1000*2^-20]`; ONE deterministic repeat of the full local diagnostic.
+
+### 8.4 Terminal set (exactly ONE)
+
+- A `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+- B `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_LOCAL_FEASIBILITY_WITH_STIFF_OR_NONUNIQUE_MARGIN_GEOMETRY__FURTHER_DESIGN_REQUIRED`
+- C `DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__NONFINITE_OR_INCONSISTENT_LOCAL_DIRECTION_OR_MARGIN_EVIDENCE__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VN_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+### 8.5 Forbidden
+
+No accepted third HJB iterate; no multi-step continuation/homotopy; no extension of the Issue #61 discrete ladder as the experiment; no economics/prices/grid/domain/`PB_MARGIN` change; no mutation of the household oracle, selected-Q source, or accepted Issue #61 implementation (all read-only); no KFE/stationary KFE; no successor; no PR/merge/close/self-accept.
+
+---
+
+## 9. Current roadmap position
 
 ```text
 MATLAB-faithful two-asset household economics                 ACCEPTED
@@ -273,7 +340,7 @@ boundary-HJB implementation + local HJB validation            TERMINAL B ACCEPTE
 fixed-household external-price envelope                       TERMINAL B/H2 ACCEPTED — ISSUE #59
 invariant-domain safeguarded HJB update                       TERMINAL C ACCEPTED/CLOSED — ISSUE #60
 adaptive pseudo-time / resolvent diagnostic                   TERMINAL C ACCEPTED/CLOSED — ISSUE #61
-next stabilization route                                      OWNER/CHATGPT SCIENTIFIC DESIGN REQUIRED (successor NOT YET AUTHORIZED)
+local continuous resolvent / domain-margin geometry          NEXT ACTIVE — ISSUE #62 (BUILDER NOT YET OPERATIVE)
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -286,7 +353,7 @@ learned regional W^L                                         PENDING
 
 ---
 
-## 9. Same-process safeguards — frozen
+## 10. Same-process safeguards — frozen
 
 ```text
 Q backward
@@ -305,16 +372,18 @@ Stationary KFE remains explicitly blocked.
 
 ---
 
-## 10. Current governance position
+## 11. Current governance position
 
-**NO ACTIVE BUILDER ISSUE.** Issue #61 / DLH-5V-M is ACCEPTED / CLOSED (Terminal C; reviewer acceptance `5651495744`; acceptance integration `5651496951`; accepted candidate `2721dadbfd0ad49813f12c8424f6be77fcaf3f85`). Together with Issue #60 value damping, the two tested stabilization routes are both negative evidence on the frozen central selected-Q case.
+**NEXT ACTIVE BUILDER ISSUE: #62 / DLH-5V-N** (initial activation comment `5651730413` recorded). Builder execution becomes operative only after all three CURRENT governance files are synchronized to Issue #62 and a final authoritative activation-refresh comment confirms the post-sync live `main`. Until then Builder execution remains **NOT YET OPERATIVE**.
 
-Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**; a successor issue is **NOT YET AUTHORIZED** (no successor Issue, no Builder scientific branch, no continuation/homotopy, no new delta/price/grid/margin experiments, no KFE/stationary KFE).
+Issue #61 / DLH-5V-M is ACCEPTED / CLOSED (Terminal C; reviewer acceptance `5651495744`; acceptance integration `5651496951`; accepted candidate `2721dadbfd0ad49813f12c8424f6be77fcaf3f85`). Together with Issue #60 value damping, the two tested stabilization routes are both negative evidence on the frozen central selected-Q case.
+
+Scientific boundary of Issue #62 (binding): the ONLY object is the local continuous resolvent/domain-margin geometry at the frozen Issue #61 last accepted state; no third HJB iterate; no multi-step continuation/homotopy; no extension of the Issue #61 discrete ladder as the experiment; no economics/prices/grid/domain/`PB_MARGIN` change; oracle / selected-Q / accepted Issue #61 implementation all read-only; Stationary KFE remains **NOT AUTHORIZED**; successor NOT YET AUTHORIZED.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #61 body/comments (accepted/closed).
+- Issue #62 body/comments.
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.

@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE`
+Status: `ACTIVE_BUILDER_ISSUE_62__DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC`
 
 Last synchronized: 2026-09-13
 
@@ -8,12 +8,43 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NO ACTIVE BUILDER ISSUE.** The two tested stabilization routes (Issue #60
-value damping and Issue #61 adaptive pseudo-time/resolvent) are both CLOSED
-with negative (Terminal-C) evidence on the frozen central selected-Q case.
+**NEXT ACTIVE — Issue #62 / DLH-5V-N**, subject to final authoritative activation-refresh comment.
 
-Next scientific route: **OWNER / ChatGPT SCIENTIFIC DESIGN REQUIRED**.
-A successor issue is **NOT YET AUTHORIZED**.
+Initial authoritative activation comment:
+
+`5651730413`
+
+Title:
+
+`DLH-5V-N: Diagnose local continuous resolvent/domain-margin geometry at the Issue #61 terminal accepted state`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY`
+
+Owner / Reviewer route decision:
+
+`APPROVE_LOCAL_CONTINUOUS_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AFTER_5VM_TERMINAL_C`
+
+Authority marker:
+
+`DLH_5VN_LOCAL_RESOLVENT_DOMAIN_GEOMETRY_DIAGNOSTIC_AUTHORIZED`
+
+Dedicated future Builder branch:
+
+`dsh/issue-62-dlh-5vn-local-resolvent-geometry-2026-09-13`
+
+Builder authority becomes operative ONLY after all three CURRENT governance files are synchronized to Issue #62, this activation ID is recorded here, and a final authoritative activation-refresh comment confirms the post-sync live `main`. Until then Builder execution remains **NOT YET OPERATIVE**.
+
+Scientific boundary (binding):
+
+- the ONLY object is the local continuous resolvent/domain-margin geometry at the Issue #61 last accepted state with frozen `Q_*`, `u_*`;
+- no third HJB iterate is accepted;
+- no multi-step continuation/homotopy;
+- no extension of the Issue #61 discrete delta ladder as the experiment;
+- no change to economics / prices / grid / domain / `PB_MARGIN`;
+- household oracle, selected-Q source, and the accepted Issue #61 implementation are all read-only;
+- Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Latest accepted task — Issue #61 / DLH-5V-M
 
@@ -93,6 +124,10 @@ Git blob:
 
 `7ea342ccbe15d852b90743b14bb4b02977c2d78b`
 
+Accepted Issue #61 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/adaptive_resolvent_hjb.py`
+
 Binding law remains:
 
 ```text
@@ -109,13 +144,10 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-No successor issue is authorized yet; no continuation/homotopy, no new delta /
-price / grid / margin experiments, no KFE/stationary KFE, no SCC/global-Q, no
-GE/multi-region/neural/nominal/calibration/policy/welfare/Results work may start
-before an Owner/ChatGPT scientific design and a new authorized Issue.
+Issue #62 does not authorize accepting a third HJB iterate, multi-step continuation/homotopy, extension of the Issue #61 discrete delta ladder, mutation of accepted solvers/implementations, price sweeps, alternative margins, hard control bounds, KFE/stationary KFE, SCC/global-Q, production Wmax/resolution, GE, multi-region, neural, nominal, calibration, policy, welfare, or Results work.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #61 body/comments (accepted/closed).
+- Issue #62 body/comments.
