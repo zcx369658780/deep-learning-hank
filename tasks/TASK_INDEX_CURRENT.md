@@ -1,138 +1,201 @@
 # Deep Learning + HANK Task Index
 
-Status: `ISSUE_65_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
+Status: `ISSUE_66_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
 
-Last synchronized: 2026-09-13
+Last synchronized: 2026-09-14
 
 Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**Issue #65 / DLH-5V-Q is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
-execution for Issue #65 becomes operative only after all three CURRENT
-governance files are synchronized to Issue #65 (this file included), the
+**Issue #66 / DLH-5V-R is NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Builder
+execution for Issue #66 becomes operative only after all three CURRENT
+governance files are synchronized to Issue #66 (this file included), the
 initial activation comment ID is recorded, and a final authoritative
 activation-refresh comment confirms the post-sync live `main`.
 
 Initial authoritative activation comment:
 
-`5653199929`
+`5656814064`
 
 Owner / Reviewer route decision:
 
-`APPROVE_F0_FINAL_VALIDATION_OPERATOR_CONSISTENCY_AUDIT_AFTER_5VP_TERMINAL_B`
+`APPROVE_F0_FINAL_RATE_DISCRETIZATION_PROVENANCE_AND_OPERATOR_CONSISTENCY_AUDIT_AFTER_5VQ_TERMINAL_B`
 
 Authority marker:
 
-`DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS_AUDIT_AUTHORIZED`
+`DLH_5VR_F0_FINAL_RATE_PROVENANCE_AUDIT_AUTHORIZED`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_FINAL_VALIDATION_OPERATOR_CONSISTENCY_AUDIT`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_FINAL_RATE_DISCRETIZATION_PROVENANCE_AND_OPERATOR_CONSISTENCY`
 
 Dedicated future Builder branch:
 
-`dsh/issue-65-dlh-5vq-f0-final-validation-audit-2026-09-13`
+`dsh/issue-66-dlh-5vr-f0-final-rate-provenance-2026-09-14`
 
-Issue #64 / DLH-5V-P is ACCEPTED / CLOSED at Terminal B and remains the
-controlling accepted evidence for the F0 final-validation semantic gap audited
-by Issue #65.
+Issue #65 / DLH-5V-Q is ACCEPTED / CLOSED at Terminal B and remains the
+controlling accepted evidence for the F0 `final=True` rate/discretization
+operator dominance audited by Issue #66.
 
-## Next active task — Issue #65 / DLH-5V-Q
+## Next active task — Issue #66 / DLH-5V-R
 
 Title:
 
-`DLH-5V-Q: Audit F0 final-validation operator semantics at the accepted Issue #63 stagnation state`
+`DLH-5V-R: Audit F0 final=True rate construction against the accepted MATLAB-faithful iteration operator`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_FINAL_VALIDATION_OPERATOR_CONSISTENCY_AUDIT`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_FINAL_RATE_DISCRETIZATION_PROVENANCE_AND_OPERATOR_CONSISTENCY`
 
-Scientific question: the accepted Issue #64 decomposition established that the
-~490.756 final-validation residual gap is entirely an F0 phenomenon. Before
-any further nonlinear-direction design, determine which F0 semantic change is
-responsible: (1) **stale-record effect** — `final=True` uses F0 policy records
-preserved from the pre-step-8 accepted iterate rather than policies
-re-selected at the stagnation state `V_*`; (2) **final-rate/discretization
-effect** — even using current `V_*`-selected F0 controls, the accepted
-`final=True` F0 upwind-rate construction defines a materially different
-residual/operator from `final=False` iteration semantics; (3) both. This is a
-scientific consistency audit of the accepted validation operator; it does NOT
-authorize changing the accepted source or convergence criterion.
+Scientific question: Issue #65 established that the large accepted
+final-validation gap is caused by the F0 `final=True` operator semantics
+rather than stale F0 records. Before changing any accepted source or
+convergence rule, determine the provenance and discrete-HJB consistency of
+that `final=True` construction at the same frozen `V_*` and the same current
+selected F0 controls: (A) ITER / MATLAB-faithful iteration semantics — the
+accepted F0 `local_interior_row` path with stored iteration rates
+(`iteration_b_backward_rate`, `iteration_b_forward_rate`, `a_backward_rate`,
+`a_forward_rate`) and source-faithful truncation / represented-destination
+convention; (B) FINAL-RAW semantics — the accepted `final=True` F0 row
+construction from raw drifts with direct `max(±mu)/step` upwind rates; (C)
+accepted oracle / MATLAB-faithful source provenance, source-backed only (no
+re-interpretation or rewrite of source semantics). This is read-only
+diagnostic/provenance work; it does NOT authorize replacing `final=True`,
+changing the convergence criterion, or modifying the selected-Q source.
 
 ### Frozen scientific boundary (binding)
 
-- reconstruct ONLY the exact accepted Issue #63 stagnation state `V_*` using
-  the accepted Issue #64 reconstruction path and STOP before any new HJB
-  iterate is accepted; reproduce 8 accepted FTB steps, final statistic ≈
-  `3.6614352438846254e-08`, min boundary `p_b ≈ 4.8089461301970005e-09`, wall
-  state F3 (13,13), z=1, and accepted stale-record final residual ≈
-  `490.7560425919994`; preserve `records_pre_step8` (the accepted pre-step-8
-  records used by Issue #63 final validation) and `records_current` (the
-  `final=False` policies re-selected exactly once at `V_*`);
-- at the SAME fixed `V_*`, construct exactly three residual/operator objects
-  and do not conflate them:
-  - A. iteration operator: build once with `final=False` at `V_*` →
-    `Q_iter, u_iter, records_current`; `R_iter = rho V_* - [u_iter + Q_iter
-    V_*]` (reproduce `||R_iter||_inf ≈ 10.435094313164921`);
-  - B. accepted stale-record final operator: `final=True` with
-    `f0_policies = records_pre_step8` → `Q_final_stale, u_final_stale`;
-    `R_final_stale = rho V_* - [u_final_stale + Q_final_stale V_*]`
-    (reproduce `||R_final_stale||_inf = 490.7560425919994`);
-  - C. diagnostic current-record final operator: `final=True` with
-    `f0_policies = records_current` → `Q_final_current, u_final_current`;
-    `R_final_current = rho V_* - [u_final_current + Q_final_current V_*]`
-    (diagnostic counterfactual operator at the same state, NOT an accepted
-    replacement validation rule);
-- exact decomposition: `D_total = R_final_stale - R_iter`;
-  `D_stale = R_final_stale - R_final_current`;
-  `D_rate = R_final_current - R_iter`; verify numerically
-  `D_total = D_stale + D_rate` within declared tolerance; for each residual /
-  difference record total / F0-only / non-F0 boundary-only infinity norms with
-  argmax state/family/z, conservative-Q row-sum diagnostic, optimizer
-  expansions / artificial bindings; persist no large matrices;
-- F0 policy/control provenance audit (F0 rows only): compare
-  `records_pre_step8` vs `records_current`; record the count of rows with
-  changed sector/transfer label and max |Δ consumption|, |Δ labor|, |Δ
-  transfer|, |Δ mu_a|, |Δ mu_b|, |Δ utility|; do NOT treat "same sector label"
-  as "same continuous control"; also compare `Q_final_stale - Q_final_current`
-  and `Q_final_current - Q_iter` rowwise max absolute operator differences and
-  `u_final_stale - u_final_current` / `u_final_current - u_iter` max absolute
-  differences;
-- frozen attribution rule (ex ante): `STALE_RECORD_DOMINANT` iff
-  `||D_stale||_inf > ||D_rate||_inf`;
-  `FINAL_RATE_SEMANTICS_DOMINANT_OR_TIED` iff
-  `||D_rate||_inf >= ||D_stale||_inf`; separately record whether
-  `||R_final_current||_inf < ||R_final_stale||_inf`; local attribution only —
-  dominance does NOT imply either diagnostic counterfactual is already the
-  correct convergence criterion;
-- execute exactly: ONE deterministic reconstruction; ONE iteration-operator
-  build; ONE stale-record `final=True` build; ONE current-record `final=True`
-  build; ONE compact F0 policy/control provenance audit; ONE deterministic
-  repeat; no trial value states; no Newton step; no continuation; no source
-  modification;
-- no economics / prices / grid / domain / `PB_MARGIN` change; no accepted
-  final-validation-semantics change in accepted source; no clip/floor of
-  `p_b`;
-- non-finite / inconsistent evidence fails closed;
+- deterministically reconstruct the exact accepted Issue #63 stagnation state
+  `V_*` using accepted Issue #65/#64 helpers and STOP before any new HJB
+  iterate; reproduce final statistic ≈ `3.6614352438846254e-08`, min boundary
+  `p_b ≈ 4.8089461301970005e-09`, wall F3 (13,13), z=1;
+- at `V_*`, build current `final=False` policies exactly once and use those
+  SAME selected F0 controls for all row/rate comparisons (no stale-record
+  comparison needed except as accepted baseline fact from Issue #65);
+- reproduce `||R_iter||_inf = 10.435094313164921`,
+  `||R_final_current||_inf = 490.7560414005864`, and F0 rowwise max
+  `|Q_final_current - Q_iter| ≈ 24.6019717663`;
+- for every F0 state row extract and persist compact rowwise diagnostics
+  (no full sparse matrices) for at least: liquid/b direction backward and
+  forward; illiquid/a direction backward and forward; diagonal; represented
+  outgoing-rate sum; omitted / unavailable destination rate at a grid/domain
+  edge; utility/source term (separate operator-rate differences from utility
+  differences); attribute the max ~24.60 difference into defined rate/operator
+  difference classes with counts/maxima/argmax state;
+- read-only MATLAB-faithful provenance mapping: how selected continuous
+  controls become iteration b backward/forward and a backward/forward rates;
+  whether source-faithful clipping/truncation or finite-difference sign logic
+  is embedded before row assembly; how the diagonal is constructed; what
+  happens when an outward/requested rate has no represented destination;
+  separately document the `final=True` F0 path (raw `mu_a`, `mu_b` source;
+  direct `max(±mu)/step` conversion; represented off-diagonal destinations;
+  diagonal construction) — a source-backed mapping, not an inferred rewrite;
+- frozen ex ante equivalence classifications on F0 rows with the same current
+  controls: `ITER_EQ_MATLAB` (ITER row/rates source-backed as the
+  MATLAB-faithful discrete HJB construction and reproduced within tolerance);
+  `FINAL_EQ_MATLAB` (FINAL-RAW row/rates source-backed as the MATLAB-faithful
+  discrete HJB construction and reproduced within tolerance);
+  `BOTH_EQUIVALENT` (ITER and FINAL-RAW rowwise operator-equivalent within
+  tolerance); `MIXED_OR_UNRESOLVED` (mixed provenance, neither established,
+  or insufficient source evidence); also record `||R_iter||_inf`,
+  `||R_final_current||_inf`, rowwise max `|Q_final_current - Q_iter|` and its
+  component decomposition, whether utility/source terms are identical under
+  same current controls, and whether all non-F0 boundary rows remain identical
+  (expected from Issue #65; any discrepancy fails closed); classifications
+  must NOT be converted into a source mutation or new convergence rule;
+- execute exactly: ONE deterministic reconstruction; ONE current-policy
+  `final=False` build at `V_*`; ONE current-policy `final=True` build at
+  `V_*`; ONE all-F0 compact row/rate/component comparison; ONE read-only
+  MATLAB/oracle provenance mapping; ONE deterministic repeat; no new HJB
+  iterate; no Newton / continuation / line search; no parameter/grid/price
+  sweep; no source mutation;
+- non-finite / provenance ambiguity fails closed;
 - Stationary KFE remains **NOT AUTHORIZED**.
 
 ### Execution design and terminals
 
-Execute exactly the six steps above with ONE deterministic repeat of the full
-diagnostic. Exactly ONE terminal (Issue #65 body):
+Exactly ONE terminal (Issue #66 body):
 
-- A `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__STALE_F0_RECORDS_DOMINATE_ACCEPTED_VALIDATION_GAP__FINAL_VALIDATION_RECORD_REFRESH_REVIEW_GATE_READY` (finite/consistent and `||D_stale||_inf > ||D_rate||_inf`)
-- B `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__FINAL_RATE_SEMANTICS_DOMINATE_OR_TIE_ACCEPTED_VALIDATION_GAP__F0_FINAL_OPERATOR_REVIEW_REQUIRED` (finite/consistent and `||D_rate||_inf >= ||D_stale||_inf`)
-- C `DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__NONFINITE_OR_INCONSISTENT_DECOMPOSITION__BOUNDARY_HJB_VALIDATION_ROUTE_REVIEW_REQUIRED` (reconstruction failure, non-finite evidence, provenance ambiguity, failed additive decomposition, or operator inconsistency)
-- Blocked `BLOCKED_DLH_5VQ_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+- A `DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY` (finite/consistent and `ITER_EQ_MATLAB=true`, `FINAL_EQ_MATLAB=false`, ITER vs FINAL materially non-equivalent)
+- B `DLH_5VR_F0_FINAL_RATE_PROVENANCE__FINAL_RAW_RATE_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__ITERATION_OPERATOR_NON_EQUIVALENT__ITERATION_OPERATOR_REVIEW_REQUIRED` (finite/consistent and `FINAL_EQ_MATLAB=true`, `ITER_EQ_MATLAB=false`)
+- C `DLH_5VR_F0_FINAL_RATE_PROVENANCE__MIXED_EQUIVALENT_OR_UNRESOLVED_DISCRETE_OPERATOR_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED` (BOTH_EQUIVALENT, mixed/unresolved provenance, non-finite/inconsistent evidence, or failure to establish a unique discrete-operator provenance)
+- Blocked `BLOCKED_DLH_5VR_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+Classification is local to the accepted finite-grid operator/provenance and
+does not by itself authorize changing source code.
 
 ### Builder allowlist (four new paths only)
 
-1. `src/deep_learning_hank/two_asset/f0_final_validation_semantics_audit.py`
-2. `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py`
-3. `reports/dlh_5vq_f0_final_validation_semantics_2026_09_13/DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS_REPORT.md`
-4. `reports/dlh_5vq_f0_final_validation_semantics_2026_09_13/DLH_5VQ_F0_FINAL_VALIDATION_SUMMARY.csv`
+1. `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py`
+2. `tests/test_dlh_5vr_f0_final_rate_provenance.py`
+3. `reports/dlh_5vr_f0_final_rate_provenance_2026_09_14/DLH_5VR_F0_FINAL_RATE_PROVENANCE_REPORT.md`
+4. `reports/dlh_5vr_f0_final_rate_provenance_2026_09_14/DLH_5VR_F0_FINAL_RATE_PROVENANCE_SUMMARY.csv`
+
+## Prior accepted task — Issue #65 / DLH-5V-Q (ACCEPTED / CLOSED)
+
+Issue #65 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the F0 `final=True` rate/discretization operator
+dominance audited by Issue #66.
+
+Accepted candidate / integration:
+
+`44cb7bda1a040cacfc94fa45cda689755daa5a4e`
+
+Reviewer acceptance:
+
+`5656806015`
+
+Acceptance integration:
+
+`5656807180`
+
+Accepted verdict:
+
+`DLH_5VQ_ACCEPTED__TERMINAL_B_CONFIRMED__FINAL_TRUE_F0_RATE_SEMANTICS_DOMINATE_ACCEPTED_VALIDATION_GAP__STALE_RECORD_EFFECT_NEGLIGIBLE__F0_FINAL_OPERATOR_PROVENANCE_REVIEW_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__FINAL_RATE_SEMANTICS_DOMINATE_OR_TIE_ACCEPTED_VALIDATION_GAP__F0_FINAL_OPERATOR_REVIEW_REQUIRED`
+
+Accepted facts (at the same frozen stagnation state `V_*`):
+
+- `||R_iter||_inf = 10.435094313164921`;
+- `||R_final_stale||_inf = 490.7560425919994`;
+- `||R_final_current||_inf = 490.7560414005864`;
+- `||D_total||_inf = 488.0988429898615`;
+- `||D_stale||_inf = 1.8406872158038823e-05`;
+- `||D_rate||_inf = 488.0988417984485`;
+- `D_total = D_stale + D_rate` with additive error `0.0`;
+- `D_total` / `D_stale` / `D_rate` non-F0 boundary contribution is exactly
+  `0` for all three;
+- 596 F0 rows: changed sector/transfer label = 0, but continuous controls are
+  NOT identical;
+- max |Δ consumption| = `1.2570318563831506e-08`;
+- max |Δ labor| = `3.527538039449496e-09`;
+- max |Δ transfer| = `2.0576147896633756e-07`;
+- max |Δ mu_a| = `2.0576147896633756e-07`;
+- max |Δ mu_b| = `4.029644697922663e-07`;
+- max |Δ utility| = `1.088601719878568e-08`;
+- rowwise max |`Q_final_stale` - `Q_final_current`| ≈ `1.4847075143e-06`;
+- rowwise max |`Q_final_current` - `Q_iter`| ≈ `24.6019717663`.
+
+Accepted scientific interpretation (trajectory-bounded / local attribution
+only):
+
+- stale F0 records contribute negligibly to the ~490.756 accepted
+  final-validation gap;
+- a record refresh cannot eliminate that gap;
+- the accepted `final=True` F0 rate/discretization semantics are the dominant
+  source of the gap;
+- the conclusion is local attribution at the fixed `V_*` only;
+- neither `R_iter`, `R_final_current`, nor any other counterfactual is
+  declared to already be the correct convergence criterion;
+- does NOT prove the HJB fixed point does not exist;
+- the next step must audit the provenance/equivalence of the `final=True` F0
+  rate construction against the MATLAB-faithful iteration / discrete HJB
+  operator;
+- Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Prior accepted task — Issue #64 / DLH-5V-P (ACCEPTED / CLOSED)
 
@@ -382,6 +445,14 @@ Git blob:
 
 `3ca2371c7da1939d1fed55df5728baefb27d8aa7`
 
+Accepted Issue #65 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/f0_final_validation_semantics_audit.py`
+
+Git blob:
+
+`bb4045378bf19607f68d7d4a7628b3431afcd676`
+
 Binding law remains:
 
 ```text
@@ -398,18 +469,22 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-Issue #65 / DLH-5V-Q is the authorized local diagnostic scope only: exactly
-three residual/operator builds at the same fixed accepted Issue #63 stagnation
-state `V_*` (iteration `final=False`; accepted stale-record `final=True`;
-current-record diagnostic `final=True`), the exact `D_total = D_stale +
-D_rate` decomposition with F0/boundary attribution, and the F0
-continuous-control provenance audit; the current-record final operator is
-diagnostic only and NOT an accepted replacement validation rule. No Newton /
-policy-iteration / semismooth / trust-region / continuation execution; no
-source mutation of the accepted final-validation semantics; no adaptive line
-search; no alpha / threshold tuning; no economics / prices / grid / domain /
-`PB_MARGIN` change; no new HJB iterate; no clip/floor of `p_b`. Any further
-nonlinear-direction design remains **NOT AUTHORIZED** without a further
+Issue #66 / DLH-5V-R is the authorized local read-only diagnostic/provenance
+scope only: deterministic reconstruction of the accepted Issue #63 stagnation
+state `V_*`, one current-policy `final=False` build and one current-policy
+`final=True` build at the same `V_*`, the all-F0 compact row/rate/component
+comparison with the ~24.60 operator-gap attribution, the read-only
+source-backed MATLAB/oracle provenance mapping, and the frozen ex ante
+equivalence classifications (`ITER_EQ_MATLAB`, `FINAL_EQ_MATLAB`,
+`BOTH_EQUIVALENT`, `MIXED_OR_UNRESOLVED`). No Newton / policy-iteration /
+semismooth / trust-region / continuation execution; no line search; no new
+HJB iterate; no source mutation of the accepted `final=True` semantics, the
+selected-Q source, the household oracle, or Issues #61-#65 accepted
+implementations; no convergence-criterion change; no price / Wmax / grid
+sweep; no economics / prices / grid / domain / initialization / controls /
+tolerances / `PB_MARGIN` change. `R_iter` must NOT be declared the accepted
+final convergence residual. Any further nonlinear-direction or
+final-validation redesign remains **NOT AUTHORIZED** without a further
 Owner/ChatGPT scientific design and a new authorized Issue. No KFE/stationary
 KFE, no SCC/global-Q, no GE/multi-region/neural/nominal/calibration/policy/
 welfare/Results work.
@@ -418,6 +493,7 @@ welfare/Results work.
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #65 body/comments (next active; initial activation `5653199929`).
+- Issue #66 body/comments (next active; initial activation `5656814064`).
+- Issue #65 body/comments (accepted/closed).
 - Issue #64 body/comments (accepted/closed).
 - Issue #63 body/comments (accepted/closed).
