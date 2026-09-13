@@ -27,21 +27,42 @@
 in-domain iterations, no allowed dyadic lambda in {2^-k, k = 0..20} keeps all boundary
 effective-domain p_b evidence above the 1e-12 acceptance margin.
 
+Interpretation (trajectory-bounded, per Micro-Rev Reviewer `5649480400`):
+
+- Along the authorized safeguarded trajectory, the raw update remains materially
+  nonzero and points outside the effective domain as the accepted iterate approaches
+  the domain wall.
+- The tested value-update-only safeguard route does not provide a viable convergent
+  path on the frozen central case.
+
 The value-update-only dyadic safeguard DOES preserve the effective domain for every
 accepted iterate (17 of 17 accepted iterates in-domain; raw-domain violations avoided
 by damping every time), and gets materially past the accepted baseline exit (the
-undamped run exits the domain at iteration 2). **But** it is not a viable convergence
-route: the raw implicit update never decays (raw iterate change stays ≈ 8.3), the raw
-update's boundary p_b at the critical state is ≈ −0.34 for every accepted V, lambda
-collapses geometrically toward 2^-20, the accepted iterates are squeezed against the
-domain wall (min accepted boundary p_b → 1.8e-12), and at iteration 18 no allowed step
-exists. The raw iteration's fixed point lies OUTSIDE the positive-p_b effective domain,
-so no damped value update can converge to it. Route reconsideration required.
+undamped run exits the domain at iteration 2). **But** on the tested trajectory the raw
+update never decays (raw iterate change stays ≈ 8.3), the accepted lambda collapses
+geometrically toward 2^-20, the accepted iterates are squeezed against the domain wall
+(min accepted boundary p_b → 1.8e-12), and at iteration 18 the continuous step needed
+merely to stay above the acceptance margin is λ_margin = 7.51e-7 < 2^-20 — below the
+smallest authorized dyadic step, so no authorized safeguard step exists.
+
+**Scope of the claim:** this diagnostic establishes the behavior along the ONE
+authorized safeguarded trajectory only. It does NOT establish uniqueness of the raw
+fixed point, absence of another positive-domain fixed point, absence of another basin
+of attraction, absence of a continuation path, or global nonexistence of an admissible
+fixed point (see §5.1).
 
 Outcome A is not claimed (no convergence, no final Bellman validation). Outcome B is
-not claimed (the safeguard does not merely stall short of convergence — it reaches the
-gate's own terminal failure `INVARIANT_STEP_FAILURE`: no scientifically viable allowed
-positive-domain update exists). Blocked is not applicable.
+not claimed (the safeguard reaches the gate's own terminal failure
+`INVARIANT_STEP_FAILURE`: no scientifically viable allowed positive-domain update
+exists on the tested safeguarded trajectory). Blocked is not applicable.
+
+> **Micro-Rev record:** this report incorporates the bounded corrections required by
+> Reviewer comment `5649480400`: (1) the fixed-point overclaim is replaced by the
+> trajectory-bounded statement above; (2) the terminal crossing diagnostic now reports
+> the same-state margin crossing `lambda_margin = (p_old - PB_MARGIN)/(p_old - p_raw)`
+> at the binding state, distinct from the separately-named zero crossing (see §4.2).
+> No underlying economics or solver behavior changed; no accepted numerical evidence
+> was reopened.
 
 ---
 
@@ -113,15 +134,48 @@ delta/tolerance, no alternate W_max or m.
 | final Bellman residual | NOT reached (no iterate convergence → no final validation manufactured) |
 | failing iteration | 18th update request: no allowed dyadic lambda keeps the domain |
 
-### 4.2 Failure detail (terminal event)
+### 4.2 Failure detail (terminal event, corrected per Micro-Rev `5649480400`)
 
-At the failing update request (iteration 18), built from the last accepted iterate:
-- accepted iterate min boundary p_b = **1.8128990372393415e-12** (hugging the wall);
-- raw update min boundary p_b = **−0.336924** at the worst state: **(a = 3.158,
-  b = 6.842), z = 1, family F2** (hypotenuse boundary of the frozen triangle;
-  grid indices (j, i) = (6, 24), node 201);
-- the crossing lambda* = p_b_old / (p_b_old − p_b_raw) ≈ 1.8e-12 / 0.337 ≈ 5.4e-12
-  is far below 2^-20, so no allowed dyadic step exists → `INVARIANT_STEP_FAILURE`.
+At the failing update request (iteration 18), built from the last accepted iterate
+(V_17, min accepted boundary p_b = 1.8128990372393415e-12):
+
+**Terminal BINDING state (same-state pair; the state that blocks every authorized
+dyadic step — it achieves the minimum continuous margin-crossing lambda):**
+
+| metric | value |
+|---|---|
+| worst state (binding) | node 367, family **F3**, (j, i) = (16, 8), z = 1 → (a = 8.421, b = 0.947) |
+| p_old (accepted iterate, same state) | 1.8128990372393415e-12 |
+| p_raw (raw update, same state) | −1.0825070292850926e-06 |
+| PB_MARGIN (frozen) | 1e-12 |
+| **lambda_margin_crossing** = (p_old − PB_MARGIN)/(p_old − p_raw) | **7.50939858929181e-07** |
+| lambda_zero_crossing = p_old/(p_old − p_raw) | 1.674719842086034e-06 |
+| minimum authorized dyadic lambda | 2^-20 = 9.5367431640625e-07 |
+| margin crossing below smallest authorized step? | **YES** (7.51e-7 < 9.54e-7) |
+
+The continuous step needed merely to remain above the acceptance margin is
+λ_margin ≈ 7.51e-7, which is below the smallest authorized dyadic step
+2^-20 ≈ 9.54e-7: the trial at λ = 2^-20 already dips below the margin at the binding
+state (p_trial ≈ 1.81e-12 + 9.54e-7·(−1.08e-6) ≈ 0.78e-12 < 1e-12), so **no authorized
+safeguard step exists** → `INVARIANT_STEP_FAILURE`.
+
+> Note on the earlier estimate: the pre-Micro-Rev report cited "λ* ≈ 5.4e-12", computed
+> as p_old/(p_old − p_raw) with p_old = 1.81e-12 (min accepted p_b, at F3 (16,8) z=1)
+> and p_raw = −0.337 (min raw p_b, at a DIFFERENT state F2 (6,24) z=1). Those two
+> minima live at different states, so that number conflated two states and was also the
+> zero-crossing rather than the margin-crossing. The corrected SAME-STATE margin
+> crossing at the binding state is λ_margin = 7.51e-7, still below 2^-20, so the
+> terminal is unchanged. This is exactly why the margin formula (not the zero formula)
+> is the relevant criterion: the zero crossing (1.67e-6) lies ABOVE 2^-20, so the
+> 2^-20 step stays above zero but dips below the margin — only the margin crossing
+> reveals the no-authorized-step condition. (For reference, the raw update's most
+> negative boundary p_b = −0.336924 occurs at the separate state F2 (6,24) z=1, node
+> 201, (a = 3.158, b = 6.842), recorded as `worst_raw_state`.)
+
+These crossing quantities are DIAGNOSTIC ONLY: they never choose a step, never add
+lambda candidates, never authorize lambda below 2^-20, and never alter p_b / candidate
+scoring / Q / controls. The actual safeguard remains exactly the authorized dyadic
+search {2^-k, k = 0..20} taking the largest feasible lambda.
 
 ### 4.3 Iteration trace (persisted in DLH_5VL_ITERATION_TRACE.csv — 17 rows)
 
@@ -154,28 +208,59 @@ and no artificial bracket binding occurs in any accepted iteration.
   violation is avoided by taking the largest admissible dyadic step. This is a strictly
   better domain trajectory than the accepted baseline, whose undamped run exits the
   effective domain at iteration 2 (F3 (13,13), z = 0).
-- **The safeguard is NOT a viable CONVERGENCE route**: the raw implicit update's
-  iterate change stays ≈ 8.30 from iteration 5 onward (it does not shrink), and the raw
-  update's boundary p_b at the critical state stays ≈ −0.34 for every accepted V. The
-  raw iteration's fixed point (T(V*) = V*) therefore lies OUTSIDE the positive-p_b
-  effective domain of the frozen triangle.
-- Because the fixed point is outside the domain, the damped iterates are driven against
-  the domain wall: the min accepted boundary p_b falls monotonically 0.48 → 1.8e-12,
-  lambda collapses geometrically 1/4 → 2^-20, and eventually no allowed positive-domain
-  update exists → `INVARIANT_STEP_FAILURE` (no 2^-21, no adaptive epsilon, no alternate
-  schedule — exactly per Issue #60 §6).
+- **The tested value-update-only safeguard is NOT a viable CONVERGENCE route on the
+  frozen central case**: along the authorized safeguarded trajectory, the raw implicit
+  update's iterate change stays ≈ 8.30 from iteration 5 onward (it does not shrink), and
+  the raw update's boundary p_b at the critical state points outside the effective
+  domain for every accepted V.
+- Along the trajectory the damped iterates are driven against the domain wall: the min
+  accepted boundary p_b falls monotonically 0.48 → 1.8e-12, lambda collapses
+  geometrically 1/4 → 2^-20, and eventually no allowed positive-domain update exists →
+  `INVARIANT_STEP_FAILURE` (no 2^-21, no adaptive epsilon, no alternate schedule —
+  exactly per Issue #60 §6). At the terminal request the continuous step needed merely
+  to remain above the acceptance margin is λ_margin = 7.51e-7 < 2^-20, so no
+  AUTHORIZED safeguard step exists.
 - The critical boundary state migrates during the run (initial exit F3 (13,13), z=0 →
-  final wall F2 (6,24), z=1) — the domain wall is a global constraint, not a single
-  fixed state.
+  terminal binding state F3 (16,8), z=1; the raw update's most negative p_b at the
+  separate hypotenuse state F2 (6,24), z=1) — the domain wall is a global constraint,
+  not a single fixed state.
 - The failure is NOT an operator/conservation failure (max|Q·1| tiny throughout), NOT
   an expansion/artificial-binding failure (0/0 throughout), and NOT an F3 sector-algebra
-  contradiction (the F3 algebra is Gate-2-verified). It is a property of the raw
-  operator's fixed point relative to the effective domain of the frozen geometry.
-- Conclusion: **effective-domain preserving value-update-only line search has no
-  scientifically viable positive-domain update for this frozen central case — route
-  reconsideration is required** (e.g. a future authorized gate would need to modify the
-  raw operator/policy selection or the effective-domain treatment; no such modification
-  is made or proposed here).
+  contradiction (the F3 algebra is Gate-2-verified). It is a property of the tested
+  trajectory relative to the effective domain of the frozen geometry.
+
+### 5.1 Scope of the claim (corrected per Micro-Rev `5649480400`)
+
+This diagnostic establishes:
+
+- along the authorized safeguarded trajectory;
+- as accepted V approaches the effective-domain wall;
+- the raw update remains materially nonzero;
+- the raw update direction continues to point outside the effective domain;
+- the authorized dyadic acceptance step collapses;
+- eventually no authorized dyadic step exists.
+
+It does NOT establish:
+
+- uniqueness of the raw fixed point;
+- absence of another positive-domain fixed point;
+- absence of another basin of attraction;
+- absence of a continuation path;
+- global nonexistence of an admissible fixed point.
+
+Terminal C is retained because it only requires that the AUTHORIZED deterministic
+safeguard route reaches a state with no allowed viable dyadic step — it does not
+require proving where every raw fixed point lies. In particular, the claim that "the
+raw operator's fixed point lies outside the effective domain", "no positive-domain
+fixed point exists", or "the HJB solution itself lies outside the domain" is NOT made
+and is NOT supported by this diagnostic.
+
+- Conclusion: **the tested value-update-only invariant-domain safeguard succeeds as a
+  short-run DOMAIN-PRESERVATION device but fails as an authorized convergence route on
+  the frozen central case** — no scientifically viable allowed positive-domain update
+  exists on the tested safeguarded trajectory; route reconsideration is required (e.g.
+  a future authorized gate would need to modify the raw operator/policy selection or
+  the effective-domain treatment; no such modification is made or proposed here).
 
 ## 6. Accepted baseline (honored, not rediscovered)
 
@@ -183,7 +268,7 @@ Undamped central selected-Q run (Issue #58/#59 accepted fact): exits the boundar
 effective domain at iteration 2, F3 (13,13), z = 0. Used only as the frozen baseline
 reference; not re-derived by parameter experimentation.
 
-## 7. Tests (all pass — 11/11)
+## 7. Tests (all pass — 18/18, incl. Micro-Rev additions)
 
 `tests/test_dlh_5vl_invariant_domain_safeguard.py`:
 - frozen central configuration exact (household params, inputs r_a=0.07/r_b=0.02/tau,
@@ -197,6 +282,17 @@ reference; not re-derived by parameter experimentation.
 - no valid step → `INVARIANT_STEP_FAILURE`;
 - any PASS requires the final Bellman residual criterion (validation semantics);
 - deterministic complete central-case repeat (full-trace equality);
+- Micro-Rev additions: lambda_margin_crossing formula uses PB_MARGIN, not zero;
+  lambda_zero_crossing separately named; undefined-case guards; terminal diagnostic
+  from the real run satisfies p_old > PB_MARGIN > p_raw at the binding state,
+  lambda_margin_crossing = (p_old − PB_MARGIN)/(p_old − p_raw) recomputed exactly, and
+  lambda_margin_crossing < 2^-20 (with the zero crossing NOT below 2^-20 — the margin,
+  not zero, is the binding criterion); crossing diagnostics never change step selection
+  (trace lambdas all inside the authorized dyadic set; `safeguard_step` does not
+  reference the diagnostics); PB_MARGIN and the authorized lambda set unchanged;
+  deterministic Terminal-C reproduction (INVARIANT_STEP_FAILURE, 17 iterations,
+  identical terminal crossing diagnostics); no global fixed-point assertion in the
+  scientific tests;
 - no KFE / stationary KFE / steady-state invocation (AST scan of imports and used
   names).
 
@@ -204,11 +300,13 @@ reference; not re-derived by parameter experimentation.
 
 - Commands:
   - `$env:PYTHONPATH = "D:\deep-learning-hank\src"`
-  - `python -m pytest tests/test_dlh_5vl_invariant_domain_safeguard.py -q` (11/11 pass)
+  - `python -m pytest tests/test_dlh_5vl_invariant_domain_safeguard.py -q` (18/18 pass)
   - diagnostic driver (run twice + persist trace): the module's
     `run_safeguarded_central()` executed exactly twice; the two results and full traces
     are bit-identical (`deterministic_repeat_identical: true`); `DLH_5VL_ITERATION_TRACE.csv`
-    written from the first run (17 rows).
+    written from the first run (17 rows). Re-executed after the Micro-Rev diagnostic
+    additions; the safeguarded trajectory and trace rows are unchanged (diagnostics are
+    reporting-only), and the deterministic repeat remains bit-identical.
 - Run counts: 2 safeguarded executions; each = 17 accepted iterations + 1 failing
   update request (each iteration: 1 accepted raw update + 1 trace operator build;
   ~6–7 s per run). No other scientific configuration.

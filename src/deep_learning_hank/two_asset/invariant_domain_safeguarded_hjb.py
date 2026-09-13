@@ -170,6 +170,89 @@ def _domain_ok(solver: BoundaryHJBSolver, V: np.ndarray,
     return np.isfinite(pb) and pb > margin
 
 
+def crossing_lambdas(p_old: float, p_raw: float,
+                     margin: float = PB_MARGIN) -> dict:
+    """DIAGNOSTIC-ONLY continuous crossing quantities at one boundary state.
+
+    For the affine trial evidence ``p_trial(lambda) = p_old + lambda*(p_raw
+    - p_old)``:
+
+    - ``lambda_zero_crossing = p_old/(p_old - p_raw)``: the continuous step
+      crossing p_b = 0;
+    - ``lambda_margin_crossing = (p_old - margin)/(p_old - p_raw)``: the
+      continuous step crossing the acceptance margin p_b = PB_MARGIN.
+
+    These are REPORTING metrics only. They are NEVER used to choose a step,
+    never add lambda candidates, never authorize lambda below 2^-20, and never
+    alter p_b / candidate scoring / Q / controls. The actual safeguard remains
+    exactly the authorized dyadic search {2^-k, k=0..20} taking the largest
+    feasible lambda. Quantities that are not mathematically defined (non-finite
+    inputs, denominator <= 0, or p_old not above margin above p_raw) are None.
+    """
+    out = {"lambda_zero_crossing": None, "lambda_margin_crossing": None}
+    if not (np.isfinite(p_old) and np.isfinite(p_raw)):
+        return out
+    denom = p_old - p_raw
+    if denom <= 0.0:
+        return out
+    out["lambda_zero_crossing"] = float(p_old / denom)
+    if p_old > margin > p_raw:
+        out["lambda_margin_crossing"] = float((p_old - margin) / denom)
+    return out
+
+
+def terminal_crossing_diagnostics(solver: BoundaryHJBSolver, V_old: np.ndarray,
+                                  V_raw: np.ndarray, labor0: np.ndarray,
+                                  margin: float = PB_MARGIN) -> dict:
+    """DIAGNOSTIC-ONLY crossing metrics at the terminal BINDING state.
+
+    The binding state is the boundary state achieving the smallest continuous
+    margin-crossing lambda (the state that blocks every authorized dyadic
+    step): p_old and p_raw are reported AT THE SAME STATE so that
+    lambda_margin_crossing = (p_old - margin)/(p_old - p_raw) is exact.
+    Read-only; never changes step selection."""
+    g = solver.grid
+    _, vb_b_old, _, _ = solver.compute_derivatives(V_old, labor0, 0.0, 0.0)
+    _, vb_b_raw, _, _ = solver.compute_derivatives(V_raw, labor0, 0.0, 0.0)
+    best: Optional[tuple] = None   # (lambda_margin, p_old, p_raw, node, nz)
+    for node in range(solver.n):
+        if g.families[node] == "F0":
+            continue
+        for nz in range(solver.nz):
+            po = float(vb_b_old[node, nz])
+            pr = float(vb_b_raw[node, nz])
+            if not (np.isfinite(po) and np.isfinite(pr)):
+                continue
+            denom = po - pr
+            if denom <= 0.0 or not (po > margin > pr):
+                continue
+            lm = (po - margin) / denom
+            if best is None or lm < best[0]:
+                best = (lm, po, pr, node, nz)
+    if best is None:
+        return {
+            "p_old": None, "p_raw": None, "PB_MARGIN": float(margin),
+            "lambda_margin_crossing": None, "lambda_zero_crossing": None,
+            "min_authorized_dyadic_lambda": 2.0 ** (-LAMBDA_MIN_EXP),
+            "worst_state": None,
+        }
+    lm, po, pr, node, nz = best
+    return {
+        "p_old": po,
+        "p_raw": pr,
+        "PB_MARGIN": float(margin),
+        "lambda_margin_crossing": lm,
+        "lambda_zero_crossing": crossing_lambdas(po, pr, margin)[
+            "lambda_zero_crossing"],
+        "min_authorized_dyadic_lambda": 2.0 ** (-LAMBDA_MIN_EXP),
+        "worst_state": {
+            "node": int(node), "j": int(g.j_arr[node]),
+            "i": int(g.i_arr[node]), "z": int(nz),
+            "family": g.families[node],
+        },
+    }
+
+
 def safeguard_step(solver: BoundaryHJBSolver, V_old: np.ndarray,
                    V_raw: np.ndarray, labor0: np.ndarray,
                    margin: float = PB_MARGIN,
@@ -267,8 +350,7 @@ def run_safeguarded_central() -> SafeguardDiagnosticResult:
         try:
             lam, backtracks = safeguard_step(solver, V, V_raw, labor0)
         except InvariantStepFailure as exc:
-            pb_raw, node_raw, nz_raw = min_boundary_pb_state(solver, V_raw, labor0)
-            g = solver.grid
+            crossing = terminal_crossing_diagnostics(solver, V, V_raw, labor0)
             return SafeguardDiagnosticResult(
                 outcome="INVARIANT_STEP_FAILURE", converged=False,
                 iterations=iteration - 1, final_statistic=statistic,
@@ -278,15 +360,25 @@ def run_safeguarded_central() -> SafeguardDiagnosticResult:
                 min_accepted_boundary_pb=min_accepted_pb,
                 raw_domain_violations_avoided=raw_violations_avoided,
                 final_bellman_residual=None, final_q_max_abs_row_sum=None,
-                final_min_boundary_pb=pb_raw, final_artificial_bindings=None,
+                final_min_boundary_pb=crossing["p_raw"],
+                final_artificial_bindings=None,
                 final_family_histogram=None,
                 failure_detail={
-                    "message": str(exc), "raw_min_boundary_pb": pb_raw,
-                    "old_min_boundary_pb": pb_old,
-                    "worst_raw_state": {
-                        "node": node_raw, "j": int(g.j_arr[node_raw]),
-                        "i": int(g.i_arr[node_raw]), "z": int(nz_raw),
-                        "family": g.families[node_raw],
+                    "message": str(exc),
+                    "raw_min_boundary_pb": crossing["p_raw"],
+                    "old_min_boundary_pb": crossing["p_old"],
+                    "worst_raw_state": crossing["worst_state"],
+                    "terminal_crossing_diagnostics": {
+                        "p_old": crossing["p_old"],
+                        "p_raw": crossing["p_raw"],
+                        "PB_MARGIN": crossing["PB_MARGIN"],
+                        "lambda_margin_crossing":
+                            crossing["lambda_margin_crossing"],
+                        "lambda_zero_crossing":
+                            crossing["lambda_zero_crossing"],
+                        "min_authorized_dyadic_lambda":
+                            crossing["min_authorized_dyadic_lambda"],
+                        "worst_state": crossing["worst_state"],
                     },
                 },
                 trace=trace,

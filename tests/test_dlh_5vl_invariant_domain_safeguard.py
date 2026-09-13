@@ -29,6 +29,7 @@ from deep_learning_hank.two_asset.invariant_domain_safeguarded_hjb import (
     MAX_ITERATIONS,
     PB_MARGIN,
     InvariantStepFailure,
+    crossing_lambdas,
     final_bellman_validation,
     min_boundary_pb,
     run_safeguarded_central,
@@ -178,6 +179,130 @@ def test_invariant_step_failure_when_no_valid_step():
     V_raw[node, 0] -= 1.0e9          # domain violation at every dyadic step
     with pytest.raises(InvariantStepFailure):
         safeguard_step(solver, V0, V_raw, lab)
+
+
+# ---------------------------------------------------------------------------
+# Micro-Rev corrections: margin-crossing diagnostics (diagnostic ONLY) and
+# trajectory-bounded interpretation
+# ---------------------------------------------------------------------------
+def test_lambda_margin_crossing_formula_uses_pb_margin_not_zero():
+    """lambda_margin_crossing = (p_old - PB_MARGIN)/(p_old - p_raw): the
+    continuous step crossing the acceptance margin, NOT the zero boundary.
+    Values are the same-state terminal pair of the frozen central run."""
+    p_old = 1.8128990372393415e-12
+    p_raw = -1.0825070292850926e-06
+    m = 1.0e-12
+    out = crossing_lambdas(p_old, p_raw, m)
+    expected_margin = (p_old - m) / (p_old - p_raw)
+    expected_zero = p_old / (p_old - p_raw)
+    assert out["lambda_margin_crossing"] == pytest.approx(expected_margin,
+                                                          rel=0.0, abs=1e-30)
+    assert out["lambda_zero_crossing"] == pytest.approx(expected_zero,
+                                                        rel=0.0, abs=1e-30)
+    # distinct quantities; the margin crossing is the binding one
+    assert out["lambda_margin_crossing"] < out["lambda_zero_crossing"]
+    assert out["lambda_margin_crossing"] == pytest.approx(7.51e-07, rel=0.02)
+    assert out["lambda_zero_crossing"] == pytest.approx(1.67e-06, rel=0.02)
+    # the MARGIN crossing is below the smallest authorized dyadic lambda;
+    # the ZERO crossing is not (the 2^-20 step stays above zero but dips
+    # below the margin — exactly why the margin, not zero, is the criterion)
+    assert out["lambda_margin_crossing"] < 2.0 ** (-20)
+    assert out["lambda_zero_crossing"] > 2.0 ** (-20)
+
+
+def test_lambda_zero_crossing_is_separately_named():
+    out = crossing_lambdas(1.0, -0.5, 1e-12)
+    assert set(out) == {"lambda_zero_crossing", "lambda_margin_crossing"}
+    assert out["lambda_margin_crossing"] == pytest.approx(
+        (1.0 - 1e-12) / 1.5)
+    assert out["lambda_zero_crossing"] == pytest.approx(1.0 / 1.5)
+
+
+def test_crossing_lambdas_guards_undefined_cases():
+    assert crossing_lambdas(np.nan, -1.0)["lambda_margin_crossing"] is None
+    assert crossing_lambdas(1.0, np.inf)["lambda_zero_crossing"] is None
+    # denominator <= 0 (raw not below old) -> not defined
+    assert crossing_lambdas(-1.0, -2.0)["lambda_margin_crossing"] is None
+    # margin not strictly between p_raw and p_old -> margin crossing undefined
+    assert crossing_lambdas(1e-13, -1.0)["lambda_margin_crossing"] is None
+
+
+def test_terminal_crossing_diagnostics_from_run():
+    """The run's terminal failure detail must carry the margin-relevant
+    crossing at the BINDING state (same-state p_old/p_raw), with
+    lambda_margin_crossing < 2^-20 and p_old > PB_MARGIN > p_raw."""
+    res = run_safeguarded_central()
+    assert res.outcome == "INVARIANT_STEP_FAILURE"
+    diag = res.failure_detail["terminal_crossing_diagnostics"]
+    assert diag["PB_MARGIN"] == 1e-12
+    p_old = diag["p_old"]
+    p_raw = diag["p_raw"]
+    assert p_old > 1e-12 > p_raw
+    expected = (p_old - 1e-12) / (p_old - p_raw)
+    assert diag["lambda_margin_crossing"] == pytest.approx(expected,
+                                                           rel=0.0, abs=1e-30)
+    assert diag["lambda_margin_crossing"] < diag["lambda_zero_crossing"]
+    # binding state is the accepted-iterate wall: p_old is the minimum
+    # accepted boundary p_b and the margin crossing is below 2^-20
+    assert p_old == res.min_accepted_boundary_pb
+    assert diag["lambda_margin_crossing"] < 2.0 ** (-20)
+    assert diag["min_authorized_dyadic_lambda"] == 2.0 ** (-20)
+    assert diag["worst_state"]["family"] == "F3"
+    assert res.final_min_boundary_pb == p_raw
+
+
+def test_crossing_diagnostics_never_change_step_selection():
+    """Diagnostic-only: the safeguarded accepted lambdas stay inside the
+    frozen dyadic set {2^-k, k=0..20}; no continuous crossing value is ever
+    used as a step."""
+    res = run_safeguarded_central()
+    assert res.outcome == "INVARIANT_STEP_FAILURE"
+    allowed = {2.0 ** (-k) for k in range(0, LAMBDA_MIN_EXP + 1)}
+    for t in res.trace:
+        assert t["lambda"] in allowed
+        assert t["lambda"] >= 2.0 ** (-20)
+        # acceptance margin is the only p_b threshold used by the safeguard
+        assert t["min_pb_new"] > PB_MARGIN
+    # static: the step-selection function never references the diagnostics
+    tree = ast.parse(MODULE_PATH.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name == "safeguard_step":
+            body_names = {n.id for n in ast.walk(node)
+                          if isinstance(n, ast.Name)}
+            assert "crossing_lambdas" not in body_names
+            assert "terminal_crossing_diagnostics" not in body_names
+
+
+def test_terminal_c_reproduction_deterministic():
+    res1 = run_safeguarded_central()
+    res2 = run_safeguarded_central()
+    assert res1.outcome == res2.outcome == "INVARIANT_STEP_FAILURE"
+    assert res1.iterations == res2.iterations == 17
+    assert (res1.failure_detail["terminal_crossing_diagnostics"]
+            == res2.failure_detail["terminal_crossing_diagnostics"])
+
+
+def test_no_global_fixed_point_assertion_in_scientific_tests():
+    """The scientific test module must not encode the forbidden global
+    interpretation (fixed point outside the domain / no positive-domain fixed
+    point); only trajectory-bounded statements are allowed."""
+    source = MODULE_PATH.parents[3] / "tests" / \
+        "test_dlh_5vl_invariant_domain_safeguard.py"
+    text = source.read_text(encoding="utf-8").lower()
+    # assembled so the forbidden phrases never appear verbatim in this file
+    banned = [
+        "fixed point " + w for w in (
+            "lies outside", "is outside", "exists outside",
+            "does not exist", "lies outside the domain",
+            "is outside the domain",
+        )
+    ] + [
+        "no " + "positive-domain fixed point",
+        "no " + "admissible fixed point",
+        "hjb solution itself " + "lies outside",
+    ]
+    for bad in banned:
+        assert bad not in text, f"forbidden global interpretation: {bad!r}"
 
 
 # ---------------------------------------------------------------------------
