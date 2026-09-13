@@ -228,9 +228,11 @@ def test_crossing_lambdas_guards_undefined_cases():
 
 
 def test_terminal_crossing_diagnostics_from_run():
-    """The run's terminal failure detail must carry the margin-relevant
-    crossing at the BINDING state (same-state p_old/p_raw), with
-    lambda_margin_crossing < 2^-20 and p_old > PB_MARGIN > p_raw."""
+    """The run's terminal failure detail must carry the same-state
+    margin-relevant crossing at the BINDING state (p_old/p_raw at the same
+    state), with lambda_margin_crossing < 2^-20 and p_old > PB_MARGIN >
+    p_raw. GLOBAL minima are recorded separately (see
+    test_global_minima_vs_binding_state_distinction)."""
     res = run_safeguarded_central()
     assert res.outcome == "INVARIANT_STEP_FAILURE"
     diag = res.failure_detail["terminal_crossing_diagnostics"]
@@ -247,8 +249,53 @@ def test_terminal_crossing_diagnostics_from_run():
     assert p_old == res.min_accepted_boundary_pb
     assert diag["lambda_margin_crossing"] < 2.0 ** (-20)
     assert diag["min_authorized_dyadic_lambda"] == 2.0 ** (-20)
-    assert diag["worst_state"]["family"] == "F3"
-    assert res.final_min_boundary_pb == p_raw
+    assert diag["binding_state"]["family"] == "F3"
+    assert diag["binding_state"]["j"] == 16
+    assert diag["binding_state"]["i"] == 8
+    assert diag["binding_state"]["z"] == 1
+    # binding p_raw is NOT the global raw minimum (which is at F2 (6,24) z=1)
+    assert p_raw == pytest.approx(-1.0825070292850926e-06, rel=1e-6)
+    assert res.final_min_boundary_pb == pytest.approx(-0.336924, rel=1e-3)
+
+
+def test_global_minima_vs_binding_state_distinction():
+    """GLOBAL old/raw minima (with their states) and the SAME-STATE margin
+    binding diagnostic are distinct quantities and must not be conflated:
+    global raw min ~ -0.336924 at F2 (6,24) z=1; binding state F3 (16,8)
+    z=1 with binding p_raw ~ -1.08e-6."""
+    res = run_safeguarded_central()
+    assert res.outcome == "INVARIANT_STEP_FAILURE"
+    fd = res.failure_detail
+    # global raw minimum (frozen-run evidence)
+    assert fd["global_raw_min_pb"] == pytest.approx(-0.336924, rel=1e-3)
+    grs = fd["global_raw_min_state"]
+    assert grs["family"] == "F2" and grs["j"] == 6 and grs["i"] == 24 \
+        and grs["z"] == 1
+    # global old minimum (accepted-iterate wall)
+    assert fd["global_old_min_pb"] == pytest.approx(1.8128990372393415e-12,
+                                                    rel=0.0, abs=1e-25)
+    gos = fd["global_old_min_state"]
+    assert gos["family"] == "F3" and gos["j"] == 16 and gos["i"] == 8 \
+        and gos["z"] == 1
+    # field-name semantics: the legacy names mean the GLOBAL quantities
+    assert fd["raw_min_boundary_pb"] == fd["global_raw_min_pb"]
+    assert fd["old_min_boundary_pb"] == fd["global_old_min_pb"]
+    assert fd["worst_raw_state"] == grs
+    assert res.final_min_boundary_pb == fd["global_raw_min_pb"]
+    # binding diagnostic: same state as the global OLD minimum here, but the
+    # binding p_raw differs from the GLOBAL raw minimum (different state)
+    bd = fd["terminal_crossing_diagnostics"]
+    assert bd["binding_state"] == gos
+    assert bd["p_old"] == fd["global_old_min_pb"]
+    assert bd["p_raw"] != fd["global_raw_min_pb"]
+    assert bd["binding_state"] != grs
+    assert bd["lambda_margin_crossing"] == pytest.approx(
+        (bd["p_old"] - 1e-12) / (bd["p_old"] - bd["p_raw"]), rel=0.0, abs=1e-30)
+    assert bd["lambda_margin_crossing"] < 2.0 ** (-20)
+    assert bd["lambda_zero_crossing"] > bd["lambda_margin_crossing"]
+    # the separate concepts never share one field name
+    assert "worst_state" not in bd
+    assert "binding_state" not in (fd["worst_raw_state"] or {})
 
 
 def test_crossing_diagnostics_never_change_step_selection():

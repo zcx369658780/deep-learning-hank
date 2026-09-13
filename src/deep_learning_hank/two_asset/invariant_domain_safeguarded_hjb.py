@@ -204,13 +204,17 @@ def crossing_lambdas(p_old: float, p_raw: float,
 def terminal_crossing_diagnostics(solver: BoundaryHJBSolver, V_old: np.ndarray,
                                   V_raw: np.ndarray, labor0: np.ndarray,
                                   margin: float = PB_MARGIN) -> dict:
-    """DIAGNOSTIC-ONLY crossing metrics at the terminal BINDING state.
+    """DIAGNOSTIC-ONLY SAME-STATE margin-crossing metrics at the terminal
+    BINDING state.
 
     The binding state is the boundary state achieving the smallest continuous
     margin-crossing lambda (the state that blocks every authorized dyadic
     step): p_old and p_raw are reported AT THE SAME STATE so that
     lambda_margin_crossing = (p_old - margin)/(p_old - p_raw) is exact.
-    Read-only; never changes step selection."""
+    This is a DIFFERENT concept from the GLOBAL raw minimum (the most-negative
+    boundary p_b anywhere in V_raw, which may live at another state); global
+    minima are recorded separately via ``min_boundary_pb_state``. Read-only;
+    never changes step selection."""
     g = solver.grid
     _, vb_b_old, _, _ = solver.compute_derivatives(V_old, labor0, 0.0, 0.0)
     _, vb_b_raw, _, _ = solver.compute_derivatives(V_raw, labor0, 0.0, 0.0)
@@ -234,7 +238,7 @@ def terminal_crossing_diagnostics(solver: BoundaryHJBSolver, V_old: np.ndarray,
             "p_old": None, "p_raw": None, "PB_MARGIN": float(margin),
             "lambda_margin_crossing": None, "lambda_zero_crossing": None,
             "min_authorized_dyadic_lambda": 2.0 ** (-LAMBDA_MIN_EXP),
-            "worst_state": None,
+            "binding_state": None,
         }
     lm, po, pr, node, nz = best
     return {
@@ -245,7 +249,7 @@ def terminal_crossing_diagnostics(solver: BoundaryHJBSolver, V_old: np.ndarray,
         "lambda_zero_crossing": crossing_lambdas(po, pr, margin)[
             "lambda_zero_crossing"],
         "min_authorized_dyadic_lambda": 2.0 ** (-LAMBDA_MIN_EXP),
-        "worst_state": {
+        "binding_state": {
             "node": int(node), "j": int(g.j_arr[node]),
             "i": int(g.i_arr[node]), "z": int(nz),
             "family": g.families[node],
@@ -351,6 +355,21 @@ def run_safeguarded_central() -> SafeguardDiagnosticResult:
             lam, backtracks = safeguard_step(solver, V, V_raw, labor0)
         except InvariantStepFailure as exc:
             crossing = terminal_crossing_diagnostics(solver, V, V_raw, labor0)
+            # GLOBAL minima (over all boundary states) and their states,
+            # computed independently of the margin-binding diagnostic
+            go_pb, go_node, go_nz = min_boundary_pb_state(solver, V, labor0)
+            gr_pb, gr_node, gr_nz = min_boundary_pb_state(solver, V_raw, labor0)
+            g = solver.grid
+            global_old_min_state = {
+                "node": int(go_node), "j": int(g.j_arr[go_node]),
+                "i": int(g.i_arr[go_node]), "z": int(go_nz),
+                "family": g.families[go_node],
+            }
+            global_raw_min_state = {
+                "node": int(gr_node), "j": int(g.j_arr[gr_node]),
+                "i": int(g.i_arr[gr_node]), "z": int(gr_nz),
+                "family": g.families[gr_node],
+            }
             return SafeguardDiagnosticResult(
                 outcome="INVARIANT_STEP_FAILURE", converged=False,
                 iterations=iteration - 1, final_statistic=statistic,
@@ -360,14 +379,19 @@ def run_safeguarded_central() -> SafeguardDiagnosticResult:
                 min_accepted_boundary_pb=min_accepted_pb,
                 raw_domain_violations_avoided=raw_violations_avoided,
                 final_bellman_residual=None, final_q_max_abs_row_sum=None,
-                final_min_boundary_pb=crossing["p_raw"],
+                # GLOBAL raw minimum on terminal failure (NOT the binding p_raw)
+                final_min_boundary_pb=gr_pb,
                 final_artificial_bindings=None,
                 final_family_histogram=None,
                 failure_detail={
                     "message": str(exc),
-                    "raw_min_boundary_pb": crossing["p_raw"],
-                    "old_min_boundary_pb": crossing["p_old"],
-                    "worst_raw_state": crossing["worst_state"],
+                    "raw_min_boundary_pb": gr_pb,          # GLOBAL raw minimum
+                    "old_min_boundary_pb": go_pb,          # GLOBAL old minimum
+                    "worst_raw_state": global_raw_min_state,
+                    "global_raw_min_pb": gr_pb,
+                    "global_raw_min_state": global_raw_min_state,
+                    "global_old_min_pb": go_pb,
+                    "global_old_min_state": global_old_min_state,
                     "terminal_crossing_diagnostics": {
                         "p_old": crossing["p_old"],
                         "p_raw": crossing["p_raw"],
@@ -378,7 +402,7 @@ def run_safeguarded_central() -> SafeguardDiagnosticResult:
                             crossing["lambda_zero_crossing"],
                         "min_authorized_dyadic_lambda":
                             crossing["min_authorized_dyadic_lambda"],
-                        "worst_state": crossing["worst_state"],
+                        "binding_state": crossing["binding_state"],
                     },
                 },
                 trace=trace,

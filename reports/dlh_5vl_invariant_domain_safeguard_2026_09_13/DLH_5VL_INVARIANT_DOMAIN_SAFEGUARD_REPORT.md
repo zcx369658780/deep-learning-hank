@@ -57,12 +57,15 @@ not claimed (the safeguard reaches the gate's own terminal failure
 exists on the tested safeguarded trajectory). Blocked is not applicable.
 
 > **Micro-Rev record:** this report incorporates the bounded corrections required by
-> Reviewer comment `5649480400`: (1) the fixed-point overclaim is replaced by the
-> trajectory-bounded statement above; (2) the terminal crossing diagnostic now reports
-> the same-state margin crossing `lambda_margin = (p_old - PB_MARGIN)/(p_old - p_raw)`
-> at the binding state, distinct from the separately-named zero crossing (see §4.2).
-> No underlying economics or solver behavior changed; no accepted numerical evidence
-> was reopened.
+> Reviewer comment `5649480400` (fixed-point overclaim replaced by the
+> trajectory-bounded statement above; same-state margin crossing
+> `lambda_margin = (p_old - PB_MARGIN)/(p_old - p_raw)` at the binding state) and
+> Reviewer correction `5649693645` (terminal-diagnostic metadata semantics: GLOBAL
+> old/raw minima and their states are recorded separately from the margin-binding
+> same-state diagnostic; `final_min_boundary_pb` / `raw_min_boundary_pb` /
+> `worst_raw_state` mean the GLOBAL raw minimum and its state; the binding-state
+> same-state pair lives only inside `terminal_crossing_diagnostics`). No underlying
+> economics or solver behavior changed; no accepted numerical evidence was reopened.
 
 ---
 
@@ -134,24 +137,43 @@ delta/tolerance, no alternate W_max or m.
 | final Bellman residual | NOT reached (no iterate convergence → no final validation manufactured) |
 | failing iteration | 18th update request: no allowed dyadic lambda keeps the domain |
 
-### 4.2 Failure detail (terminal event, corrected per Micro-Rev `5649480400`)
+### 4.2 Failure detail (terminal event; corrected per Micro-Rev `5649480400` and
+Micro-Rev `5649693645`)
 
 At the failing update request (iteration 18), built from the last accepted iterate
-(V_17, min accepted boundary p_b = 1.8128990372393415e-12):
+(V_17, min accepted boundary p_b = 1.8128990372393415e-12). Two DISTINCT terminal
+diagnostics are recorded (semantics separated after Micro-Rev `5649693645`):
 
-**Terminal BINDING state (same-state pair; the state that blocks every authorized
+**A. GLOBAL minima (over ALL boundary states, each with its attaining state):**
+
+| metric | value | state |
+|---|---|---|
+| global old min p_b | 1.8128990372393415e-12 | F3, (j, i) = (16, 8), z = 1, node 367 (the accepted-iterate wall) |
+| global raw min p_b | **−0.33692370571864877** | F2, (j, i) = (6, 24), z = 1, node 201 (a = 3.158, b = 6.842) — the most-negative raw boundary p_b anywhere |
+
+**B. MARGIN-BINDING SAME-STATE diagnostic (the state that blocks every authorized
 dyadic step — it achieves the minimum continuous margin-crossing lambda):**
 
 | metric | value |
 |---|---|
-| worst state (binding) | node 367, family **F3**, (j, i) = (16, 8), z = 1 → (a = 8.421, b = 0.947) |
-| p_old (accepted iterate, same state) | 1.8128990372393415e-12 |
-| p_raw (raw update, same state) | −1.0825070292850926e-06 |
+| binding state | node 367, family **F3**, (j, i) = (16, 8), z = 1 → (a = 8.421, b = 0.947) |
+| binding p_old (accepted iterate, same state) | 1.8128990372393415e-12 |
+| binding p_raw (raw update, same state) | −1.0825070292850926e-06 |
 | PB_MARGIN (frozen) | 1e-12 |
 | **lambda_margin_crossing** = (p_old − PB_MARGIN)/(p_old − p_raw) | **7.50939858929181e-07** |
 | lambda_zero_crossing = p_old/(p_old − p_raw) | 1.674719842086034e-06 |
 | minimum authorized dyadic lambda | 2^-20 = 9.5367431640625e-07 |
 | margin crossing below smallest authorized step? | **YES** (7.51e-7 < 9.54e-7) |
+
+**The two concepts are different and are never mixed.** The binding state matters
+because it yields the smallest allowed continuous margin-crossing lambda (the reason
+no authorized step exists). The global raw minimum matters because it is the
+most-negative raw boundary derivative anywhere (−0.337 at F2 (6,24) z=1); its state
+differs from the binding state. In the result object: `final_min_boundary_pb`,
+`raw_min_boundary_pb` and `worst_raw_state` always mean the GLOBAL raw minimum and its
+state; `global_old_min_pb`/`global_old_min_state` mean the GLOBAL old minimum and its
+state; the binding-state same-state pair lives ONLY inside
+`terminal_crossing_diagnostics` (`p_old`, `p_raw`, `binding_state`).
 
 The continuous step needed merely to remain above the acceptance margin is
 λ_margin ≈ 7.51e-7, which is below the smallest authorized dyadic step
@@ -168,9 +190,7 @@ safeguard step exists** → `INVARIANT_STEP_FAILURE`.
 > terminal is unchanged. This is exactly why the margin formula (not the zero formula)
 > is the relevant criterion: the zero crossing (1.67e-6) lies ABOVE 2^-20, so the
 > 2^-20 step stays above zero but dips below the margin — only the margin crossing
-> reveals the no-authorized-step condition. (For reference, the raw update's most
-> negative boundary p_b = −0.336924 occurs at the separate state F2 (6,24) z=1, node
-> 201, (a = 3.158, b = 6.842), recorded as `worst_raw_state`.)
+> reveals the no-authorized-step condition.
 
 These crossing quantities are DIAGNOSTIC ONLY: they never choose a step, never add
 lambda candidates, never authorize lambda below 2^-20, and never alter p_b / candidate
@@ -268,7 +288,7 @@ Undamped central selected-Q run (Issue #58/#59 accepted fact): exits the boundar
 effective domain at iteration 2, F3 (13,13), z = 0. Used only as the frozen baseline
 reference; not re-derived by parameter experimentation.
 
-## 7. Tests (all pass — 18/18, incl. Micro-Rev additions)
+## 7. Tests (all pass — 19/19, incl. Micro-Rev additions)
 
 `tests/test_dlh_5vl_invariant_domain_safeguard.py`:
 - frozen central configuration exact (household params, inputs r_a=0.07/r_b=0.02/tau,
@@ -282,17 +302,23 @@ reference; not re-derived by parameter experimentation.
 - no valid step → `INVARIANT_STEP_FAILURE`;
 - any PASS requires the final Bellman residual criterion (validation semantics);
 - deterministic complete central-case repeat (full-trace equality);
-- Micro-Rev additions: lambda_margin_crossing formula uses PB_MARGIN, not zero;
-  lambda_zero_crossing separately named; undefined-case guards; terminal diagnostic
-  from the real run satisfies p_old > PB_MARGIN > p_raw at the binding state,
-  lambda_margin_crossing = (p_old − PB_MARGIN)/(p_old − p_raw) recomputed exactly, and
-  lambda_margin_crossing < 2^-20 (with the zero crossing NOT below 2^-20 — the margin,
-  not zero, is the binding criterion); crossing diagnostics never change step selection
-  (trace lambdas all inside the authorized dyadic set; `safeguard_step` does not
-  reference the diagnostics); PB_MARGIN and the authorized lambda set unchanged;
-  deterministic Terminal-C reproduction (INVARIANT_STEP_FAILURE, 17 iterations,
-  identical terminal crossing diagnostics); no global fixed-point assertion in the
-  scientific tests;
+- Micro-Rev `5649480400` additions: lambda_margin_crossing formula uses PB_MARGIN,
+  not zero; lambda_zero_crossing separately named; undefined-case guards; terminal
+  diagnostic from the real run satisfies p_old > PB_MARGIN > p_raw at the binding
+  state, lambda_margin_crossing recomputed exactly, and lambda_margin_crossing < 2^-20
+  (with the zero crossing NOT below 2^-20 — the margin, not zero, is the binding
+  criterion); crossing diagnostics never change step selection (trace lambdas all
+  inside the authorized dyadic set; `safeguard_step` does not reference the
+  diagnostics); PB_MARGIN and the authorized lambda set unchanged; deterministic
+  Terminal-C reproduction; no global fixed-point assertion in the scientific tests;
+- Micro-Rev `5649693645` additions: GLOBAL raw minimum ≈ −0.336924 pinned at F2
+  (6,24) z=1; GLOBAL old minimum 1.8128990372393415e-12 pinned at F3 (16,8) z=1;
+  binding-state same-state pair pinned separately (F3 (16,8) z=1, binding p_raw ≈
+  −1.08e-6); global raw state ≠ binding state; field-name semantics pinned
+  (`final_min_boundary_pb` / `raw_min_boundary_pb` / `worst_raw_state` = GLOBAL raw
+  minimum and its state; `old_min_boundary_pb` = GLOBAL old minimum; binding-state
+  quantities only inside `terminal_crossing_diagnostics` with `binding_state`, no
+  `worst_state` overload);
 - no KFE / stationary KFE / steady-state invocation (AST scan of imports and used
   names).
 
@@ -300,13 +326,15 @@ reference; not re-derived by parameter experimentation.
 
 - Commands:
   - `$env:PYTHONPATH = "D:\deep-learning-hank\src"`
-  - `python -m pytest tests/test_dlh_5vl_invariant_domain_safeguard.py -q` (18/18 pass)
+  - `python -m pytest tests/test_dlh_5vl_invariant_domain_safeguard.py -q` (19/19 pass)
   - diagnostic driver (run twice + persist trace): the module's
     `run_safeguarded_central()` executed exactly twice; the two results and full traces
     are bit-identical (`deterministic_repeat_identical: true`); `DLH_5VL_ITERATION_TRACE.csv`
-    written from the first run (17 rows). Re-executed after the Micro-Rev diagnostic
-    additions; the safeguarded trajectory and trace rows are unchanged (diagnostics are
-    reporting-only), and the deterministic repeat remains bit-identical.
+    written from the first run (17 rows). Re-executed after each bounded Micro-Rev
+    diagnostic/metadata addition; the safeguarded trajectory and trace rows are
+    unchanged (the additions are reporting-only metadata), the iteration-trace CSV
+    remains byte-identical to the accepted version, and the deterministic repeat
+    remains bit-identical.
 - Run counts: 2 safeguarded executions; each = 17 accepted iterations + 1 failing
   update request (each iteration: 1 accepted raw update + 1 trace operator build;
   ~6–7 s per run). No other scientific configuration.
