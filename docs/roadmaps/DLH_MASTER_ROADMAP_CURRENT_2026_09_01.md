@@ -4,7 +4,7 @@
 **Date:** 2026-09-14  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** DLH-5V-R / ISSUE #66 NEXT ACTIVE — F0 FINAL-RATE PROVENANCE AND OPERATOR-CONSISTENCY AUDIT (BUILDER NOT YET OPERATIVE)
+**Status:** NO ACTIVE BUILDER ISSUE — ISSUE #66 / DLH-5V-R ACCEPTED / CLOSED (TERMINAL A) — NEXT ROUTE: OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR
 
 ---
 
@@ -909,7 +909,7 @@ modification. Exactly ONE terminal:
 
 ---
 
-## 8.9 Issue #66 / DLH-5V-R — NEXT ACTIVE F0 final=True rate/provenance and operator-consistency audit
+## 8.9 Issue #66 / DLH-5V-R — F0 final=True rate/provenance and operator-consistency audit — TERMINAL A ACCEPTED / CLOSED
 
 Title:
 
@@ -929,16 +929,38 @@ Authority marker:
 
 Initial authoritative activation comment:
 
-`5656814064`
+`5656814064` (final authoritative activation-refresh `5657247407`)
 
-Dedicated future Builder branch:
+Dedicated Builder branch (integrated into `main`):
 
 `dsh/issue-66-dlh-5vr-f0-final-rate-provenance-2026-09-14`
 
-Builder execution is **NOT YET OPERATIVE**: it becomes operative only after all
-three CURRENT governance files are synchronized to Issue #66 (this roadmap
-included), this activation ID is recorded, and a final authoritative
-activation-refresh comment confirms the post-sync live `main`.
+Builder execution is **complete**: the Issue #66 audit was executed on its
+dedicated branch after the activation comments (initial `5656814064` and the
+final authoritative activation-refresh `5657247407` confirming the post-sync
+live `main`), and the candidate is **ACCEPTED / CLOSED** as recorded below.
+
+Issue #66 is **ACCEPTED / CLOSED** at Terminal A. Accepted candidate /
+integration: `a31f17e6d965ddfe8214cd1b83d4074833310625`; reviewer acceptance
+`5666168154`; acceptance integration `5666172248`. Accepted verdict:
+`DLH_5VR_ACCEPTED__TERMINAL_A_CONFIRMED__ITERATION_OPERATOR_IS_MATLAB_FAITHFUL__FINAL_TRUE_F0_ROW_ASSEMBLY_DROPS_Z_BLOCK_OFFSET_FOR_Z1__VALIDATION_OPERATOR_SCIENTIFIC_REPAIR_OWNER_GATE_REQUIRED`;
+accepted terminal:
+`DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY`.
+Accepted facts / interpretation (local attribution at the fixed `V_*` only):
+`ITER_EQ_MATLAB = true`, `FINAL_EQ_MATLAB = false`, `BOTH_EQUIVALENT = false`,
+`MIXED_OR_UNRESOLVED = false`; F0 directional rate formulas coincide within
+machine tolerance; utility/source terms identical; non-F0 boundary rows
+identical; **destination assembly is the material discrepancy** — 298 z=1 F0
+rows affected; rowwise max operator gap = `24.601971766296664`; the accepted
+`final=True` F0 off-diagonal path uses bare `dn` while the accepted iteration
+and boundary paths use `nz*n + dn`, therefore z=1 `final=True` F0 destinations
+are incorrectly placed in the z=0 block; no conclusion yet that the
+convergence criterion itself should change; correction of accepted `final=True`
+source semantics requires explicit Owner authorization; `R_iter` is NOT
+declared an accepted final convergence residual; does NOT prove HJB
+fixed-point nonexistence; the next route is `OWNER SCIENTIFIC DECISION
+REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR`. Stationary KFE remains
+**NOT AUTHORIZED**.
 
 ### 8.9.1 Scientific question
 
@@ -1017,9 +1039,11 @@ Execute exactly: ONE deterministic reconstruction; ONE current-policy
 ONE all-F0 compact row/rate/component comparison; ONE read-only
 MATLAB/oracle provenance mapping; ONE deterministic repeat. No new HJB
 iterate; no Newton / continuation / line search; no parameter/grid/price
-sweep; no source mutation. Exactly ONE terminal:
+sweep; no source mutation. Executed exactly as designed (deterministic repeat
+bit-identical; full-repository suite 512 passed). Exactly ONE terminal was
+reported:
 
-- A `DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY`
+- A `DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY` — **ACCEPTED**
 - B `DLH_5VR_F0_FINAL_RATE_PROVENANCE__FINAL_RAW_RATE_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__ITERATION_OPERATOR_NON_EQUIVALENT__ITERATION_OPERATOR_REVIEW_REQUIRED`
 - C `DLH_5VR_F0_FINAL_RATE_PROVENANCE__MIXED_EQUIVALENT_OR_UNRESOLVED_DISCRETE_OPERATOR_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED`
 - Blocked `BLOCKED_DLH_5VR_AUTHORITY_OR_DEPENDENCY_CONFLICT`
@@ -1068,8 +1092,8 @@ local continuous resolvent / domain-margin geometry          OUTCOME A ACCEPTED/
 continuous fraction-to-boundary pseudo-transient continuation  TERMINAL B ACCEPTED/CLOSED — ISSUE #63
 frozen-policy Newton geometry diagnostic (stagnation residual decomposition)  TERMINAL B ACCEPTED/CLOSED — ISSUE #64
 F0 final-validation operator consistency audit                      TERMINAL B ACCEPTED/CLOSED — ISSUE #65
-F0 final=True rate/provenance and operator-consistency audit          NEXT ACTIVE — ISSUE #66 (BUILDER NOT YET OPERATIVE)
-next scientific route (multi-step Newton / trust-region successor)  SCIENTIFIC DESIGN REQUIRED — OWNER/CHATGPT
+F0 final=True rate/provenance and operator-consistency audit          TERMINAL A ACCEPTED/CLOSED — ISSUE #66
+minimal final-validation operator repair (Owner scientific decision)  OWNER SCIENTIFIC DECISION REQUIRED
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -1103,17 +1127,20 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**NEXT ACTIVE BUILDER ISSUE: #66 / DLH-5V-R** (initial activation comment
-`5656814064` recorded). Route decision:
-`APPROVE_F0_FINAL_RATE_DISCRETIZATION_PROVENANCE_AND_OPERATOR_CONSISTENCY_AUDIT_AFTER_5VQ_TERMINAL_B`;
-authority marker:
-`DLH_5VR_F0_FINAL_RATE_PROVENANCE_AUDIT_AUTHORIZED`; dedicated future
-Builder branch
-`dsh/issue-66-dlh-5vr-f0-final-rate-provenance-2026-09-14`. Builder
-execution becomes operative only after all three CURRENT governance files are
-synchronized to Issue #66 and a final authoritative activation-refresh comment
-confirms the post-sync live `main`. Until then Builder execution remains
-**NOT YET OPERATIVE**.
+**NO ACTIVE BUILDER ISSUE.** Issue #66 / DLH-5V-R is ACCEPTED / CLOSED at
+Terminal A (accepted candidate / integration
+`a31f17e6d965ddfe8214cd1b83d4074833310625`; reviewer acceptance `5666168154`;
+acceptance integration `5666172248`; accepted verdict
+`DLH_5VR_ACCEPTED__TERMINAL_A_CONFIRMED__ITERATION_OPERATOR_IS_MATLAB_FAITHFUL__FINAL_TRUE_F0_ROW_ASSEMBLY_DROPS_Z_BLOCK_OFFSET_FOR_Z1__VALIDATION_OPERATOR_SCIENTIFIC_REPAIR_OWNER_GATE_REQUIRED`).
+Next scientific route (Owner decision required):
+
+`OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR`
+
+Explicitly NOT authorized: selected-Q source mutation; `final=True` repair;
+convergence-criterion replacement; `R_iter` becoming an accepted final
+convergence residual; any new HJB iterate; KFE / stationary KFE; successor
+Issue activation. Builder execution is suspended until the Owner issues a new
+authorized Issue.
 
 Issue #64 / DLH-5V-P is ACCEPTED / CLOSED at Terminal B (accepted candidate /
 integration `5db144a65796ff6a7e0f59d2d2a75a0446c13b83`; reviewer acceptance
@@ -1159,58 +1186,53 @@ accepted `final=True` F0 rate/discretization semantics dominate locally; no
 counterfactual is declared the correct convergence criterion; does NOT prove
 HJB fixed-point nonexistence. Stationary KFE remains **NOT AUTHORIZED**.
 
-Scientific boundary of Issue #66 (binding): deterministically reconstruct
-the exact accepted Issue #63 stagnation state `V_*` using accepted Issue #65/
-#64 helpers (deterministic reconstruction, STOP before any new HJB iterate is
-accepted; reproduce final statistic ≈ `3.6614352438846254e-08`, min boundary
-`p_b ≈ 4.8089461301970005e-09`, wall F3 (13,13), z=1) and build current
-`final=False` policies exactly once at `V_*`, using those SAME selected F0
-controls for all row/rate comparisons; reproduce `||R_iter||_inf =
-10.435094313164921`, `||R_final_current||_inf = 490.7560414005864`, and F0
-rowwise max `|Q_final_current - Q_iter| ≈ 24.6019717663`. For every F0 state
-row extract and persist compact rowwise diagnostics (no full sparse matrices):
-b backward / b forward / a backward / a forward rates, diagonal, represented
-outgoing-rate sum, omitted / unavailable destination rate at a grid/domain
-edge, and utility/source term (separating operator-rate differences from
-utility differences); attribute the max ~24.60 difference into defined
-rate/operator difference classes with counts/maxima/argmax state. Read-only
-MATLAB-faithful provenance mapping (source-backed, no re-interpretation or
-rewrite): how selected continuous controls become iteration b backward/forward
-and a backward/forward rates; source-faithful clipping/truncation or
-finite-difference sign logic; diagonal construction; handling of an
-outward/requested rate with no represented destination; separately the
-`final=True` F0 path (raw `mu_a`/`mu_b` source; direct `max(±mu)/step`
-conversion; represented off-diagonal destinations; diagonal construction).
-Frozen ex ante equivalence classifications on F0 rows with the same current
-controls: `ITER_EQ_MATLAB`, `FINAL_EQ_MATLAB`, `BOTH_EQUIVALENT`,
-`MIXED_OR_UNRESOLVED`; also record whether utility/source terms are identical
-under same current controls and whether all non-F0 boundary rows remain
-identical (any discrepancy fails closed); classifications must NOT be
-converted into a source mutation or new convergence rule. Execute exactly: ONE
-deterministic reconstruction, ONE current-policy `final=False` build at
-`V_*`, ONE current-policy `final=True` build at `V_*`, ONE all-F0 compact
-row/rate/component comparison, ONE read-only MATLAB/oracle provenance
-mapping, ONE deterministic repeat; no new HJB iterate; no Newton /
-continuation / line search; no parameter/grid/price sweep; no source mutation;
-non-finite / provenance ambiguity fails closed. Terminal set per Issue #66
-body (A/B/C + Blocked, exactly one). Seven read-only blobs (oracle
+Issue #66 / DLH-5V-R execution is **complete and ACCEPTED / CLOSED at
+Terminal A**: the audit deterministically reconstructed the accepted Issue #63
+stagnation state `V_*` (final statistic ≈ `3.6614352438846254e-08`, min boundary
+`p_b ≈ 4.8089461301970005e-09`, wall F3 (13,13), z=1), built the current-policy
+`final=False` operator and the current-policy `final=True` operator exactly
+once each at that same `V_*` with the SAME current selected F0 controls,
+reproduced `||R_iter||_inf = 10.435094313164921`,
+`||R_final_current||_inf = 490.7560414005864` and the F0 rowwise max
+`|Q_final_current - Q_iter| = 24.601971766296664`, and performed the all-F0
+compact row/rate/component comparison plus the read-only source-backed
+MATLAB/oracle provenance mapping. Accepted facts: `ITER_EQ_MATLAB = true`,
+`FINAL_EQ_MATLAB = false`, `BOTH_EQUIVALENT = false`,
+`MIXED_OR_UNRESOLVED = false`; F0 directional rate formulas coincide within
+machine tolerance; utility/source terms identical; non-F0 boundary rows
+identical; **destination assembly is the material discrepancy** — 298 z=1 F0
+rows affected; the accepted `final=True` F0 off-diagonal path uses bare `dn`
+while the accepted iteration and boundary paths use `nz*n + dn`, therefore z=1
+`final=True` F0 destinations are incorrectly placed in the z=0 block; no
+conclusion yet that the convergence criterion itself should change; correction
+of accepted `final=True` source semantics requires explicit Owner
+authorization; `R_iter` is NOT declared an accepted final convergence residual.
+The next route is `OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL
+FINAL-VALIDATION OPERATOR REPAIR`; explicitly NOT authorized pending an Owner
+decision: selected-Q source mutation, `final=True` repair,
+convergence-criterion replacement, `R_iter` becoming an accepted final
+convergence residual, any new HJB iterate, KFE / stationary KFE, and successor
+Issue activation. Eight read-only blobs (oracle
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`; selected-Q
 `7ea342ccbe15d852b90743b14bb4b02977c2d78b`; Issue #61
 `043e146ef499e985a49d256c4cec2f397f93e4e1`; Issue #62
 `cb6533475d0ba115e6f52bd73e61aeb85c9b6ea7`; Issue #63
 `746799509c517746ba6a321e5526c57a8f4698e4`; Issue #64
 `3ca2371c7da1939d1fed55df5728baefb27d8aa7`; Issue #65
-`bb4045378bf19607f68d7d4a7628b3431afcd676`). Stationary KFE remains **NOT
-AUTHORIZED**; no successor; no PR / merge / Issue close / self-accept. Issue
-#65 / DLH-5V-Q, Issue #64 / DLH-5V-P, Issue #63 / DLH-5V-O, Issue #62 /
-DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L remain ACCEPTED /
-CLOSED; the six tested stabilization-route gates are closed.
+`bb4045378bf19607f68d7d4a7628b3431afcd676`; Issue #66
+`44d47c7545f279dfe9189736f5cdcdfa30c3b84b`). Stationary KFE remains **NOT
+AUTHORIZED**; no successor; no PR / merge / Issue close / self-accept by the
+Builder. Issue #66 / DLH-5V-R, Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P,
+Issue #63 / DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60
+/ DLH-5V-L remain ACCEPTED / CLOSED; the seven tested stabilization/diagnostic
+route gates are closed.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #66 body/comments (next active; initial activation `5656814064`).
+- Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,
+  acceptance integration `5666172248`).
 - Issue #65 body/comments (accepted/closed).
 
 Working scientific label remains **Network-Structured Regional HANK (NSR-HANK)**.
