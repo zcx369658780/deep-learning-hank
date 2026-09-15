@@ -1,0 +1,62 @@
+metric,value
+terminal,DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY
+iterations,8
+final_statistic,3.6614352438846254e-08
+min_boundary_pb_star,4.8089461301970005e-09
+wall_state,family=F3; i=13; j=13; node=332; z=1
+r_iter_inf,10.435094313164921
+r_iter_argmax,family=F0; i=2; j=3; node=97; z=0
+r_corrected_inf,10.435094313164921
+r_corrected_argmax,family=F0; i=2; j=3; node=97; z=0
+r_corrected_f0_max,10.435094313164921
+r_corrected_boundary_max,9.742068328671465
+corrected_vs_iter_f0_rowwise_max,1.4210854715202004e-14
+corrected_vs_iter_f0_rowwise_max_state,family=F0; i=8; j=10; node=275; z=1
+corrected_vs_iter_total_rowwise_max,1.4210854715202004e-14
+corrected_rate_component_max_abs_diff,1.4210854715202004e-14
+corrected_destination_layout_misplaced_columns,0
+corrected_destination_layout_checked_rows,1192
+offblock_residual_beyond_switch,0.0
+z0_f0_rowwise_max_abs_diff_vs_pre_repair,0.0
+z0_f0_unchanged_row_count,298
+z1_f0_rowwise_max_abs_diff_vs_pre_repair,24.601971766296664
+z1_f0_row_count,298
+cross_z_contamination_row_count,0
+utility_f0_max_abs_diff,0.0
+utility_boundary_max_abs_diff,0.0
+boundary_row_max_abs_diff,0.0
+boundary_u_max_abs_diff,0.0
+diagonal_f0_max_abs_diff,1.4210854715202004e-14
+same_controls_max_abs_diff,0.0
+max_abs_q1_iter,2.4253377084448857e-12
+max_abs_q1_corrected,2.4253377084448857e-12
+expansions_iter,0
+bindings_iter,0
+expansions_corrected,0
+bindings_corrected,0
+r_pre_repair_current_inf,490.7560414005864
+r_pre_repair_current_argmax,family=F0; i=5; j=10; node=272; z=1
+pre_repair_vs_iter_f0_rowwise_max,24.601971766296664
+pre_repair_vs_corrected_f0_rowwise_max,24.601971766296664
+pre_repair_structural_match,True
+ratio_corrected_over_pre_repair,0.02126330280801807
+ratio_corrected_over_r_iter,1.0
+ratio_corrected_over_accepted_final_baseline,0.02126330280801807
+residual_improvement,480.3209470874215
+f0_row_count,596
+bellman_tolerance_unchanged,0.001
+convergence_declared,False
+new_hjb_iterate_accepted,False
+deterministic_repeat_identical,True
+full_repository_suite_failed,11
+full_repository_suite_passed,521
+full_repository_suite_seconds,3468.01
+focused_suite_passed,20
+focused_suite_failed,0
+stale_dependent_assertions_count,11
+stale_dependent_test_files,3
+stale_dependent_assertions_are_code_regression,False
+stale_dependent_assertions_inverted_conclusions,3
+selected_q_pre_repair_blob,7ea342ccbe15d852b90743b14bb4b02977c2d78b
+selected_q_repaired_blob,556ccc214f03a1a22306cc4f5c7e9f7691bbf897
+selected_q_diff_lines,1

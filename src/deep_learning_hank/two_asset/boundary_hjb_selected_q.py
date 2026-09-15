@@ -975,7 +975,7 @@ class BoundaryHJBSolver:
                                 entries.append((dn, float(rate)))
                         diag = -(bb + bf + ab + af)
                         for dn, rate in entries:
-                            rows.append(row); cols.append(dn); data.append(rate)
+                            rows.append(row); cols.append(nz * self.n + dn); data.append(rate)
                         rows.append(row); cols.append(row); data.append(diag)
                         u[row] = rec.utility
                         rec2 = _PolicyRecord(
