@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.50  
+**Version:** V0.51  
 **Date:** 2026-09-15  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** ISSUE #69 / DLH-5V-U NEXT ACTIVE — BUILDER NOT YET OPERATIVE — LATENT F0 ITERATION-RATE VS RAW-DRIFT SIGN-DIVERGENCE PROVENANCE AUDIT (ISSUE #68 / DLH-5V-T ACCEPTED / CLOSED AT TERMINAL C AND INTEGRATED)
+**Status:** NO ACTIVE BUILDER ISSUE — ISSUE #69 / DLH-5V-U ACCEPTED / CLOSED AT TERMINAL A AND INTEGRATED — NEXT ROUTE: OWNER SCIENTIFIC DECISION REQUIRED — F0 RATE SEMANTICS AUTHORITY / OPERATOR CONTRACT
 
 ---
 
@@ -1400,7 +1400,7 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ---
 
-## 8.12 Issue #69 / DLH-5V-U — latent F0 iteration-rate vs raw-drift sign divergence away from `V_*` — NEXT ACTIVE (BUILDER NOT YET OPERATIVE)
+## 8.12 Issue #69 / DLH-5V-U — latent F0 iteration-rate vs raw-drift sign divergence away from `V_*` — TERMINAL A ACCEPTED / CLOSED (OWNER RATE-SEMANTICS DECISION NEXT)
 
 Title:
 
@@ -1420,13 +1420,40 @@ Authority marker:
 
 Initial authoritative activation comment:
 
-`5676828795`
+`5676828795` (final authoritative activation-refresh `5677087565`)
 
-Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
-refresh confirms the post-sync live `main`, Builder execution on Issue #69 is
-**NOT YET OPERATIVE**.
+Builder execution is **complete and ACCEPTED / CLOSED** at Terminal A. Accepted
+candidate / integration:
+`a08ad35c1dfea212fdc34c276e332b985af1a59f` (reviewer acceptance `5678488562`;
+acceptance integration `5678493024`, fast-forward, not a merge commit). Accepted
+verdict
+`DLH_5VU_ACCEPTED__TERMINAL_A_CONFIRMED__UNIQUE_SOURCE_BACKED_F0_B_RATE_SIGN_BRANCH_DIVERGENCE_FULLY_ACCOUNTS_FOR_ISSUE68_TRIAL_OPERATOR_GAPS__OWNER_RATE_SEMANTICS_DECISION_REQUIRED`;
+accepted terminal
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`.
 
-Dedicated future Builder branch:
+Accepted facts: both frozen Issue #68 trial disparities reproduce exactly
+(`alpha_half` gap `0.6718037653783657` on rows `{452, 453}`; `alpha_near` gap
+`1.3379411925537439` on rows `{452, 453, 482, 483}`); across all `596` F0 rows
+the b-rate divergent counts are `2` / `4`, the a-rate divergent counts are
+`0` / `0`, the destination-layout and omitted-rate divergent counts are `0` / `0`,
+and the max decomposition residual is `3.552713678800501e-15`; stored and
+recomputed realized `mu_a` / `mu_b` are bit-identical on the affected rows; every
+affected row has realized `mu_b < 0`, so the corrected raw-drift path has
+`b_forward = 0` while the iteration path carries a positive
+`iteration_b_forward_rate`; source provenance confirms iteration b-rates come
+from branch-gated `sc_b`/`sc_f` + `sdh_b`/`sdh_f` FOC/shadow objects while the
+corrected final raw rates come from `max(±mu_b)/db`; the unique observed
+mechanism is `liquid_label == "F"` / branch-gated positive forward iteration
+component while realized `mu_b < 0`, which fully accounts for the Issue #68 gaps.
+
+Reviewer qualification (binding): the acceptance is **limited to attribution of
+the observed Issue #68 trial discrepancies** and does **NOT** adopt the broader
+claim that the two rate constructions coincide *only* whenever
+`liquid_label == "0"` as a global theorem over the entire state/control space.
+**No authoritative rate path has been selected.** No HJB convergence and no
+accepted new HJB iterate. Stationary KFE remains **NOT AUTHORIZED**.
+
+Dedicated Builder branch (integrated into `main`):
 
 `dsh/issue-69-dlh-5vu-f0-rate-path-divergence-2026-09-15`
 
@@ -1436,6 +1463,25 @@ Terminal C (accepted candidate / integration
 acceptance integration `5676816068`), which exposed the latent trial-level
 divergence between the accepted `final=False` iteration-rate path and the
 corrected `final=True` raw-drift rate path under identical controls.
+
+### 8.12.0 Owner scientific decision gate (PENDING — nothing activated)
+
+Builder execution is suspended. The Owner must choose between:
+
+- **Route A** — MATLAB-faithful iteration-rate semantics remain authoritative for
+  the HJB operator. Implication: future final validation should use the SAME
+  selected stored iteration rates / same `Q` semantics as the solve, rather than
+  recomputing raw-drift rates.
+- **Route B** — realized-drift `max(±mu)/step` semantics become authoritative.
+  Implication: the iteration operator itself requires an Owner-authorized
+  scientific redesign plus renewed MATLAB-faithful parity / convergence
+  validation.
+- **Route C** — any dual-`Q` interpretation is NOT authorized by default, because
+  HJB/KFE operator consistency and future `Q^T` mass dynamics require one
+  coherent selected generator.
+
+No route is activated until the Owner decides. No successor Issue (#70) and no
+Builder branch are authorized.
 
 ### 8.12.1 Scientific question
 
@@ -1518,7 +1564,7 @@ remain read-only.
 
 ### 8.12.7 Forbidden
 
-No mutation of selected-Q, the oracle, or any accepted Issue #61–#68 scientific
+No mutation of selected-Q, the oracle, or any accepted Issue #61–#69 scientific
 source; no choosing or replacing the authoritative rate path; no
 convergence-criterion change; no economics/prices/grid/domain/initialization/
 controls/tolerances/`PB_MARGIN`/Bellman-tolerance change; no accepted trial as
@@ -1529,6 +1575,10 @@ sweep; no KFE / stationary KFE / `solve_household_steady_state`; no
 SCC/global-Q / GE / multi-region / neural / nominal / calibration / policy /
 welfare / Results; no PR; no merge; no Issue close; no successor; no
 self-accept.
+
+Pending the Owner route decision this now also forbids: starting any new Builder
+Issue or branch, creating Issue #70, and any further constrained-direction or
+convergence-rule work.
 
 Stationary KFE remains **NOT AUTHORIZED**.
 
@@ -1557,7 +1607,8 @@ F0 final-validation operator consistency audit                      TERMINAL B A
 F0 final=True rate/provenance and operator-consistency audit          TERMINAL A ACCEPTED/CLOSED — ISSUE #66
 minimal final-validation z-block operator repair                     TERMINAL A ACCEPTED/CLOSED — ISSUE #67 / DLH-5V-S
 single-wall tangent-projected Newton geometry diagnostic             TERMINAL C ACCEPTED/CLOSED — ISSUE #68 / DLH-5V-T
-latent F0 iteration-rate vs raw-drift sign-divergence provenance audit  NEXT ACTIVE (BUILDER NOT YET OPERATIVE) — ISSUE #69 / DLH-5V-U
+latent F0 iteration-rate vs raw-drift sign-divergence provenance audit  TERMINAL A ACCEPTED/CLOSED — ISSUE #69 / DLH-5V-U
+F0 rate semantics authority / operator contract                   OWNER SCIENTIFIC DECISION REQUIRED (ROUTES A / B / C — NOT ACTIVATED)
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -1591,42 +1642,56 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**ISSUE #69 / DLH-5V-U IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #68 /
-DLH-5V-T is ACCEPTED / CLOSED at Terminal C and integrated to `main` at
-`15083e5c9f089406aa69326bc84dbe2db0e42be8` (original scientific candidate
-`b194eb3886af7a5e3d5abe85dad114fdc6ed98eb`; remediation commit / final candidate
-`15083e5c9f089406aa69326bc84dbe2db0e42be8`; reviewer acceptance `5676811925`;
-acceptance integration `5676816068`; accepted verdict
-`DLH_5VT_ACCEPTED__TERMINAL_C_CONFIRMED__FULL_CHAIN_RULE_TANGENT_GEOMETRY_EXPANDS_SAFE_FRACTION_MATERIALLY__TRIAL_LEVEL_FINAL_VS_ITERATION_RATE_PATH_DIVERGENCE_INVALIDATES_CLEAN_RESIDUAL_CONTRACT__RATE_PATH_PROVENANCE_REVIEW_REQUIRED`;
+**NO ACTIVE BUILDER ISSUE.** Issue #69 / DLH-5V-U is ACCEPTED / CLOSED at
+Terminal A and integrated to `main` at
+`a08ad35c1dfea212fdc34c276e332b985af1a59f` (reviewer acceptance `5678488562`;
+acceptance integration `5678493024`; accepted verdict
+`DLH_5VU_ACCEPTED__TERMINAL_A_CONFIRMED__UNIQUE_SOURCE_BACKED_F0_B_RATE_SIGN_BRANCH_DIVERGENCE_FULLY_ACCOUNTS_FOR_ISSUE68_TRIAL_OPERATOR_GAPS__OWNER_RATE_SEMANTICS_DECISION_REQUIRED`;
 accepted terminal
-`DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`).
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`).
+No successor Issue (#70) has been created and no Builder branch is authorized.
 
-Issue #68 accepted facts: the controlling limiting-wall gradient is the full
-two-entry chain rule (`g[wall] = +1/db`, `g[down] = -1/db`, basis identity error
-`0`); the official tangent identity holds exactly (`g@d_T = 0`); the safe
-geometry expands materially — `alpha_cross_T = 0.16170699931086815`,
-`alpha_near = 0.16170683760386884`, `alpha_half = 0.08085341880193442`,
-geometry ratio `866.2532997045214`; both trials are strictly domain-safe. Under
-the SAME freshly reselected controls, however, the corrected `final=True` and
-`final=False` trial operators are **not** equivalent: F0 rowwise gaps
-`0.6718037653783657` (rows `{452, 453}`) and `1.3379411925537439` (rows
-`{452, 453, 482, 483}`), with bit-identical controls and utility at the affected
-rows. That triggers the frozen Outcome C inconsistency clause regardless of the
-indicative residual ratios (`0.9193283517706523`, `0.8390465254310803`). At the
-accepted `V_*` the two rate paths agree to machine precision, so the divergence
-is latent and appears only away from `V_*` near an upwind sign boundary.
-**HJB convergence is NOT accepted**, **no trial is an accepted iterate**, and
-the divergence does not establish which rate path is scientifically correct away
-from `V_*`.
+**NEXT ROUTE: OWNER SCIENTIFIC DECISION REQUIRED — F0 RATE SEMANTICS AUTHORITY /
+OPERATOR CONTRACT.**
 
-Issue #69 / DLH-5V-U route decision (2026-09-15):
-`APPROVE_F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AUDIT_AFTER_5VT_TERMINAL_C`.
-Authority marker: `DLH_5VU_F0_RATE_PATH_DIVERGENCE_AUDIT_AUTHORIZED`. Initial
-authoritative activation comment: `5676828795`. Final authoritative
-activation-refresh: **NOT YET PUBLISHED**, so Builder execution on Issue #69
-remains **NOT YET OPERATIVE** until that refresh confirms the post-sync live
-`main`.
+Issue #69 established that, away from `V_*`, the accepted `final=False`
+iteration path and the corrected `final=True` raw-drift path are not equivalent,
+and uniquely attributed every observed Issue #68 trial discrepancy to one
+source-backed b-rate sign/branch mechanism (both exactly reproduced: gaps
+`0.6718037653783657` on rows `{452, 453}` and `1.3379411925537439` on rows
+`{452, 453, 482, 483}`; across all `596` F0 rows the b-rate divergent counts are
+`2` / `4`, a-rate divergent `0` / `0`, destination-layout and omitted-rate
+divergent `0` / `0`, max decomposition residual `3.552713678800501e-15`; stored
+and recomputed realized `mu_a` / `mu_b` bit-identical on affected rows; every
+affected row has realized `mu_b < 0` so the raw-drift path has `b_forward = 0`
+while the iteration path carries a positive `iteration_b_forward_rate`; iteration
+b-rates come from branch-gated `sc_b`/`sc_f` + `sdh_b`/`sdh_f` FOC/shadow
+objects, corrected final raw rates from `max(±mu_b)/db`; unique mechanism
+`liquid_label == "F"` / branch-gated positive forward iteration component while
+realized `mu_b < 0`).
 
+The Owner must now choose:
+
+- **Route A** — MATLAB-faithful iteration-rate semantics remain authoritative for
+  the HJB operator. Implication: future final validation should use the SAME
+  selected stored iteration rates / same `Q` semantics as the solve, rather than
+  recomputing raw-drift rates.
+- **Route B** — realized-drift `max(±mu)/step` semantics become authoritative.
+  Implication: the iteration operator itself requires an Owner-authorized
+  scientific redesign plus renewed MATLAB-faithful parity / convergence
+  validation.
+- **Route C** — any dual-`Q` interpretation is NOT authorized by default, because
+  HJB/KFE operator consistency and future `Q^T` mass dynamics require one
+  coherent selected generator.
+
+No route is activated until the Owner decides. Reviewer qualification (binding):
+the Issue #69 acceptance is limited to attribution of the observed Issue #68
+trial discrepancies and does **not** adopt the broader claim that the two rate
+constructions coincide *only* whenever `liquid_label == "0"` as a global theorem
+over the entire state/control space. **No authoritative rate path has been
+selected.** **No HJB convergence** and **no accepted new HJB iterate**; the
+accepted residual `10.435094313164921` remains ~`10435`× the unchanged Bellman
+tolerance `1e-3`. Stationary KFE remains **NOT AUTHORIZED**.
 Dedicated future Builder branch:
 `dsh/issue-69-dlh-5vu-f0-rate-path-divergence-2026-09-15`.
 
@@ -1648,7 +1713,7 @@ record the frozen flags `ITER_RATE_PATH_SOURCE_BACKED`,
 `OTHER_MECHANISM_ESTABLISHED`, `MIXED_OR_UNRESOLVED`.
 
 Explicitly NOT authorized in Issue #69: mutating selected-Q, the oracle, or any
-accepted Issue #61–#68 scientific source; choosing or replacing the
+accepted Issue #61–#69 scientific source; choosing or replacing the
 authoritative rate path; convergence-criterion change; economics / prices /
 grid / domain / initialization / controls / tolerances / `PB_MARGIN` /
 Bellman-tolerance change; accepting any trial as an HJB iterate; constructing a
@@ -1658,7 +1723,9 @@ states or alpha tuning; price / Wmax / resolution sweeps; KFE / stationary KFE /
 `solve_household_steady_state`; SCC/global-Q;
 GE/multi-region/neural/nominal/calibration/policy/welfare/Results; successor
 Issue activation; any Builder scientific branch beyond the dedicated Issue #69
-branch (not yet created); PR / merge / Issue close / self-accept.
+branch (not yet created); PR / merge / Issue close / self-accept. Pending the
+Owner route decision it also forbids creating Issue #70 or any new Builder
+branch.
 
 Issue #69 exact four-path Builder allowlist:
 `src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py`;
@@ -1761,23 +1828,28 @@ Issue #64–#66 comparison authority; Issue #61
 `bb4045378bf19607f68d7d4a7628b3431afcd676`; Issue #66
 `44d47c7545f279dfe9189736f5cdcdfa30c3b84b` — the latter seven remain strictly
 read-only; selected-Q is now read-only as well, no longer a mutation target).
-The accepted Issue #67 repair/migration paths and the accepted Issue #68
-tangent-projected-Newton-geometry paths are read-only evidence as well.
+The accepted Issue #67 repair/migration paths, the accepted Issue #68
+tangent-projected-Newton-geometry paths, and the accepted Issue #69
+rate-path-divergence-audit paths are read-only evidence as well.
 Stationary KFE remains **NOT
 AUTHORIZED**; no successor; no PR / merge / Issue close / self-accept by the
-Builder. Issue #68 / DLH-5V-T, Issue #67 / DLH-5V-S, Issue #66 / DLH-5V-R,
-Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P, Issue #63 / DLH-5V-O, Issue #62 /
-DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L remain ACCEPTED /
-CLOSED; the seven tested stabilization/diagnostic route gates plus the
-final-validation z-block validation-operator repair gate and the single-wall
-tangent-projected Newton geometry gate are closed.
+Builder. Issue #69 / DLH-5V-U, Issue #68 / DLH-5V-T, Issue #67 / DLH-5V-S,
+Issue #66 / DLH-5V-R, Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P, Issue #63 /
+DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L
+remain ACCEPTED / CLOSED; the seven tested stabilization/diagnostic route gates
+plus the final-validation z-block validation-operator repair gate, the
+single-wall tangent-projected Newton geometry gate, and the F0 rate-path
+divergence attribution gate are closed. There is **no active Builder Issue**,
+and no successor Issue (#70) or Builder branch is authorized; the next route is
+`OWNER SCIENTIFIC DECISION REQUIRED — F0 RATE SEMANTICS AUTHORITY / OPERATOR
+CONTRACT` (Routes A / B / C, none activated).
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #69 body/comments (OPEN; initial authoritative activation `5676828795`;
-  final authoritative activation-refresh not yet published).
+- Issue #69 body/comments (accepted/closed; reviewer acceptance `5678488562`,
+  acceptance integration `5678493024`).
 - Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
   acceptance integration `5676816068`).
 - Issue #67 body/comments (accepted/closed; reviewer acceptance `5674741491`,
