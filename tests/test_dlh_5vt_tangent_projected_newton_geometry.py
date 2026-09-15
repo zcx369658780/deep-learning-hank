@@ -36,6 +36,10 @@ from deep_learning_hank.two_asset.stagnation_newton_geometry import (
     reconstruct_issue63_stagnation_state,
 )
 
+ALPHA_CROSS_N_HISTORICAL = 1.8667384893e-4
+CORRECTED_ALPHA_CROSS_T_EXPECTED = 0.16170699931086815
+SUPERSEDED_SINGLE_ENTRY_ALPHA_CROSS_T = 0.009436421907523617
+
 MODULE_PATH = Path(m.__file__)
 MODULE_SOURCE = MODULE_PATH.read_text(encoding="utf-8")
 
@@ -131,52 +135,96 @@ def test_newton_equation_residual(diag):
 # ---------------------------------------------------------------------------
 # 3. accepted Issue #62 boundary derivative semantics
 # ---------------------------------------------------------------------------
-def test_gradient_matches_accepted_boundary_derivative_semantics(recon):
-    """The wall gradient must reproduce the accepted directional derivative.
+def test_official_gradient_is_two_entry_full_chain_rule(recon):
+    """Issue #68 §4 frozen contract: g is the FULL-state gradient of the wall p_b.
 
-    ``p_b`` of the wall state is the accepted regular backward finite-difference
-    coordinate ``(V[node] - V[down]) / db``. Its derivative with respect to the
-    value at that state is exactly ``1/db``, which is the literal Issue #68
-    section 4 construction. This is verified by an EXACT basis-direction
-    measurement of the accepted derivative map: perturbing only the wall
-    state's own value must move the wall coordinate by exactly ``1/db``.
+    ``p_b = (V_wall - V_down)/db`` so the gradient has exactly two non-zero
+    entries: ``+1/db`` at the wall state and ``-1/db`` at its backward
+    neighbour. The single-entry ``+1/db`` variant is NOT the official
+    construction.
+    """
+    solver = recon["solver"]
+    n, db = solver.n, float(solver.db)
+    gvec = m.limiting_wall_gradient(solver, m.WALL_NODE, m.WALL_NZ)
+    wall_idx = m.WALL_NZ * n + m.WALL_NODE
+    down_node = int(solver.grid.node_of[
+        (int(solver.grid.j_arr[m.WALL_NODE]),
+         int(solver.grid.i_arr[m.WALL_NODE]) - 1)])
+    down_idx = m.WALL_NZ * n + down_node
+
+    # exactly two non-zero entries, with the right signs and magnitudes
+    support = np.nonzero(gvec)[0]
+    assert support.size == 2
+    assert set(int(s) for s in support) == {wall_idx, down_idx}
+    assert float(gvec[wall_idx]) == 1.0 / db
+    assert float(gvec[down_idx]) == -1.0 / db
+    assert int(np.count_nonzero(gvec)) == 2
+    # no other support anywhere in the state vector
+    assert float(np.max(np.abs(np.delete(gvec, [wall_idx, down_idx])))) == 0.0
+    assert np.isfinite(gvec).all()
+    assert float(np.linalg.norm(gvec)) > 0.0
+
+
+def test_official_gradient_basis_and_finite_difference_identity(recon):
+    """The two-entry gradient must reproduce the accepted derivative map exactly.
+
+    Basis check: mapping each ``e[j,z]`` through the accepted
+    ``boundary_direction_matrix`` must give exactly ``g[j,z]`` at the wall
+    coordinate. Finite-difference check: perturbing the wall coordinate must
+    move ``p_b`` by ``eps/db`` and perturbing the backward neighbour by
+    ``-eps/db``.
     """
     solver = recon["solver"]
     n, nz = solver.n, solver.nz
     db = float(solver.db)
+    V_star, labor0 = recon["V_star"], recon["labor0"]
     gvec = m.limiting_wall_gradient(solver, m.WALL_NODE, m.WALL_NZ)
 
-    # the gradient is exactly the single own-state entry
-    assert int(np.count_nonzero(gvec)) == 1
-    assert float(gvec[m.WALL_NZ * n + m.WALL_NODE]) == 1.0 / db
+    # --- basis identity over the whole state space (exact)
+    for j in (m.WALL_NODE, m.WALL_NODE - 1, m.WALL_NODE - 2, 97, 0):
+        for z in range(nz):
+            e = np.zeros((n, nz))
+            e[j, z] = 1.0
+            dp = boundary_direction_matrix(solver, e)
+            assert float(dp[m.WALL_NODE, m.WALL_NZ]) == float(gvec[z * n + j])
+    ok, err = m._gradient_basis_check(solver, m.WALL_NODE, m.WALL_NZ, gvec)
+    assert ok is True
+    assert err == 0.0
 
-    # exact basis-direction measurement against the accepted derivative map
-    e = np.zeros((n, nz))
-    e[m.WALL_NODE, m.WALL_NZ] = 1.0
-    dp = boundary_direction_matrix(solver, e)
-    assert float(dp[m.WALL_NODE, m.WALL_NZ]) == 1.0 / db     # exact, no tolerance
-    assert float(gvec.reshape((n, nz), order="F")[m.WALL_NODE, m.WALL_NZ]) == (
-        float(dp[m.WALL_NODE, m.WALL_NZ]))
+    # --- directional finite-difference identity on the wall coordinate
+    _, pb, _, _ = solver.compute_derivatives(V_star, labor0, 0.0, 0.0)
+    p0 = float(pb[m.WALL_NODE, m.WALL_NZ])
+    eps = 1.0e-6
+    down_node = int(solver.grid.node_of[
+        (int(solver.grid.j_arr[m.WALL_NODE]),
+         int(solver.grid.i_arr[m.WALL_NODE]) - 1)])
+    for j, expected in ((m.WALL_NODE, 1.0 / db), (down_node, -1.0 / db)):
+        Vp = V_star.copy()
+        Vp[j, m.WALL_NZ] += eps
+        _, pbp, _, _ = solver.compute_derivatives(Vp, labor0, 0.0, 0.0)
+        fd = (float(pbp[m.WALL_NODE, m.WALL_NZ]) - p0) / eps
+        assert fd == pytest.approx(expected, rel=1e-6)
 
-    # and it reproduces the accepted directional derivative of p_b at the wall
-    # for the frozen Newton direction
-    Q, u, _d, _recs = solver.build_operator_and_u(
-        recon["V_star"], recon["labor0"], 0.0, 0.0, final=False)
-    V_flat = recon["V_star"].ravel(order="F")
-    R = recon["rho"] * V_flat - (u + Q.dot(V_flat))
-    S = solver.state_size
-    J = recon["rho"] * sparse.eye(S, format="csr") - Q
-    from scipy.sparse import linalg
-    d_n = linalg.spsolve(J, -R)
-    dp_n = boundary_direction_matrix(
-        solver, d_n.reshape((n, nz), order="F"))
-    # own-state component only, by construction of the single-entry gradient
-    own = np.zeros((n, nz))
-    own[m.WALL_NODE, m.WALL_NZ] = d_n[m.WALL_NZ * n + m.WALL_NODE]
-    dp_own = boundary_direction_matrix(solver, own)
-    assert float(gvec @ d_n) == pytest.approx(
-        float(dp_own[m.WALL_NODE, m.WALL_NZ]), rel=1e-12, abs=1e-14)
-    assert np.isfinite(float(dp_n[m.WALL_NODE, m.WALL_NZ]))
+
+def test_single_entry_gradient_rejected_as_official(recon):
+    """The superseded single-entry variant must NOT satisfy the official contract."""
+    solver = recon["solver"]
+    n = solver.n
+    db = float(solver.db)
+    g1 = m.single_entry_debug_gradient(solver, m.WALL_NODE, m.WALL_NZ)
+    g2 = m.limiting_wall_gradient(solver, m.WALL_NODE, m.WALL_NZ)
+    # it has only one non-zero entry ...
+    assert int(np.count_nonzero(g1)) == 1
+    # ... and it FAILS the basis identity at the backward neighbour
+    ok1, err1 = m._gradient_basis_check(solver, m.WALL_NODE, m.WALL_NZ, g1)
+    ok2, err2 = m._gradient_basis_check(solver, m.WALL_NODE, m.WALL_NZ, g2)
+    assert ok1 is False
+    assert err1 == pytest.approx(1.0 / db, rel=1e-12)
+    assert ok2 is True and err2 == 0.0
+    # documented as debug-only in the module
+    src = MODULE_SOURCE.lower()
+    assert "historical/debug only" in src
+    assert "debug_gradient" in src
 
 
 def test_i0_boundary_derivative_exactly_zero(recon):
@@ -191,7 +239,6 @@ def test_i0_boundary_derivative_exactly_zero(recon):
         gvec = m.limiting_wall_gradient(solver, node, 0)
         assert np.all(gvec == 0.0)
     # and the directional matrix agrees for a non-trivial direction
-    rec = recon
     d = np.linspace(0.5, 1.5, solver.state_size)
     dp = boundary_direction_matrix(
         solver, d.reshape((solver.n, solver.nz), order="F"))
@@ -201,15 +248,19 @@ def test_i0_boundary_derivative_exactly_zero(recon):
 
 
 def test_zero_derivative_count_matches_i0_rule(diag, recon):
+    """Every i==0 boundary state has exactly zero directional derivative."""
     r, _ = diag
     solver = recon["solver"]
     g = solver.grid
-    expected_zero = sum(
+    i0_count = sum(
         1 for node in range(solver.n) if str(g.families[node]) != "F0"
         for _ in range(solver.nz) if int(g.i_arr[node]) == 0)
-    assert r.zero_derivative_count == expected_zero
+    assert i0_count == 40
     assert r.required_boundary_count == 186
-    assert r.zero_derivative_count == 40
+    # the i==0 states are a subset of the exactly-zero-derivative states (the
+    # corrected projection may also produce an exact zero on a regular state)
+    assert r.zero_derivative_count >= i0_count
+    assert r.zero_derivative_count == 41
 
 
 # ---------------------------------------------------------------------------
@@ -223,6 +274,102 @@ def test_gradient_finite_nonzero_and_points_through_wall(diag):
     assert np.isfinite(r.gradient_norm2)
     assert r.g_dot_d_n < 0.0
     assert r.g_dot_d_n_negative is True
+
+
+def test_gradient_diagnostics_recorded(diag):
+    r, _ = diag
+    assert r.gradient_kind == "full_state_chain_rule_two_entry"
+    assert r.gradient_nonzero_count == 2
+    assert r.gradient_wall_state_index == m.WALL_NZ * 391 + m.WALL_NODE
+    assert r.gradient_down_state_index == m.WALL_NZ * 391 + (m.WALL_NODE - 1)
+    assert r.gradient_wall_entry == pytest.approx(2.7142857142857144, rel=1e-15)
+    assert r.gradient_down_entry == pytest.approx(-2.7142857142857144, rel=1e-15)
+    assert r.gradient_wall_entry == -r.gradient_down_entry
+    assert set(r.gradient_support) == {r.gradient_wall_state_index,
+                                       r.gradient_down_state_index}
+    assert r.gradient_basis_check_ok is True
+    assert r.gradient_basis_check_max_abs_err == 0.0
+    assert r.gradient_finite is True
+    assert r.gradient_nonzero is True
+    assert np.isfinite(r.gradient_norm2) and r.gradient_norm2 > 0.0
+
+
+def test_official_trials_use_corrected_full_gradient_direction(diag, recon):
+    """The official trial residuals must come from the TWO-ENTRY projection.
+
+    The corrected projection removes only the tiny two-entry normal component
+    ``g@d_N = -2.58e-05``, so the official direction stays within ~4.7e-06 of the
+    plain Newton direction. This test therefore verifies the direction
+    identity directly (recomputing the official trial state and residual from
+    the frozen closed form) plus the gradient support, rather than trying to
+    separate two nearly identical directions by residual magnitude.
+    """
+    r, _ = diag
+    solver = recon["solver"]
+    n, nz, S = solver.n, solver.nz, solver.state_size
+    V_star, labor0, rho = recon["V_star"], recon["labor0"], recon["rho"]
+    V_flat = V_star.ravel(order="F")
+    Q, u, _d, _recs = solver.build_operator_and_u(
+        V_star, labor0, 0.0, 0.0, final=False)
+    R = rho * V_flat - (u + Q.dot(V_flat))
+    J = rho * sparse.eye(S, format="csr") - Q
+    from scipy.sparse import linalg
+    d_n = linalg.spsolve(J, -R)
+
+    g2 = m.limiting_wall_gradient(solver, m.WALL_NODE, m.WALL_NZ)
+    g1 = m.single_entry_debug_gradient(solver, m.WALL_NODE, m.WALL_NZ)
+    proj = m.single_wall_tangent_projection(d_n, g2)
+    d_t2 = proj["d_T"]
+    d_t1 = m.single_wall_tangent_projection(d_n, g1)["d_T"]
+
+    # the corrected projection only removes the (tiny) two-entry normal part
+    assert float(np.max(np.abs(d_t2 - d_n))) < 1.0e-4
+    assert float(np.max(np.abs(d_t1 - d_n))) > 1.0
+    assert float(np.max(np.abs(d_t2 - d_t1))) > 1.0
+    assert proj["g_dot_d_t"] == 0.0
+
+    # the official projected direction reproduces the reported d_T metrics
+    assert float(np.max(np.abs(d_t2))) == pytest.approx(r.d_t_inf, rel=1e-12)
+    assert float(np.max(np.abs(d_t2 - d_n))) == pytest.approx(
+        r.d_t_minus_d_n_inf, rel=1e-12)
+    assert float(g2 @ d_n) == pytest.approx(r.g_dot_d_n, rel=1e-12)
+
+    # recomputing each official trial residual from the frozen closed form
+    # reproduces the reported official ratios exactly
+    for t in r.trials:
+        assert t.alpha in (r.alpha_half, r.alpha_near)
+        Vt = V_star + t.alpha * d_t2.reshape((n, nz), order="F")
+        Vtf = Vt.ravel(order="F")
+        Qr, ur, _dr, _rs = solver.build_operator_and_u(
+            Vt, labor0, 0.0, 0.0, final=False)
+        Rr = rho * Vtf - (ur + Qr.dot(Vtf))
+        ratio = float(np.max(np.abs(Rr))) / r.r_inf
+        assert ratio == pytest.approx(t.reselect_ratio, rel=1e-12)
+
+
+def test_superseded_single_entry_result_does_not_feed_classification(diag):
+    """The stale single-entry diagnostic must not influence the terminal."""
+    r, _ = diag
+    # the official crossing is the corrected value, not the stale one
+    assert r.alpha_cross_t == pytest.approx(
+        CORRECTED_ALPHA_CROSS_T_EXPECTED, rel=1e-12)
+    assert abs(r.alpha_cross_t
+               - SUPERSEDED_SINGLE_ENTRY_ALPHA_CROSS_T) > 0.1
+    # the official alpha fractions follow from the corrected crossing
+    assert r.alpha_near == pytest.approx(
+        min(1.0, (1.0 - m.EPS_ALPHA) * CORRECTED_ALPHA_CROSS_T_EXPECTED),
+        rel=1e-12)
+    # official trial alphas are the corrected ones
+    assert sorted(t.alpha for t in r.trials) == sorted(
+        [r.alpha_half, r.alpha_near])
+    assert r.alpha_half == pytest.approx(0.08085341880193442, rel=1e-12)
+    assert r.alpha_near == pytest.approx(0.16170683760386884, rel=1e-12)
+    # the official geometry ratio is the corrected one
+    assert r.geometry_improvement_ratio == pytest.approx(
+        866.2532997045214, rel=1e-9)
+    # and the terminal classification is deterministic
+    assert r.terminal == m.TERMINAL_C
+    assert r.deterministic_repeat_identical is True
 
 
 def test_plain_newton_historical_baseline_reproduced(diag):
@@ -297,6 +444,12 @@ def test_all_boundary_crossing_deterministic_and_positive(diag):
     assert r.alpha_cross_t_state["family"] == "F3"
     assert r.alpha_cross_t_state["z"] == 1
     assert r.negative_derivative_count > 0
+    # OFFICIAL corrected full-gradient crossing (freshly recomputed)
+    assert r.alpha_cross_t == pytest.approx(
+        CORRECTED_ALPHA_CROSS_T_EXPECTED, rel=1e-12)
+    # the superseded single-entry value must NOT be reused
+    assert r.alpha_cross_t != pytest.approx(
+        SUPERSEDED_SINGLE_ENTRY_ALPHA_CROSS_T, rel=1e-3)
 
 
 def test_exact_alpha_formulas(diag):
@@ -356,13 +509,27 @@ def test_strict_boundary_safety_at_both_trials(diag):
 
 
 def test_final_vs_iteration_equivalence_at_each_trial(diag):
+    """CORRECTED-PROJECTION FINDING: the two operators are NOT equivalent.
+
+    At the corrected full-gradient trial states the re-selected ``final=False``
+    and corrected ``final=True`` operators disagree on a small number of F0
+    rows (the re-selection path uses the accepted policy's ``iteration_*`` rates
+    while the corrected final path recomputes raw drifts). This is asserted as
+    the recorded factual outcome, and is the frozen Outcome C condition.
+    """
     r, _ = diag
     for t in r.trials:
-        assert t.final_vs_iter_equivalent is True
-        assert t.final_vs_iter_f0_rowwise_gap <= m.EQUIVALENCE_TOL
-        assert t.final_vs_iter_f0_rowwise_gap >= 0.0
-        # the corrected final and reselected residuals coincide numerically
+        assert t.final_vs_iter_equivalent is False
+        assert t.final_vs_iter_f0_rowwise_gap > m.EQUIVALENCE_TOL
+        assert t.final_vs_iter_inconsistent_row_count > 0
+        assert len(t.final_vs_iter_inconsistent_rows) == (
+            t.final_vs_iter_inconsistent_row_count)
+        # every affected row is an F0 row in the z=1 block
+        for row in t.final_vs_iter_inconsistent_rows:
+            assert 391 <= row < 782
+        # the corrected final and reselected residuals still coincide
         assert t.r_final_trial_inf == pytest.approx(t.r_reselect_inf, rel=1e-12)
+    assert r.all_trials_operator_equivalent is False
 
 
 def test_one_reselection_and_one_final_build_per_trial(recon):
@@ -424,16 +591,21 @@ def test_conservativity_preserved_at_trials(diag):
                                                       abs=1e-15)
 
 
-def test_no_sector_label_switching_observed(diag):
-    """Recorded diagnostic: zero sector/transfer-label changes at both trials.
+def test_sector_label_switching_recorded(diag):
+    """Recorded diagnostic: label switches grow with the corrected fraction.
 
-    This must NOT be read as proving continuous controls are unchanged — the
-    continuous-control maxima below are non-zero.
+    Zero label changes at ``alpha_half`` and two at ``alpha_near``. A zero
+    label-switch count must NOT be read as unchanged continuous controls — the
+    continuous-control maxima below are non-zero at both trials.
     """
     r, _ = diag
+    by_label = {t.label: t for t in r.trials}
+    assert by_label["alpha_half"].label_change_count == 0
+    assert by_label["alpha_near"].label_change_count == 2
     for t in r.trials:
-        assert t.label_change_count == 0
         assert t.max_abs_delta_consumption > 0.0
+        assert t.max_abs_delta_labor > 0.0
+        assert t.max_abs_delta_mu_b > 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -447,25 +619,50 @@ def test_deterministic_repeat_identical(diag):
 
 def test_exactly_one_terminal_returned(diag):
     r, _ = diag
-    assert r.terminal == m.TERMINAL_B
+    assert r.terminal == m.TERMINAL_C
     assert r.terminal != m.TERMINAL_A
-    assert r.terminal != m.TERMINAL_C
+    assert r.terminal != m.TERMINAL_B
     assert r.terminal != m.TERMINAL_BLOCKED
     assert [r.terminal == t for t in (m.TERMINAL_A, m.TERMINAL_B,
                                       m.TERMINAL_C)].count(True) == 1
 
 
 def test_terminal_rule_is_the_frozen_rule(diag):
-    """Outcome B must follow from the frozen criteria, not from a fallback."""
+    """Outcome C must follow from the frozen consistency criteria.
+
+    The corrected full-gradient geometry is finite, has an exact tangent
+    identity and both trials are domain-safe, but the corrected ``final=True``
+    and re-selected ``final=False`` operators are NOT equivalent at the trial
+    states, which is the frozen Outcome C condition
+    ("corrected-final vs iteration inconsistency").
+    """
     r, _ = diag
-    finite_consistent = bool(r.tangent_identity_ok
-                             and r.has_positive_safe_fraction
-                             and r.all_trials_domain_safe)
-    assert finite_consistent is True
+    assert r.failure_detail is None
+    assert r.tangent_identity_ok is True
+    assert r.has_positive_safe_fraction is True
+    assert r.all_trials_domain_safe is True
     assert r.geometry_improving is True
-    assert r.any_trial_materially_reducing is False
-    assert not (r.geometry_improving and r.any_trial_materially_reducing)
-    assert r.terminal == m.TERMINAL_B
+    # the disqualifying condition
+    assert r.all_trials_operator_equivalent is False
+    for t in r.trials:
+        assert t.final_vs_iter_equivalent is False
+        assert t.final_vs_iter_f0_rowwise_gap > m.EQUIVALENCE_TOL
+    assert [r.terminal == t for t in (m.TERMINAL_A, m.TERMINAL_B,
+                                      m.TERMINAL_C)].count(True) == 1
+    assert r.terminal == m.TERMINAL_C
+
+
+def test_trial_operator_inconsistency_recorded_precisely(diag):
+    r, _ = diag
+    assert r.all_trials_operator_equivalent is False
+    assert r.trials[0].final_vs_iter_inconsistent_row_count == 2
+    assert r.trials[0].final_vs_iter_inconsistent_rows == (452, 453)
+    assert r.trials[0].final_vs_iter_f0_rowwise_gap == pytest.approx(
+        0.6718037653783657, rel=1e-9)
+    assert r.trials[1].final_vs_iter_inconsistent_row_count == 4
+    assert r.trials[1].final_vs_iter_inconsistent_rows == (452, 453, 482, 483)
+    assert r.trials[1].final_vs_iter_f0_rowwise_gap == pytest.approx(
+        1.3379411925537439, rel=1e-9)
 
 
 def test_no_hjb_convergence_claimed(diag):

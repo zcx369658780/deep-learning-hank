@@ -145,6 +145,8 @@ class TrialResult:
     final_ratio: float
     final_vs_iter_f0_rowwise_gap: float
     final_vs_iter_equivalent: bool
+    final_vs_iter_inconsistent_row_count: int
+    final_vs_iter_inconsistent_rows: tuple
     max_abs_q1_reselect: float
     max_abs_q1_final: float
     label_change_count: int
@@ -176,7 +178,16 @@ class TangentProjectedNewtonResult:
     d_n_inf: float = float("nan")
     newton_lin_res_inf: float = float("nan")
     newton_lin_res_ok: bool = False
-    # limiting-wall gradient
+    # limiting-wall gradient (full-state, two-entry chain rule)
+    gradient_kind: str = "full_state_chain_rule_two_entry"
+    gradient_nonzero_count: int = 0
+    gradient_wall_state_index: int = -1
+    gradient_down_state_index: int = -1
+    gradient_wall_entry: float = float("nan")
+    gradient_down_entry: float = float("nan")
+    gradient_support: tuple = ()
+    gradient_basis_check_ok: bool = False
+    gradient_basis_check_max_abs_err: float = float("nan")
     gradient_norm2: float = float("nan")
     gradient_finite: bool = False
     gradient_nonzero: bool = False
@@ -209,6 +220,7 @@ class TangentProjectedNewtonResult:
     trials: list = field(default_factory=list)
     trial_count: int = 0
     all_trials_domain_safe: bool = False
+    all_trials_operator_equivalent: bool = False
     any_trial_materially_reducing: bool = False
     accepted_new_hjb_iterate: bool = False
     deterministic_repeat_identical: bool = False
@@ -219,36 +231,62 @@ class TangentProjectedNewtonResult:
 # ---------------------------------------------------------------------------
 def limiting_wall_gradient(solver: BoundaryHJBSolver, node: int,
                            nz_i: int) -> np.ndarray:
-    """Full-state gradient ``g`` of the limiting wall's ``p_b`` at ``V_*``.
+    """Exact full-state gradient ``g`` of the limiting wall's ``p_b`` at ``V_*``.
 
     Accepted Issue #62 semantics (see
-    ``local_resolvent_domain_geometry.boundary_direction_matrix``). The
-    ``p_b`` value of the wall state is the accepted regular backward
-    finite-difference coordinate
+    ``local_resolvent_domain_geometry.boundary_direction_matrix``): for a
+    regular backward finite-difference boundary state (``i > 0``) the accepted
+    wall coordinate is
 
         ``p_b(V)[node] = (V[node] - V[down]) / db``
 
-    whose derivative with respect to the value AT THAT STATE is exactly
-    ``1/db``; the remaining dependence is another state's own ``p_b``
-    coordinate (which the limiting-wall construction does not involve). The
-    gradient is therefore the single-entry vector
+    so its gradient with respect to the FULL value vector ``V`` is the
+    two-entry vector (Issue #68 section 4 frozen contract)
 
-        ``g[z*n + node] = 1/db``, all other entries ``0``
+        ``g[z*n + node] = +1/db``
+        ``g[z*n + down] = -1/db``
+        all other entries ``0``
 
-    which satisfies ``g @ d == dp_b_node(d)`` for every direction ``d`` whose
-    only non-zero entry is that state's own value — the literal Issue #68
-    section 4 construction, verified in the Issue #68 test suite by an exact
-    basis-direction measurement of the accepted derivative map.
+    This is the official Issue #68 construction. It is verified in the test
+    suite by an exact basis-direction measurement of the accepted derivative
+    map (every basis entry matches to machine precision) and by a directional
+    finite-difference identity on the wall coordinate. The earlier single-entry
+    ``+1/db`` variant is retained only as historical/debug evidence and never
+    feeds the official projection, crossing or terminal.
 
     ``i == 0`` boundary state: the accepted rule is V-INDEPENDENT, so the
     gradient is exactly the zero vector.
 
     No clipping/flooring/redefinition of ``p_b``.
     """
-    g = solver.grid
-    i = int(g.i_arr[node])
+    gg = solver.grid
+    i = int(gg.i_arr[node])
     vec = np.zeros(solver.state_size, dtype=float)
     if i == 0:
+        return vec
+    down = gg.node_of.get((int(gg.j_arr[node]), i - 1))
+    if down is None:
+        raise TangentProjectedNewtonFailure(
+            f"no backward neighbour for limiting-wall state node {node} "
+            f"(i={i}) -> gradient undefined")
+    inv_db = 1.0 / float(solver.db)
+    vec[nz_i * solver.n + int(node)] = inv_db
+    vec[nz_i * solver.n + int(down)] = -inv_db
+    return vec
+
+
+def single_entry_debug_gradient(solver: BoundaryHJBSolver, node: int,
+                                nz_i: int) -> np.ndarray:
+    """HISTORICAL/DEBUG ONLY — the superseded single-entry ``+1/db`` variant.
+
+    This was the initial Issue #68 candidate's construction. It is NOT the
+    official gradient, does NOT satisfy the full-state chain rule of the wall's
+    ``p_b``, and must never feed the official projection, crossing or terminal
+    classification. Retained solely as historical evidence for the
+    Reviewer-authorized remediation record.
+    """
+    vec = np.zeros(solver.state_size, dtype=float)
+    if int(solver.grid.i_arr[node]) == 0:
         return vec
     vec[nz_i * solver.n + int(node)] = 1.0 / float(solver.db)
     return vec
@@ -408,18 +446,25 @@ def evaluate_tangent_trial(solver: BoundaryHJBSolver, V_star: np.ndarray,
             raise TangentProjectedNewtonFailure(
                 f"non-finite {nm} at trial {label}")
 
-    # E. corrected final=True vs final=False equivalence under SAME controls
+    # E. corrected final=True vs final=False equivalence under SAME controls.
+    # The two construction paths use DIFFERENT rate semantics by design
+    # (re-selection uses the accepted policy's iteration_* rates with the source
+    # truncation convention; the corrected final path recomputes raw drifts and
+    # applies max(+-mu)/step). They agree exactly at the accepted V_* but can
+    # disagree on F0 rows where a drift sits at an upwind sign boundary. This is
+    # recorded as evidence, not raised, so the trial still yields full residual
+    # diagnostics; the frozen terminal rule maps the inconsistency to Outcome C.
     f0_rows = _f0_rows_of(solver)
     gap = 0.0
+    inconsistent_rows: list[int] = []
     for r in f0_rows:
         a = np.asarray(Q_fin.getrow(int(r)).toarray()).ravel()
         b = np.asarray(Q_res.getrow(int(r)).toarray()).ravel()
-        gap = max(gap, float(np.max(np.abs(a - b))))
+        m = float(np.max(np.abs(a - b)))
+        if m > 1e-12:
+            inconsistent_rows.append(int(r))
+        gap = max(gap, m)
     equivalent = bool(gap <= EQUIVALENCE_TOL)
-    if not equivalent:
-        raise TangentProjectedNewtonFailure(
-            f"corrected final=True vs final=False operator inconsistency at "
-            f"trial {label}: rowwise gap = {gap!r}")
 
     # F. diagnostics
     label_changes = 0
@@ -459,6 +504,8 @@ def evaluate_tangent_trial(solver: BoundaryHJBSolver, V_star: np.ndarray,
         final_ratio=final_ratio,
         final_vs_iter_f0_rowwise_gap=gap,
         final_vs_iter_equivalent=equivalent,
+        final_vs_iter_inconsistent_row_count=len(inconsistent_rows),
+        final_vs_iter_inconsistent_rows=tuple(inconsistent_rows),
         max_abs_q1_reselect=float(
             np.max(np.abs(np.asarray(Q_res.sum(axis=1)).ravel()))),
         max_abs_q1_final=float(
@@ -536,7 +583,7 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
         # direction evaluation of the accepted Issue #62 semantics; no solve)
         bc_n = _crossing_only(solver, V_star, labor0, d_n)
 
-        # 4. ONE limiting-wall gradient
+        # 4. ONE limiting-wall gradient (exact two-entry full-state chain rule)
         gvec = limiting_wall_gradient(solver, wall_node, wall_nz)
         grad_finite = bool(np.isfinite(gvec).all())
         grad_norm2 = float(np.linalg.norm(gvec))
@@ -544,6 +591,20 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
         if not (grad_finite and grad_nonzero):
             raise TangentProjectedNewtonFailure(
                 "non-finite or zero limiting-wall gradient")
+        nz_support = np.nonzero(gvec)[0]
+        down_node = solver.grid.node_of.get(
+            (int(solver.grid.j_arr[wall_node]),
+             int(solver.grid.i_arr[wall_node]) - 1))
+        wall_idx = wall_nz * n + int(wall_node)
+        down_idx = wall_nz * n + int(down_node)
+        basis_ok, basis_err = _gradient_basis_check(solver, wall_node, wall_nz,
+                                                    gvec)
+        if not (basis_ok and int(nz_support.size) == 2
+                and wall_idx in nz_support and down_idx in nz_support):
+            raise TangentProjectedNewtonFailure(
+                "limiting-wall gradient does not match the full-state "
+                f"chain-rule contract (support={nz_support.tolist()}, "
+                f"basis_err={basis_err!r})")
 
         # 5. ONE tangent projection
         proj = single_wall_tangent_projection(d_n, gvec)
@@ -575,11 +636,12 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
                               and geom_ratio >= GEOMETRY_IMPROVEMENT_FACTOR)
         all_safe = bool(all(t.domain_safe for t in trials))
         any_reducing = bool(any(t.material_residual_reducing for t in trials))
+        all_equivalent = bool(all(t.final_vs_iter_equivalent for t in trials))
         tangent_ok = bool(abs(proj["g_dot_d_t"]) <= TANGENT_TOL)
 
         # frozen ex ante terminal rule
         consistent = bool(tangent_ok and has_positive and all_safe
-                          and r_inf > 0.0)
+                          and all_equivalent and r_inf > 0.0)
         if not consistent:
             terminal = TERMINAL_C
         elif geom_improving and any_reducing:
@@ -600,6 +662,15 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
             d_n_inf=d_n_inf,
             newton_lin_res_inf=lin_res,
             newton_lin_res_ok=bool(lin_res <= NEWTON_SOLVE_TOL),
+            gradient_kind="full_state_chain_rule_two_entry",
+            gradient_nonzero_count=int(nz_support.size),
+            gradient_wall_state_index=wall_idx,
+            gradient_down_state_index=down_idx,
+            gradient_wall_entry=float(gvec[wall_idx]),
+            gradient_down_entry=float(gvec[down_idx]),
+            gradient_support=tuple(int(k) for k in nz_support),
+            gradient_basis_check_ok=basis_ok,
+            gradient_basis_check_max_abs_err=float(basis_err),
             gradient_norm2=grad_norm2,
             gradient_finite=grad_finite,
             gradient_nonzero=grad_nonzero,
@@ -632,6 +703,7 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
             trials=trials,
             trial_count=len(trials),
             all_trials_domain_safe=all_safe,
+            all_trials_operator_equivalent=all_equivalent,
             any_trial_materially_reducing=any_reducing,
             accepted_new_hjb_iterate=False,
             deterministic_repeat_identical=False,
@@ -649,6 +721,25 @@ def _run_from_reconstruction(rec: dict) -> TangentProjectedNewtonResult:
         accepted_new_hjb_iterate=False,
         deterministic_repeat_identical=False,
     )
+
+
+def _gradient_basis_check(solver: BoundaryHJBSolver, node: int, nz_i: int,
+                          gvec: np.ndarray) -> tuple[bool, float]:
+    """Verify ``g`` reproduces the accepted derivative map basis-entry-wise.
+
+    For every state index ``j`` and z block, the accepted coordinate map applied
+    to the basis direction ``e[j,z]`` must give exactly ``g[j,z]`` at the wall
+    coordinate. Returns ``(ok, max_abs_err)``.
+    """
+    n, nz = solver.n, solver.nz
+    worst = 0.0
+    for j in range(n):
+        for z in range(nz):
+            e = np.zeros((n, nz))
+            e[j, z] = 1.0
+            dp = boundary_direction_matrix(solver, e)
+            worst = max(worst, abs(float(dp[node, nz_i]) - float(gvec[z * n + j])))
+    return bool(worst <= 1e-15), float(worst)
 
 
 def _crossing_only(solver: BoundaryHJBSolver, V_star: np.ndarray,
