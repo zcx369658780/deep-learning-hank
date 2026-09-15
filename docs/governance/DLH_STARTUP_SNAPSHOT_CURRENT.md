@@ -21,107 +21,183 @@ Priority:
 
 ## Current Builder state
 
-Issue #67 / DLH-5V-S is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
+Issue #68 / DLH-5V-T is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
 
 Title:
 
-`DLH-5V-S: Minimal repair of final=True F0 z-block destination assembly and corrected validation re-check`
+`DLH-5V-T: Diagnose single-wall tangent-projected Newton geometry after final-validation repair`
 
 Task type:
 
-`SCIENTIFIC_CHANGE__MINIMAL_FINAL_VALIDATION_OPERATOR_REPAIR_AND_REVALIDATION`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__BOUNDARY_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_VALIDATION_REPAIR`
 
 Owner / Reviewer route decision:
 
-`APPROVE_MINIMAL_FINAL_VALIDATION_ZBLOCK_DESTINATION_REPAIR_AFTER_5VR_TERMINAL_A`
+`APPROVE_SINGLE_WALL_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_5VS_TERMINAL_A`
 
 Authority marker:
 
-`DLH_5VS_MINIMAL_FINAL_VALIDATION_ZBLOCK_REPAIR_AUTHORIZED`
+`DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_AUTHORIZED`
 
 Initial authoritative activation:
 
-`5672573849`
+`5674754187`
 
 Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
-refresh confirms the post-sync live `main`, Builder execution on Issue #67 is
+refresh confirms the post-sync live `main`, Builder execution on Issue #68 is
 **NOT YET OPERATIVE**.
 
 Dedicated future Builder branch:
 
-`dsh/issue-67-dlh-5vs-final-validation-zblock-repair-2026-09-15`
+`dsh/issue-68-dlh-5vt-tangent-projected-newton-2026-09-15`
 
-Owner explicit authorization (2026-09-15, recorded in Issue #67):
+Post-sync live `main` at activation:
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`.
 
-> `同意 Issue #67 按最小 validation-operator repair 路线执行。`
+### Issue #68 scientific question
 
-Pre-sync live `main` at activation:
-`5a1a5f35d47481195bb53944b920a84fb774ff00`.
+After the accepted Issue #67 validation repair, the genuine Bellman residual at
+`V_*` is ~`10.435` (not ~`490.756`). Issue #64 already showed the unconstrained
+frozen-policy Newton direction is geometrically capped by the F3 `(13,13), z=1`
+wall. Issue #68 tests one hypothesis: does removing the **first-order normal
+component of the plain frozen-policy Newton direction with respect to the single
+limiting boundary constraint** produce a materially larger boundary-safe step
+and meaningful nonlinear residual reduction at the same frozen economics/state?
+Local direction-geometry diagnostic only.
 
-Authorized scientific change — exactly one location in
-`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`, within the
-`final=True` F0 off-diagonal destination assembly:
+### Issue #68 scientific boundary (as activated)
 
-from `cols.append(dn)` to `cols.append(nz * self.n + dn)`.
+Frozen accepted Issue #63 stagnation state `V_*`:
 
-Scientific meaning: repair **only** the z-block destination index so that z=1
-F0 off-diagonal destinations stay inside the z=1 block, aligned with the
-accepted iteration path / boundary path / MATLAB-faithful state layout.
+- final statistic = `3.6614352438846254e-08`;
+- min boundary `p_b` = `4.8089461301970005e-09`;
+- limiting wall = F3 `(13,13)`, z=1;
+- genuine corrected residual = `10.435094313164921`.
+
+selected-Q repaired blob (read-only for Issue #68):
+
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`
+
+Required execution (exactly): ONE current `final=False` operator build; ONE
+frozen-policy Newton solve `J d_N = -R`; the limiting-wall gradient `g`; ONE
+single-wall tangent projection `d_T = d_N - g*(g@d_N)/(g@g)`; verify
+`g@d_T ≈ 0`; ONE all-boundary crossing computation; exactly TWO diagnostic
+trials (`alpha_half`, `alpha_near`); each trial exactly ONE `final=False`
+re-selection and exactly ONE corrected `final=True` validation build; no trial
+becomes an accepted HJB iterate.
+
+Frozen constants: `PB_MARGIN = 1e-12`; `EPS_ALPHA = 1e-6`;
+`HALF_ALPHA = 0.5`; `MATERIAL_REDUCTION_RATIO = 0.50`.
+
+Plain-Newton historical safe-fraction baseline: `alpha_cross_N ≈ 1.8667384893e-4`.
+
+Geometry-improving criterion: `alpha_near / min(1, alpha_cross_N) >= 10`.
+
+Material residual criterion requires BOTH `||R_reselect||inf / ||R||inf <= 0.50`
+and `||R_final_trial||inf / ||R||inf <= 0.50`.
 
 Explicitly NOT authorized:
 
-- any second scientific source change;
-- final rate formula / controls / policy selection / diagonal construction /
-  switch-matrix / economics / prices / grid / domain / initialization /
-  tolerances / `PB_MARGIN` change;
-- convergence-criterion replacement;
-- `R_iter` becoming an accepted final convergence residual;
-- accepting any new HJB iterate;
-- declaring HJB convergence because the corrected residual drops — the Bellman
-  tolerance is the unchanged acceptance threshold;
-- Newton / policy iteration / semismooth / trust-region / continuation /
-  line search;
+- mutating selected-Q or any accepted source from Issues #61–#67;
+- economics / prices / grid / domain / initialization / controls / tolerances /
+  `PB_MARGIN` / Bellman-tolerance change;
+- convergence-criterion change;
+- accepting any trial as an HJB iterate;
+- multi-step Newton / policy iteration / semismooth / trust-region /
+  continuation;
+- adaptive line search or alpha tuning;
+- multiple active constraints or projection-metric optimization;
+- `p_b` clip / floor;
 - price / Wmax / resolution sweeps;
-- KFE / stationary KFE / steady state;
+- KFE / stationary KFE / `solve_household_steady_state`;
 - SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
   welfare / Results;
 - successor Issue activation;
-- any Builder scientific branch beyond the dedicated Issue #67 branch (not yet
+- any Builder scientific branch beyond the dedicated Issue #68 branch (not yet
   created);
 - PR / merge / Issue close / self-accept.
 
-Issue #67 exact four-path Builder allowlist:
+Issue #68 exact four-path Builder allowlist:
 
-1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`;
-2. `tests/test_dlh_5vs_final_validation_zblock_repair.py`;
-3. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`;
-4. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`.
+1. `src/deep_learning_hank/two_asset/tangent_projected_newton_geometry.py`;
+2. `tests/test_dlh_5vt_tangent_projected_newton_geometry.py`;
+3. `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md`;
+4. `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_SUMMARY.csv`.
 
 No fifth tracked Builder path.
 
-Issue #67 post-repair validation boundary: one deterministic reconstruction of
-the exact accepted Issue #63 stagnation state `V_*`; ONE `final=False`
-current-policy build; ONE corrected `final=True` current-policy build using the
-SAME current selected F0 controls; ONE corrected-equivalence/residual
-diagnostic; ONE deterministic repeat. The corrected residual and its argmax
-must be recorded and compared against the pre-repair current-record final
-residual `490.7560414005864` and the accepted `||R_iter||_inf =
-10.435094313164921`. A materially lower corrected residual is **NOT** by itself
-HJB convergence.
+Issue #68 terminal set (exactly ONE to be reported):
 
-Issue #67 terminal set (exactly ONE to be reported):
+- A `DLH_5VT_TANGENT_PROJECTED_NEWTON__SINGLE_WALL_TANGENT_PROJECTION_EXPANDS_SAFE_GEOMETRY_AND_MATERIALLY_REDUCES_NONLINEAR_RESIDUAL__CONSTRAINED_DIRECTION_DESIGN_GATE_READY`
+- B `DLH_5VT_TANGENT_PROJECTED_NEWTON__TANGENT_DIRECTION_FINITE_AND_DOMAIN_SAFE_BUT_GEOMETRY_OR_RESIDUAL_IMPROVEMENT_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+- C `DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VT_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
-- A `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`
-- B `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__ZBLOCK_ASSEMBLY_REPAIRED_BUT_MATERIAL_HJB_VALIDATION_DISCREPANCY_REMAINS__FURTHER_VALIDATION_REVIEW_REQUIRED`
-- C `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__NONFINITE_INCONSISTENT_OR_REGRESSION_FAILURE__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
-- Blocked `BLOCKED_DLH_5VS_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+## Accepted task — Issue #67 / DLH-5V-S (ACCEPTED / CLOSED)
+
+Issue #67 is CLOSED completed at Terminal A and performed the minimal
+Owner-authorized `final=True` F0 z-block destination repair plus a corrected
+validation re-check, followed by a Reviewer-authorized bounded post-repair
+test-contract migration.
+
+Accepted candidate / integration:
+
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`
+
+Reviewer acceptance:
+
+`5674741491`
+
+Acceptance integration:
+
+`5674743972`
+
+Original scientific candidate / remediation commit:
+
+`281cfe01b2925364a92308ca172a84a724c6ea58` /
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32` (fast-forward, not a merge commit)
+
+Accepted verdict:
+
+`DLH_5VS_ACCEPTED__TERMINAL_A_CONFIRMED__MINIMAL_ZBLOCK_DESTINATION_REPAIR_EXACT__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__FULL_SUITE_GREEN__HJB_RESIDUAL_REASSESSMENT_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`
+
+Accepted facts (at the frozen stagnation state `V_*`):
+
+- selected-Q repaired blob = `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`;
+- the exact scientific source repair remains only
+  `cols.append(dn)` → `cols.append(nz * self.n + dn)`;
+- corrected final residual = `10.435094313164921`;
+- accepted `R_iter` = `10.435094313164921`;
+- corrected-final vs ITER rowwise operator gap = `1.4210854715202004e-14`;
+- historical pre-repair current final residual = `490.7560414005864`;
+- historical pre-repair operator gap = `24.601971766296664`;
+- ~`480.32` excess residual attributed to the cross-z destination-index defect;
+- z=0 unchanged; non-F0 boundary `Q`/`u` diff = `0`; utility/source diff = `0`;
+- conservativity preserved; expansions = `0`; artificial bindings = `0`;
+- historical Issue #64/#65/#66 test constants preserved; post-repair runtime
+  contracts migrated;
+- full suite = **534 passed / 0 failed / 6 pre-existing warnings**.
+
+Accepted scientific interpretation (binding):
+
+- **HJB convergence = FALSE**;
+- Bellman tolerance remains `1e-3`;
+- the corrected residual is ~`10435`× the tolerance;
+- `R_iter` is **NOT** declared the accepted final convergence residual;
+- the genuine post-repair HJB residual reassessment remains outstanding;
+- Stationary KFE remains **NOT AUTHORIZED**.
 
 Issue #66 / DLH-5V-R, Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P, Issue #63 /
 DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L
 are ACCEPTED / CLOSED. The F0-final-rate-provenance (#66),
 F0-final-validation-semantics (#65), frozen-policy-Newton-geometry (#64),
 continuous-FTB (#63), local-geometry (#62), adaptive-resolvent (#61) and
-value-damping (#60) gates are closed.
+value-damping (#60) gates are closed, and the final-validation z-block
+validation-operator repair (#67) gate is now closed as well.
 
 ## Superseded accepted gate — Issue #66 / DLH-5V-R (ACCEPTED / CLOSED)
 
@@ -477,19 +553,24 @@ Git blob:
 
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
-Accepted selected-Q source — the ONLY accepted scientific source that Issue #67
-/ DLH-5V-S is authorized to modify, and then only at the single `final=True` F0
-off-diagonal destination-index location:
+Accepted selected-Q source — repaired and accepted under Issue #67 / DLH-5V-S;
+now **read-only** for all subsequent Issues (including Issue #68):
 
 `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
 
-Pre-repair accepted Git blob (frozen authority for Issue #67):
+Accepted (repaired) Git blob:
+
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`
+
+Historical pre-repair Git blob (retained as the accepted Issue #64–#66
+comparison authority; no longer a live target):
 
 `7ea342ccbe15d852b90743b14bb4b02977c2d78b`
 
-The pre-repair blob above is the frozen comparison authority for Issue #67; the
-repaired blob and the exact one-location source diff must be recorded in the
-Issue #67 completion evidence.
+The accepted scientific source change is and remains exactly the one
+Owner-authorized z-block destination-index repair
+`cols.append(dn)` → `cols.append(nz * self.n + dn)`. No later Issue is
+authorized to mutate this file.
 
 Accepted Issue #61 implementation remains read-only evidence:
 
@@ -539,6 +620,18 @@ Git blob:
 
 `44d47c7545f279dfe9189736f5cdcdfa30c3b84b`
 
+Accepted Issue #67 deliverable paths remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (repaired;
+  blob `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`);
+- `tests/test_dlh_5vs_final_validation_zblock_repair.py`;
+- `tests/test_dlh_5vp_stagnation_newton_geometry.py` (migrated contracts);
+- `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` (migrated
+  contracts);
+- `tests/test_dlh_5vr_f0_final_rate_provenance.py` (migrated contracts);
+- `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`;
+- `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`.
+
 ```text
 HJB boundary policy <=> KFE boundary transition law
 Q backward
@@ -555,38 +648,43 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-**ISSUE #67 / DLH-5V-S IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #66 /
-DLH-5V-R is ACCEPTED / CLOSED at Terminal A. The Owner explicitly authorized
-the minimal final-validation z-block destination repair on 2026-09-15 through
-Issue #67 (`同意 Issue #67 按最小 validation-operator repair 路线执行。`; initial
-authoritative activation `5672573849`; authority marker
-`DLH_5VS_MINIMAL_FINAL_VALIDATION_ZBLOCK_REPAIR_AUTHORIZED`). Builder execution
+**ISSUE #68 / DLH-5V-T IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #67 /
+DLH-5V-S is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`. Issue #68 is a bounded scientific
+numerical diagnostic of single-wall tangent-projected frozen-policy Newton
+geometry at the accepted post-repair `V_*` (initial authoritative activation
+`5674754187`; authority marker
+`DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_AUTHORIZED`). Builder execution
 remains NOT YET OPERATIVE until the final authoritative activation-refresh
 confirms the post-sync live `main`.
 
-The authorized change is exactly one destination-index repair in
-`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
-(`cols.append(dn)` → `cols.append(nz * self.n + dn)` in the `final=True` F0
-off-diagonal path) plus the corrected validation re-check, inside the exact
-four-path allowlist. Explicitly NOT authorized: any second scientific source
-change; final rate formula / controls / policy selection / diagonal / switch
-matrix / economics / prices / grid / domain / initialization / tolerances /
-`PB_MARGIN` / convergence-criterion change; `R_iter` becoming an accepted final
-convergence residual; accepting any new HJB iterate; declaring HJB convergence
-because the corrected residual drops (the Bellman tolerance is unchanged);
-Newton / continuation / line search; price / Wmax / resolution sweeps;
-KFE / stationary KFE / steady state; SCC/global-Q; GE/multi-region/neural/
-nominal/calibration/policy/welfare/Results; successor Issue activation; any
-Builder scientific branch beyond the dedicated Issue #67 branch (not yet
-created); PR / merge / Issue close / self-accept. Stationary KFE remains
+The Issue #68 ceiling is exactly: ONE deterministic `V_*` reconstruction; ONE
+current `final=False` operator build; ONE frozen-policy Newton solve; ONE
+limiting-wall gradient; ONE single-wall tangent projection; ONE all-boundary
+crossing computation; exactly TWO diagnostic trials, each with exactly ONE
+`final=False` re-selection and ONE corrected `final=True` validation build; ONE
+deterministic repeat — inside the exact four-path allowlist. Explicitly NOT
+authorized: mutating selected-Q or any accepted source from Issues #61–#67;
+economics / prices / grid / domain / initialization / controls / tolerances /
+`PB_MARGIN` / Bellman-tolerance change; convergence-criterion change; accepting
+any trial as an HJB iterate; multi-step Newton / policy iteration / semismooth /
+trust-region / continuation; adaptive line search or alpha tuning; multiple
+active constraints or projection-metric optimization; `p_b` clip / floor;
+price / Wmax / resolution sweeps; KFE / stationary KFE /
+`solve_household_steady_state`; SCC/global-Q; GE/multi-region/neural/nominal/
+calibration/policy/welfare/Results; successor Issue activation; any Builder
+scientific branch beyond the dedicated Issue #68 branch (not yet created);
+PR / merge / Issue close / self-accept. Stationary KFE remains
 **NOT AUTHORIZED**.
 
 ## Current authoritative files
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #67 body/comments (OPEN; initial authoritative activation `5672573849`;
+- Issue #68 body/comments (OPEN; initial authoritative activation `5674754187`;
   final authoritative activation-refresh not yet published).
+- Issue #67 body/comments (accepted/closed; reviewer acceptance `5674741491`,
+  acceptance integration `5674743972`).
 - Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,
   acceptance integration `5666172248`).
 - Issue #65 body/comments (accepted/closed).
