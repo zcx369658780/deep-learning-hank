@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.49  
+**Version:** V0.50  
 **Date:** 2026-09-15  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** ISSUE #68 / DLH-5V-T NEXT ACTIVE — BUILDER NOT YET OPERATIVE — SINGLE-WALL TANGENT-PROJECTED NEWTON GEOMETRY DIAGNOSTIC (ISSUE #67 / DLH-5V-S ACCEPTED / CLOSED AT TERMINAL A AND INTEGRATED)
+**Status:** ISSUE #69 / DLH-5V-U NEXT ACTIVE — BUILDER NOT YET OPERATIVE — LATENT F0 ITERATION-RATE VS RAW-DRIFT SIGN-DIVERGENCE PROVENANCE AUDIT (ISSUE #68 / DLH-5V-T ACCEPTED / CLOSED AT TERMINAL C AND INTEGRATED)
 
 ---
 
@@ -1239,7 +1239,7 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ---
 
-## 8.11 Issue #68 / DLH-5V-T — single-wall tangent-projected frozen-policy Newton geometry after accepted final-validation repair — NEXT ACTIVE (BUILDER NOT YET OPERATIVE)
+## 8.11 Issue #68 / DLH-5V-T — single-wall tangent-projected frozen-policy Newton geometry after accepted final-validation repair — TERMINAL C ACCEPTED / CLOSED (SUPERSEDED BY ISSUE #69)
 
 Title:
 
@@ -1259,13 +1259,36 @@ Authority marker:
 
 Initial authoritative activation comment:
 
-`5674754187`
+`5674754187` (final authoritative activation-refresh `5675003122`)
 
-Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
-refresh confirms the post-sync live `main`, Builder execution on Issue #68 is
-**NOT YET OPERATIVE**.
+Builder execution is **complete and ACCEPTED / CLOSED** at Terminal C. Scientific
+candidate `b194eb3886af7a5e3d5abe85dad114fdc6ed98eb` was followed by the
+Reviewer-authorized gradient-semantics remediation commit
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`, which is the accepted final
+candidate / integration. Reviewer acceptance `5676811925`; acceptance
+integration `5676816068` (fast-forward, not a merge commit). Accepted verdict
+`DLH_5VT_ACCEPTED__TERMINAL_C_CONFIRMED__FULL_CHAIN_RULE_TANGENT_GEOMETRY_EXPANDS_SAFE_FRACTION_MATERIALLY__TRIAL_LEVEL_FINAL_VS_ITERATION_RATE_PATH_DIVERGENCE_INVALIDATES_CLEAN_RESIDUAL_CONTRACT__RATE_PATH_PROVENANCE_REVIEW_REQUIRED`;
+accepted terminal
+`DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`.
 
-Dedicated future Builder branch:
+Accepted facts: the controlling limiting-wall gradient is the full two-entry
+chain rule (`g[wall] = +1/db`, `g[down] = -1/db`, basis identity error `0`);
+the official tangent identity holds exactly (`g@d_T = 0`); the safe geometry
+expands materially — `alpha_cross_T = 0.16170699931086815`,
+`alpha_near = 0.16170683760386884`, `alpha_half = 0.08085341880193442`,
+geometry ratio `866.2532997045214`; both trials are strictly domain-safe. But
+under the SAME freshly reselected controls the corrected `final=True` and
+`final=False` trial operators are **not** equivalent: F0 rowwise gaps
+`0.6718037653783657` (rows `{452, 453}`) and `1.3379411925537439` (rows
+`{452, 453, 482, 483}`), with bit-identical controls and utility at the affected
+rows. That triggers the frozen Outcome C inconsistency clause regardless of the
+indicative residual ratios (`0.9193283517706523`, `0.8390465254310803`). At the
+accepted `V_*` the two rate paths agree to machine precision, so the divergence
+is latent and appears only away from `V_*` near an upwind sign boundary.
+**No HJB convergence**; **no accepted iterate**; the divergence does not
+establish which rate path is scientifically correct away from `V_*`.
+
+Dedicated Builder branch (integrated into `main`):
 
 `dsh/issue-68-dlh-5vt-tangent-projected-newton-2026-09-15`
 
@@ -1377,6 +1400,140 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ---
 
+## 8.12 Issue #69 / DLH-5V-U — latent F0 iteration-rate vs raw-drift sign divergence away from `V_*` — NEXT ACTIVE (BUILDER NOT YET OPERATIVE)
+
+Title:
+
+`DLH-5V-U: Audit latent F0 iteration-rate vs raw-drift sign divergence away from V*`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AWAY_FROM_VSTAR`
+
+Owner / Reviewer route decision:
+
+`APPROVE_F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AUDIT_AFTER_5VT_TERMINAL_C`
+
+Authority marker:
+
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE_AUDIT_AUTHORIZED`
+
+Initial authoritative activation comment:
+
+`5676828795`
+
+Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
+refresh confirms the post-sync live `main`, Builder execution on Issue #69 is
+**NOT YET OPERATIVE**.
+
+Dedicated future Builder branch:
+
+`dsh/issue-69-dlh-5vu-f0-rate-path-divergence-2026-09-15`
+
+Controlling accepted authority: Issue #68 / DLH-5V-T ACCEPTED / CLOSED at
+Terminal C (accepted candidate / integration
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`; reviewer acceptance `5676811925`;
+acceptance integration `5676816068`), which exposed the latent trial-level
+divergence between the accepted `final=False` iteration-rate path and the
+corrected `final=True` raw-drift rate path under identical controls.
+
+### 8.12.1 Scientific question
+
+Before any further constrained-direction solver design, determine the exact
+source/provenance mechanism of the latent F0 operator divergence: does it come
+from (1) the stored iteration-rate construction of the accepted
+MATLAB-faithful local-policy path, (2) the corrected `final=True` raw-drift
+`max(±mu)/step` rates, (3) sign/tie-breaking or truncation differences around
+`mu ≈ 0` / finite-difference branch boundaries, (4) destination availability /
+diagonal accounting, or (5) another source-backed mechanism? Diagnostic only —
+it does NOT authorize changing either rate path.
+
+### 8.12.2 Frozen states and decomposition
+
+Only the two accepted Issue #68 frozen trial states may be used:
+`alpha_half = 0.08085341880193442`; `alpha_near = 0.16170683760386884`. No third
+trial state. Must reproduce the accepted Issue #68 operator inconsistencies:
+`alpha_half` F0 rowwise gap `0.6718037653783657` on rows `{452, 453}`;
+`alpha_near` F0 rowwise gap `1.3379411925537439` on rows
+`{452, 453, 482, 483}`.
+
+At each frozen trial, exactly: ONE `final=False` nonlinear policy re-selection;
+ONE corrected `final=True` same-control build; ONE all-F0 compact rate/row
+decomposition. Per inconsistent F0 row persist: state `(node, j, i, z)`;
+sector / transfer label; consumption / labor / transfer / utility; stored
+`mu_a`, `mu_b`; recomputed raw `mu_a`, `mu_b`; iteration `b_backward`,
+`b_forward`, `a_backward`, `a_forward` rates; raw-drift `b_backward`,
+`b_forward`, `a_backward`, `a_forward` rates; rate sign / active direction per
+axis; diagonal; represented destination columns and rates; omitted destination
+rate; rowwise `Q_final - Q_iter` non-zero columns and magnitudes — plus
+counts/maxima over ALL F0 rows. No full sparse matrices persisted.
+
+### 8.12.3 Source-backed provenance audit
+
+Read-only trace the accepted oracle/selected-Q implementation (not inferred from
+names or docstrings): how iteration b-rates and a-rates are built from the
+selected local policy and finite-difference branches; any clipping, sign /
+tie-breaking, branch selection, shadow-rate, transfer or truncation convention
+entering those rates; how corrected `final=True` recomputes raw drifts from the
+SAME controls and maps them through `max(±mu)/step`; whether the two
+constructions are mathematically guaranteed equivalent or only coincide on a
+subset of states; and the exact local condition that flips the upwind direction
+in the Issue #68 affected rows.
+
+### 8.12.4 Deterministic classification
+
+Frozen diagnostic flags: `ITER_RATE_PATH_SOURCE_BACKED`,
+`FINAL_RAW_PATH_SOURCE_BACKED`, `RATE_FORMULAS_GLOBALLY_EQUIVALENT`,
+`SIGN_OR_BRANCH_DIVERGENCE_ESTABLISHED`,
+`TRUNCATION_OR_DESTINATION_DIVERGENCE_ESTABLISHED`,
+`OTHER_MECHANISM_ESTABLISHED`, `MIXED_OR_UNRESOLVED`. The classification must
+not choose which operator is scientifically authoritative away from `V_*`
+unless the source provenance proves it uniquely.
+
+### 8.12.5 Exact execution design and terminals
+
+Execute exactly: ONE deterministic reconstruction of `V_*` plus the accepted
+Issue #68 full-gradient tangent geometry; exactly TWO frozen trial states; at
+each trial ONE `final=False` re-selection and ONE corrected `final=True`
+same-control build; ONE all-F0 compact rate/row decomposition per trial; ONE
+read-only source provenance mapping; ONE deterministic repeat. No accepted new
+HJB iterate, no new direction solve, no line search, no additional trial.
+
+Exactly ONE terminal must be reported:
+
+- A `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`
+- B `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_TRUNCATION_OR_DESTINATION_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`
+- C `DLH_5VU_F0_RATE_PATH_DIVERGENCE__MIXED_OR_UNRESOLVED_SOURCE_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VU_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+### 8.12.6 Builder allowlist (four new paths only)
+
+1. `src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py`
+2. `tests/test_dlh_5vu_f0_rate_path_divergence.py`
+3. `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_REPORT.md`
+4. `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_SUMMARY.csv`
+
+No fifth tracked Builder path. All accepted source/test/report/governance files
+remain read-only.
+
+### 8.12.7 Forbidden
+
+No mutation of selected-Q, the oracle, or any accepted Issue #61–#68 scientific
+source; no choosing or replacing the authoritative rate path; no
+convergence-criterion change; no economics/prices/grid/domain/initialization/
+controls/tolerances/`PB_MARGIN`/Bellman-tolerance change; no accepted trial as
+an HJB iterate; no new Newton / tangent / constrained direction; no multi-step
+Newton / policy iteration / semismooth / trust-region / continuation / line
+search; no additional trial state or alpha tuning; no price/Wmax/resolution
+sweep; no KFE / stationary KFE / `solve_household_steady_state`; no
+SCC/global-Q / GE / multi-region / neural / nominal / calibration / policy /
+welfare / Results; no PR; no merge; no Issue close; no successor; no
+self-accept.
+
+Stationary KFE remains **NOT AUTHORIZED**.
+
+---
+
 ## 9. Current roadmap position
 
 ```text
@@ -1399,7 +1556,8 @@ frozen-policy Newton geometry diagnostic (stagnation residual decomposition)  TE
 F0 final-validation operator consistency audit                      TERMINAL B ACCEPTED/CLOSED — ISSUE #65
 F0 final=True rate/provenance and operator-consistency audit          TERMINAL A ACCEPTED/CLOSED — ISSUE #66
 minimal final-validation z-block operator repair                     TERMINAL A ACCEPTED/CLOSED — ISSUE #67 / DLH-5V-S
-single-wall tangent-projected Newton geometry diagnostic             NEXT ACTIVE (BUILDER NOT YET OPERATIVE) — ISSUE #68 / DLH-5V-T
+single-wall tangent-projected Newton geometry diagnostic             TERMINAL C ACCEPTED/CLOSED — ISSUE #68 / DLH-5V-T
+latent F0 iteration-rate vs raw-drift sign-divergence provenance audit  NEXT ACTIVE (BUILDER NOT YET OPERATIVE) — ISSUE #69 / DLH-5V-U
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -1433,82 +1591,87 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**ISSUE #68 / DLH-5V-T IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #67 /
-DLH-5V-S is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
-`a5753bb9fa329a3d85a5652b03d101fa0be6cd32` (original scientific candidate
-`281cfe01b2925364a92308ca172a84a724c6ea58`; reviewer acceptance `5674741491`;
-acceptance integration `5674743972`; accepted verdict
-`DLH_5VS_ACCEPTED__TERMINAL_A_CONFIRMED__MINIMAL_ZBLOCK_DESTINATION_REPAIR_EXACT__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__FULL_SUITE_GREEN__HJB_RESIDUAL_REASSESSMENT_REQUIRED`;
+**ISSUE #69 / DLH-5V-U IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #68 /
+DLH-5V-T is ACCEPTED / CLOSED at Terminal C and integrated to `main` at
+`15083e5c9f089406aa69326bc84dbe2db0e42be8` (original scientific candidate
+`b194eb3886af7a5e3d5abe85dad114fdc6ed98eb`; remediation commit / final candidate
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`; reviewer acceptance `5676811925`;
+acceptance integration `5676816068`; accepted verdict
+`DLH_5VT_ACCEPTED__TERMINAL_C_CONFIRMED__FULL_CHAIN_RULE_TANGENT_GEOMETRY_EXPANDS_SAFE_FRACTION_MATERIALLY__TRIAL_LEVEL_FINAL_VS_ITERATION_RATE_PATH_DIVERGENCE_INVALIDATES_CLEAN_RESIDUAL_CONTRACT__RATE_PATH_PROVENANCE_REVIEW_REQUIRED`;
 accepted terminal
-`DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`).
+`DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`).
 
-Issue #67 accepted facts: the only scientific source mutation remains the
-Owner-authorized one-line selected-Q repair
-`cols.append(dn)` → `cols.append(nz * self.n + dn)` (repaired blob
-`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`); corrected final residual
-`10.435094313164921` matching accepted `R_iter`; corrected-final vs ITER rowwise
-operator gap `1.4210854715202004e-14` versus historical pre-repair
-`24.601971766296664` and pre-repair current final residual `490.7560414005864`
-(~`480.32` excess attributed to the cross-z destination-index defect); z=0
-unchanged; non-F0 boundary `Q`/`u` diff `0`; utility/source diff `0`;
-conservativity preserved; no expansions/bindings; historical Issue #64/#65/#66
-test constants preserved with post-repair runtime contracts migrated; full suite
-**534 passed / 0 failed / 6 pre-existing warnings**. **HJB convergence is NOT
-accepted**: the corrected residual remains ~`10435`× the unchanged Bellman
-tolerance `1e-3`, and `R_iter` is NOT declared the accepted final convergence
-residual.
+Issue #68 accepted facts: the controlling limiting-wall gradient is the full
+two-entry chain rule (`g[wall] = +1/db`, `g[down] = -1/db`, basis identity error
+`0`); the official tangent identity holds exactly (`g@d_T = 0`); the safe
+geometry expands materially — `alpha_cross_T = 0.16170699931086815`,
+`alpha_near = 0.16170683760386884`, `alpha_half = 0.08085341880193442`,
+geometry ratio `866.2532997045214`; both trials are strictly domain-safe. Under
+the SAME freshly reselected controls, however, the corrected `final=True` and
+`final=False` trial operators are **not** equivalent: F0 rowwise gaps
+`0.6718037653783657` (rows `{452, 453}`) and `1.3379411925537439` (rows
+`{452, 453, 482, 483}`), with bit-identical controls and utility at the affected
+rows. That triggers the frozen Outcome C inconsistency clause regardless of the
+indicative residual ratios (`0.9193283517706523`, `0.8390465254310803`). At the
+accepted `V_*` the two rate paths agree to machine precision, so the divergence
+is latent and appears only away from `V_*` near an upwind sign boundary.
+**HJB convergence is NOT accepted**, **no trial is an accepted iterate**, and
+the divergence does not establish which rate path is scientifically correct away
+from `V_*`.
 
-Issue #68 / DLH-5V-T route decision (2026-09-15):
-`APPROVE_SINGLE_WALL_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_5VS_TERMINAL_A`.
-Authority marker: `DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_AUTHORIZED`.
-Initial authoritative activation comment: `5674754187`. Final authoritative
-activation-refresh: **NOT YET PUBLISHED**, so Builder execution on Issue #68
+Issue #69 / DLH-5V-U route decision (2026-09-15):
+`APPROVE_F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AUDIT_AFTER_5VT_TERMINAL_C`.
+Authority marker: `DLH_5VU_F0_RATE_PATH_DIVERGENCE_AUDIT_AUTHORIZED`. Initial
+authoritative activation comment: `5676828795`. Final authoritative
+activation-refresh: **NOT YET PUBLISHED**, so Builder execution on Issue #69
 remains **NOT YET OPERATIVE** until that refresh confirms the post-sync live
 `main`.
 
 Dedicated future Builder branch:
-`dsh/issue-68-dlh-5vt-tangent-projected-newton-2026-09-15`.
+`dsh/issue-69-dlh-5vu-f0-rate-path-divergence-2026-09-15`.
 
 Task type:
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__BOUNDARY_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_VALIDATION_REPAIR`.
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AWAY_FROM_VSTAR`.
 
-Authorized work: exactly ONE deterministic `V_*` reconstruction; ONE current
-`final=False` operator build; ONE frozen-policy Newton solve `J d_N = -R`; ONE
-limiting-wall `p_b` gradient `g` using the accepted Issue #62 boundary
-derivative semantics; ONE single-wall tangent projection
-`d_T = d_N - g*(g@d_N)/(g@g)`; ONE all-boundary crossing computation; exactly
-TWO diagnostic trials (`alpha_half`, `alpha_near`), each with exactly ONE
-`final=False` re-selection and exactly ONE corrected `final=True` validation
-build; ONE deterministic repeat. Frozen constants `PB_MARGIN = 1e-12`,
-`EPS_ALPHA = 1e-6`, `HALF_ALPHA = 0.5`, `MATERIAL_REDUCTION_RATIO = 0.50`;
-historical `alpha_cross_N ≈ 1.8667384893e-4`; geometry-improving criterion
-`alpha_near / min(1, alpha_cross_N) >= 10`; dual material-reduction criterion
-requires both residual ratios `<= 0.50`.
+Authorized work: ONE deterministic reconstruction of `V_*` plus the accepted
+Issue #68 full-gradient tangent geometry; exactly TWO frozen trial states
+(`alpha_half = 0.08085341880193442`, `alpha_near = 0.16170683760386884`) with no
+third trial; at each trial exactly ONE `final=False` re-selection and ONE
+corrected `final=True` same-control build; ONE all-F0 compact rate/row
+decomposition per trial; ONE read-only source provenance mapping; ONE
+deterministic repeat. Must reproduce the accepted Issue #68 gaps `0.6718037653783657`
+(rows `{452, 453}`) and `1.3379411925537439` (rows `{452, 453, 482, 483}`), and
+record the frozen flags `ITER_RATE_PATH_SOURCE_BACKED`,
+`FINAL_RAW_PATH_SOURCE_BACKED`, `RATE_FORMULAS_GLOBALLY_EQUIVALENT`,
+`SIGN_OR_BRANCH_DIVERGENCE_ESTABLISHED`,
+`TRUNCATION_OR_DESTINATION_DIVERGENCE_ESTABLISHED`,
+`OTHER_MECHANISM_ESTABLISHED`, `MIXED_OR_UNRESOLVED`.
 
-Explicitly NOT authorized in Issue #68: mutating selected-Q or any accepted
-source from Issues #61–#67; economics / prices / grid / domain / initialization /
-controls / tolerances / `PB_MARGIN` / Bellman-tolerance change;
-convergence-criterion change; accepting any trial as an HJB iterate; multi-step
-Newton / policy iteration / semismooth / trust-region / continuation; adaptive
-line search or alpha tuning; multiple active constraints or projection-metric
-optimization; `p_b` clip / floor; price / Wmax / resolution sweeps; KFE /
-stationary KFE / `solve_household_steady_state`; SCC/global-Q;
+Explicitly NOT authorized in Issue #69: mutating selected-Q, the oracle, or any
+accepted Issue #61–#68 scientific source; choosing or replacing the
+authoritative rate path; convergence-criterion change; economics / prices /
+grid / domain / initialization / controls / tolerances / `PB_MARGIN` /
+Bellman-tolerance change; accepting any trial as an HJB iterate; constructing a
+new Newton / tangent / constrained direction; multi-step Newton / policy
+iteration / semismooth / trust-region / continuation / line search; adding trial
+states or alpha tuning; price / Wmax / resolution sweeps; KFE / stationary KFE /
+`solve_household_steady_state`; SCC/global-Q;
 GE/multi-region/neural/nominal/calibration/policy/welfare/Results; successor
-Issue activation; any Builder scientific branch beyond the dedicated Issue #68
+Issue activation; any Builder scientific branch beyond the dedicated Issue #69
 branch (not yet created); PR / merge / Issue close / self-accept.
 
-Issue #68 exact four-path Builder allowlist:
-`src/deep_learning_hank/two_asset/tangent_projected_newton_geometry.py`;
-`tests/test_dlh_5vt_tangent_projected_newton_geometry.py`;
-`reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md`;
-`reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_SUMMARY.csv`.
+Issue #69 exact four-path Builder allowlist:
+`src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py`;
+`tests/test_dlh_5vu_f0_rate_path_divergence.py`;
+`reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_REPORT.md`;
+`reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_SUMMARY.csv`.
 No fifth tracked Builder path.
 
-Issue #68 terminal set (exactly ONE to be reported):
-A `DLH_5VT_TANGENT_PROJECTED_NEWTON__SINGLE_WALL_TANGENT_PROJECTION_EXPANDS_SAFE_GEOMETRY_AND_MATERIALLY_REDUCES_NONLINEAR_RESIDUAL__CONSTRAINED_DIRECTION_DESIGN_GATE_READY`;
-B `DLH_5VT_TANGENT_PROJECTED_NEWTON__TANGENT_DIRECTION_FINITE_AND_DOMAIN_SAFE_BUT_GEOMETRY_OR_RESIDUAL_IMPROVEMENT_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`;
-C `DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`;
-Blocked `BLOCKED_DLH_5VT_AUTHORITY_OR_DEPENDENCY_CONFLICT`. Stationary KFE
+Issue #69 terminal set (exactly ONE to be reported):
+A `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`;
+B `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_TRUNCATION_OR_DESTINATION_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`;
+C `DLH_5VU_F0_RATE_PATH_DIVERGENCE__MIXED_OR_UNRESOLVED_SOURCE_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED`;
+Blocked `BLOCKED_DLH_5VU_AUTHORITY_OR_DEPENDENCY_CONFLICT`. Stationary KFE
 remains **NOT AUTHORIZED**.
 
 Issue #64 / DLH-5V-P is ACCEPTED / CLOSED at Terminal B (accepted candidate /
@@ -1598,20 +1761,25 @@ Issue #64–#66 comparison authority; Issue #61
 `bb4045378bf19607f68d7d4a7628b3431afcd676`; Issue #66
 `44d47c7545f279dfe9189736f5cdcdfa30c3b84b` — the latter seven remain strictly
 read-only; selected-Q is now read-only as well, no longer a mutation target).
+The accepted Issue #67 repair/migration paths and the accepted Issue #68
+tangent-projected-Newton-geometry paths are read-only evidence as well.
 Stationary KFE remains **NOT
 AUTHORIZED**; no successor; no PR / merge / Issue close / self-accept by the
-Builder. Issue #67 / DLH-5V-S, Issue #66 / DLH-5V-R, Issue #65 / DLH-5V-Q,
-Issue #64 / DLH-5V-P, Issue #63 / DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 /
-DLH-5V-M and Issue #60 / DLH-5V-L remain ACCEPTED / CLOSED; the seven tested
-stabilization/diagnostic route gates plus the final-validation z-block
-validation-operator repair gate are closed.
+Builder. Issue #68 / DLH-5V-T, Issue #67 / DLH-5V-S, Issue #66 / DLH-5V-R,
+Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P, Issue #63 / DLH-5V-O, Issue #62 /
+DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60 / DLH-5V-L remain ACCEPTED /
+CLOSED; the seven tested stabilization/diagnostic route gates plus the
+final-validation z-block validation-operator repair gate and the single-wall
+tangent-projected Newton geometry gate are closed.
 
 Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-- Issue #68 body/comments (OPEN; initial authoritative activation `5674754187`;
+- Issue #69 body/comments (OPEN; initial authoritative activation `5676828795`;
   final authoritative activation-refresh not yet published).
+- Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
+  acceptance integration `5676816068`).
 - Issue #67 body/comments (accepted/closed; reviewer acceptance `5674741491`,
   acceptance integration `5674743972`).
 - Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,

@@ -21,119 +21,189 @@ Priority:
 
 ## Current Builder state
 
-Issue #68 / DLH-5V-T is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
+Issue #69 / DLH-5V-U is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
 
 Title:
 
-`DLH-5V-T: Diagnose single-wall tangent-projected Newton geometry after final-validation repair`
+`DLH-5V-U: Audit latent F0 iteration-rate vs raw-drift sign divergence away from V*`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__BOUNDARY_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_VALIDATION_REPAIR`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AWAY_FROM_VSTAR`
 
 Owner / Reviewer route decision:
 
-`APPROVE_SINGLE_WALL_TANGENT_PROJECTED_NEWTON_GEOMETRY_AFTER_5VS_TERMINAL_A`
+`APPROVE_F0_ITERATION_RATE_VS_RAW_DRIFT_SIGN_PROVENANCE_AUDIT_AFTER_5VT_TERMINAL_C`
 
 Authority marker:
 
-`DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_AUTHORIZED`
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE_AUDIT_AUTHORIZED`
 
 Initial authoritative activation:
 
-`5674754187`
+`5676828795`
 
 Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
-refresh confirms the post-sync live `main`, Builder execution on Issue #68 is
+refresh confirms the post-sync live `main`, Builder execution on Issue #69 is
 **NOT YET OPERATIVE**.
 
 Dedicated future Builder branch:
 
-`dsh/issue-68-dlh-5vt-tangent-projected-newton-2026-09-15`
+`dsh/issue-69-dlh-5vu-f0-rate-path-divergence-2026-09-15`
 
 Post-sync live `main` at activation:
-`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`.
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`.
 
-### Issue #68 scientific question
+### Issue #69 scientific question
 
-After the accepted Issue #67 validation repair, the genuine Bellman residual at
-`V_*` is ~`10.435` (not ~`490.756`). Issue #64 already showed the unconstrained
-frozen-policy Newton direction is geometrically capped by the F3 `(13,13), z=1`
-wall. Issue #68 tests one hypothesis: does removing the **first-order normal
-component of the plain frozen-policy Newton direction with respect to the single
-limiting boundary constraint** produce a materially larger boundary-safe step
-and meaningful nonlinear residual reduction at the same frozen economics/state?
-Local direction-geometry diagnostic only.
+Before any further constrained-direction solver design, determine the exact
+source/provenance mechanism of the latent F0 operator divergence exposed by
+Issue #68: at the two accepted Issue #68 trial states and under identical
+freshly reselected controls, does the discrepancy come from (1) the stored
+iteration-rate construction of the accepted MATLAB-faithful local-policy path,
+(2) the corrected `final=True` raw-drift `max(±mu)/step` rates, (3)
+sign/tie-breaking or truncation differences around `mu ≈ 0` / finite-difference
+branch boundaries, (4) destination availability / diagonal accounting, or (5)
+another source-backed mechanism? Diagnostic only — it does NOT authorize
+changing either rate path.
 
-### Issue #68 scientific boundary (as activated)
+### Issue #69 frozen scientific boundary (as activated)
 
-Frozen accepted Issue #63 stagnation state `V_*`:
+Only the two accepted Issue #68 frozen trial states may be used:
+`alpha_half = 0.08085341880193442`; `alpha_near = 0.16170683760386884`. No third
+trial state.
 
-- final statistic = `3.6614352438846254e-08`;
-- min boundary `p_b` = `4.8089461301970005e-09`;
-- limiting wall = F3 `(13,13)`, z=1;
-- genuine corrected residual = `10.435094313164921`.
+Must reproduce the accepted Issue #68 operator inconsistencies:
+`alpha_half` F0 rowwise gap `0.6718037653783657` on rows `{452, 453}`;
+`alpha_near` F0 rowwise gap `1.3379411925537439` on rows
+`{452, 453, 482, 483}`.
 
-selected-Q repaired blob (read-only for Issue #68):
+At each frozen trial, exactly: ONE `final=False` nonlinear policy re-selection;
+ONE corrected `final=True` same-control build; ONE all-F0 compact rate/row
+decomposition.
 
-`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`
+Required per-row evidence at each inconsistent F0 row: state `(node, j, i, z)`;
+sector / transfer label; consumption / labor / transfer / utility; stored
+`mu_a`, `mu_b`; recomputed raw `mu_a`, `mu_b`; iteration `b_backward`,
+`b_forward`, `a_backward`, `a_forward` rates; raw-drift `b_backward`,
+`b_forward`, `a_backward`, `a_forward` rates; rate sign / active direction per
+axis; diagonal; represented destination columns and rates; omitted destination
+rate; rowwise `Q_final - Q_iter` non-zero columns and magnitudes — plus
+counts/maxima over ALL F0 rows. No full sparse matrices persisted.
 
-Required execution (exactly): ONE current `final=False` operator build; ONE
-frozen-policy Newton solve `J d_N = -R`; the limiting-wall gradient `g`; ONE
-single-wall tangent projection `d_T = d_N - g*(g@d_N)/(g@g)`; verify
-`g@d_T ≈ 0`; ONE all-boundary crossing computation; exactly TWO diagnostic
-trials (`alpha_half`, `alpha_near`); each trial exactly ONE `final=False`
-re-selection and exactly ONE corrected `final=True` validation build; no trial
-becomes an accepted HJB iterate.
-
-Frozen constants: `PB_MARGIN = 1e-12`; `EPS_ALPHA = 1e-6`;
-`HALF_ALPHA = 0.5`; `MATERIAL_REDUCTION_RATIO = 0.50`.
-
-Plain-Newton historical safe-fraction baseline: `alpha_cross_N ≈ 1.8667384893e-4`.
-
-Geometry-improving criterion: `alpha_near / min(1, alpha_cross_N) >= 10`.
-
-Material residual criterion requires BOTH `||R_reselect||inf / ||R||inf <= 0.50`
-and `||R_final_trial||inf / ||R||inf <= 0.50`.
+Frozen diagnostic flags: `ITER_RATE_PATH_SOURCE_BACKED`,
+`FINAL_RAW_PATH_SOURCE_BACKED`, `RATE_FORMULAS_GLOBALLY_EQUIVALENT`,
+`SIGN_OR_BRANCH_DIVERGENCE_ESTABLISHED`,
+`TRUNCATION_OR_DESTINATION_DIVERGENCE_ESTABLISHED`,
+`OTHER_MECHANISM_ESTABLISHED`, `MIXED_OR_UNRESOLVED`.
 
 Explicitly NOT authorized:
 
-- mutating selected-Q or any accepted source from Issues #61–#67;
+- mutating selected-Q, the oracle, or any accepted Issue #61–#68 scientific
+  source;
+- choosing or replacing the authoritative rate path;
+- convergence-criterion change;
 - economics / prices / grid / domain / initialization / controls / tolerances /
   `PB_MARGIN` / Bellman-tolerance change;
-- convergence-criterion change;
 - accepting any trial as an HJB iterate;
+- constructing a new Newton / tangent / constrained direction;
 - multi-step Newton / policy iteration / semismooth / trust-region /
-  continuation;
-- adaptive line search or alpha tuning;
-- multiple active constraints or projection-metric optimization;
-- `p_b` clip / floor;
+  continuation / line search;
+- adding trial states or alpha tuning;
 - price / Wmax / resolution sweeps;
 - KFE / stationary KFE / `solve_household_steady_state`;
 - SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
   welfare / Results;
 - successor Issue activation;
-- any Builder scientific branch beyond the dedicated Issue #68 branch (not yet
+- any Builder scientific branch beyond the dedicated Issue #69 branch (not yet
   created);
 - PR / merge / Issue close / self-accept.
 
-Issue #68 exact four-path Builder allowlist:
+Issue #69 exact four-path Builder allowlist:
 
-1. `src/deep_learning_hank/two_asset/tangent_projected_newton_geometry.py`;
-2. `tests/test_dlh_5vt_tangent_projected_newton_geometry.py`;
-3. `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md`;
-4. `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_SUMMARY.csv`.
+1. `src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py`;
+2. `tests/test_dlh_5vu_f0_rate_path_divergence.py`;
+3. `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_REPORT.md`;
+4. `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_SUMMARY.csv`.
 
 No fifth tracked Builder path.
 
-Issue #68 terminal set (exactly ONE to be reported):
+Issue #69 terminal set (exactly ONE to be reported):
 
-- A `DLH_5VT_TANGENT_PROJECTED_NEWTON__SINGLE_WALL_TANGENT_PROJECTION_EXPANDS_SAFE_GEOMETRY_AND_MATERIALLY_REDUCES_NONLINEAR_RESIDUAL__CONSTRAINED_DIRECTION_DESIGN_GATE_READY`
-- B `DLH_5VT_TANGENT_PROJECTED_NEWTON__TANGENT_DIRECTION_FINITE_AND_DOMAIN_SAFE_BUT_GEOMETRY_OR_RESIDUAL_IMPROVEMENT_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
-- C `DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
-- Blocked `BLOCKED_DLH_5VT_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+- A `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`
+- B `DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_TRUNCATION_OR_DESTINATION_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`
+- C `DLH_5VU_F0_RATE_PATH_DIVERGENCE__MIXED_OR_UNRESOLVED_SOURCE_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VU_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
-## Accepted task — Issue #67 / DLH-5V-S (ACCEPTED / CLOSED)
+## Accepted task — Issue #68 / DLH-5V-T (ACCEPTED / CLOSED)
+
+Issue #68 is CLOSED completed at Terminal C and diagnosed single-wall
+tangent-projected frozen-policy Newton geometry at the accepted post-repair
+`V_*`. Its Reviewer-authorized gradient-semantics remediation made the full
+two-entry chain-rule wall gradient the controlling construction.
+
+Accepted candidate / integration:
+
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`
+
+Reviewer acceptance:
+
+`5676811925`
+
+Acceptance integration:
+
+`5676816068`
+
+Original scientific candidate / remediation commit:
+
+`b194eb3886af7a5e3d5abe85dad114fdc6ed98eb` /
+`15083e5c9f089406aa69326bc84dbe2db0e42be8` (fast-forward, not a merge commit)
+
+Accepted verdict:
+
+`DLH_5VT_ACCEPTED__TERMINAL_C_CONFIRMED__FULL_CHAIN_RULE_TANGENT_GEOMETRY_EXPANDS_SAFE_FRACTION_MATERIALLY__TRIAL_LEVEL_FINAL_VS_ITERATION_RATE_PATH_DIVERGENCE_INVALIDATES_CLEAN_RESIDUAL_CONTRACT__RATE_PATH_PROVENANCE_REVIEW_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
+
+Accepted facts:
+
+- controlling wall gradient = full two-entry chain rule;
+- `g[wall] = +1/db`, `g[down] = -1/db`, basis identity error = `0`;
+- `alpha_cross_T = 0.16170699931086815`;
+- `alpha_near = 0.16170683760386884`; `alpha_half = 0.08085341880193442`;
+- geometry ratio = `866.2532997045214`;
+- both trials domain-safe;
+- indicative residual ratios: `alpha_half = 0.9193283517706523`,
+  `alpha_near = 0.8390465254310803`;
+- these ratios are **NOT** clean contractual residual evidence because corrected
+  `final=True` and `final=False` become inconsistent under the SAME controls;
+- `alpha_half`: F0 operator gap `0.6718037653783657`, inconsistent rows
+  `{452, 453}`;
+- `alpha_near`: F0 operator gap `1.3379411925537439`, inconsistent rows
+  `{452, 453, 482, 483}`;
+- controls / utility bit-identical across the two operator constructions at the
+  affected rows;
+- selected-Q repaired blob remains `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`;
+- at accepted `V_*` the two rate paths agree to machine precision, so the
+  divergence is latent and appears only away from `V_*`.
+
+Accepted scientific interpretation (binding):
+
+- the single-wall full-gradient tangent projection **does** relax the
+  first-order wall geometry by ~`866`×;
+- the clean nonlinear residual experiment is invalidated at those larger steps
+  because the accepted `final=False` iteration-rate path and the corrected
+  `final=True` raw-drift rate path diverge under identical controls near an
+  upwind sign boundary;
+- this does **NOT** establish which rate path is scientifically correct away
+  from `V_*`, does **NOT** authorize mutating either path, and does **NOT**
+  establish HJB nonexistence or convergence failure;
+- **no HJB convergence**; **no accepted new iterate**;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Superseded accepted task — Issue #67 / DLH-5V-S (ACCEPTED / CLOSED)
 
 Issue #67 is CLOSED completed at Terminal A and performed the minimal
 Owner-authorized `final=True` F0 z-block destination repair plus a corrected
@@ -554,7 +624,7 @@ Git blob:
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
 Accepted selected-Q source — repaired and accepted under Issue #67 / DLH-5V-S;
-now **read-only** for all subsequent Issues (including Issue #68):
+now **read-only** for all subsequent Issues (including Issues #68 and #69):
 
 `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
 
@@ -632,6 +702,13 @@ Accepted Issue #67 deliverable paths remain read-only evidence:
 - `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`;
 - `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`.
 
+Accepted Issue #68 deliverable paths remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/tangent_projected_newton_geometry.py`;
+- `tests/test_dlh_5vt_tangent_projected_newton_geometry.py`;
+- `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md`;
+- `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_SUMMARY.csv`.
+
 ```text
 HJB boundary policy <=> KFE boundary transition law
 Q backward
@@ -648,32 +725,33 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-**ISSUE #68 / DLH-5V-T IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #67 /
-DLH-5V-S is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
-`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`. Issue #68 is a bounded scientific
-numerical diagnostic of single-wall tangent-projected frozen-policy Newton
-geometry at the accepted post-repair `V_*` (initial authoritative activation
-`5674754187`; authority marker
-`DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_AUTHORIZED`). Builder execution
-remains NOT YET OPERATIVE until the final authoritative activation-refresh
-confirms the post-sync live `main`.
+**ISSUE #69 / DLH-5V-U IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #68 /
+DLH-5V-T is ACCEPTED / CLOSED at Terminal C and integrated to `main` at
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`. Issue #69 is a bounded
+diagnostic/provenance audit of the latent F0 divergence between the accepted
+`final=False` iteration-rate path and the corrected `final=True` raw-drift rate
+path (initial authoritative activation `5676828795`; authority marker
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE_AUDIT_AUTHORIZED`). Builder execution remains
+NOT YET OPERATIVE until the final authoritative activation-refresh confirms the
+post-sync live `main`.
 
-The Issue #68 ceiling is exactly: ONE deterministic `V_*` reconstruction; ONE
-current `final=False` operator build; ONE frozen-policy Newton solve; ONE
-limiting-wall gradient; ONE single-wall tangent projection; ONE all-boundary
-crossing computation; exactly TWO diagnostic trials, each with exactly ONE
-`final=False` re-selection and ONE corrected `final=True` validation build; ONE
-deterministic repeat — inside the exact four-path allowlist. Explicitly NOT
-authorized: mutating selected-Q or any accepted source from Issues #61–#67;
-economics / prices / grid / domain / initialization / controls / tolerances /
-`PB_MARGIN` / Bellman-tolerance change; convergence-criterion change; accepting
-any trial as an HJB iterate; multi-step Newton / policy iteration / semismooth /
-trust-region / continuation; adaptive line search or alpha tuning; multiple
-active constraints or projection-metric optimization; `p_b` clip / floor;
-price / Wmax / resolution sweeps; KFE / stationary KFE /
+The Issue #69 ceiling is exactly: ONE deterministic reconstruction of `V_*` plus
+the accepted Issue #68 full-gradient tangent geometry; exactly TWO frozen trial
+states (`alpha_half`, `alpha_near`) with no third trial; at each trial exactly
+ONE `final=False` re-selection and ONE corrected `final=True` same-control
+build; ONE all-F0 compact rate/row decomposition per trial; ONE read-only source
+provenance mapping; ONE deterministic repeat — inside the exact four-path
+allowlist. Explicitly NOT authorized: mutating selected-Q, the oracle, or any
+accepted Issue #61–#68 scientific source; choosing or replacing the
+authoritative rate path; convergence-criterion change; economics / prices /
+grid / domain / initialization / controls / tolerances / `PB_MARGIN` /
+Bellman-tolerance change; accepting any trial as an HJB iterate; constructing a
+new Newton / tangent / constrained direction; multi-step Newton / policy
+iteration / semismooth / trust-region / continuation / line search; adding trial
+states or alpha tuning; price / Wmax / resolution sweeps; KFE / stationary KFE /
 `solve_household_steady_state`; SCC/global-Q; GE/multi-region/neural/nominal/
 calibration/policy/welfare/Results; successor Issue activation; any Builder
-scientific branch beyond the dedicated Issue #68 branch (not yet created);
+scientific branch beyond the dedicated Issue #69 branch (not yet created);
 PR / merge / Issue close / self-accept. Stationary KFE remains
 **NOT AUTHORIZED**.
 
@@ -681,8 +759,10 @@ PR / merge / Issue close / self-accept. Stationary KFE remains
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #68 body/comments (OPEN; initial authoritative activation `5674754187`;
+- Issue #69 body/comments (OPEN; initial authoritative activation `5676828795`;
   final authoritative activation-refresh not yet published).
+- Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
+  acceptance integration `5676816068`).
 - Issue #67 body/comments (accepted/closed; reviewer acceptance `5674741491`,
   acceptance integration `5674743972`).
 - Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,
