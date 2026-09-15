@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `NO_ACTIVE_BUILDER_ISSUE`
+Status: `ISSUE_70_DLH_5VV_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
 
 Last synchronized: 2026-09-15
 
@@ -8,55 +8,142 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-**NO ACTIVE BUILDER ISSUE.** Issue #69 / DLH-5V-U is ACCEPTED / CLOSED at
-Terminal A and integrated to `main` at
-`a08ad35c1dfea212fdc34c276e332b985af1a59f`. There is no open Builder task;
-Builder execution is suspended until the Owner makes the pending scientific
-decision below and issues a new authorized Issue.
+Issue #70 / DLH-5V-V is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
 
-**OWNER SCIENTIFIC DECISION REQUIRED — F0 RATE SEMANTICS AUTHORITY / OPERATOR
-CONTRACT.**
+Title:
 
-No successor Issue (#70) has been created, and no Builder branch is authorized.
-No scientific source, test or report may be modified pending that decision.
+`DLH-5V-V: Consolidate Route-A single-Q F0 operator contract and revalidate final Bellman operator`
 
-## Pending Owner scientific decision — F0 rate semantics authority
+Task type:
 
-Issue #69 established that, away from `V_*`, the accepted `final=False`
-iteration path and the corrected `final=True` raw-drift path are **not**
-equivalent, and uniquely attributed every observed Issue #68 trial discrepancy
-to one source-backed b-rate sign/branch mechanism. It did **NOT** decide which
-rate semantics should be authoritative. The Owner must now choose:
+`OWNER_AUTHORIZED_SCIENTIFIC_CHANGE__MATLAB_FAITHFUL_SINGLE_Q_F0_OPERATOR_CONTRACT_CONSOLIDATION_AND_REVALIDATION`
 
-**Route A — MATLAB-faithful iteration-rate semantics remain authoritative for
-the HJB operator.**
+Owner / Reviewer route decision:
 
-Implication: future final validation should use the SAME selected stored
-iteration rates / same `Q` semantics as the solve, rather than recomputing
-raw-drift rates.
+`APPROVE_ROUTE_A_MATLAB_FAITHFUL_SINGLE_Q_F0_OPERATOR_CONTRACT`
 
-**Route B — realized-drift `max(±mu)/step` semantics become authoritative.**
+Authority marker:
 
-Implication: the iteration operator itself requires an Owner-authorized
-scientific redesign plus renewed MATLAB-faithful parity / convergence
-validation.
+`DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_AUTHORIZED`
 
-**Route C — any dual-`Q` interpretation is NOT authorized by default**, because
-HJB/KFE operator consistency and future `Q^T` mass dynamics require one coherent
-selected generator.
+Initial authoritative activation:
 
-No route is activated until the Owner decides. Explicitly NOT authorized
-pending that decision: mutating selected-Q, the oracle, or any accepted
-Issue #61–#69 scientific source; choosing or replacing the authoritative rate
-path; changing the convergence criterion; changing economics / prices / grid /
-domain / initialization / controls / tolerances / `PB_MARGIN` / Bellman
-tolerance; accepting any new HJB iterate; constructing a new Newton / tangent /
-constrained direction; multi-step Newton / policy iteration / semismooth /
-trust-region / continuation / line search; alpha tuning; any third trial; price
-/ Wmax / resolution sweeps; KFE / stationary KFE / `solve_household_steady_state`;
-SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
-welfare / Results; successor Issue activation; creating Issue #70; creating any
-Builder branch.
+`5681294485`
+
+Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
+refresh confirms the post-sync live `main`, Builder execution is
+**NOT YET OPERATIVE**. No scientific source, test or report may be modified by
+the Builder until then.
+
+Dedicated future Builder branch:
+
+`dsh/issue-70-dlh-5vv-route-a-single-q-operator-contract-2026-09-15`
+
+## OWNER SCIENTIFIC DECISION RESOLVED — ROUTE A SELECTED
+
+The Issue #69 Owner gate is closed. The Owner explicitly selected **Route A** on
+2026-09-15:
+
+> MATLAB-faithful iteration-rate semantics remain authoritative for the HJB
+> operator.
+
+Binding single-`Q` operator contract from this Owner decision:
+
+- Route A selected by the Owner;
+- MATLAB-faithful selected iteration-rate semantics ARE authoritative for the HJB
+  operator;
+- the solve, final validation and any future authorized `Q^T` mass dynamics must
+  share **one coherent selected generator**;
+- raw-drift `max(±mu)/step` is **NOT** an independent final-validation `Q`
+  authority;
+- **dual-`Q` semantics are NOT AUTHORIZED**;
+- Route B and Route C are not selected.
+
+## Issue #70 exact scientific change (as activated)
+
+Only authorized scientific source mutation:
+
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` — the F0
+`final=True` validation assembly only.
+
+Binding contract:
+
+- the supplied selected F0 record's stored `row_entries` / iteration rates /
+  `diagonal` / `utility` **directly define** the final-validation row;
+- preserve same-z-block destination indexing;
+- do **NOT** construct a second F0 `Q` from
+  `asset_drifts_matlab_faithful` + `max(±mu)/step`;
+- `final=True` must use the SAME selected-generator semantics as `final=False`.
+
+Exact equivalent implementation is allowed if and only if it yields the identical
+selected F0 generator row as `final=False` under the same selected record.
+
+Never changed by this Issue:
+
+- the accepted oracle;
+- `final=False` iteration semantics;
+- `select_matlab_faithful_local_policy`;
+- boundary families F1–F11;
+- switch matrix;
+- controls / policy selection;
+- economics / prices / grid / domain / initialization / calibration;
+- tolerances / `PB_MARGIN` / Bellman tolerance;
+- convergence criterion.
+
+Exact validation states (only three, no search, no alpha tuning):
+
+- **S0** — accepted Issue #63 stagnation state `V_*`;
+- **S1** — accepted Issue #68 `alpha_half = 0.08085341880193442`;
+- **S2** — accepted Issue #68 `alpha_near = 0.16170683760386884`.
+
+At each state exactly: ONE `final=False` build; then, using those SAME records,
+ONE Route-A `final=True` build. Must check F0 rowwise `Q` gap; non-F0 `Q` gap;
+global `Q` gap; `u` gap; diagonal/rate/destination identity; `Q` conservativity;
+Bellman residual identity; and that controls / labels are unchanged.
+
+Expected after consolidation: `Q_final == Q_iter` and `u_final == u_iter` to
+machine precision at all three states; the historical Issue #68 S1/S2 gaps
+(`0.6718037653783657`, `1.3379411925537439`) must collapse to machine precision.
+S0 residual is expected to remain `10.435094313164921` unless fresh measured
+evidence proves otherwise. **No HJB convergence claim.**
+
+Issue #70 exact four-path Builder allowlist:
+
+1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`;
+2. `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`;
+3. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_REPORT.md`;
+4. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_SUMMARY.csv`.
+
+No fifth tracked Builder path. No PR / merge / Issue close / successor /
+self-accept.
+
+Issue #70 terminal set (exactly ONE to be reported):
+
+- A `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__FINAL_VALIDATION_REUSES_MATLAB_FAITHFUL_SELECTED_ITERATION_GENERATOR_AT_ALL_FROZEN_STATES__DUAL_RATE_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_READY`
+- B `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__ROUTE_A_IMPLEMENTED_BUT_MATERIAL_FINAL_VS_ITERATION_OPERATOR_DISCREPANCY_REMAINS__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
+- C `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__NONFINITE_REGRESSION_OR_CONTRACT_FAILURE__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VV_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+Explicitly NOT authorized in this Issue:
+
+- mutating the accepted oracle;
+- modifying iteration `final=False` rate semantics;
+- modifying policy selection / controls;
+- modifying F1–F11 boundary semantics;
+- changing economics, prices, grid/domain, initialization, tolerances,
+  `PB_MARGIN`, Bellman tolerance;
+- changing the convergence criterion;
+- accepting any state as a new HJB iterate;
+- running multi-step Newton / policy iteration / semismooth / trust-region /
+  continuation / line search;
+- tuning alpha or adding trial states;
+- price / Wmax / resolution sweeps;
+- KFE / stationary KFE / `solve_household_steady_state`;
+- SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
+  welfare / Results;
+- successor Issue activation;
+- any Builder scientific branch beyond the dedicated Issue #70 branch named
+  above (not yet created).
 
 ## Accepted task — Issue #69 / DLH-5V-U (ACCEPTED / CLOSED)
 
@@ -598,12 +685,13 @@ Git blob:
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
 
 Accepted selected-Q implementation — repaired and accepted under Issue #67 /
-DLH-5V-S; now **read-only** for all subsequent Issues (including Issues #68 and
-#69):
+DLH-5V-S. **The ONLY accepted scientific source that Issue #70 / DLH-5V-V is
+authorized to modify, and then only within the F0 `final=True` validation
+assembly.** Read-only for every other Issue:
 
 `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
 
-Accepted (repaired) Git blob:
+Pre-Issue-70 accepted Git blob (frozen comparison authority for Issue #70):
 
 `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`
 
@@ -612,10 +700,11 @@ comparison authority; not a live target):
 
 `7ea342ccbe15d852b90743b14bb4b02977c2d78b`
 
-The accepted scientific source change is and remains exactly the one
-Owner-authorized z-block destination-index repair
-`cols.append(dn)` → `cols.append(nz * self.n + dn)`. No later Issue is
-authorized to mutate this file.
+Accepted scientific source changes to date: the Issue #67 Owner-authorized
+z-block destination-index repair
+`cols.append(dn)` → `cols.append(nz * self.n + dn)`, and — if Issue #70
+succeeds — the Owner-selected Route-A single-`Q` consolidation of the F0
+`final=True` validation assembly. No other mutation of this file is authorized.
 
 Accepted Issue #61 implementation remains read-only evidence:
 
@@ -708,41 +797,44 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-**NO ACTIVE BUILDER ISSUE.** Issue #69 / DLH-5V-U is ACCEPTED / CLOSED at
-Terminal A and integrated to `main` at
-`a08ad35c1dfea212fdc34c276e332b985af1a59f`. There is no open Builder task, and
-no successor Issue has been created.
+**ISSUE #70 / DLH-5V-V IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #69 /
+DLH-5V-U is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
+`a08ad35c1dfea212fdc34c276e332b985af1a59f`. The Issue #69 Owner gate is
+**RESOLVED: Route A selected** — MATLAB-faithful selected iteration-rate
+semantics are authoritative for the HJB operator, the solve / final validation /
+future authorized `Q^T` must share **one coherent selected generator**,
+raw-drift `max(±mu)/step` is **not** an independent final-validation `Q`
+authority, and dual-`Q` semantics are **NOT AUTHORIZED**. Builder execution on
+Issue #70 remains NOT YET OPERATIVE until the final authoritative
+activation-refresh confirms the post-sync live `main`.
 
-**OWNER SCIENTIFIC DECISION REQUIRED — F0 RATE SEMANTICS AUTHORITY / OPERATOR
-CONTRACT.** Issue #69 uniquely attributed every observed Issue #68 trial
-discrepancy to one source-backed b-rate sign/branch mechanism, but did **NOT**
-decide which rate semantics are authoritative away from `V_*`. Builder execution
-is suspended until the Owner chooses among Route A (MATLAB-faithful
-iteration-rate semantics remain authoritative), Route B (realized-drift
-`max(±mu)/step` semantics become authoritative, requiring an Owner-authorized
-iteration-operator redesign plus renewed MATLAB-faithful parity / convergence
-validation), or Route C (any dual-`Q` interpretation is not authorized by
-default, because HJB/KFE operator consistency and future `Q^T` mass dynamics
-require one coherent selected generator).
-
-Explicitly NOT authorized pending that decision: mutating selected-Q, the
-oracle, or any accepted Issue #61–#69 scientific source; choosing or replacing
-the authoritative rate path; convergence-criterion change; economics / prices /
-grid / domain / initialization / controls / tolerances / `PB_MARGIN` / Bellman
-tolerance change; accepting any new HJB iterate; constructing a new Newton /
-tangent / constrained direction; multi-step Newton / policy iteration /
-semismooth / trust-region / continuation / line search; alpha tuning; any third
-trial; price / Wmax / resolution sweeps; KFE / stationary KFE /
+The Issue #70 ceiling is exactly: ONE minimal source mutation implementing Route
+A in the F0 `final=True` assembly of
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`; ONE deterministic
+reconstruction of `V_*` and the accepted Issue #68 tangent direction; exactly
+THREE frozen-state checks S0/S1/S2 with no search and no alpha tuning; at each
+state exactly ONE `final=False` build and ONE Route-A `final=True` build; ONE
+deterministic repeat of the full three-state validation; focused tests plus the
+full repository suite — within the exact four-path allowlist above. Explicitly
+NOT authorized: mutating the accepted oracle; modifying `final=False` iteration
+rate semantics; modifying policy selection / controls; modifying F1–F11 boundary
+semantics; changing economics / prices / grid / domain / initialization /
+tolerances / `PB_MARGIN` / Bellman tolerance; convergence-criterion change;
+accepting any state as a new HJB iterate; multi-step Newton / policy iteration /
+semismooth / trust-region / continuation / line search; alpha tuning or extra
+trials; price / Wmax / resolution sweeps; KFE / stationary KFE /
 `solve_household_steady_state`; SCC/global-Q; GE/multi-region/neural/nominal/
-calibration/policy/welfare/Results; successor Issue activation; creating Issue
-#70; creating any Builder branch; PR / merge / Issue close / self-accept.
-
-Stationary KFE remains **NOT AUTHORIZED**.
+calibration/policy/welfare/Results; successor Issue activation; any Builder
+scientific branch beyond the dedicated Issue #70 branch (not yet created);
+PR / merge / Issue close / self-accept. Stationary KFE remains **NOT
+AUTHORIZED**.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- Issue #70 body/comments (OPEN; initial authoritative activation `5681294485`;
+  final authoritative activation-refresh not yet published).
 - Issue #69 body/comments (accepted/closed; reviewer acceptance `5678488562`,
   acceptance integration `5678493024`).
 - Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
