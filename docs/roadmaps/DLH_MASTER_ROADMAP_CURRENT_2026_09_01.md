@@ -1,10 +1,10 @@
 # Deep Learning + HANK — Current Master Roadmap
 
-**Version:** V0.47  
-**Date:** 2026-09-14  
+**Version:** V0.48  
+**Date:** 2026-09-15  
 **Project:** Deep Learning + HANK / Network-Structured Regional HANK (NSR-HANK)  
 **Repository:** `zcx369658780/deep-learning-hank`  
-**Status:** NO ACTIVE BUILDER ISSUE — ISSUE #66 / DLH-5V-R ACCEPTED / CLOSED (TERMINAL A) — NEXT ROUTE: OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR
+**Status:** ISSUE #67 / DLH-5V-S NEXT ACTIVE — BUILDER NOT YET OPERATIVE — OWNER-AUTHORIZED MINIMAL FINAL-VALIDATION Z-BLOCK DESTINATION REPAIR (ISSUE #66 / DLH-5V-R ACCEPTED / CLOSED AT TERMINAL A)
 
 ---
 
@@ -909,7 +909,7 @@ modification. Exactly ONE terminal:
 
 ---
 
-## 8.9 Issue #66 / DLH-5V-R — F0 final=True rate/provenance and operator-consistency audit — TERMINAL A ACCEPTED / CLOSED
+## 8.9 Issue #66 / DLH-5V-R — F0 final=True rate/provenance and operator-consistency audit — TERMINAL A ACCEPTED / CLOSED (SUPERSEDED BY ISSUE #67)
 
 Title:
 
@@ -959,7 +959,8 @@ convergence criterion itself should change; correction of accepted `final=True`
 source semantics requires explicit Owner authorization; `R_iter` is NOT
 declared an accepted final convergence residual; does NOT prove HJB
 fixed-point nonexistence; the next route is `OWNER SCIENTIFIC DECISION
-REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR`. Stationary KFE remains
+REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR` — the Owner granted that
+decision on 2026-09-15 through Issue #67 / DLH-5V-S. Stationary KFE remains
 **NOT AUTHORIZED**.
 
 ### 8.9.1 Scientific question
@@ -1072,6 +1073,144 @@ welfare / Results; no successor; no PR / merge / Issue close / self-accept.
 
 ---
 
+## 8.10 Issue #67 / DLH-5V-S — minimal `final=True` F0 z-block destination repair and corrected validation re-check — NEXT ACTIVE (BUILDER NOT YET OPERATIVE)
+
+Title:
+
+`DLH-5V-S: Minimal repair of final=True F0 z-block destination assembly and corrected validation re-check`
+
+Task type:
+
+`SCIENTIFIC_CHANGE__MINIMAL_FINAL_VALIDATION_OPERATOR_REPAIR_AND_REVALIDATION`
+
+Owner / Reviewer route decision:
+
+`APPROVE_MINIMAL_FINAL_VALIDATION_ZBLOCK_DESTINATION_REPAIR_AFTER_5VR_TERMINAL_A`
+
+Authority marker:
+
+`DLH_5VS_MINIMAL_FINAL_VALIDATION_ZBLOCK_REPAIR_AUTHORIZED`
+
+Owner explicit authorization (2026-09-15, recorded in Issue #67):
+
+> `同意 Issue #67 按最小 validation-operator repair 路线执行。`
+
+Initial authoritative activation comment:
+
+`5672573849`
+
+Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
+refresh confirms the post-sync live `main`, Builder execution on Issue #67 is
+**NOT YET OPERATIVE**.
+
+Dedicated future Builder branch:
+
+`dsh/issue-67-dlh-5vs-final-validation-zblock-repair-2026-09-15`
+
+Controlling accepted authority: Issue #66 / DLH-5V-R ACCEPTED / CLOSED at
+Terminal A (accepted candidate / integration
+`a31f17e6d965ddfe8214cd1b83d4074833310625`; reviewer acceptance `5666168154`;
+acceptance integration `5666172248`; accepted verdict
+`DLH_5VR_ACCEPTED__TERMINAL_A_CONFIRMED__ITERATION_OPERATOR_IS_MATLAB_FAITHFUL__FINAL_TRUE_F0_ROW_ASSEMBLY_DROPS_Z_BLOCK_OFFSET_FOR_Z1__VALIDATION_OPERATOR_SCIENTIFIC_REPAIR_OWNER_GATE_REQUIRED`).
+Issue #66 established that the accepted `final=True` F0 off-diagonal
+destination assembly drops the z-block offset for z=1 rows while the
+directional rate formulas themselves are MATLAB-faithful.
+
+### 8.10.1 Authorized scientific change — exactly one location
+
+Within the `final=True` F0 off-diagonal destination assembly of
+
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
+
+replace the bare destination-column placement
+
+`cols.append(dn)`
+
+with same-z-block placement
+
+`cols.append(nz * self.n + dn)`
+
+consistent with the accepted iteration path / boundary path / MATLAB-faithful
+state layout. Scientific intent: repair **only** the z-block destination index,
+so that z=1 F0 off-diagonal destinations remain inside the z=1 block.
+
+Do NOT change: raw drift calculation; `max(±mu)/step` final rate formulas;
+continuous controls; policy selection; diagonal construction; switch-matrix
+assembly; economics, prices, grid/domain, initialization, tolerances,
+`PB_MARGIN`; convergence thresholds; accepted iteration operator semantics.
+
+### 8.10.2 Post-repair validation boundary
+
+At the exact accepted Issue #63 stagnation state `V_*`, using current selected
+F0 controls: build the iteration operator/residual under accepted `final=False`
+semantics; build the corrected `final=True` operator/residual with the repaired
+same-z-block F0 destination assembly; compare the corrected `final=True`
+operator to the accepted MATLAB-faithful / iteration operator at the same
+controls; verify non-F0 boundary rows remain unchanged; verify utility/source
+terms remain identical where expected; record the corrected Bellman residual
+and its argmax; and compare the corrected residual against the accepted
+pre-repair current-record final residual `490.7560414005864` and the accepted
+`||R_iter||_inf = 10.435094313164921`.
+
+A materially lower corrected residual does **NOT** by itself establish HJB
+convergence: the existing Bellman tolerance remains the unchanged acceptance
+threshold unless a later Owner-authorized task changes it.
+
+### 8.10.3 Exact repair-equivalence checks
+
+Require at the same current controls and `V_*`: F0 corrected-final off-diagonal
+destinations stay within the same z block; corrected-final F0 directional rates
+reproduce the accepted rate formulas; corrected-final F0 row assembly
+reproduces the source-backed MATLAB-faithful post-convergence row layout within
+numerical tolerance; the corrected-final versus ITER rowwise operator
+difference is decomposed and reported; non-F0 boundary operator/u differences
+are 0 or fail closed; `Q 1` conservativity remains within accepted tolerance;
+and no new artificial binding / optimizer expansion is introduced by the
+repair.
+
+### 8.10.4 Exact execution design and terminals
+
+Execute exactly: ONE minimal source repair at the authorized location; ONE
+focused static/source test of the destination index; ONE deterministic
+reconstruction of accepted `V_*`; ONE `final=False` current-policy build; ONE
+corrected `final=True` current-policy build using the same controls; ONE
+corrected-equivalence/residual diagnostic; ONE deterministic repeat; focused
+tests plus the full repository suite. No new HJB iterate is accepted in this
+task — repair + revalidation only.
+
+Exactly ONE terminal must be reported:
+
+- A `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`
+- B `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__ZBLOCK_ASSEMBLY_REPAIRED_BUT_MATERIAL_HJB_VALIDATION_DISCREPANCY_REMAINS__FURTHER_VALIDATION_REVIEW_REQUIRED`
+- C `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__NONFINITE_INCONSISTENT_OR_REGRESSION_FAILURE__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VS_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+### 8.10.5 Builder allowlist (four paths only)
+
+1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
+2. `tests/test_dlh_5vs_final_validation_zblock_repair.py`
+3. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`
+4. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`
+
+No fifth tracked Builder path. All other accepted sources/tests/reports/
+governance remain read-only.
+
+### 8.10.6 Forbidden
+
+No change to any convergence criterion; `R_iter` must NOT be declared the
+accepted final convergence residual by fiat; no final-rate-formula change
+beyond the authorized destination-index repair; no policy-selection / control
+change; no economics/prices/grid/domain/initialization/tolerances/`PB_MARGIN`
+change; no new HJB iterate; no Newton / policy iteration / semismooth /
+trust-region / continuation / line search; no price/Wmax/resolution sweep; no
+KFE / stationary KFE / `solve_household_steady_state`; no SCC/global-Q / GE /
+multi-region / neural / nominal / calibration / policy / welfare / Results; no
+PR; no merge; no Issue close; no successor; no self-accept.
+
+Stationary KFE remains **NOT AUTHORIZED**.
+
+---
+
 ## 9. Current roadmap position
 
 ```text
@@ -1093,7 +1232,7 @@ continuous fraction-to-boundary pseudo-transient continuation  TERMINAL B ACCEPT
 frozen-policy Newton geometry diagnostic (stagnation residual decomposition)  TERMINAL B ACCEPTED/CLOSED — ISSUE #64
 F0 final-validation operator consistency audit                      TERMINAL B ACCEPTED/CLOSED — ISSUE #65
 F0 final=True rate/provenance and operator-consistency audit          TERMINAL A ACCEPTED/CLOSED — ISSUE #66
-minimal final-validation operator repair (Owner scientific decision)  OWNER SCIENTIFIC DECISION REQUIRED
+minimal final-validation z-block operator repair                     NEXT ACTIVE (BUILDER NOT YET OPERATIVE) — ISSUE #67 / DLH-5V-S
 same-process Q global validation + SCC diagnostics            BLOCKED UNTIL HJB ROUTE RESOLVED
 nested Wmax / resolution robustness                          BLOCKED UNTIL HJB ROUTE RESOLVED
 conservative stationary-generator validation                 BLOCKED UNTIL HJB ROUTE RESOLVED
@@ -1127,20 +1266,64 @@ Stationary KFE remains explicitly blocked.
 
 ## 11. Current governance position
 
-**NO ACTIVE BUILDER ISSUE.** Issue #66 / DLH-5V-R is ACCEPTED / CLOSED at
-Terminal A (accepted candidate / integration
+**ISSUE #67 / DLH-5V-S IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #66 /
+DLH-5V-R is ACCEPTED / CLOSED at Terminal A (accepted candidate / integration
 `a31f17e6d965ddfe8214cd1b83d4074833310625`; reviewer acceptance `5666168154`;
 acceptance integration `5666172248`; accepted verdict
 `DLH_5VR_ACCEPTED__TERMINAL_A_CONFIRMED__ITERATION_OPERATOR_IS_MATLAB_FAITHFUL__FINAL_TRUE_F0_ROW_ASSEMBLY_DROPS_Z_BLOCK_OFFSET_FOR_Z1__VALIDATION_OPERATOR_SCIENTIFIC_REPAIR_OWNER_GATE_REQUIRED`).
-Next scientific route (Owner decision required):
 
-`OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL FINAL-VALIDATION OPERATOR REPAIR`
+Owner scientific route decision (2026-09-15):
+`APPROVE_MINIMAL_FINAL_VALIDATION_ZBLOCK_DESTINATION_REPAIR_AFTER_5VR_TERMINAL_A`.
+Owner explicit authorization, recorded in Issue #67:
 
-Explicitly NOT authorized: selected-Q source mutation; `final=True` repair;
-convergence-criterion replacement; `R_iter` becoming an accepted final
-convergence residual; any new HJB iterate; KFE / stationary KFE; successor
-Issue activation. Builder execution is suspended until the Owner issues a new
-authorized Issue.
+> `同意 Issue #67 按最小 validation-operator repair 路线执行。`
+
+Authority marker:
+`DLH_5VS_MINIMAL_FINAL_VALIDATION_ZBLOCK_REPAIR_AUTHORIZED`.
+
+Initial authoritative activation comment:
+`5672573849`.
+
+Final authoritative activation-refresh: **NOT YET PUBLISHED**. Builder execution
+on Issue #67 remains **NOT YET OPERATIVE** until that refresh confirms the
+post-sync live `main`.
+
+Dedicated future Builder branch:
+`dsh/issue-67-dlh-5vs-final-validation-zblock-repair-2026-09-15`.
+
+Authorized scientific change: exactly one location in
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` — the
+`final=True` F0 off-diagonal destination assembly changes from
+`cols.append(dn)` to `cols.append(nz * self.n + dn)`, so that z=1 F0
+off-diagonal destinations remain inside the z=1 block, aligned with the
+accepted iteration path / boundary path / MATLAB-faithful state layout. This is
+a repair + corrected validation re-check only.
+
+Explicitly NOT authorized: any second scientific source change; final rate
+formula / controls / policy selection / diagonal / switch matrix / economics /
+prices / grid / domain / initialization / tolerances / `PB_MARGIN` /
+convergence-criterion change; `R_iter` becoming an accepted final convergence
+residual; accepting any new HJB iterate; declaring HJB convergence because the
+corrected residual drops (the Bellman tolerance is unchanged); Newton /
+continuation / line search / parameter sweep; KFE / stationary KFE / steady
+state; SCC/global-Q; GE/multi-region/neural/nominal/calibration/policy/welfare/
+Results; successor Issue activation; any Builder scientific branch beyond the
+dedicated Issue #67 branch (not yet created); PR / merge / Issue close /
+self-accept.
+
+Issue #67 exact four-path Builder allowlist:
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`;
+`tests/test_dlh_5vs_final_validation_zblock_repair.py`;
+`reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`;
+`reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`.
+No fifth tracked Builder path.
+
+Issue #67 terminal set (exactly ONE to be reported):
+A `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`;
+B `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__ZBLOCK_ASSEMBLY_REPAIRED_BUT_MATERIAL_HJB_VALIDATION_DISCREPANCY_REMAINS__FURTHER_VALIDATION_REVIEW_REQUIRED`;
+C `DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__NONFINITE_INCONSISTENT_OR_REGRESSION_FAILURE__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`;
+Blocked `BLOCKED_DLH_5VS_AUTHORITY_OR_DEPENDENCY_CONFLICT`. Stationary KFE
+remains **NOT AUTHORIZED**.
 
 Issue #64 / DLH-5V-P is ACCEPTED / CLOSED at Terminal B (accepted candidate /
 integration `5db144a65796ff6a7e0f59d2d2a75a0446c13b83`; reviewer acceptance
@@ -1208,19 +1391,27 @@ conclusion yet that the convergence criterion itself should change; correction
 of accepted `final=True` source semantics requires explicit Owner
 authorization; `R_iter` is NOT declared an accepted final convergence residual.
 The next route is `OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL
-FINAL-VALIDATION OPERATOR REPAIR`; explicitly NOT authorized pending an Owner
-decision: selected-Q source mutation, `final=True` repair,
-convergence-criterion replacement, `R_iter` becoming an accepted final
-convergence residual, any new HJB iterate, KFE / stationary KFE, and successor
-Issue activation. Eight read-only blobs (oracle
-`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`; selected-Q
-`7ea342ccbe15d852b90743b14bb4b02977c2d78b`; Issue #61
-`043e146ef499e985a49d256c4cec2f397f93e4e1`; Issue #62
+FINAL-VALIDATION OPERATOR REPAIR`; the Owner granted that route decision on
+2026-09-15 through Issue #67 / DLH-5V-S (initial authoritative activation
+`5672573849`), which remains NEXT ACTIVE with Builder execution NOT YET
+OPERATIVE pending the final authoritative activation-refresh. Explicitly NOT
+authorized in Issue #67: any second scientific source change,
+`final=True` rate-formula change, convergence-criterion replacement, `R_iter`
+becoming an accepted final convergence residual, any new HJB iterate, declaring
+HJB convergence because the corrected residual drops, Newton / continuation /
+line search, price / Wmax / resolution sweep, KFE / stationary KFE, and
+successor Issue activation. Frozen accepted blob authority (oracle
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`; selected-Q PRE-REPAIR
+`7ea342ccbe15d852b90743b14bb4b02977c2d78b` — the single accepted scientific
+source Issue #67 is authorized to modify, at one destination-index location
+only, with the pre-repair blob retained as the frozen comparison authority;
+Issue #61 `043e146ef499e985a49d256c4cec2f397f93e4e1`; Issue #62
 `cb6533475d0ba115e6f52bd73e61aeb85c9b6ea7`; Issue #63
 `746799509c517746ba6a321e5526c57a8f4698e4`; Issue #64
 `3ca2371c7da1939d1fed55df5728baefb27d8aa7`; Issue #65
 `bb4045378bf19607f68d7d4a7628b3431afcd676`; Issue #66
-`44d47c7545f279dfe9189736f5cdcdfa30c3b84b`). Stationary KFE remains **NOT
+`44d47c7545f279dfe9189736f5cdcdfa30c3b84b` — these seven remain strictly
+read-only). Stationary KFE remains **NOT
 AUTHORIZED**; no successor; no PR / merge / Issue close / self-accept by the
 Builder. Issue #66 / DLH-5V-R, Issue #65 / DLH-5V-Q, Issue #64 / DLH-5V-P,
 Issue #63 / DLH-5V-O, Issue #62 / DLH-5V-N, Issue #61 / DLH-5V-M and Issue #60
@@ -1231,6 +1422,8 @@ Current governance pointers:
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+- Issue #67 body/comments (OPEN; initial authoritative activation `5672573849`;
+  final authoritative activation-refresh not yet published).
 - Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,
   acceptance integration `5666172248`).
 - Issue #65 body/comments (accepted/closed).
