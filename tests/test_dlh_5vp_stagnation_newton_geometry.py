@@ -1,5 +1,26 @@
 """DLH-5V-P test suite — FTB stagnation residual decomposition + frozen-policy
-Newton boundary geometry (Issue #64)."""
+Newton boundary geometry (Issue #64).
+
+--------------------------------------------------------------------------
+POST-REPAIR TEST-CONTRACT MIGRATION (Issue #67 / DLH-5V-S remediation)
+--------------------------------------------------------------------------
+Issues #64/#65/#66 were accepted while the accepted ``final=True`` F0
+off-diagonal assembly dropped the z-block destination offset for z=1 rows
+(``cols.append(dn)`` instead of ``cols.append(nz*self.n + dn)``). Issue #67
+repaired that one authorized source location, which necessarily changes the
+``final=True``/final-validation numbers these suites historically pinned.
+
+Nothing here is deleted. The pre-repair numbers below are preserved as
+EXPLICIT HISTORICAL CONSTANTS representing accepted Issue #64-#66 evidence,
+and the runtime assertions now verify the REPAIRED semantics. The historical
+defect remains reproducible from the accepted Issues, reports and commits and
+is deliberately NOT re-created here (no monkeypatch, no old-blob checkout).
+
+The convergence question is untouched: the corrected final residual
+(``10.435094313164921``) is still far above the unchanged Bellman tolerance
+(``1e-3``), so validated HJB convergence remains FALSE. See
+``test_no_hjb_convergence_claimed_after_repair``.
+"""
 
 import ast
 import inspect
@@ -37,6 +58,32 @@ from deep_learning_hank.two_asset.boundary_hjb_selected_q import (
 from deep_learning_hank.two_asset.local_resolvent_domain_geometry import (
     LocalGeometryFailure,
 )
+
+# ---------------------------------------------------------------------------
+# HISTORICAL EVIDENCE — accepted Issue #64/#65/#66 pre-repair numbers.
+#
+# These document what the accepted (pre-repair) operator produced. They are
+# NOT current runtime expectations: Issue #67's Owner-authorized z-block
+# destination repair superseded them. They are retained because the accepted
+# Issues, reports and commits cite them as accepted scientific evidence.
+# ---------------------------------------------------------------------------
+PRE_REPAIR_FINAL_RESIDUAL_CURRENT = 490.7560414005864    # accepted Issue #65
+PRE_REPAIR_FINAL_RESIDUAL_STALE = 490.7560425919994      # accepted Issue #65 / #64
+PRE_REPAIR_F0_OPERATOR_GAP = 24.601971766296664          # accepted Issue #66
+PRE_REPAIR_AFFECTED_Z1_F0_ROWS = 298                     # accepted Issue #66
+PRE_REPAIR_FINAL_RESIDUAL_DIFF = 488.0988429898615       # accepted Issue #64/#65
+PRE_REPAIR_TERMINAL_64 = "DLH_5VP_STAGNATION_NEWTON_GEOMETRY__POSITIVE_BOUNDARY_SAFE_NEWTON_STEP_BUT_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED"
+
+# ---------------------------------------------------------------------------
+# REPAIRED SEMANTICS — current runtime expectations at the same accepted V_*.
+# ---------------------------------------------------------------------------
+REPAIRED_R_ITER_INF = 10.435094313164921
+REPAIRED_FINAL_VALIDATION_RESIDUAL = 10.435094313165099
+REPAIRED_R_FINAL_INF = 10.435094313165099
+REPAIRED_R_FINAL_F0_MAX = 10.435094313165099
+REPAIRED_R_DIFF_INF = 4.654054919228656e-13
+REPAIRED_FINAL_VS_ITER_TOL = 1.0e-9
+BELLMAN_TOLERANCE_UNCHANGED = 1.0e-3
 
 
 # ---------------------------------------------------------------------------
@@ -92,8 +139,13 @@ def test_reconstruction_reproduces_accepted_issue63_terminal():
     solver = rec["solver"]
     val = g.final_bellman_validation(
         solver, rec["V_star"], rec["labor0"], rec["records_pre_step8"])
+    # PRE-REPAIR this was PRE_REPAIR_FINAL_RESIDUAL_STALE == 490.7560425919994.
+    # After the Owner-authorized Issue #67 z-block destination repair the same
+    # accepted V_* / preserved pre-step-8 records give the corrected value.
     assert val["bellman_residual"] == pytest.approx(
-        490.7560425919994, rel=1e-12)
+        REPAIRED_FINAL_VALIDATION_RESIDUAL, rel=1e-12)
+    assert val["bellman_residual"] != pytest.approx(
+        PRE_REPAIR_FINAL_RESIDUAL_STALE, rel=1e-3)
     assert val["min_boundary_pb"] == pytest.approx(
         4.8089461301970005e-09, rel=1e-12)
     assert val["artificial_bindings"] == 0
@@ -105,14 +157,22 @@ def test_reconstruction_reproduces_accepted_issue63_terminal():
 # ---------------------------------------------------------------------------
 def test_iteration_and_final_residuals_separated_and_reproduced(diag):
     result, _ = diag
-    # iteration operator scale (~10.43, the accepted raw direction norm)
-    assert result.r_iter_inf == pytest.approx(10.435094313164921, rel=1e-9)
+    # iteration operator scale (~10.43, the accepted raw direction norm) --
+    # UNCHANGED by the repair
+    assert result.r_iter_inf == pytest.approx(REPAIRED_R_ITER_INF, rel=1e-9)
     assert result.r_iter_inf < 11.0
-    # final-validation residual reproduced exactly (~490.756)
-    assert result.r_final_inf == pytest.approx(490.7560425919994, rel=1e-12)
-    # the two residuals are different objects/values, never conflated
-    assert result.r_iter_inf != result.r_final_inf
-    assert result.r_diff_inf == pytest.approx(488.0988429898615, rel=1e-9)
+    # PRE-REPAIR the final-validation residual was 490.7560425919994; after the
+    # Issue #67 repair the two semantics AGREE to machine precision.
+    assert result.r_final_inf == pytest.approx(REPAIRED_R_FINAL_INF, rel=1e-12)
+    assert result.r_final_inf == pytest.approx(result.r_iter_inf,
+                                               abs=REPAIRED_FINAL_VS_ITER_TOL)
+    assert (result.r_final_inf
+            != pytest.approx(PRE_REPAIR_FINAL_RESIDUAL_STALE, rel=1e-3))
+    # they remain DISTINCT objects with distinct definitions, even though the
+    # values now coincide numerically; the difference is machine precision only
+    assert result.r_diff_inf == pytest.approx(REPAIRED_R_DIFF_INF, abs=1e-15)
+    assert result.r_diff_inf <= REPAIRED_FINAL_VS_ITER_TOL
+    assert result.r_diff_inf < result.r_iter_inf
     assert result.r_diff_argmax is not None
     assert result.r_diff_argmax["family"] == "F0"
 
@@ -127,13 +187,35 @@ def test_f0_boundary_decomposition_consistent_and_deterministic(diag):
     assert result.r_diff_boundary_max == 0.0
     assert result.r_iter_boundary_max == result.r_final_boundary_max
     assert result.r_iter_boundary_max > 0.0
-    # the 490.756 gap lives entirely in F0 rows under final semantics
-    assert result.r_final_f0_max == pytest.approx(490.7560425919994, rel=1e-12)
+    # PRE-REPAIR the 490.756 gap lived entirely in F0 rows; after the Issue #67
+    # repair the residual remains F0-dominated but only at machine precision
+    assert result.r_final_f0_max == pytest.approx(REPAIRED_R_FINAL_F0_MAX, rel=1e-12)
+    assert result.r_final_f0_max == pytest.approx(result.r_final_inf, rel=1e-12)
+    assert (result.r_final_f0_max
+            != pytest.approx(PRE_REPAIR_FINAL_RESIDUAL_STALE, rel=1e-3))
     assert result.r_final_boundary_max < 11.0
     assert result.r_iter_f0_max == pytest.approx(
         result.r_iter_inf, rel=1e-12)
     # decomposition is deterministic (repeat identical includes all stats)
     assert identical is True
+
+
+def test_no_hjb_convergence_claimed_after_repair(diag):
+    """Corrected final == R_iter is an OPERATOR statement, not convergence.
+
+    The corrected residual still exceeds the UNCHANGED Bellman tolerance by
+    four orders of magnitude, so validated HJB convergence remains FALSE.
+    """
+    result, _ = diag
+    assert result.final_validation_residual == pytest.approx(
+        REPAIRED_FINAL_VALIDATION_RESIDUAL, rel=1e-12)
+    assert result.r_iter_inf == pytest.approx(REPAIRED_R_ITER_INF, rel=1e-12)
+    assert result.r_iter_inf > BELLMAN_TOLERANCE_UNCHANGED
+    assert result.final_validation_residual > BELLMAN_TOLERANCE_UNCHANGED
+    assert result.r_iter_inf / BELLMAN_TOLERANCE_UNCHANGED > 1.0e4
+    # validated HJB convergence = FALSE under the accepted tolerance
+    assert not (result.final_validation_residual <= BELLMAN_TOLERANCE_UNCHANGED)
+    assert not (result.r_iter_inf <= BELLMAN_TOLERANCE_UNCHANGED)
 
 
 def test_residual_stats_layout_is_z_major_node_fastest():

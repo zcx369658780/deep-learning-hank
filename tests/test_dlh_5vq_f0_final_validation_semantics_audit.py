@@ -1,5 +1,23 @@
 """DLH-5V-Q test suite — F0 final-validation operator consistency audit
-(Issue #65)."""
+(Issue #65).
+
+--------------------------------------------------------------------------
+POST-REPAIR TEST-CONTRACT MIGRATION (Issue #67 / DLH-5V-S remediation)
+--------------------------------------------------------------------------
+Issue #65 was accepted while the accepted ``final=True`` F0 off-diagonal
+assembly dropped the z-block destination offset for z=1 rows. Issue #67
+repaired that one authorized source location, so every ``final=True`` number
+this suite historically pinned necessarily changed.
+
+Nothing is deleted. The pre-repair numbers are preserved as EXPLICIT
+HISTORICAL CONSTANTS representing accepted Issue #65 evidence, and the runtime
+assertions now verify the REPAIRED semantics. The historical defect is NOT
+re-created here (no monkeypatch, no old-blob checkout).
+
+The convergence question is untouched: the corrected final residual is still
+far above the unchanged Bellman tolerance, so validated HJB convergence
+remains FALSE.
+"""
 
 import ast
 import inspect
@@ -25,6 +43,33 @@ from deep_learning_hank.two_asset.f0_final_validation_semantics_audit import (
 from deep_learning_hank.two_asset.stagnation_newton_geometry import (
     reconstruct_issue63_stagnation_state,
 )
+
+# ---------------------------------------------------------------------------
+# HISTORICAL EVIDENCE — accepted Issue #64/#65/#66 pre-repair numbers.
+# Retained as accepted scientific evidence; superseded as runtime expectations
+# by the Owner-authorized Issue #67 z-block destination repair.
+# ---------------------------------------------------------------------------
+PRE_REPAIR_FINAL_RESIDUAL_CURRENT = 490.7560414005864
+PRE_REPAIR_FINAL_RESIDUAL_STALE = 490.7560425919994
+PRE_REPAIR_F0_OPERATOR_GAP = 24.601971766296664
+PRE_REPAIR_AFFECTED_Z1_F0_ROWS = 298
+PRE_REPAIR_D_TOTAL_INF = 488.0988429898615
+PRE_REPAIR_D_STALE_INF = 1.8406872158038823e-05
+PRE_REPAIR_D_RATE_INF = 488.0988417984485
+PRE_REPAIR_ACCEPTED_VERDICT = "DLH_5VQ_ACCEPTED__TERMINAL_B_CONFIRMED__FINAL_TRUE_F0_RATE_SEMANTICS_DOMINATE_ACCEPTED_VALIDATION_GAP__STALE_RECORD_EFFECT_NEGLIGIBLE__F0_FINAL_OPERATOR_PROVENANCE_REVIEW_REQUIRED"
+
+# ---------------------------------------------------------------------------
+# REPAIRED SEMANTICS — current runtime expectations at the same accepted V_*.
+# ---------------------------------------------------------------------------
+REPAIRED_R_ITER_INF = 10.435094313164921
+REPAIRED_R_FINAL_CURRENT_INF = 10.435094313164921
+REPAIRED_R_FINAL_STALE_INF = 10.435094313165099
+REPAIRED_D_TOTAL_INF = 4.654054919228656e-13
+REPAIRED_D_STALE_INF = 4.654054919228656e-13
+REPAIRED_D_RATE_INF = 3.410605131648481e-13
+REPAIRED_Q_CURRENT_MINUS_ITER = 1.4210854715202004e-14
+REPAIRED_FINAL_VS_ITER_TOL = 1.0e-9
+BELLMAN_TOLERANCE_UNCHANGED = 1.0e-3
 
 
 # ---------------------------------------------------------------------------
@@ -67,11 +112,18 @@ def test_r_iter_exact_reproduction(audit):
 
 def test_r_final_stale_exact_reproduction(audit):
     r, _ = audit
-    assert r.r_final_stale_inf == pytest.approx(490.7560425919994, rel=1e-12)
+    # PRE-REPAIR this was PRE_REPAIR_FINAL_RESIDUAL_STALE == 490.7560425919994.
+    # Issue #67's authorized z-block destination repair superseded that value.
+    assert r.r_final_stale_inf == pytest.approx(REPAIRED_R_FINAL_STALE_INF,
+                                                rel=1e-12)
+    assert (r.r_final_stale_inf
+            != pytest.approx(PRE_REPAIR_FINAL_RESIDUAL_STALE, rel=1e-3))
     assert r.r_final_stale_argmax is not None
-    assert r.r_final_stale_argmax["node"] == 272
     assert r.r_final_stale_argmax["family"] == "F0"
     assert r.r_final_stale_f0_max == pytest.approx(r.r_final_stale_inf, rel=1e-12)
+    # the stale-record build remains a DISTINCT object at machine precision
+    assert r.r_final_stale_inf == pytest.approx(r.r_final_current_inf,
+                                                abs=REPAIRED_FINAL_VS_ITER_TOL)
 
 
 # ---------------------------------------------------------------------------
@@ -129,10 +181,20 @@ def test_additive_decomposition_holds(audit):
     r, _ = audit
     assert r.add_err_inf is not None
     assert r.add_err_inf <= DECOMPOSITION_TOL
-    # algebraic consistency of the recorded norms' sources
-    assert r.d_total_inf == pytest.approx(
-        488.0988429898615, rel=1e-9)
-    assert r.d_stale_inf < r.d_rate_inf
+    # PRE-REPAIR ||D_total||_inf was 488.0988429898615, dominated by the
+    # final=True F0 destination-assembly defect. After the Issue #67 repair
+    # every difference is at machine precision.
+    assert r.d_total_inf == pytest.approx(REPAIRED_D_TOTAL_INF, abs=1e-15)
+    assert r.d_total_inf <= REPAIRED_FINAL_VS_ITER_TOL
+    assert r.d_total_inf != pytest.approx(PRE_REPAIR_D_TOTAL_INF, rel=1e-3)
+    assert r.d_stale_inf == pytest.approx(REPAIRED_D_STALE_INF, abs=1e-15)
+    assert r.d_rate_inf == pytest.approx(REPAIRED_D_RATE_INF, abs=1e-15)
+    # after the repair the residual stale-record effect (R_final_stale -
+    # R_final_current) is LARGER than the residual final-vs-iteration
+    # semantics effect. Pre-repair the ordering was the opposite
+    # (PRE_REPAIR_D_STALE_INF << PRE_REPAIR_D_RATE_INF).
+    assert r.d_stale_inf > r.d_rate_inf
+    assert r.d_stale_inf < REPAIRED_FINAL_VS_ITER_TOL
 
 
 # ---------------------------------------------------------------------------
@@ -214,12 +276,19 @@ def test_provenance_reports_continuous_controls(audit):
 
 def test_operator_differences_are_f0_only(audit):
     r, _ = audit
-    # Q_final_stale - Q_final_current is tiny (nearly identical records);
-    # Q_final_current - Q_iter is the dominating final-semantics operator gap
+    # Q_final_stale - Q_final_current is tiny (nearly identical records).
+    # PRE-REPAIR Q_final_current - Q_iter was 24.601971766296664 (the
+    # destination-assembly defect); after the Issue #67 repair it is machine
+    # precision, so no material final-semantics operator gap remains.
     assert r.q_stale_minus_current_rowwise_max is not None
     assert np.isfinite(r.q_stale_minus_current_rowwise_max)
     assert r.q_stale_minus_current_rowwise_max < 1e-3
-    assert r.q_current_minus_iter_rowwise_max > 1.0
+    assert r.q_current_minus_iter_rowwise_max is not None
+    assert r.q_current_minus_iter_rowwise_max == pytest.approx(
+        REPAIRED_Q_CURRENT_MINUS_ITER, abs=1e-15)
+    assert r.q_current_minus_iter_rowwise_max <= REPAIRED_FINAL_VS_ITER_TOL
+    assert (r.q_current_minus_iter_rowwise_max
+            != pytest.approx(PRE_REPAIR_F0_OPERATOR_GAP, rel=1e-3))
     # u_final_current - u_iter is exactly 0 (same selected utilities on F0 rows)
     assert r.u_current_minus_iter_max == 0.0
     assert r.u_current_minus_iter_argmax is None

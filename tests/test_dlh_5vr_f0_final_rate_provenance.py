@@ -1,17 +1,42 @@
 """Issue #66 / DLH-5V-R — F0 `final=True` rate-construction provenance and
 operator-consistency audit test suite.
 
-Mandated verification surface (Issue #66 sections 9-10):
+--------------------------------------------------------------------------
+POST-REPAIR TEST-CONTRACT MIGRATION (Issue #67 / DLH-5V-S remediation)
+--------------------------------------------------------------------------
+Issue #66 audited and was accepted on the defect itself: the accepted
+``final=True`` F0 off-diagonal assembly dropped the z-block destination offset
+for z=1 rows (``cols.append(dn)``). Issue #67 then repaired that one
+Owner-authorized source location, which necessarily changes the numbers this
+suite historically pinned.
+
+Nothing is deleted. The pre-repair numbers are preserved as EXPLICIT
+HISTORICAL CONSTANTS representing accepted Issue #66 evidence (including its
+historical Terminal A), and the runtime assertions now verify the REPAIRED
+semantics. The historical defect is NOT re-created here (no monkeypatch, no
+old-blob checkout): its reproducibility is preserved by the accepted Issues,
+reports and commits, not by the live regression gate.
+
+Re-running the Issue #66 diagnostic against the repaired current source is NOT
+forced to return the historical terminal; the audit's classifications are
+asserted on the repaired source, and its historical Terminal A is retained as
+historical evidence.
+
+The convergence question is untouched: the corrected final residual
+(``10.435094313164921``) is still far above the unchanged Bellman tolerance
+(``1e-3``), so validated HJB convergence remains FALSE.
+
+Mandated verification surface (Issue #66 sections 9-10, migrated):
 
 1. exact deterministic reconstruction of the accepted Issue #63 stagnation
    state (final statistic ~3.6614352438846254e-08; required boundary p_b
    ~4.8089461301970005e-09; wall F3 (13,13) z=1);
 2. same current selected F0 controls for the ITER and FINAL builds;
-3. exact reproduction of ||R_iter||_inf = 10.435094313164921;
-4. exact reproduction of the current-record ||R_final_current||_inf =
-   490.7560414005864;
-5. exact reproduction of the F0 rowwise max |Q_final_current - Q_iter|
-   ~= 24.6019717663;
+3. exact reproduction of ||R_iter||_inf = 10.435094313164921 (UNCHANGED);
+4. corrected current-record ||R_final_current||_inf = 10.435094313164921
+   (pre-repair historical value preserved as a constant);
+5. corrected F0 rowwise max |Q_final_current - Q_iter| = 1.42e-14
+   (pre-repair historical value 24.601971766296664 preserved as a constant);
 6. b/a directional rate extraction per F0 row (b_backward / b_forward /
    a_backward / a_forward), with the measured rate-coincidence and
    destination-assembly decomposition of the gap;
@@ -52,8 +77,29 @@ MODULE_SOURCE = MODULE_PATH.read_text(encoding="utf-8")
 FINAL_STAT_EXPECTED = 3.6614352438846254e-08
 MIN_PB_EXPECTED = 4.8089461301970005e-09
 R_ITER_INF_EXPECTED = 10.435094313164921
-R_FINAL_CURRENT_INF_EXPECTED = 490.7560414005864
-F0_GAP_EXPECTED = 24.601971766296664
+
+# ---------------------------------------------------------------------------
+# HISTORICAL EVIDENCE — accepted Issue #64/#65/#66 pre-repair numbers.
+# Retained as accepted scientific evidence; superseded as runtime expectations
+# by the Owner-authorized Issue #67 z-block destination repair.
+# ---------------------------------------------------------------------------
+PRE_REPAIR_FINAL_RESIDUAL_CURRENT = 490.7560414005864
+PRE_REPAIR_FINAL_RESIDUAL_STALE = 490.7560425919994
+PRE_REPAIR_F0_OPERATOR_GAP = 24.601971766296664
+PRE_REPAIR_AFFECTED_Z1_F0_ROWS = 298
+PRE_REPAIR_DESTINATION_ASSEMBLY_MAX_DIFF = 24.601971766296664
+PRE_REPAIR_F0_GAP_NODE = 297
+PRE_REPAIR_TERMINAL_A = "DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY"
+
+# ---------------------------------------------------------------------------
+# REPAIRED SEMANTICS — current runtime expectations at the same accepted V_*.
+# ---------------------------------------------------------------------------
+REPAIRED_R_FINAL_CURRENT_INF = 10.435094313164921
+REPAIRED_F0_OPERATOR_GAP = 1.4210854715202004e-14
+REPAIRED_DESTINATION_ASSEMBLY_AFFECTED_ROWS = 0
+REPAIRED_AFFECTED_Z1_F0_ROWS = 0
+REPAIRED_FINAL_VS_ITER_TOL = 1.0e-9
+BELLMAN_TOLERANCE_UNCHANGED = 1.0e-3
 
 BANNED_TOKENS = (
     "newton", "continuation", "linesearch", "armijo", "damp", "clip", "floor",
@@ -127,23 +173,34 @@ def test_r_iter_exact(audit_result):
 # ---------------------------------------------------------------------------
 def test_r_final_current_exact(audit_result):
     r, _ = audit_result
-    assert r.r_final_current_inf == pytest.approx(R_FINAL_CURRENT_INF_EXPECTED,
-                                                  abs=1e-9)
+    # PRE-REPAIR this was PRE_REPAIR_FINAL_RESIDUAL_CURRENT == 490.7560414005864.
+    # After the Issue #67 z-block destination repair the corrected final
+    # operator agrees with the iteration operator to machine precision.
+    assert r.r_final_current_inf == pytest.approx(REPAIRED_R_FINAL_CURRENT_INF,
+                                                  abs=1e-12)
+    assert (r.r_final_current_inf
+            != pytest.approx(PRE_REPAIR_FINAL_RESIDUAL_CURRENT, rel=1e-3))
+    assert r.r_final_current_inf == pytest.approx(r.r_iter_inf,
+                                                  abs=REPAIRED_FINAL_VS_ITER_TOL)
     assert r.r_final_current_argmax["family"] == "F0"
     assert r.r_final_current_f0_max == r.r_final_current_inf
 
 
 # ---------------------------------------------------------------------------
-# 5. exact ~24.60 F0 operator gap
+# 5. corrected F0 operator gap (pre-repair ~24.60 removed by the repair)
 # ---------------------------------------------------------------------------
 def test_f0_gap_exact(audit_result):
     r, _ = audit_result
-    assert r.f0_rowwise_max_abs_gap == pytest.approx(F0_GAP_EXPECTED, abs=1e-9)
+    # PRE-REPAIR the F0 rowwise max |Q_final_current - Q_iter| was
+    # PRE_REPAIR_F0_OPERATOR_GAP == 24.601971766296664 at F0 node 297 (11,11) z=1.
+    # Issue #67's authorized destination repair removed that cross-z gap.
+    assert r.f0_rowwise_max_abs_gap == pytest.approx(REPAIRED_F0_OPERATOR_GAP,
+                                                     abs=1e-15)
+    assert r.f0_rowwise_max_abs_gap <= REPAIRED_FINAL_VS_ITER_TOL
+    assert (r.f0_rowwise_max_abs_gap
+            != pytest.approx(PRE_REPAIR_F0_OPERATOR_GAP, rel=1e-3))
+    assert r.f0_rowwise_max_abs_gap_state is not None
     assert r.f0_rowwise_max_abs_gap_state["family"] == "F0"
-    assert r.f0_rowwise_max_abs_gap_state["node"] == 297
-    assert r.f0_rowwise_max_abs_gap_state["j"] == 11
-    assert r.f0_rowwise_max_abs_gap_state["i"] == 11
-    assert r.f0_rowwise_max_abs_gap_state["z"] == 1
 
 
 # ---------------------------------------------------------------------------
@@ -158,34 +215,29 @@ def test_directional_extraction_and_gap_decomposition(audit_result):
         assert cls is not None
         assert np.isfinite(cls["max_abs_diff"])
     # rate/operator component classes: the accepted iteration b-rates coincide
-    # with max(+-mu_b)/db and the a-rates with max(+-mu_a)/da on every F0 row
+    # with max(+-mu_b)/db and the a-rates with max(+-mu_a)/da on every F0 row;
+    # AFTER the repair the destination-assembly class also disappears
     for nm in ("b_backward", "b_forward", "a_backward", "a_forward",
                "diagonal", "represented_outgoing_sum",
                "omitted_destination_rate", "utility"):
         assert getattr(r, "class_" + nm)["affected_row_count"] == 0
         assert getattr(r, "class_" + nm)["max_abs_diff"] <= audit.CLASS_TOL
-    # the entire operator gap decomposes into the destination-assembly class:
-    # the accepted final=True F0 row places z=1 destinations at bare node
-    # columns without the z-block offset (affected rows == z=1 F0 rows)
+    # PRE-REPAIR the entire operator gap decomposed into the
+    # destination-assembly class: PRE_REPAIR_AFFECTED_Z1_F0_ROWS == 298 z=1 F0
+    # rows were affected at the bare-node placement. After the Issue #67
+    # repair that class is empty.
     asm = r.class_destination_assembly_gap
-    assert asm["affected_row_count"] == 298
-    assert asm["max_abs_diff"] == pytest.approx(F0_GAP_EXPECTED, abs=1e-9)
-    assert asm["argmax_state"]["node"] == 297 and asm["argmax_state"]["z"] == 1
-    # argmax-row attribution: the differing columns are the same two rates
-    # placed at the two distinct destinations (cols_diff = 2 directions x 2
-    # placements)
-    assert r.max_row_argmax_component == "b_backward"
-    contrib = r.max_row_component_contributions
-    assert contrib["b_backward"] == pytest.approx(F0_GAP_EXPECTED, abs=1e-9)
-    assert contrib["a_forward"] == pytest.approx(9.52637251075067, abs=1e-9)
-    assert contrib["diagonal"] == 0.0
-    assert contrib["switch_matrix_or_other"] == 0.0
-    assert r.max_row_columns_with_diff == 4
-    assert r.max_total_row_entry_diff == pytest.approx(F0_GAP_EXPECTED, abs=1e-9)
-    # accepted-FINAL vs MATLAB-faithful-post row assembly deviation
+    assert asm["affected_row_count"] == REPAIRED_AFFECTED_Z1_F0_ROWS == 0
+    assert asm["affected_row_count"] != PRE_REPAIR_AFFECTED_Z1_F0_ROWS
+    assert asm["max_abs_diff"] <= audit.CLASS_TOL
+    assert asm["argmax_state"] is None
+    # the accepted-FINAL vs MATLAB-faithful-post row assembly deviation is
+    # measured against the audit's historical bare-dn reference, so it still
+    # reports the pre-repair magnitude as HISTORICAL evidence
     assert r.destination_assembly_max_abs_diff == pytest.approx(
-        F0_GAP_EXPECTED, abs=1e-9)
-    assert r.destination_assembly_affected_row_count == 298
+        PRE_REPAIR_DESTINATION_ASSEMBLY_MAX_DIFF, abs=1e-9)
+    assert r.destination_assembly_affected_row_count == (
+        PRE_REPAIR_AFFECTED_Z1_F0_ROWS)
 
 
 # ---------------------------------------------------------------------------
@@ -242,19 +294,47 @@ def test_provenance_mapping_deterministic():
 # ---------------------------------------------------------------------------
 def test_classification_deterministic(audit_result):
     r, _ = audit_result
+    # The rates are oracle-faithful in both cases (unchanged by the repair).
     assert r.iter_eq_matlab is True
+    assert r.final_eq_rate_formula is True
+    # The Issue #66 audit's OWN internal MATLAB-faithful reference still places
+    # F0 destinations at bare column `dn` (that is what Issue #66 was auditing).
+    # The repaired live source — and the source-true oracle — place them at
+    # `nz*n + dn`, so the audit's assembly comparison against its own
+    # historical reference still reports a mismatch. This is a statement about
+    # the audit's reference, not about the repaired source.
     assert r.final_eq_matlab is False
-    assert r.final_eq_rate_formula is True   # rates ARE the oracle post formula
-    assert r.final_eq_assembly is False      # assembled row is NOT MATLAB-faithful
-    assert r.both_equivalent is False
+    assert r.final_eq_assembly is False
+    # Under the REPAIRED current source the two operators are equivalent and
+    # the material non-equivalence has been removed.
+    assert r.both_equivalent is True
+    assert r.materially_non_equivalent is False
     assert r.mixed_or_unresolved is False
-    assert r.materially_non_equivalent is True
-    assert r.outcome == audit.TERMINAL_A
-    assert r.outcome != audit.TERMINAL_B and r.outcome != audit.TERMINAL_C
-    assert r.outcome != audit.TERMINAL_BLOCKED
+    # Running the Issue #66 diagnostic against the repaired source is NOT
+    # forced to return the historical terminal; its historical Terminal A
+    # (PRE_REPAIR_TERMINAL_A) is retained as historical accepted evidence.
+    assert r.outcome != PRE_REPAIR_TERMINAL_A
+    assert r.outcome in (audit.TERMINAL_A, audit.TERMINAL_B, audit.TERMINAL_C)
     # exactly one terminal across the frozen rule set
     assert [r.outcome == t for t in (audit.TERMINAL_A, audit.TERMINAL_B,
                                      audit.TERMINAL_C)].count(True) == 1
+
+
+def test_no_hjb_convergence_claimed_after_repair(audit_result):
+    """Corrected final == R_iter is an OPERATOR statement, not convergence.
+
+    The corrected residual still exceeds the UNCHANGED Bellman tolerance by
+    four orders of magnitude, so validated HJB convergence remains FALSE.
+    """
+    r, _ = audit_result
+    assert r.r_final_current_inf == pytest.approx(REPAIRED_R_FINAL_CURRENT_INF,
+                                                  abs=1e-12)
+    assert r.r_iter_inf == pytest.approx(R_ITER_INF_EXPECTED, abs=1e-12)
+    assert r.r_iter_inf > BELLMAN_TOLERANCE_UNCHANGED
+    assert r.r_final_current_inf > BELLMAN_TOLERANCE_UNCHANGED
+    assert r.r_iter_inf / BELLMAN_TOLERANCE_UNCHANGED > 1.0e4
+    assert not (r.r_final_current_inf <= BELLMAN_TOLERANCE_UNCHANGED)
+    assert not (r.r_iter_inf <= BELLMAN_TOLERANCE_UNCHANGED)
 
 
 # ---------------------------------------------------------------------------
@@ -379,5 +459,7 @@ def test_runtime_exactly_two_builds_at_vstar(recon):
     assert spy.call_count == 2
     finals = [c.kwargs.get("final") for c in spy.call_args_list]
     assert sorted(finals) == [False, True]
-    assert two["f0_rowwise_max_abs_gap"] == pytest.approx(F0_GAP_EXPECTED,
-                                                          abs=1e-9)
+    # PRE-REPAIR this gap was PRE_REPAIR_F0_OPERATOR_GAP == 24.601971766296664;
+    # the Issue #67 destination repair reduced it to machine precision
+    assert two["f0_rowwise_max_abs_gap"] == pytest.approx(
+        REPAIRED_F0_OPERATOR_GAP, abs=1e-15)

@@ -191,16 +191,23 @@ its argmax, the operator gaps, the reconciliation values and the terminal.
 
 - Focused suite `tests/test_dlh_5vs_final_validation_zblock_repair.py`:
   **20 passed**.
-- Full repository suite `python -m pytest tests/ -q`:
+- Full repository suite `python -m pytest tests/ -q` on the INITIAL candidate
+  `281cfe01b2925364a92308ca172a84a724c6ea58`:
   **11 failed, 521 passed, 6 warnings in 3468.01 s (0:57:48)**.
 
-### 7.1 The 11 failures are STALE PRE-REPAIR ASSERTIONS, not a code regression
+Those 11 failures were **stale pre-repair test contracts**, not a code
+regression. They were reported to the Reviewer rather than worked around, and
+the Reviewer then authorized a bounded test-contract remediation on the same
+dedicated branch. See §10 for the remediation, the migrated contracts and the
+final full-suite result.
 
-The 11 failing tests are accepted Issue #64 / #65 / #66 tests that hard-code the
-**pre-repair defective operator's** numerical signature. The authorized repair
-necessarily and correctly changes exactly that signature. Every failure is a
-pure consequence of the authorized change; none of them indicates a defect in
-the repaired implementation.
+### 7.1 The 11 failures were STALE PRE-REPAIR ASSERTIONS, not a code regression
+
+The 11 failing tests were accepted Issue #64 / #65 / #66 tests that hard-code
+the **pre-repair defective operator's** numerical signature. The authorized
+repair necessarily and correctly changes exactly that signature. Every failure
+was a pure consequence of the authorized change; none of them indicated a
+defect in the repaired implementation.
 
 Corrected values at the same `V_*` (independently measured):
 
@@ -241,35 +248,16 @@ truth) do not. Post-repair the Issue #66 audit classifies as
 `MIXED_OR_UNRESOLVED` precisely because its rate check now agrees and its
 assembly check no longer does.
 
-### 7.2 Consequence — a governance dependency NOT covered by this allowlist
+### 7.2 Consequence — a governance dependency outside the original allowlist
 
 `tests/test_dlh_5vp_stagnation_newton_geometry.py`,
 `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` and
 `tests/test_dlh_5vr_f0_final_rate_provenance.py` are **accepted read-only
-artifacts of Issues #64, #65 and #66** and are explicitly **outside** the
-Issue #67 four-path allowlist ("All other accepted sources/tests/reports/
-governance remain read-only"). They were therefore deliberately **NOT
-modified**.
-
-There is a genuine conflict between two Issue #67 requirements:
-
-- §8 requires the full repository suite to pass;
-- §7 allows tracked changes to exactly four paths, none of which is a dependent
-  test file.
-
-The repair was executed as authorized and the conflict is reported rather than
-worked around. Resolving it requires explicit Owner authorization for one of:
-
-1. **supersede / retire** the affected Issue #66 assertions and re-baseline the
-   three dependent test modules post-repair (authorizing a ninth path, or a
-   successor task), or
-2. **declare** those assertions historical accepted evidence for the pre-repair
-   operator, frozen under the pre-repair blob and no longer part of the live
-   regression gate.
-
-Neither decision is taken here. The repaired source, its focused regression
-suite, the corrected validation evidence and the terminal are complete and
-self-consistent; only the historical baselines remain outstanding.
+artifacts of Issues #64, #65 and #66** and were explicitly **outside** the
+original Issue #67 four-path allowlist. On the initial candidate they were
+therefore deliberately **NOT modified**, and the conflict was reported instead
+of worked around. The Reviewer subsequently authorized their migration; see
+§10.
 
 ### 7.3 Focused coverage
 
@@ -292,27 +280,109 @@ exactly one terminal.
 3. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`
 4. `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`
 
-No fifth tracked Builder path. All other accepted sources, tests, reports and
-governance files remain read-only and are byte-identical to the accepted blobs
-listed in the Issue #67 completion comment.
+Reviewer-authorized remediation extension (§10) adds exactly three more:
 
-## 9. Next gates (for the Owner / reviewer — NOT decided here)
+5. `tests/test_dlh_5vp_stagnation_newton_geometry.py`
+6. `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py`
+7. `tests/test_dlh_5vr_f0_final_rate_provenance.py`
 
-**Gate 1 — residual reassessment.** The corrected final-validation operator now
-coincides with the accepted iteration operator, so the ~`490.756`
-final-validation failure is fully attributed to the repaired assembly defect.
-The residual that remains (`10.435094313164921`) is a separate, pre-existing
-convergence question that this Issue does **NOT** resolve and does **NOT**
-reclassify. Any change to the convergence criterion, any acceptance of `R_iter`
-as the final convergence residual, and any new HJB iterate require fresh
-explicit Owner authorization.
+The final cumulative diff is exactly these 7 paths (no eighth). All other
+accepted sources, tests, reports and governance files remain read-only and are
+byte-identical to their accepted blobs.
 
-**Gate 2 — stale dependent baselines.** As documented in §7.2, 11 assertions in
-three accepted read-only test modules pin the pre-repair defect's signature and
-now fail. Three of them encode conclusions that the repair inverts
-qualitatively. This is outside the Issue #67 allowlist and is reported, not
-worked around; it needs an explicit Owner decision (supersede/re-baseline the
-Issue #64/#65/#66 test evidence, or declare those assertions frozen historical
-evidence for the pre-repair operator).
+## 9. Next gate (for the Owner / reviewer — NOT decided here)
+
+The corrected final-validation operator coincides with the accepted iteration
+operator, so the ~`490.756` final-validation failure is fully attributed to the
+repaired assembly defect. The residual that remains (`10.435094313164921`) is a
+separate, pre-existing convergence question that this Issue does **NOT** resolve
+and does **NOT** reclassify. Any change to the convergence criterion, any
+acceptance of `R_iter` as the final convergence residual, and any new HJB
+iterate require fresh explicit Owner authorization.
 
 Stationary KFE remains **NOT AUTHORIZED**.
+
+## 10. Reviewer-authorized bounded test-contract remediation
+
+### 10.1 Why
+
+The INITIAL candidate `281cfe01b2925364a92308ca172a84a724c6ea58` was
+**scientifically correct** but acceptance was held because three accepted
+read-only test modules still encoded the pre-repair defect's numerical
+signature (§7). The Reviewer confirmed the Issue #67 scientific repair itself,
+confirmed Terminal A, held acceptance/integration only on the full-suite
+contract, and authorized a bounded **post-repair test-contract migration** on
+the same dedicated branch. No further scientific change was authorized.
+
+### 10.2 Migration principles applied
+
+- **No historical scientific fact was deleted.** In each of the three modules
+  the pre-repair numbers were lifted into EXPLICIT HISTORICAL CONSTANTS with
+  documentation, e.g.
+
+  ```python
+  PRE_REPAIR_FINAL_RESIDUAL_CURRENT = 490.7560414005864
+  PRE_REPAIR_FINAL_RESIDUAL_STALE   = 490.7560425919994
+  PRE_REPAIR_F0_OPERATOR_GAP        = 24.601971766296664
+  PRE_REPAIR_AFFECTED_Z1_F0_ROWS    = 298
+  ```
+
+  These represent accepted Issues #64–#66 historical evidence only. The Issue
+  #66 historical Terminal A is likewise preserved as `PRE_REPAIR_TERMINAL_A`.
+- **Runtime assertions now verify the REPAIRED semantics**, not the continued
+  existence of the defect.
+- **No monkeypatch, no re-created bug, no old-blob checkout.** The historical
+  defect's reproducibility lives in the accepted Issues/reports/commits, not in
+  the live regression gate.
+- **Every re-baselined expectation carries an explicit justification comment**
+  of the form "pre-repair historical expectation superseded by the
+  Owner-authorized Issue #67 source repair" — no silent re-numbering.
+- **No convergence reinterpretation.** `corrected final == R_iter` is asserted
+  only as an operator statement; both `test_dlh_5vp` and `test_dlh_5vr` now
+  contain a dedicated `test_no_hjb_convergence_claimed_after_repair` asserting
+  that the corrected residual and `R_iter` both remain above the **unchanged**
+  Bellman tolerance `1e-3`, so validated HJB convergence stays FALSE.
+
+### 10.3 Repaired runtime expectations (now asserted)
+
+| Expectation | Value |
+|---|---|
+| `R_iter` unchanged | `10.435094313164921` |
+| corrected final residual | `10.435094313164921` (Issue #66 current-record path) / `10.435094313165099` (Issue #64/#65 preserved pre-step-8 records path) |
+| final-vs-iteration residual/operator discrepancy | machine precision only (`4.654054919228656e-13` residual, `1.4210854715202004e-14` operator) |
+| `q_current_minus_iter_rowwise_max` | `1.4210854715202004e-14` |
+| destination-assembly affected rows after repair | `0` (was 298) |
+| `both_equivalent` under repaired current source | `True` |
+| `materially_non_equivalent` under repaired source | `False` |
+| Issue #66 historical Terminal A | retained as historical evidence; rerunning its diagnostic against the repaired source is **not** forced to return it |
+
+### 10.4 Files migrated
+
+| File | Migration |
+|---|---|
+| `tests/test_dlh_5vp_stagnation_newton_geometry.py` | pre-repair constants added; 3 assertions re-baselined; `test_no_hjb_convergence_claimed_after_repair` added |
+| `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` | pre-repair constants added; 3 assertions re-baselined (including the `d_stale < d_rate` ordering, which is inverted post-repair) |
+| `tests/test_dlh_5vr_f0_final_rate_provenance.py` | pre-repair constants added; 5 assertions re-baselined; classification asserted on the repaired source without forcing the historical terminal; `test_no_hjb_convergence_claimed_after_repair` added |
+
+Raw `src/` scientific sources, including the Issue #66 / #65 audit modules, are
+**unchanged**: the migration is confined to test contracts. The authorized
+selected-Q repair is unchanged at blob
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`.
+
+### 10.5 Final test results
+
+- the four focused modules together: **72 passed**;
+- full repository suite `python -m pytest tests/ -q`: **534 passed, 0 failed,
+  6 warnings in 3337.67 s (0:55:37)**. The initial candidate's 11 failures are
+  all resolved; the 6 warnings are the pre-existing `MatrixRankWarning` entries
+  from the accepted oracle tests (`test_dlh_5b`, `test_dlh_5c`), not failures.
+
+### 10.6 Terminal — unchanged
+
+```
+DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY
+```
+
+The remediation changed only test contracts; it did not alter the authorized
+scientific source, the terminal, or any scientific evidence. No HJB
+convergence is claimed. Stationary KFE remains **NOT AUTHORIZED**.
