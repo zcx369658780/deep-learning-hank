@@ -955,40 +955,36 @@ class BoundaryHJBSolver:
                 row = nz * self.n + node
                 if fam == "F0":
                     if final and f0_policies is not None and f0_policies[row] is not None:
+                        # Owner Route A (Issue #70 / DLH-5V-V): the final-validation
+                        # F0 row reuses the SAME selected MATLAB-faithful generator
+                        # record produced by the solve -- stored row_entries / stored
+                        # iteration-rate semantics / stored diagonal / stored utility.
+                        # No second F0 generator is constructed here: the raw-drift
+                        # recompute via asset_drifts_matlab_faithful and the
+                        # max(+-mu)/step upwind mapping are deliberately NOT used, so
+                        # final=True and final=False share one selected operator
+                        # semantics. Destination columns keep the same-z-block
+                        # indexing (nz * self.n + dn). The record's stored controls,
+                        # realized mu_a/mu_b and utility are carried as metadata and
+                        # for u/diagnostics only.
                         rec = f0_policies[row]
-                        a_v = float(g.a_arr[node])
-                        b_v = float(g.b_arr[node])
-                        z_v = float(cfg.z[nz])
-                        mu_a_v, mu_b_v, _ = asset_drifts_matlab_faithful(
-                            a_v, b_v, z_v, rec.consumption, np.array([rec.labor]), rec.transfer,
-                            cfg.inputs, cfg.params, cfg.a_max,
-                        )
-                        ab = max(-mu_a_v, 0.0) / self.da
-                        af = max(mu_a_v, 0.0) / self.da
-                        bb = max(-mu_b_v, 0.0) / self.db
-                        bf = max(mu_b_v, 0.0) / self.db
-                        neigh = g.neighbors(j, i)
-                        entries: list[tuple[int, float]] = []
-                        for dn, rate in ((neigh["down"], bb), (neigh["up"], bf),
-                                         (neigh["left"], ab), (neigh["right"], af)):
-                            if dn is not None and rate != 0.0:
-                                entries.append((dn, float(rate)))
-                        diag = -(bb + bf + ab + af)
+                        entries = [(int(dn), float(rate)) for dn, rate in rec.row_entries]
+                        diag = float(rec.diagonal)
                         for dn, rate in entries:
                             rows.append(row); cols.append(nz * self.n + dn); data.append(rate)
                         rows.append(row); cols.append(row); data.append(diag)
                         u[row] = rec.utility
                         rec2 = _PolicyRecord(
                             family="F0", sector="INTERIOR_FINAL", consumption=rec.consumption,
-                            labor=rec.labor, transfer=rec.transfer, mu_a=mu_a_v, mu_b=mu_b_v,
+                            labor=rec.labor, transfer=rec.transfer, mu_a=rec.mu_a, mu_b=rec.mu_b,
                             utility=rec.utility, row_entries=entries, diagonal=diag,
                             artificial_binding=False, economic_binding=False, expansions=0,
                         )
                         consumption[node, nz] = rec.consumption
                         labor[node, nz] = rec.labor
                         transfer[node, nz] = rec.transfer
-                        mu_a_arr[node, nz] = mu_a_v
-                        mu_b_arr[node, nz] = mu_b_v
+                        mu_a_arr[node, nz] = rec.mu_a
+                        mu_b_arr[node, nz] = rec.mu_b
                         utility[node, nz] = rec.utility
                         sector_arr[node, nz] = "INTERIOR_FINAL"
                         policy_records[row] = rec2
