@@ -1,6 +1,6 @@
 # Deep Learning + HANK Task Index
 
-Status: `ISSUE_71_DLH_5VW_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
+Status: `ISSUE_72_DLH_5VX_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
 
 Last synchronized: 2026-09-16
 
@@ -8,27 +8,27 @@ Repository: `zcx369658780/deep-learning-hank`
 
 ## Builder authority
 
-Issue #71 / DLH-5V-W is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
+Issue #72 / DLH-5V-X is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
 
 Title:
 
-`DLH-5V-W: Decompose the remaining Route-A single-Q HJB residual at V*`
+`DLH-5V-X: Design a bounded residual-balanced single-Q HJB solver contract after mixed-imbalance diagnosis`
 
 Task type:
 
-`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__ROUTE_A_SINGLE_Q_HJB_RESIDUAL_SOURCE_DECOMPOSITION`
+`SCIENTIFIC_NUMERICAL_DESIGN__ROUTE_A_SINGLE_Q_BOUNDED_RESIDUAL_BALANCED_HJB_SOLVER_CONTRACT`
 
 Owner / Reviewer route decision:
 
-`APPROVE_ROUTE_A_SINGLE_Q_HJB_RESIDUAL_SOURCE_DECOMPOSITION_AFTER_5VV_TERMINAL_A`
+`APPROVE_ROUTE_A_BOUNDED_RESIDUAL_BALANCED_SOLVER_CONTRACT_DESIGN_AFTER_5VW_TERMINAL_B`
 
 Authority marker:
 
-`DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_AUTHORIZED`
+`DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_AUTHORIZED`
 
 Initial authoritative activation:
 
-`5691703381`
+`5696637965`
 
 Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
 refresh confirms the post-sync live `main`, Builder execution is
@@ -37,91 +37,182 @@ the Builder until then.
 
 Dedicated future Builder branch:
 
-`dsh/issue-71-dlh-5vw-route-a-hjb-residual-decomposition-2026-09-16`
+`dsh/issue-72-dlh-5vx-route-a-bounded-solver-design-2026-09-16`
 
-## Issue #71 exact scientific scope (as activated)
+## Issue #72 exact scientific scope (as activated)
 
-This is a **read-only diagnostic / source decomposition**. It does not choose or
-replace any rate path, does not construct a second scientific `Q`, does not
-accept an HJB iterate, and does not mutate any accepted source.
+**DESIGN ONLY.** This is a specification/synthesis task, not an execution task.
+It must NOT construct a new nonlinear HJB state, must NOT accept any iterate, and
+must NOT run any trajectory.
 
-Exactly ONE frozen state is allowed: the accepted Issue #63 stagnation state
-`V_*`. It must be reproduced exactly:
+It must synthesize the accepted evidence of Issues #60–#71:
 
-- `8` steps;
-- final statistic `3.6614352438846254e-08`;
-- min boundary `p_b` `4.8089461301970005e-09`;
-- wall `F3 (13,13), z=1, node 332`;
-- `||R||inf = 10.435094313164921`;
-- residual argmax = row `97` / node `97` / z `0` / family `F0`.
+- plain value-damping failure (Issue #60);
+- adaptive pseudo-time / resolvent ladder failure (Issue #61);
+- boundary effective-domain wall geometry (Issues #62/#63);
+- frozen-policy Newton direction evidence (Issue #64);
+- tangent-projected Newton geometry evidence (Issue #68);
+- Owner Route-A single-`Q` operator contract (Issues #69/#70);
+- Issue #71 mixed-cancellation residual structure at `V_*`.
 
-Exactly ONE operator build is permitted: **ONE Route-A `final=False` `Q`**. No
-second scientific `Q` path, no `final=True` second generator, no dual-`Q`
-semantics.
+It must compare, source-backed and algebraically (qualitatively plus accepted
+stored evidence, with **no new nonlinear trial state**), at least these candidate
+numerical families:
 
-Additive residual decomposition over ALL states, `R = rho*V - u - Q*V`, recording
-at least: `rho*V`; utility/source; z-switch contribution; b-backward
-contribution; b-forward contribution; a-backward contribution; a-forward
-contribution; diagonal contribution; reconstructed residual; closure error.
+1. policy-frozen / regularized Newton;
+2. residual / Jacobi-type preconditioned correction;
+3. constrained / projected least-squares or trust-region correction;
+4. pseudo-time / resolvent continuation, as a **historical baseline only**.
 
-Deterministic top-20 selection by `|R|` with **tie-break on row id**. For each
-top-20 row record: row / node / j / i / z / family; sector, liquid label and
-transfer label where available; controls; realized drifts; stored iteration
-rates; neighbours; each additive component; residual sign and magnitude.
+**Design only — these steps may not be executed in this Issue.**
 
-Read-only policy reproduction audit on the top-20 **F0** rows: re-invoke the
-accepted local-policy selector and verify selected record reproducible, controls
-match, utility match, drifts match, stored rates match, branch labels match, and
-that the residual uses the SAME selected generator. **No new policy
-optimization.**
+If the evidence supports exactly one route, the Issue must freeze a complete
+executable solver contract:
 
-Issue #71 classification flags:
+- state / residual definition;
+- policy / operator sequence;
+- Jacobian definition;
+- refresh rule;
+- regularization ladder;
+- active-boundary detection;
+- `p_b` domain-safety rule;
+- projection / constraint rule;
+- merit function;
+- acceptance rule;
+- rejection / backoff rule;
+- maximum attempts;
+- iterate convergence test;
+- Bellman convergence test;
+- fail-closed terminal;
+- logging / reproducibility fields.
 
-- `DECOMPOSITION_CLOSED`
-- `DOMINANT_RESIDUAL_F0`
-- `POLICY_RECORDS_REPRODUCED`
-- `DOMINANT_COMPONENT_IDENTIFIED`
-- `BRANCH_INCONSISTENCY_ESTABLISHED`
-- `OTHER_MECHANISM_ESTABLISHED`
-- `MIXED_OR_UNRESOLVED`
+**Every ladder and threshold must be frozen in this Issue.** No future silent
+tuning from outcomes is permitted.
 
-Issue #71 exact four-path Builder allowlist:
+Issue #72 exact four-path Builder allowlist:
 
-1. `src/deep_learning_hank/two_asset/route_a_hjb_residual_decomposition.py`;
-2. `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`;
-3. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_REPORT.md`;
-4. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_SUMMARY.csv`.
+1. `src/deep_learning_hank/two_asset/route_a_bounded_solver_design.py`;
+2. `tests/test_dlh_5vx_route_a_bounded_solver_design.py`;
+3. `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_REPORT.md`;
+4. `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv`.
 
 **No fifth tracked Builder path.** No PR / merge / Issue close / successor /
 self-accept.
 
-Issue #71 terminal set (exactly ONE to be reported):
+Issue #72 terminal set (exactly ONE to be reported):
 
-- A `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__UNIQUE_SOURCE_BACKED_DOMINANT_MECHANISM_IDENTIFIED__NEXT_SOLVER_DESIGN_GATE_READY`
-- B `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_AND_POLICY_REPRODUCTION_PASS_BUT_RESIDUAL_IS_MIXED_FIXED_POINT_IMBALANCE__BOUNDED_SOLVER_DESIGN_REQUIRED`
-- C `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_POLICY_REPRODUCTION_OR_SINGLE_Q_CONTRACT_FAILURE__SCIENTIFIC_REVIEW_REQUIRED`
-- Blocked `BLOCKED_DLH_5VW_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+- A `DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN__DETERMINISTIC_RESIDUAL_BALANCED_CONSTRAINED_SOLVER_CONTRACT_SELECTED__EXECUTION_GATE_READY`
+- B `DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN__MULTIPLE_PLAUSIBLE_ROUTES_REMAIN__OWNER_OR_REVIEWER_ROUTE_SELECTION_REQUIRED`
+- C `DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN__NO_JUSTIFIED_BOUNDED_ROUTE_FROM_ACCEPTED_EVIDENCE__SCIENTIFIC_ROUTE_RECONSIDERATION_REQUIRED`
+- Blocked `BLOCKED_DLH_5VX_AUTHORITY_OR_DEPENDENCY_CONFLICT`
 
 Explicitly NOT authorized in this Issue:
 
-- mutating selected-Q or the accepted oracle;
-- modifying `final=False` / `final=True` semantics;
-- modifying policy selection / controls;
-- modifying F1–F11 boundary semantics;
+- mutating selected-Q, the oracle, or any accepted Issue #60–#71 source;
+- changing `final=False` / `final=True` semantics;
+- changing policy selection / controls;
+- changing F1–F11 boundary semantics;
 - changing economics / prices / grid / domain / initialization / calibration;
 - changing tolerances / `PB_MARGIN` / Bellman tolerance;
 - changing the convergence criterion;
-- accepting any state as a new HJB iterate, or running a new trajectory;
-- Newton solve, tangent direction, trial step, policy iteration, semismooth,
-  trust-region, continuation, line search, alpha tuning;
-- KFE / stationary KFE / `solve_household_steady_state`;
-- SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
-  welfare / Results;
+- constructing any new nonlinear HJB state;
+- accepting any HJB iterate;
+- running a new trajectory;
+- executing Newton, tangent, trust-region, line-search, continuation, or any
+  pseudo-time / resolvent step;
+- KFE / stationary KFE / `solve_household_steady_state` / steady state;
+- downstream GE / SCC / global-Q / multi-region / neural / nominal / calibration /
+  policy / welfare / Results;
 - successor Issue activation;
-- any Builder scientific branch beyond the dedicated Issue #71 branch named above
+- any Builder scientific branch beyond the dedicated Issue #72 branch named above
   (not yet created).
 
 Stationary KFE remains **NOT AUTHORIZED**.
+
+## Accepted task — Issue #71 / DLH-5V-W (ACCEPTED / CLOSED)
+
+Issue #71 is CLOSED completed at **Terminal B**. It performed the read-only,
+source-backed additive decomposition of the remaining Route-A single-`Q` HJB
+residual at the accepted `V_*`, with a deterministic top-20 residual ranking and a
+read-only reproduction audit of the accepted local-policy records.
+
+Accepted candidate / integration:
+
+`e1d79d6aa6677ca262df1699e21007eaf9690c4d`
+
+Reviewer acceptance:
+
+`5696620837`
+
+Acceptance integration:
+
+`5696624495`
+
+Accepted verdict:
+
+`DLH_5VW_ACCEPTED__TERMINAL_B_CONFIRMED__ROUTE_A_SINGLE_Q_RESIDUAL_DECOMPOSITION_CLOSES__TOP20_POLICY_RECORDS_REPRODUCE_EXACTLY__NO_UNIQUE_DOMINANT_COMPONENT__MIXED_FIXED_POINT_IMBALANCE_REQUIRES_BOUNDED_SOLVER_DESIGN`
+
+Accepted terminal:
+
+`DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_AND_POLICY_REPRODUCTION_PASS_BUT_RESIDUAL_IS_MIXED_FIXED_POINT_IMBALANCE__BOUNDED_SOLVER_DESIGN_REQUIRED`
+
+Reviewer hold / bounded allowlist expansion (fifth path authorized):
+
+`5695153100`
+
+Preserved ancestry (no rebase):
+
+- original candidate `8eeb2949d51ff17c631dd664e6d94ee136d0c0d9`;
+- remediation commit / accepted candidate
+  `e1d79d6aa6677ca262df1699e21007eaf9690c4d`.
+
+Accepted facts:
+
+- exact `V_*` reproduction (`8` steps; statistic `3.6614352438846254e-08`; min
+  boundary `p_b = 4.8089461301970005e-09`; wall `F3 (13,13), z=1, node 332`);
+- `||R||inf = 10.435094313164921`; argmax row `97` / node `97` / z `0` / `F0`;
+- exactly ONE Route-A `final=False` scientific `Q` build; no second scientific `Q`
+  path;
+- decomposition closure max = `4.036238010485249e-11`;
+- independent row reconstruction max = `2.816165078911581e-10`;
+- rate attribution mismatch rows = `0`;
+- `max|Q1| = 2.4253377084448857e-12` (unchanged);
+- deterministic top-20 are all F0 / z=0;
+- policy reproduction = `20 / 20`;
+- controls / utility / drifts / stored rates differences = `0`;
+- `DOMINANT_COMPONENT_IDENTIFIED = NO`; `MIXED_OR_UNRESOLVED = YES`;
+- mean top-20 cancellation ratio = `0.006665998653866562` (the residual is ~0.67%
+  of the gross component mass, i.e. a near-total cancellation of `O(1e3)` terms);
+- full repository suite: `693 passed`, `0 failed`, `0 errors`, `6` pre-existing
+  oracle warnings;
+- deterministic repeat identical.
+
+Reviewer-held engineering note (binding, narrow): the Issue #71 cumulative diff
+was authorized to exactly **five** paths, the fifth being
+`tests/test_dlh_5vv_route_a_single_q_operator_contract.py`, whose change is a
+bounded **repository-state assertion correction only** (current `origin/main` is
+checked against the accepted selected-Q blob
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`, while the historical pre-Route-A blob
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897` remains pinned at the immutable anchor
+`825e241804c7fb260c807602fc0f1487caf84e56^`). No sixth path is authorized, and no
+Route-A scientific assertion, tolerance, solver semantic, historical Issue #70
+evidence, accepted terminal or convergence interpretation was changed.
+
+Accepted scientific interpretation (binding):
+
+- **HJB convergence = FALSE**; the accepted residual `10.435094313164921` remains
+  ~`10435`× the **unchanged** Bellman tolerance `1e-3`;
+- **no accepted new HJB iterate** and **no new trajectory**;
+- the acceptance identifies a **mixed fixed-point imbalance** only, and does
+  **not** select a solver design;
+- Owner Route A remains binding: ONE MATLAB-faithful selected generator governs
+  the HJB solve and validation; dual-`Q` semantics are **NOT AUTHORIZED**;
+- the accepted selected-Q blob remains
+  `7857cabb4d28af99cb9d59e2d1c3024b05787c11`;
+- accepted Issue #69 audit blob remains
+  `83e9be0febcc03eb721265d3558887bd6b1586a4` and accepted oracle blob remains
+  `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`;
+- **Stationary KFE remains NOT AUTHORIZED**.
 
 ## OWNER SCIENTIFIC DECISION RESOLVED — ROUTE A SELECTED
 
@@ -966,6 +1057,20 @@ evidence:
 Issue #71 may create only its own four paths above; it may **not** modify any
 accepted Issue #61–#70 scientific source, test or report.
 
+Accepted Issue #71 deliverable paths (the exact five-path cumulative diff
+integrated at `e1d79d6aa6677ca262df1699e21007eaf9690c4d`; Reviewer hold
+`5695153100` authorized the fifth) remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/route_a_hjb_residual_decomposition.py`;
+- `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`;
+- `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_REPORT.md`;
+- `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_SUMMARY.csv`;
+- `tests/test_dlh_5vv_route_a_single_q_operator_contract.py` (bounded
+  repository-state assertion correction only).
+
+Issue #72 may create only its own four paths above; it may **not** modify any
+accepted Issue #60–#71 scientific source, test or report.
+
 Binding law remains:
 
 ```text
@@ -982,43 +1087,48 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Hard ceiling
 
-**ISSUE #71 / DLH-5V-W IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #70 /
-DLH-5V-V is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
-`fb5523d55d01d4b64995d94efb786994b5f8326d` (accepted selected-Q blob
+**ISSUE #72 / DLH-5V-X IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #71 /
+DLH-5V-W is ACCEPTED / CLOSED at Terminal B and integrated to `main` at
+`e1d79d6aa6677ca262df1699e21007eaf9690c4d` (accepted selected-Q blob
 `7857cabb4d28af99cb9d59e2d1c3024b05787c11`). Owner Route A remains binding:
 MATLAB-faithful selected iteration-rate semantics are authoritative for the HJB
 operator, the solve / final validation / future authorized `Q^T` share **one
 coherent selected generator**, raw-drift `max(±mu)/step` is **not** an
 independent final-validation `Q` authority, and dual-`Q` semantics are **NOT
-AUTHORIZED**. Builder execution on Issue #71 remains NOT YET OPERATIVE until the
+AUTHORIZED**. Builder execution on Issue #72 remains NOT YET OPERATIVE until the
 final authoritative activation-refresh confirms the post-sync live `main`.
 
-The Issue #71 ceiling is exactly: a read-only decomposition of the remaining
-Route-A single-`Q` residual `R = rho*V - u - Q*V` at the ONE accepted `V_*`; ONE
-Route-A `final=False` operator build; deterministic top-20 residual rows
-(tie-break row id) with per-row additive components and metadata; a read-only
-reproduction audit of the accepted local-policy records on top-20 F0 rows; ONE
-deterministic repeat; focused tests plus the full repository suite — within the
-exact four-path allowlist above. Explicitly NOT authorized: mutating selected-Q
-or the accepted oracle; modifying `final=False` / `final=True` semantics;
-modifying policy selection / controls; modifying F1–F11 boundary semantics;
-changing economics / prices / grid / domain / initialization / calibration;
-changing tolerances / `PB_MARGIN` / Bellman tolerance; convergence-criterion
-change; accepting any state as a new HJB iterate; running a new trajectory; Newton
-solve / tangent direction / trial step / policy iteration / semismooth /
-trust-region / continuation / line search / alpha tuning; price / Wmax /
-resolution sweeps; KFE / stationary KFE / `solve_household_steady_state`;
-SCC/global-Q; GE/multi-region/neural/nominal/calibration/policy/welfare/Results;
-successor Issue activation; any Builder scientific branch beyond the dedicated
-Issue #71 branch (not yet created); PR / merge / Issue close / self-accept.
+The Issue #72 ceiling is exactly: **DESIGN ONLY** — ONE read-only synthesis of
+accepted Issues #60–#71 evidence; ONE candidate-family comparison matrix over
+policy-frozen/regularized Newton, residual/Jacobi preconditioned correction,
+constrained/projected least-squares or trust-region correction, and
+pseudo-time/resolvent continuation as historical baseline only; ONE selected
+bounded solver contract (or an explicit no-route conclusion); ONE deterministic
+pseudocode/specification with every ladder and threshold frozen **in this Issue**;
+ONE deterministic internal consistency check of the design artifacts; focused
+tests plus the full repository suite — within the exact four-path allowlist above.
+Explicitly NOT authorized: mutating selected-Q, the oracle, or any accepted Issue
+#60–#71 source; modifying `final=False` / `final=True` semantics; modifying policy
+selection / controls; modifying F1–F11 boundary semantics; changing economics /
+prices / grid / domain / initialization / calibration; changing tolerances /
+`PB_MARGIN` / Bellman tolerance; convergence-criterion change; constructing any
+new nonlinear HJB state; accepting any HJB iterate; running a new trajectory;
+executing Newton / tangent / trust-region / line-search / continuation / any
+pseudo-time or resolvent step; price / Wmax / resolution sweeps; KFE / stationary
+KFE / steady state / `solve_household_steady_state`; SCC/global-Q;
+GE/multi-region/neural/nominal/calibration/policy/welfare/Results; successor Issue
+activation; any Builder scientific branch beyond the dedicated Issue #72 branch
+(not yet created); PR / merge / Issue close / self-accept.
 Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Current governance files
 
 - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #71 body/comments (OPEN; initial authoritative activation `5691703381`;
+- Issue #72 body/comments (OPEN; initial authoritative activation `5696637965`;
   final authoritative activation-refresh not yet published).
+- Issue #71 body/comments (accepted/closed; reviewer acceptance `5696620837`,
+  acceptance integration `5696624495`).
 - Issue #70 body/comments (accepted/closed; reviewer acceptance `5691693472`,
   acceptance integration `5691696204`).
 - Issue #69 body/comments (accepted/closed; reviewer acceptance `5678488562`,
