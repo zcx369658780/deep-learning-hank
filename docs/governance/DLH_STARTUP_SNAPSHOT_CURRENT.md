@@ -1,6 +1,6 @@
 # Deep Learning + HANK Startup Snapshot — CURRENT
 
-Date: 2026-09-15
+Date: 2026-09-16
 
 Repository: `zcx369658780/deep-learning-hank`
 
@@ -21,35 +21,180 @@ Priority:
 
 ## Current Builder state
 
-Issue #70 / DLH-5V-V is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
+Issue #71 / DLH-5V-W is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
 
 Title:
 
-`DLH-5V-V: Consolidate Route-A single-Q F0 operator contract and revalidate final Bellman operator`
+`DLH-5V-W: Decompose the remaining Route-A single-Q HJB residual at V*`
 
 Task type:
 
-`OWNER_AUTHORIZED_SCIENTIFIC_CHANGE__MATLAB_FAITHFUL_SINGLE_Q_F0_OPERATOR_CONTRACT_CONSOLIDATION_AND_REVALIDATION`
+`SCIENTIFIC_NUMERICAL_DIAGNOSTIC__ROUTE_A_SINGLE_Q_HJB_RESIDUAL_SOURCE_DECOMPOSITION`
 
 Owner / Reviewer route decision:
 
-`APPROVE_ROUTE_A_MATLAB_FAITHFUL_SINGLE_Q_F0_OPERATOR_CONTRACT`
+`APPROVE_ROUTE_A_SINGLE_Q_HJB_RESIDUAL_SOURCE_DECOMPOSITION_AFTER_5VV_TERMINAL_A`
 
 Authority marker:
 
-`DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_AUTHORIZED`
+`DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_AUTHORIZED`
 
 Initial authoritative activation:
 
-`5681294485`
+`5691703381`
 
 Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
-refresh confirms the post-sync live `main`, Builder execution on Issue #70 is
+refresh confirms the post-sync live `main`, Builder execution on Issue #71 is
 **NOT YET OPERATIVE** and no scientific source, test or report may be modified.
 
 Dedicated future Builder branch:
 
-`dsh/issue-70-dlh-5vv-route-a-single-q-operator-contract-2026-09-15`
+`dsh/issue-71-dlh-5vw-route-a-hjb-residual-decomposition-2026-09-16`
+
+### Issue #71 exact authorized scientific scope
+
+Read-only diagnostic / source decomposition. It does not choose or replace any
+rate path, does not construct a second scientific `Q`, does not accept an HJB
+iterate, and does not mutate any accepted source.
+
+Exactly ONE frozen state: accepted Issue #63 stagnation state `V_*`, reproduced
+exactly — `8` steps; final statistic `3.6614352438846254e-08`; min boundary `p_b`
+`4.8089461301970005e-09`; wall `F3 (13,13), z=1, node 332`; `||R||inf =
+10.435094313164921`; residual argmax row `97` / node `97` / z `0` / family `F0`.
+
+Exactly ONE operator build: **ONE Route-A `final=False` `Q`**. No second
+scientific `Q` path and no dual-`Q` semantics.
+
+Additive decomposition over ALL states, `R = rho*V - u - Q*V`, recording at least:
+`rho*V`; utility/source; z-switch contribution; b-backward contribution;
+b-forward contribution; a-backward contribution; a-forward contribution;
+diagonal contribution; reconstructed residual; closure error. Deterministic
+top-20 by `|R|` with **tie-break on row id**, each recording
+row/node/j/i/z/family; sector, liquid label and transfer label where available;
+controls; realized drifts; stored iteration rates; neighbours; each additive
+component; residual sign and magnitude.
+
+Read-only policy reproduction audit on the top-20 **F0** rows: re-invoke the
+accepted local-policy selector and verify selected record reproducible, controls
+match, utility match, drifts match, stored rates match, branch labels match, and
+the residual uses the SAME selected generator. **No new policy optimization.**
+
+Classification flags: `DECOMPOSITION_CLOSED`, `DOMINANT_RESIDUAL_F0`,
+`POLICY_RECORDS_REPRODUCED`, `DOMINANT_COMPONENT_IDENTIFIED`,
+`BRANCH_INCONSISTENCY_ESTABLISHED`, `OTHER_MECHANISM_ESTABLISHED`,
+`MIXED_OR_UNRESOLVED`.
+
+Issue #71 exact four-path Builder allowlist:
+
+1. `src/deep_learning_hank/two_asset/route_a_hjb_residual_decomposition.py`;
+2. `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`;
+3. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_REPORT.md`;
+4. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_SUMMARY.csv`.
+
+**No fifth tracked Builder path.**
+
+Issue #71 terminal set (exactly ONE to be reported):
+
+- A `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__UNIQUE_SOURCE_BACKED_DOMINANT_MECHANISM_IDENTIFIED__NEXT_SOLVER_DESIGN_GATE_READY`
+- B `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_AND_POLICY_REPRODUCTION_PASS_BUT_RESIDUAL_IS_MIXED_FIXED_POINT_IMBALANCE__BOUNDED_SOLVER_DESIGN_REQUIRED`
+- C `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_POLICY_REPRODUCTION_OR_SINGLE_Q_CONTRACT_FAILURE__SCIENTIFIC_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VW_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+Explicitly NOT authorized:
+
+- mutating selected-Q or the accepted oracle;
+- modifying `final=False` / `final=True` semantics;
+- modifying policy selection / controls;
+- modifying F1–F11 boundary semantics;
+- economics / prices / grid / domain / initialization / calibration /
+  tolerances / `PB_MARGIN` / Bellman-tolerance change;
+- convergence-criterion change;
+- accepting any state as a new HJB iterate, or running a new trajectory;
+- Newton solve / tangent direction / trial step / policy iteration / semismooth /
+  trust-region / continuation / line search;
+- alpha tuning or extra trials;
+- price / Wmax / resolution sweeps;
+- KFE / stationary KFE / `solve_household_steady_state`;
+- SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
+  welfare / Results;
+- successor Issue activation;
+- any Builder scientific branch beyond the dedicated Issue #71 branch (not yet
+  created);
+- PR / merge / Issue close / self-accept.
+
+## Accepted task — Issue #70 / DLH-5V-V (ACCEPTED / CLOSED)
+
+Issue #70 is CLOSED completed at Terminal A. It consolidated the Owner-selected
+Route A single-`Q` F0 operator contract so final validation reuses the SAME
+MATLAB-faithful selected generator as the solve, and revalidated the final Bellman
+operator at all three frozen states.
+
+Accepted candidate / integration:
+
+`fb5523d55d01d4b64995d94efb786994b5f8326d`
+
+Reviewer acceptance:
+
+`5691693472`
+
+Acceptance integration:
+
+`5691696204`
+
+Accepted verdict:
+
+`DLH_5VV_ACCEPTED__TERMINAL_A_CONFIRMED__OWNER_ROUTE_A_SINGLE_Q_F0_CONTRACT_CONSOLIDATED__FINAL_VALIDATION_BIT_IDENTICAL_TO_SELECTED_ITERATION_GENERATOR_AT_S0_S1_S2__POLICY_LABEL_IDENTITY_RESTORED__FULL_SUITE_GREEN__HJB_RESIDUAL_REASSESSMENT_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__FINAL_VALIDATION_REUSES_MATLAB_FAITHFUL_SELECTED_ITERATION_GENERATOR_AT_ALL_FROZEN_STATES__DUAL_RATE_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_READY`
+
+Accepted selected-Q blob:
+
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`
+
+Preserved ancestry (no rebase): original scientific commit
+`825e241804c7fb260c807602fc0f1487caf84e56`; contract-migration commit
+`0e3a9597cd5550a237452aeaa57ed0a145aa6c83`; final remediation / accepted
+candidate `fb5523d55d01d4b64995d94efb786994b5f8326d`.
+
+Accepted facts:
+
+- S0 / S1 / S2: `Q_final == Q_iter` **exactly** and `u_final == u_iter`
+  **exactly**;
+- controls / `mu` / diagonal / destinations / represented rates / residual vector
+  all identical;
+- policy/sector label mismatch rows = `0` / `0` / `0`;
+- historical pre-Route-A gaps preserved as history: S1 = `0.6718037653783657`,
+  S2 = `1.3379411925537439`;
+- current Route-A gaps: S1 = `0.0`, S2 = `0.0`;
+- full repository suite: `641 passed`, `0 failed`, `0 errors`, `6` pre-existing
+  oracle warnings;
+- S0 residual = `10.435094313164921`; Bellman tolerance `1e-3` (unchanged).
+
+Exit condition for this acceptance (binding): **HJB convergence = FALSE**; no new
+HJB iterate; no new HJB trajectory; the acceptance establishes operator-contract
+coherence ONLY, not convergence. Stationary KFE remains **NOT AUTHORIZED**.
+
+### Issue #70 exact accepted scientific change
+
+Only authorized scientific source mutation:
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` — the F0
+`final=True` validation assembly only.
+
+- the supplied selected F0 record's stored `row_entries` / iteration rates /
+  `diagonal` / `utility` directly define the final-validation row;
+- the supplied selected record's policy/sector label is preserved verbatim
+  (`rec.sector`), so selected controls AND policy labels are unchanged by final
+  validation; no `INTERIOR_FINAL` retag remains;
+- preserve same-z-block destination indexing;
+- no second F0 `Q` from `asset_drifts_matlab_faithful` + `max(±mu)/step`;
+- `final=True` uses the SAME selected-generator semantics as `final=False`.
+
+Never changed: the accepted oracle; `final=False` iteration semantics;
+`select_matlab_faithful_local_policy`; F1–F11; switch matrix; controls / policy
+selection; economics / prices / grid / domain / initialization / calibration;
+tolerances / `PB_MARGIN` / Bellman tolerance; convergence criterion.
 
 ## OWNER SCIENTIFIC DECISION RESOLVED — ROUTE A SELECTED
 
@@ -70,7 +215,7 @@ Binding single-`Q` operator contract:
   authority;
 - **dual-`Q` semantics are NOT AUTHORIZED**.
 
-### Issue #70 exact authorized scientific change
+### Issue #70 frozen exact change as activated (historical record)
 
 Only authorized scientific source mutation:
 `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` — the F0
@@ -93,12 +238,13 @@ accepted `V_*`; **S1** = `alpha_half = 0.08085341880193442`; **S2** =
 `alpha_near = 0.16170683760386884`. At each state exactly ONE `final=False`
 build and ONE Route-A `final=True` build under the SAME records.
 
-Expected after consolidation: `Q_final == Q_iter` and `u_final == u_iter` to
-machine precision at all three states; historical Issue #68 S1/S2 gaps
-(`0.6718037653783657`, `1.3379411925537439`) collapse to machine precision; S0
-residual expected to remain `10.435094313164921`. **No HJB convergence claim.**
+Measured and accepted result: `Q_final == Q_iter` and `u_final == u_iter` were
+**exactly `0.0`** at all three states; the historical Issue #68 S1/S2 gaps
+(`0.6718037653783657`, `1.3379411925537439`) collapsed to exactly `0.0`; S0
+residual remained `10.435094313164921`. **No HJB convergence claim.**
 
-Explicitly NOT authorized:
+Explicitly NOT authorized (frozen Issue #70 ceiling; carried forward unchanged by
+Issue #71):
 
 - mutating the accepted oracle;
 - modifying `final=False` iteration rate semantics;
@@ -116,11 +262,12 @@ Explicitly NOT authorized:
 - SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
   welfare / Results;
 - successor Issue activation;
-- any Builder scientific branch beyond the dedicated Issue #70 branch (not yet
-  created);
+- any Builder scientific branch beyond the dedicated Issue #70 branch;
 - PR / merge / Issue close / self-accept.
 
-Issue #70 exact four-path Builder allowlist:
+Issue #70 exact four-path Builder allowlist (historical; the accepted Issue #70
+integration is the ten-path cumulative diff recorded in
+`tasks/TASK_INDEX_CURRENT.md`):
 
 1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`;
 2. `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`;
@@ -129,7 +276,8 @@ Issue #70 exact four-path Builder allowlist:
 
 No fifth tracked Builder path.
 
-Issue #70 terminal set (exactly ONE to be reported):
+Issue #70 terminal set (exactly ONE was to be reported; **Terminal A** was
+reported and accepted):
 
 - A `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__FINAL_VALIDATION_REUSES_MATLAB_FAITHFUL_SELECTED_ITERATION_GENERATOR_AT_ALL_FROZEN_STATES__DUAL_RATE_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_READY`
 - B `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__ROUTE_A_IMPLEMENTED_BUT_MATERIAL_FINAL_VS_ITERATION_OPERATOR_DISCREPANCY_REMAINS__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
@@ -814,32 +962,33 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 ## Interpretation ceiling
 
-**ISSUE #70 / DLH-5V-V IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #69 /
-DLH-5V-U is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
-`a08ad35c1dfea212fdc34c276e332b985af1a59f`. The Issue #69 Owner gate is
-**RESOLVED: Route A selected** — MATLAB-faithful selected iteration-rate semantics
-are authoritative for the HJB operator, the solve / final validation / future
-authorized `Q^T` must share **one coherent selected generator**, raw-drift
-`max(±mu)/step` is **not** an independent final-validation `Q` authority, and
-dual-`Q` semantics are **NOT AUTHORIZED**.
+**ISSUE #71 / DLH-5V-W IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #70 /
+DLH-5V-V is ACCEPTED / CLOSED at Terminal A and integrated to `main` at
+`fb5523d55d01d4b64995d94efb786994b5f8326d` (accepted selected-Q blob
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`). Owner Route A remains binding:
+MATLAB-faithful selected iteration-rate semantics are authoritative for the HJB
+operator, the solve / final validation / future authorized `Q^T` share **one
+coherent selected generator**, raw-drift `max(±mu)/step` is **not** an
+independent final-validation `Q` authority, and dual-`Q` semantics are **NOT
+AUTHORIZED**.
 
-The Issue #70 ceiling is exactly: ONE minimal source mutation implementing Route A
-in the F0 `final=True` assembly of
-`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`; ONE deterministic
-reconstruction of `V_*` plus the accepted Issue #68 tangent direction; exactly
-THREE frozen-state checks S0/S1/S2 with no search and no alpha tuning; at each
-state exactly ONE `final=False` build and ONE Route-A `final=True` build; ONE
+The Issue #71 ceiling is exactly: a read-only decomposition of the remaining
+Route-A single-`Q` residual `R = rho*V - u - Q*V` at the ONE accepted `V_*`; ONE
+Route-A `final=False` operator build; deterministic top-20 residual rows
+(tie-break row id) with per-row additive components and metadata; a read-only
+reproduction audit of accepted local-policy records on top-20 F0 rows; ONE
 deterministic repeat; focused tests plus the full repository suite — inside the
-exact four-path allowlist. Explicitly NOT authorized: mutating the accepted
-oracle; modifying `final=False` iteration rate semantics; modifying policy
-selection / controls; modifying F1–F11 boundary semantics; economics / prices /
-grid / domain / initialization / tolerances / `PB_MARGIN` / Bellman-tolerance
-change; convergence-criterion change; accepting any state as a new HJB iterate;
-multi-step Newton / policy iteration / semismooth / trust-region / continuation /
-line search; alpha tuning or extra trials; price / Wmax / resolution sweeps;
-KFE / stationary KFE / `solve_household_steady_state`; SCC/global-Q;
+exact four-path allowlist. Explicitly NOT authorized: mutating selected-Q or the
+accepted oracle; modifying `final=False` / `final=True` semantics; modifying
+policy selection / controls; modifying F1–F11 boundary semantics; economics /
+prices / grid / domain / initialization / calibration / tolerances / `PB_MARGIN`
+/ Bellman-tolerance change; convergence-criterion change; accepting any state as
+a new HJB iterate; running a new trajectory; Newton solve / tangent direction /
+trial step / policy iteration / semismooth / trust-region / continuation / line
+search; alpha tuning or extra trials; price / Wmax / resolution sweeps; KFE /
+stationary KFE / `solve_household_steady_state`; SCC/global-Q;
 GE/multi-region/neural/nominal/calibration/policy/welfare/Results; successor
-Issue activation; any Builder scientific branch beyond the dedicated Issue #70
+Issue activation; any Builder scientific branch beyond the dedicated Issue #71
 branch (not yet created); PR / merge / Issue close / self-accept.
 
 Stationary KFE remains **NOT AUTHORIZED**.
@@ -848,8 +997,10 @@ Stationary KFE remains **NOT AUTHORIZED**.
 
 - `tasks/TASK_INDEX_CURRENT.md`
 - `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
-- Issue #70 body/comments (OPEN; initial authoritative activation `5681294485`;
+- Issue #71 body/comments (OPEN; initial authoritative activation `5691703381`;
   final authoritative activation-refresh not yet published).
+- Issue #70 body/comments (accepted/closed; reviewer acceptance `5691693472`,
+  acceptance integration `5691696204`).
 - Issue #69 body/comments (accepted/closed; reviewer acceptance `5678488562`,
   acceptance integration `5678493024`).
 - Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
