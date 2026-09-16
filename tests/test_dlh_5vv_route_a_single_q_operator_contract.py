@@ -45,6 +45,9 @@ from deep_learning_hank.two_asset.tangent_projected_newton_geometry import (
 
 SELECTED_Q_RELPATH = "src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py"
 SELECTED_Q_PRE_ISSUE70_BLOB = "556ccc214f03a1a22306cc4f5c7e9f7691bbf897"
+# The blob ACCEPTED by the Issue #70 Reviewer integration (`5691696204`) and now
+# carried by live `main` (integration `fb5523d` + governance sync `e1a7a9a`).
+ISSUE70_ACCEPTED_SELECTED_Q_BLOB = "7857cabb4d28af99cb9d59e2d1c3024b05787c11"
 ORACLE_BLOB = "76ae5b149993a7edeeb8eb337f1b02b3fe33c51e"
 
 ALPHA_HALF = 0.08085341880193442
@@ -238,8 +241,12 @@ def test_pre_issue70_blob_recorded_and_oracle_unchanged():
         cwd=repo_root, capture_output=True, text=True,
         encoding="utf-8", errors="replace", check=True).stdout.strip()
     assert blob(parent_sha, SELECTED_Q_RELPATH) == SELECTED_Q_PRE_ISSUE70_BLOB
-    # the same pre-Route-A revision is still the live main revision
-    assert blob("origin/main", SELECTED_Q_RELPATH) == SELECTED_Q_PRE_ISSUE70_BLOB
+    # live main now carries the ACCEPTED post-Route-A state (Issue #70
+    # integration `fb5523d` plus governance sync `e1a7a9a`). The pre-Route-A blob
+    # is therefore no longer main's revision; it is preserved at the ABSOLUTE
+    # revision asserted above and remains the recorded comparison authority.
+    assert blob("origin/main", SELECTED_Q_RELPATH) == (
+        ISSUE70_ACCEPTED_SELECTED_Q_BLOB)
     assert blob(parent_sha, "src/deep_learning_hank/two_asset/"
                             "matlab_faithful_two_asset_ha.py") == ORACLE_BLOB
     # the oracle is unchanged in the current candidate too
