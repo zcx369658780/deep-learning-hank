@@ -145,6 +145,26 @@ def frozen():
                            abs(a.utility - b.utility))
             if a.sector != b.sector:
                 label_changes += 1
+        # MANDATORY (Issue #70 frozen contract + Reviewer final hold 5691015137):
+        # selected policy labels must be preserved by final validation on EVERY F0
+        # row. Counted over all F0 rows with the mismatching row and value kept for
+        # diagnostics, so a regression reports the exact offending row.
+        f0_label_mismatch_rows = [
+            int(r) for r in f0_rows
+            if recs[int(r)].sector != recf[int(r)].sector]
+        f0_label_mismatch_count = len(f0_label_mismatch_rows)
+        f0_label_mismatch_first = None
+        if f0_label_mismatch_rows:
+            _r = f0_label_mismatch_rows[0]
+            f0_label_mismatch_first = (
+                _r, str(recs[_r].sector), str(recf[_r].sector))
+        # non-F0 rows go through the identical boundary path in both builds; this
+        # is asserted rather than assumed.
+        all_row_label_mismatch_count = sum(
+            1 for r in range(len(recs))
+            if recs[r] is not None and recf[r] is not None
+            and recs[r].sector != recf[r].sector)
+        assert f0_label_mismatch_count == label_changes
         out[label] = {
             "V": V, "Q_iter": Qi, "u_iter": ui, "records": recs,
             "Q_final": Qf, "u_final": uf, "records_final": recf,
@@ -153,6 +173,10 @@ def frozen():
             "global_gap": global_gap, "u_gap": u_gap,
             "diag_gap": diag_gap, "dest_gap": dest_gap,
             "ctrl_gap": ctrl_gap, "label_changes": label_changes,
+            "f0_label_mismatch_count": f0_label_mismatch_count,
+            "f0_label_mismatch_rows": f0_label_mismatch_rows,
+            "f0_label_mismatch_first": f0_label_mismatch_first,
+            "all_row_label_mismatch_count": all_row_label_mismatch_count,
             "max_abs_q1_iter": float(np.max(np.abs(np.asarray(
                 Qi.sum(axis=1)).ravel()))),
             "max_abs_q1_final": float(np.max(np.abs(np.asarray(
@@ -191,24 +215,36 @@ def test_owner_route_a_authority_marker_present():
 
 
 def test_pre_issue70_blob_recorded_and_oracle_unchanged():
+    """The pre-Issue-70 selected-Q blob and the oracle blob are still verifiable.
+
+    History is preserved explicitly: the remediation commit's parent chain keeps
+    the original Issue #70 scientific commit and, behind it, the pre-Issue-70
+    revision of the file.
+    """
     repo_root = Path(__file__).resolve().parents[1]
-    pre = subprocess.run(["git", "rev-parse",
-                          f"HEAD~0:{SELECTED_Q_RELPATH}"],
-                         cwd=repo_root, capture_output=True, text=True)
-    # HEAD is the Issue #70 candidate; the PRE-Issue-70 blob is its parent
-    parent = subprocess.run(["git", "rev-parse", "HEAD~1"],
-                            cwd=repo_root, capture_output=True, text=True)
-    assert parent.returncode == 0
-    pre_blob = subprocess.run(
-        ["git", "rev-parse", f"{parent.stdout.strip()}:{SELECTED_Q_RELPATH}"],
-        cwd=repo_root, capture_output=True, text=True, check=True)
-    assert pre_blob.stdout.strip() == SELECTED_Q_PRE_ISSUE70_BLOB
-    oracle = subprocess.run(
-        ["git", "rev-parse",
-         f"{parent.stdout.strip()}:src/deep_learning_hank/two_asset/"
-         "matlab_faithful_two_asset_ha.py"],
-        cwd=repo_root, capture_output=True, text=True, check=True)
-    assert oracle.stdout.strip() == ORACLE_BLOB
+
+    def blob(rev: str, relpath: str) -> str:
+        out = subprocess.run(
+            ["git", "rev-parse", f"{rev}:{relpath}"],
+            cwd=repo_root, capture_output=True, text=True,
+            encoding="utf-8", errors="replace", check=True)
+        return out.stdout.strip()
+
+    # the pre-Issue-70 revision is reachable as the parent of the original
+    # Issue #70 scientific commit (the Route-A change is that commit's own diff)
+    original = "825e241804c7fb260c807602fc0f1487caf84e56"
+    parent_sha = subprocess.run(
+        ["git", "rev-parse", f"{original}^"],
+        cwd=repo_root, capture_output=True, text=True,
+        encoding="utf-8", errors="replace", check=True).stdout.strip()
+    assert blob(parent_sha, SELECTED_Q_RELPATH) == SELECTED_Q_PRE_ISSUE70_BLOB
+    # the same pre-Route-A revision is still the live main revision
+    assert blob("origin/main", SELECTED_Q_RELPATH) == SELECTED_Q_PRE_ISSUE70_BLOB
+    assert blob(parent_sha, "src/deep_learning_hank/two_asset/"
+                            "matlab_faithful_two_asset_ha.py") == ORACLE_BLOB
+    # the oracle is unchanged in the current candidate too
+    assert blob("HEAD", "src/deep_learning_hank/two_asset/"
+                        "matlab_faithful_two_asset_ha.py") == ORACLE_BLOB
 
 
 def test_final_true_f0_branch_no_longer_constructs_raw_drift_q():
@@ -242,6 +278,126 @@ def test_final_false_semantics_unchanged():
              if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute)
              and n.func.attr == "local_interior_row"]
     assert len(calls) == 1
+
+
+def test_final_true_f0_branch_preserves_supplied_policy_label():
+    """SOURCE-LEVEL proof (Reviewer final hold `5691015137`) that the Route-A
+    ``final=True`` F0 assembly preserves the supplied selected record's policy /
+    sector label VERBATIM, in both places the label is recorded:
+
+    * ``_PolicyRecord(... sector=rec.sector ...)`` -- not a string literal;
+    * ``sector_arr[node, nz] = rec.sector`` -- the stored array the operator /
+      diagnostics observe.
+
+    No built-in constant ``INTERIOR_FINAL``, no assembly-path tag, and no string
+    literal keyword argument anywhere in ``build_operator_and_u``.
+    """
+    func = _build_operator_ast()
+    src = ast.get_source_segment(MODULE_SOURCE, func) or ""
+
+    # 1. no assembly-path tag anywhere in the assembly function
+    assert "INTERIOR_FINAL" not in src
+    assert "INTERIOR_FINAL" not in MODULE_SOURCE
+
+    # 2. _PolicyRecord receives sector=rec.sector (an Attribute access)
+    record_calls = [
+        n for n in ast.walk(func)
+        if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
+        and n.func.id == "_PolicyRecord"]
+    assert record_calls, "_PolicyRecord construction not found"
+    sector_kwargs = []
+    for call in record_calls:
+        for kw in call.keywords:
+            if kw.arg == "sector":
+                sector_kwargs.append(kw.value)
+    assert sector_kwargs, "no sector= keyword in _PolicyRecord construction"
+    for value in sector_kwargs:
+        assert isinstance(value, ast.Attribute), (
+            f"sector= must reference a record attribute, got {ast.dump(value)}")
+        # both F0 record constructions copy a label off a selected record:
+        # `rec.sector` (Route-A final=True) and `policy.transfer_label`
+        # (final=False, unchanged semantics)
+        assert value.attr in ("sector", "transfer_label"), ast.dump(value)
+        # the receiver is a selected record, never a constant/literal
+        assert isinstance(value.value, ast.Name)
+    assert [v.attr for v in sector_kwargs].count("sector") == 1
+    # the final=True F0 branch's sector kwarg specifically is rec.sector
+    assert any(isinstance(v.value, ast.Name) and v.value.id == "rec"
+               for v in sector_kwargs)
+
+    # 3. sector_arr[node, nz] = rec.sector  (Subscript assign, Attribute value)
+    #    THREE sites exist: Route-A F0 final=True, F0 final=False
+    #    (policy.transfer_label) and the non-F0 boundary path (rec.sector).
+    sector_assigns = []
+    for node in ast.walk(func):
+        if not isinstance(node, ast.Assign):
+            continue
+        for target in node.targets:
+            if (isinstance(target, ast.Subscript)
+                    and isinstance(target.value, ast.Name)
+                    and target.value.id == "sector_arr"):
+                sector_assigns.append(node.value)
+    assert len(sector_assigns) == 3, [ast.dump(v) for v in sector_assigns]
+    # every one of them is a record label attribute, never a string literal
+    assert all(isinstance(v, ast.Attribute) and v.attr in ("sector",
+                                                           "transfer_label")
+               for v in sector_assigns), [ast.dump(v) for v in sector_assigns]
+    assert [v.attr for v in sector_assigns].count("sector") == 2
+    # and the Route-A F0 site specifically copies `rec.sector`
+    assert any(isinstance(v, ast.Attribute) and v.attr == "sector"
+               and isinstance(v.value, ast.Name) and v.value.id == "rec"
+               for v in sector_assigns)
+
+    # 4. HARD GUARANTEE: no _PolicyRecord built anywhere in the assembly carries
+    #    a string-literal `sector`. Every policy label is copied from a selected
+    #    record (`rec.sector` / `policy.transfer_label`). `family="F0"` is a
+    #    constant in BOTH F0 branches by design (the branch is already selected by
+    #    `fam == "F0"`), so only the policy label is constrained here.
+    for call in [n for n in ast.walk(func) if isinstance(n, ast.Call)]:
+        if not (isinstance(call.func, ast.Name)
+                and call.func.id == "_PolicyRecord"):
+            continue
+        for kw in call.keywords:
+            assert kw.arg != "sector" or not isinstance(kw.value, ast.Constant), (
+                f"line {call.lineno}: sector= must not be a literal")
+
+
+def test_current_selected_q_blob_is_the_post_remediation_candidate():
+    """History is preserved AND the CURRENT candidate carries the label fix.
+
+    The pre-Issue-70 blob, the original Issue #70 scientific blob and the
+    migration blob all remain verifiable at their own revisions, while the
+    current revision of the file (committed or working tree) carries the
+    policy-label preservation fix and no assembly tag.
+    """
+    repo_root = Path(__file__).resolve().parents[1]
+
+    def blob(rev: str) -> str:
+        out = subprocess.run(
+            ["git", "rev-parse", f"{rev}:{SELECTED_Q_RELPATH}"],
+            cwd=repo_root, capture_output=True, text=True,
+            encoding="utf-8", errors="replace", check=True)
+        return out.stdout.strip()
+
+    # history, preserved verbatim (validated in CI against the same repos)
+    migration = "0e3a9597cd5550a237452aeaa57ed0a145aa6c83"
+    original = "825e241804c7fb260c807602fc0f1487caf84e56"
+    assert blob(migration) == "35e7dadfa4fb8f1c2a89db21751f2b541bda3cab"
+    assert blob(original) == "35e7dadfa4fb8f1c2a89db21751f2b541bda3cab"
+    assert blob("825e241804c7fb260c807602fc0f1487caf84e56^") == (
+        SELECTED_Q_PRE_ISSUE70_BLOB)
+
+    # the CURRENT revision of the file (working tree == commit when clean)
+    current = MODULE_SOURCE
+    assert "sector=rec.sector" in current
+    assert "sector_arr[node, nz] = rec.sector" in current
+    assert "INTERIOR_FINAL" not in current
+    # and the working-tree blob differs from the pre-fix migration blob
+    wt = subprocess.run(
+        ["git", "hash-object", "--", SELECTED_Q_RELPATH],
+        cwd=repo_root, capture_output=True, text=True,
+        encoding="utf-8", errors="replace", check=True).stdout.strip()
+    assert wt != blob(migration)
 
 
 # ---------------------------------------------------------------------------
@@ -309,26 +465,68 @@ def test_diagonal_and_destination_identity(frozen, label):
 
 @pytest.mark.parametrize("label", ["S0", "S1", "S2"])
 def test_controls_and_labels_unchanged(frozen, label):
-    """Selected continuous controls and realized drifts are carried verbatim.
+    """Selected controls, realized drifts AND policy labels are carried verbatim.
 
-    The Route-A final-validation record is intentionally tagged
-    ``INTERIOR_FINAL`` (it records which assembly path produced the row), so the
-    sector *label* is expected to differ from the iteration record's label. The
-    mandate's "controls unchanged" is about the selected controls and realized
-    drifts, which must be bit-identical.
+    FROZEN ISSUE #70 CONTRACT (enforced after Reviewer final hold `5691015137`):
+    "selected controls AND selected policy labels are unchanged by final
+    validation". The Route-A final-validation F0 record therefore preserves the
+    supplied selected record's ``sector`` label verbatim (``rec.sector``); the
+    assembly path is recorded in source comments only and is never encoded by
+    retagging the policy label. The four continuous controls plus the two
+    realized drifts and the utility must be bit-identical.
     """
     s = frozen["states"][label]
     assert s["ctrl_gap"] == 0.0
-    assert s["label_changes"] == 596      # every F0 row is retagged
+    # NO label may change: not just "all 596 retagged", but zero changes
+    assert s["label_changes"] == 0
     for r in frozen["f0_rows"]:
-        assert s["records_final"][int(r)].sector == "INTERIOR_FINAL"
         a, b = s["records"][int(r)], s["records_final"][int(r)]
+        assert a.sector == b.sector, (label, int(r), a.sector, b.sector)
         assert a.consumption == b.consumption
         assert a.labor == b.labor
         assert a.transfer == b.transfer
         assert a.mu_a == b.mu_a
         assert a.mu_b == b.mu_b
         assert a.utility == b.utility
+
+
+@pytest.mark.parametrize("label", ["S0", "S1", "S2"])
+def test_f0_policy_label_identity_all_rows(frozen, label):
+    """MANDATORY new check: ALL F0 rows must have identical final vs iteration
+    policy/sector labels — label mismatch row count == 0 at S0, S1 and S2.
+
+    This is the frozen Issue #70 requirement requested by Reviewer hold
+    `5691015137`: ``_PolicyRecord(... sector=rec.sector ...)`` and
+    ``sector_arr[node, nz] = rec.sector``.
+    """
+    s = frozen["states"][label]
+    assert s["f0_label_mismatch_count"] == 0, (
+        f"{label}: {s['f0_label_mismatch_count']} F0 rows changed policy label; "
+        f"first offender {s['f0_label_mismatch_first']}")
+    assert s["f0_label_mismatch_rows"] == []
+    assert s["f0_label_mismatch_first"] is None
+    # the label_changes counter used by the controls test is the same quantity
+    assert s["label_changes"] == 0
+    # and it was measured over the full expected F0 row set
+    assert s["f0_label_mismatch_count"] == 0
+    for r in frozen["f0_rows"]:
+        a, b = s["records"][int(r)], s["records_final"][int(r)]
+        assert b.sector == a.sector
+        # the label is a real selected F0 label, never an assembly tag
+        assert b.sector in ("B", "F", "0"), (label, int(r), b.sector)
+        assert "INTERIOR_FINAL" not in str(b.sector)
+    # non-F0 rows are untouched by the assembly (same boundary path both builds)
+    assert s["all_row_label_mismatch_count"] == 0
+
+
+def test_f0_policy_label_mismatch_count_is_zero_at_all_frozen_states(frozen):
+    """The mandatory label-identity result, aggregated: 0 mismatching F0 rows at
+    every one of S0 / S1 / S2."""
+    counts = {lab: frozen["states"][lab]["f0_label_mismatch_count"]
+              for lab in ("S0", "S1", "S2")}
+    assert counts == {"S0": 0, "S1": 0, "S2": 0}
+    assert all(frozen["states"][lab]["all_row_label_mismatch_count"] == 0
+               for lab in ("S0", "S1", "S2"))
 
 
 @pytest.mark.parametrize("label", ["S0", "S1", "S2"])

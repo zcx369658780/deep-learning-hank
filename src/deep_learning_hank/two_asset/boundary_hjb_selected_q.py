@@ -958,15 +958,21 @@ class BoundaryHJBSolver:
                         # Owner Route A (Issue #70 / DLH-5V-V): the final-validation
                         # F0 row reuses the SAME selected MATLAB-faithful generator
                         # record produced by the solve -- stored row_entries / stored
-                        # iteration-rate semantics / stored diagonal / stored utility.
-                        # No second F0 generator is constructed here: the raw-drift
-                        # recompute via asset_drifts_matlab_faithful and the
-                        # max(+-mu)/step upwind mapping are deliberately NOT used, so
-                        # final=True and final=False share one selected operator
-                        # semantics. Destination columns keep the same-z-block
-                        # indexing (nz * self.n + dn). The record's stored controls,
-                        # realized mu_a/mu_b and utility are carried as metadata and
-                        # for u/diagnostics only.
+                        # iteration-rate semantics / stored diagonal / stored utility /
+                        # stored policy (sector) label. No second F0 generator is
+                        # constructed here: the raw-drift recompute via
+                        # asset_drifts_matlab_faithful and the max(+-mu)/step upwind
+                        # mapping are deliberately NOT used, so final=True and
+                        # final=False share one selected operator semantics.
+                        # Destination columns keep the same-z-block indexing
+                        # (nz * self.n + dn). The record's stored controls, realized
+                        # mu_a/mu_b and utility are carried as metadata and for
+                        # u/diagnostics only. The supplied selected record's policy
+                        # label is preserved VERBATIM (rec.sector) so that selected
+                        # controls AND selected policy labels are unchanged by final
+                        # validation, as the frozen Issue #70 contract requires; the
+                        # assembly path is recorded only in this comment, never by
+                        # retagging the policy label.
                         rec = f0_policies[row]
                         entries = [(int(dn), float(rate)) for dn, rate in rec.row_entries]
                         diag = float(rec.diagonal)
@@ -975,7 +981,7 @@ class BoundaryHJBSolver:
                         rows.append(row); cols.append(row); data.append(diag)
                         u[row] = rec.utility
                         rec2 = _PolicyRecord(
-                            family="F0", sector="INTERIOR_FINAL", consumption=rec.consumption,
+                            family="F0", sector=rec.sector, consumption=rec.consumption,
                             labor=rec.labor, transfer=rec.transfer, mu_a=rec.mu_a, mu_b=rec.mu_b,
                             utility=rec.utility, row_entries=entries, diagonal=diag,
                             artificial_binding=False, economic_binding=False, expansions=0,
@@ -986,7 +992,7 @@ class BoundaryHJBSolver:
                         mu_a_arr[node, nz] = rec.mu_a
                         mu_b_arr[node, nz] = rec.mu_b
                         utility[node, nz] = rec.utility
-                        sector_arr[node, nz] = "INTERIOR_FINAL"
+                        sector_arr[node, nz] = rec.sector
                         policy_records[row] = rec2
                         continue
                     policy, entries, diag = self.local_interior_row(

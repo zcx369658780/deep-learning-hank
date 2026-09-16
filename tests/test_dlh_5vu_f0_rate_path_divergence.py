@@ -91,6 +91,12 @@ HISTORICAL_ISSUE69_TERMINAL_A = (
 # read-only audit fails closed.
 # ---------------------------------------------------------------------------
 CURRENT_ROUTE_A_SELECTED_Q_BLOB = "35e7dadfa4fb8f1c2a89db21751f2b541bda3cab"
+# Revision-independent anchors: the pre-Route-A revision is the parent of the
+# ORIGINAL Issue #70 scientific commit. Absolute revisions (not moving `HEAD~n`)
+# keep the historical evidence verifiable across later remediation commits.
+PRE_ROUTE_A_SELECTED_Q_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56^"
+ORIGINAL_ISSUE70_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56"
+CONTRACT_MIGRATION_COMMIT = "0e3a9597cd5550a237452aeaa57ed0a145aa6c83"
 CURRENT_ROUTE_A_Q_GAP = 0.0
 CURRENT_ROUTE_A_TERMINAL = m.TERMINAL_C
 CURRENT_ROUTE_A_TERMINAL_DISCLOSURE = (
@@ -239,26 +245,33 @@ def test_accepted_issue68_alpha_fractions_exact():
 
 
 def test_selected_q_repaired_blob_exact():
-    """CURRENT: the selected-Q blob is the post-Route-A (Issue #70) candidate.
+    """CURRENT: the selected-Q source is the post-Route-A (Issue #70) candidate.
 
     The historical pre-Route-A Issue #67 repair blob is preserved as evidence in
-    the module constants and remains verifiable at the Issue #70 parent commit.
+    the module constants and remains verifiable at an ABSOLUTE revision (the
+    parent of the original Issue #70 scientific commit), so later remediation
+    commits cannot shift or obscure it.
     """
     repo_root = Path(__file__).resolve().parents[1]
-    out = subprocess.run(
-        ["git", "rev-parse", f"HEAD:{SELECTED_Q_RELPATH}"],
-        cwd=repo_root, capture_output=True, text=True,
-        encoding="utf-8", errors="replace", check=True)
-    assert out.stdout.strip() == CURRENT_ROUTE_A_SELECTED_Q_BLOB
+
+    def blob(spec: str) -> str:
+        return subprocess.run(
+            ["git", "rev-parse", f"{spec}:{SELECTED_Q_RELPATH}"],
+            cwd=repo_root, capture_output=True, text=True,
+            encoding="utf-8", errors="replace", check=True).stdout.strip()
+
     # historical pre-Route-A blob stays recorded and DIFFERENT
     assert m.SELECTED_Q_REPAIRED_BLOB == PRE_ROUTE_A_SELECTED_Q_BLOB
     assert PRE_ROUTE_A_SELECTED_Q_BLOB != CURRENT_ROUTE_A_SELECTED_Q_BLOB
-    # and it is verifiable at the Issue #70 parent commit
-    pre = subprocess.run(
-        ["git", "rev-parse", f"HEAD~1:{SELECTED_Q_RELPATH}"],
-        cwd=repo_root, capture_output=True, text=True,
-        encoding="utf-8", errors="replace", check=True)
-    assert pre.stdout.strip() == PRE_ROUTE_A_SELECTED_Q_BLOB
+    assert blob(PRE_ROUTE_A_SELECTED_Q_COMMIT) == PRE_ROUTE_A_SELECTED_Q_BLOB
+    # the ORIGINAL Issue #70 scientific commit still carries the Route-A blob
+    assert blob(ORIGINAL_ISSUE70_COMMIT) == CURRENT_ROUTE_A_SELECTED_Q_BLOB
+    assert blob(CONTRACT_MIGRATION_COMMIT) == CURRENT_ROUTE_A_SELECTED_Q_BLOB
+    # and the CURRENT revision is the label-preserving Route-A implementation
+    current = (repo_root / SELECTED_Q_RELPATH).read_text(encoding="utf-8")
+    assert "sector=rec.sector" in current
+    assert "sector_arr[node, nz] = rec.sector" in current
+    assert "INTERIOR_FINAL" not in current
 
 
 # ---------------------------------------------------------------------------
@@ -642,14 +655,19 @@ def test_provenance_anchors_exist_in_accepted_sources():
                    if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)
                    and n.func.id == "asset_drifts_matlab_faithful"]
     assert drift_calls == [], "raw-drift reconstruction must be gone"
-    # HISTORICAL pre-Route-A raw-drift assembly, verifiable at the parent commit
+    # HISTORICAL pre-Route-A raw-drift assembly, verifiable at an ABSOLUTE
+    # pre-Route-A revision (later remediation commits cannot shift it)
     pre = subprocess.run(
-        ["git", "show", f"HEAD~1:{SELECTED_Q_RELPATH}"],
+        ["git", "show", f"{PRE_ROUTE_A_SELECTED_Q_COMMIT}:{SELECTED_Q_RELPATH}"],
         cwd=repo_root, capture_output=True, text=True,
         encoding="utf-8", errors="replace", check=True).stdout
     for token in ("asset_drifts_matlab_faithful", "max(-mu_a_v, 0.0) / self.da",
                   "max(-mu_b_v, 0.0) / self.db"):
         assert token in pre, token
+    # and the CURRENT Route-A revision preserves the supplied policy label
+    assert "sector=rec.sector" in selected_q
+    assert "sector_arr[node, nz] = rec.sector" in selected_q
+    assert "INTERIOR_FINAL" not in selected_q
 
 
 def test_liquid_branch_gating_is_the_source_backed_condition(f0_row_evidence):

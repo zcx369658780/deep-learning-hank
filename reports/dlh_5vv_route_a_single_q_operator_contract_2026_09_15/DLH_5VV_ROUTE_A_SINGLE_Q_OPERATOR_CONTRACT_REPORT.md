@@ -6,6 +6,8 @@
 **Authority marker:** `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_AUTHORIZED`
 **Initial authoritative activation:** `5681294485`
 **Final authoritative activation-refresh:** `5682174361`
+**Reviewer hold (contract migration):** `5690304999`
+**Reviewer final hold (policy-label identity):** `5691015137`
 **Post-sync live `main`:** `0bca3b4552a76331302670bf59bddfa4cd4f06f7`
 **Dedicated Builder branch:** `dsh/issue-70-dlh-5vv-route-a-single-q-operator-contract-2026-09-15`
 **Date:** 2026-09-15
@@ -139,18 +141,43 @@ Issue #68 full-gradient tangent direction.
 | represented-rate mismatch rows | `0` | `0` | `0` |
 | `max\|Q 1\|` iteration / final | `2.4253377084448857e-12` / `2.4253377084448857e-12` | same | same |
 | controls max abs difference | **`0.0`** | **`0.0`** | **`0.0`** |
+| **F0 policy/sector label mismatch rows** | **`0`** | **`0`** | **`0`** |
+| all-row (F0 + non-F0) label mismatch rows | **`0`** | **`0`** | **`0`** |
 
-Every operator, diagonal, destination, rate and utility identity is **exactly
-`0.0`**, i.e. bit-identical rather than merely within tolerance. `Q`
-conservativity is preserved and identical across both constructions. No alternate
-F0 rate path exists after the change.
+Every operator, diagonal, destination, rate, utility **and policy-label** identity
+is **exactly `0.0`** / zero rows, i.e. bit-identical rather than merely within
+tolerance. `Q` conservativity is preserved and identical across both
+constructions. No alternate F0 rate path exists after the change.
 
-**Policy labels.** The Route-A final-validation record is intentionally tagged
-`INTERIOR_FINAL` (it records which assembly path produced the row), so all `596`
-F0 sector labels differ from the iteration record's label. The mandate's
-"controls unchanged" concerns the selected controls and realized drifts, which
-are bit-identical (`controls_max_abs_diff = 0.0`); this is documented rather than
-suppressed.
+**Policy labels (frozen contract requirement — enforced under Reviewer final hold
+`5691015137`).** The Route-A final-validation F0 row preserves the supplied
+selected record's policy label VERBATIM:
+
+```python
+rec2 = _PolicyRecord(family="F0", sector=rec.sector, ...)
+...
+sector_arr[node, nz] = rec.sector
+```
+
+`sector_arr` therefore carries exactly the labels the solve selected (the observed
+F0 label set is `{'0', 'B'}`), not an assembly tag. The frozen Issue #70
+requirement — *selected controls **and** selected policy labels are unchanged by
+final validation* — is now satisfied on **every** F0 row at S0, S1 and S2
+(mismatch row count `0`), and it is checked by
+`test_f0_policy_label_identity_all_rows` plus a source-level AST test that forbids
+any string-literal `sector=` in the assembly. The intermediate revision
+`0e3a959…` tagged these rows `INTERIOR_FINAL`; that tag is **removed**, and no
+`INTERIOR_FINAL` token remains anywhere in the module.
+
+This label-only change does not touch `row_entries`, `diagonal`, `utility`,
+controls, realized drifts, `final=False` semantics, the oracle, F1–F11, the switch
+matrix, economics/prices/grid/domain, initialization, tolerances, `PB_MARGIN`,
+the Bellman tolerance or the convergence criterion. Concretely, the entire
+remediation diff inside that branch is two value expressions (a `sector=`
+keyword argument and a `sector_arr` assignment) plus an explanatory comment — the
+generator, diagonal, utility, destination indexing and controls are byte-for-byte
+the same code as revision `0e3a959…`, and the S0/S1/S2 identity table above
+(including `R_final - R_iter` and the conservativity numbers) is unchanged by it.
 
 ## 4. Bellman residual identity
 
@@ -301,6 +328,70 @@ working tree was restored to the accepted blob
 omitted: the committed candidate contains **no** change to that module, and the
 final candidate diff is exactly the authorized ten paths.
 
+### 5.3 Final bounded remediation — policy-label preservation (Reviewer final hold `5691015137`)
+
+The Reviewer reviewed candidate `0e3a959…` and confirmed the migration was
+otherwise well-formed (base/merge-base `0bca3b4…`, exactly ten authorized paths,
+Route-A blob unchanged, Issue #66 zero-gap handling explicit, historical evidence
+separated from current assertions, suites green) but withheld acceptance on ONE
+remaining contract point: the frozen Issue #70 §6 / activation `5682174361`
+requirement is that **selected controls AND selected policy labels are unchanged
+by final validation**, and the `final=True` F0 branch was still building
+`_PolicyRecord(sector="INTERIOR_FINAL", …)` and writing
+`sector_arr[node, nz] = "INTERIOR_FINAL"`. The generator, `u`, controls and drifts
+were identical, but the *policy-label* half of the frozen contract was not met.
+The Reviewer was explicit that the previous report's own disclosure — "all 596 F0
+sector labels differ" — could not be accepted as a mere assembly tag.
+
+**Remediation (one commit, `boundary_hjb_selected_q.py` only).** The entire
+inside-branch diff is two value expressions plus an explanatory comment:
+
+```python
+# before (revision 0e3a959…)
+rec2 = _PolicyRecord(family="F0", sector="INTERIOR_FINAL", ...)
+sector_arr[node, nz] = "INTERIOR_FINAL"
+# after
+rec2 = _PolicyRecord(family="F0", sector=rec.sector, ...)
+sector_arr[node, nz] = rec.sector
+```
+
+`row_entries`, `diagonal`, `utility`, consumption, labor, transfer, `mu_a`,
+`mu_b`, `final=False` semantics, policy selection, the oracle, F1–F11, the switch
+matrix, economics/prices/grid/domain, initialization, tolerances, `PB_MARGIN`, the
+Bellman tolerance and the convergence criterion are **untouched**; no
+`INTERIOR_FINAL` token remains anywhere in the module.
+
+**Verified result at the frozen states** (`label mismatch row count = 0`
+required):
+
+| Quantity | S0 | S1 | S2 |
+|---|---|---|---|
+| F0 policy/sector label mismatch rows | **`0`** | **`0`** | **`0`** |
+| all-row (F0 + non-F0) label mismatch rows | **`0`** | **`0`** | **`0`** |
+| observed F0 label set (iteration == final) | `{'0', 'B'}` | `{'0', 'B'}` | `{'0', 'B'}` |
+| `Q_final == Q_iter` (max abs) | **`0.0`** | **`0.0`** | **`0.0`** |
+| `u_final == u_iter` (max abs) | **`0.0`** | **`0.0`** | **`0.0`** |
+| controls / `mu` metadata max abs diff | **`0.0`** | **`0.0`** | **`0.0`** |
+| diagonal max diff / destination sym-diff rows | `0.0` / `0` | `0.0` / `0` | `0.0` / `0` |
+| represented-rate mismatch rows | `0` | `0` | `0` |
+| residual vector max abs diff | **`0.0`** | **`0.0`** | **`0.0`** |
+| `\|\|R_iter\|\|inf` (unchanged by this fix) | `10.435094313164921` | `9.593278055493213` | `8.755529626006652` |
+
+Because the change is label-only, every identity and residual number above is
+identical to revision `0e3a959…`. New tests lock the contract: a runtime all-F0
+label-identity check at S0/S1/S2, an aggregate mismatch-count check, and a
+source-level AST test asserting that `_PolicyRecord(... sector=rec.sector ...)`
+and `sector_arr[node, nz] = rec.sector` are present, that `sector=` is never a
+string literal in the assembly, and that `INTERIOR_FINAL` does not exist.
+
+Historical anchors were also made **revision-independent** (absolute SHAs instead
+of moving `HEAD~n`) so that adding this commit could not shift the pre-Route-A
+evidence: `825e241…^` for the pre-Route-A source, `825e241…` for the original
+scientific commit and `0e3a959…` for the migration commit. Historical Issue
+#65/#66/#67/#68/#69 evidence is preserved unchanged; current Route-A S1/S2 gaps
+remain `0.0` while the historical gaps remain `0.6718037653783657` /
+`1.3379411925537439`, distinctly labelled.
+
 ## 6. Interpretation ceiling — HJB convergence remains FALSE
 
 Passing this Issue means only that:
@@ -333,7 +424,7 @@ identity data are bit-identical (`deterministic_repeat_identical = True`).
 ## 8. Tests
 
 Focused suite `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`:
-**36 passed**.
+**42 passed**.
 
 Coverage: Owner Route-A authority marker present in the implementation; the
 pre-Issue-70 selected-Q blob recorded as
@@ -354,7 +445,7 @@ identical; static scan for forbidden machinery.
 
 Full repository suite `python -m pytest tests/ -q`:
 
-**`635 passed, 6 warnings in 3143.06 s (0:52:23)`** — `EXIT=0`, i.e. **0 failed,
+**`641 passed, 6 warnings in 3402.38 s (0:56:42)`** — `EXIT=0`, i.e. **0 failed,
 0 errors, GREEN**.
 
 The 6 warnings are the pre-existing `MatrixRankWarning` entries from the accepted
@@ -374,15 +465,19 @@ is exactly the ten authorized paths (§9).
 
 | Suite | Result | Historical evidence preserved as |
 |---|---|---|
-| `tests/test_dlh_5vu_f0_rate_path_divergence.py` | **24 passed** | `PRE_ROUTE_A_SELECTED_Q_BLOB`, `HISTORICAL_ISSUE68_GAP_HALF/NEAR`, `HISTORICAL_ISSUE68_ROWS_HALF/NEAR`, `HISTORICAL_ISSUE68_B_RATE_DIFF_HALF/NEAR`, `HISTORICAL_ISSUE68_ROW_COUNTS`, `HISTORICAL_ISSUE69_TERMINAL_A` |
+| `tests/test_dlh_5vu_f0_rate_path_divergence.py` | **24 passed** | `PRE_ROUTE_A_SELECTED_Q_BLOB`, `HISTORICAL_ISSUE68_GAP_HALF/NEAR`, `HISTORICAL_ISSUE68_ROWS_HALF/NEAR`, `HISTORICAL_ISSUE68_B_RATE_DIFF_HALF/NEAR`, `HISTORICAL_ISSUE68_ROW_COUNTS`, `HISTORICAL_ISSUE69_TERMINAL_A`, `PRE_ROUTE_A_SELECTED_Q_COMMIT` |
 | `tests/test_dlh_5vt_tangent_projected_newton_geometry.py` | **40 passed** | `HISTORICAL_ISSUE68_TRIAL_GAP_HALF/NEAR`, `HISTORICAL_ISSUE68_TRIAL_ROWS_HALF/NEAR`, `HISTORICAL_ISSUE68_TERMINAL_C` |
 | `tests/test_dlh_5vr_f0_final_rate_provenance.py` | **18 passed** | `HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP = 1.4210854715202004e-14` |
 | `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` | **15 passed** | `HISTORICAL_PRE_ROUTE_A_D_RATE_INF = 3.410605131648481e-13`, `HISTORICAL_PRE_ROUTE_A_Q_CURRENT_MINUS_ITER = 1.4210854715202004e-14` |
-| `tests/test_dlh_5vs_final_validation_zblock_repair.py` | **21 passed** | `PRE_ROUTE_A_FINAL_ZBLOCK_*` plus a dedicated preservation test reading the parent commit via `git show HEAD~1:…` |
+| `tests/test_dlh_5vs_final_validation_zblock_repair.py` | **21 passed** | `PRE_ROUTE_A_FINAL_ZBLOCK_*` plus a dedicated preservation test reading the parent commit read-only at the absolute revision `825e241…^` |
 | `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py` | exercised by the above | — (authorized zero-gap handling only, §5.2.3) |
 
-Combined six-target focused run: **154 passed in 70.11 s**.
-Issue #70 focused suite alone: **36 passed**.
+Combined six-target focused run: **160 passed in 77.67 s**.
+Issue #70 focused suite alone: **42 passed** (`test_dlh_5vv_route_a_single_q_operator_contract.py`).
+
+Per-file focused counts after the final remediation: `test_dlh_5vv…` 42,
+`test_dlh_5vt…` 40, `test_dlh_5vu…` 24, `test_dlh_5vs…` 21, `test_dlh_5vr…` 18,
+`test_dlh_5vq…` 15 — total **160**, `0 failed`.
 
 Every historical expected value is retained as an explicitly named historical
 constant and asserted as history. Nothing was silently replaced, and no
@@ -455,12 +550,16 @@ disclosed (§5.2.4) — it is simply no longer reachable by the operator.
 
 Two separate matters:
 
-1. **Contract migration (§5.2) — CLOSED.** The bounded post-Route-A migration
-   authorized by Reviewer hold `5690304999` is complete: six added paths, each
-   historical expected value preserved as an explicitly labelled historical
-   constant, the Issue #69 audit module deliberately untouched and asserted
-   byte-identical, the Issue #66 module's degenerate zero-gap case handled
-   explicitly. The repository suite is green.
+1. **Contract migration (§5.2) and final policy-label remediation (§5.3) —
+   CLOSED.** The bounded post-Route-A migration authorized by Reviewer hold
+   `5690304999` is complete (six added paths, every historical expected value
+   preserved as an explicitly labelled historical constant, the Issue #69 audit
+   module deliberately untouched and asserted byte-identical, the Issue #66
+   module's degenerate zero-gap case handled explicitly). The policy-label
+   contract point raised by Reviewer final hold `5691015137` is also closed:
+   selected policy labels are now preserved verbatim on every F0 row
+   (`mismatch row count = 0` at S0/S1/S2). The repository suite is green and the
+   cumulative diff remains exactly the ten authorized paths.
 2. **Residual reassessment.** The solve and final validation now share one
    coherent selected generator, so the final Bellman residual at `V_*`
    (`10.435094313164921`) is the genuine single-operator residual. It remains

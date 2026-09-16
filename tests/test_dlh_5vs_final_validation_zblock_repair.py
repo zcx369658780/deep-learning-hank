@@ -107,6 +107,12 @@ PRE_ROUTE_A_FINAL_ZBLOCK_LINE_TEXT = (
 # supplied selected record instead of re-deriving raw-drift rates.
 CURRENT_ROUTE_A_FINAL_LINE_TEXT = "cols.append(nz * self.n + dn)"
 PRE_ROUTE_A_SELECTED_Q_BLOB = "556ccc214f03a1a22306cc4f5c7e9f7691bbf897"
+# Revision-independent anchor: the pre-Route-A revision is the parent of the
+# ORIGINAL Issue #70 scientific commit. An absolute revision (rather than a moving
+# `HEAD~n`) keeps the historical evidence verifiable across later remediation
+# commits on this branch.
+PRE_ROUTE_A_SELECTED_Q_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56^"
+ORIGINAL_ISSUE70_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56"
 
 TERMINAL_A = (
     "DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_"
@@ -595,26 +601,38 @@ def test_source_repair_is_exactly_one_authorized_location():
 
 
 def test_pre_route_a_zblock_repair_evidence_preserved():
-    """The accepted Issue #67 repair remains auditable in the parent commit.
+    """The accepted Issue #67 repair remains auditable at a pinned revision.
 
-    The pre-Route-A source (the Issue #70 parent commit) is read read-only and
-    must still show the historical z-block repair: the same-z-block template at
-    THREE sites including the final=F0 branch, and no bare-destination
-    assembly. This preserves the Issue #67 history instead of overwriting it.
+    The pre-Route-A source is read read-only from an ABSOLUTE revision (the
+    parent of the original Issue #70 scientific commit) and must still show the
+    historical z-block repair: the same-z-block template at THREE sites
+    including the final=F0 branch, and no bare-destination assembly. Using an
+    absolute revision rather than a moving ``HEAD~n`` keeps the Issue #67 history
+    verifiable across later remediation commits instead of overwriting it.
     """
     import subprocess as _sp
     repo_root = Path(__file__).resolve().parents[1]
-    pre = _sp.run(["git", "show", f"HEAD~1:{SELECTED_Q_RELPATH}"],
+    pre = _sp.run(["git", "show",
+                   f"{PRE_ROUTE_A_SELECTED_Q_COMMIT}:{SELECTED_Q_RELPATH}"],
                   cwd=repo_root, capture_output=True, text=True,
                   encoding="utf-8", errors="replace", check=True).stdout
     assert pre.count(PRE_ROUTE_A_FINAL_ZBLOCK_LINE_TEXT) == 3
     assert "rows.append(row); cols.append(dn); data.append(rate)" not in pre
     # the pre-Route-A final=F0 branch still rebuilt its rates from raw drift
     assert "max(-mu_a_v, 0.0) / self.da" in pre
-    blob = _sp.run(["git", "rev-parse", f"HEAD~1:{SELECTED_Q_RELPATH}"],
-                   cwd=repo_root, capture_output=True, text=True,
-                   encoding="utf-8", errors="replace", check=True).stdout.strip()
+    blob = _sp.run(
+        ["git", "rev-parse",
+         f"{PRE_ROUTE_A_SELECTED_Q_COMMIT}:{SELECTED_Q_RELPATH}"],
+        cwd=repo_root, capture_output=True, text=True,
+        encoding="utf-8", errors="replace", check=True).stdout.strip()
     assert blob == PRE_ROUTE_A_SELECTED_Q_BLOB
+    # the CURRENT Route-A revision still uses the same-z-block destination
+    # template at three sites AND preserves the supplied policy label
+    current = (repo_root / SELECTED_Q_RELPATH).read_text(encoding="utf-8")
+    assert current.count(PRE_ROUTE_A_FINAL_ZBLOCK_LINE_TEXT) == 3
+    assert "sector=rec.sector" in current
+    assert "sector_arr[node, nz] = rec.sector" in current
+    assert "INTERIOR_FINAL" not in current
 
 
 def test_source_repair_is_the_only_selected_q_change():

@@ -65,6 +65,13 @@ HISTORICAL_ISSUE68_TERMINAL_C = (
 # Outcome C inconsistency condition.
 # ---------------------------------------------------------------------------
 CURRENT_ROUTE_A_SELECTED_Q_BLOB = "35e7dadfa4fb8f1c2a89db21751f2b541bda3cab"
+# Revision-independent anchors: the pre-Route-A revision is the parent of the
+# ORIGINAL Issue #70 scientific commit. Using an absolute revision (rather than a
+# moving `HEAD~n`) keeps the historical evidence verifiable across every later
+# remediation commit on this branch.
+PRE_ROUTE_A_SELECTED_Q_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56^"
+ORIGINAL_ISSUE70_COMMIT = "825e241804c7fb260c807602fc0f1487caf84e56"
+CONTRACT_MIGRATION_COMMIT = "0e3a9597cd5550a237452aeaa57ed0a145aa6c83"
 CURRENT_ROUTE_A_TRIAL_GAP = 0.0
 CURRENT_ROUTE_A_TRIAL_INCONSISTENT_ROWS = 0
 CURRENT_ROUTE_A_TERMINAL = (
@@ -117,7 +124,8 @@ def test_selected_q_repaired_blob_exact():
     """CURRENT: the selected-Q source is the post-Route-A (Issue #70) candidate.
 
     The historical pre-Route-A Issue #67 repair blob remains recorded as
-    evidence and is verifiable at the Issue #70 parent commit.
+    evidence and is verifiable at the ORIGINAL Issue #70 commit's parent
+    (absolute revision, so later remediation commits cannot obscure it).
     """
     import subprocess
 
@@ -128,10 +136,19 @@ def test_selected_q_repaired_blob_exact():
                               capture_output=True, text=True, encoding="utf-8",
                               errors="replace", check=True).stdout.strip()
 
-    assert _rev(f"HEAD:{SELECTED_Q_RELPATH}") == CURRENT_ROUTE_A_SELECTED_Q_BLOB
     assert m.SELECTED_Q_REPAIRED_BLOB == PRE_ROUTE_A_SELECTED_Q_BLOB
     assert PRE_ROUTE_A_SELECTED_Q_BLOB != CURRENT_ROUTE_A_SELECTED_Q_BLOB
-    assert _rev(f"HEAD~1:{SELECTED_Q_RELPATH}") == PRE_ROUTE_A_SELECTED_Q_BLOB
+    # historical pre-Route-A revision, pinned absolutely
+    assert _rev(f"{PRE_ROUTE_A_SELECTED_Q_COMMIT}:{SELECTED_Q_RELPATH}") == (
+        PRE_ROUTE_A_SELECTED_Q_BLOB)
+    # the ORIGINAL Issue #70 scientific commit still carries the Route-A blob
+    assert _rev(f"{ORIGINAL_ISSUE70_COMMIT}:{SELECTED_Q_RELPATH}") == (
+        CURRENT_ROUTE_A_SELECTED_Q_BLOB)
+    # and the CURRENT revision is the label-preserving Route-A implementation
+    current = (repo_root / SELECTED_Q_RELPATH).read_text(encoding="utf-8")
+    assert "sector=rec.sector" in current
+    assert "sector_arr[node, nz] = rec.sector" in current
+    assert "INTERIOR_FINAL" not in current
 
 
 # ---------------------------------------------------------------------------

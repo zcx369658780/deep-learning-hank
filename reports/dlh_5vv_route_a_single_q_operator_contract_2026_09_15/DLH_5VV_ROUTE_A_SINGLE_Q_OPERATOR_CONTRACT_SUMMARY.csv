@@ -7,6 +7,13 @@ initial_activation,5681294485
 final_activation_refresh,5682174361
 selected_q_pre_issue70_blob,556ccc214f03a1a22306cc4f5c7e9f7691bbf897
 selected_q_post_issue70_blob,35e7dadfa4fb8f1c2a89db21751f2b541bda3cab
+selected_q_post_remediation_blob,7857cabb4d28af99cb9d59e2d1c3024b05787c11
+original_issue70_commit,825e241804c7fb260c807602fc0f1487caf84e56
+contract_migration_commit,0e3a9597cd5550a237452aeaa57ed0a145aa6c83
+reviewer_final_hold,5691015137
+policy_label_preservation_fix_applied,True
+interior_final_token_remaining_in_module,False
+f0_policy_label_mismatch_rows_S0_S1_S2,"0; 0; 0"
 oracle_blob,76ae5b149993a7edeeb8eb337f1b02b3fe33c51e
 final_statistic,3.6614352438846254e-08
 min_boundary_pb,4.8089461301970005e-09
@@ -29,7 +36,11 @@ S0.r_final_inf,10.435094313164921
 S0.r_vector_max_abs_diff,0.0
 S0.r_argmax,"row=97; node=97; z=0; family=F0"
 S0.controls_max_abs_diff,0.0
-S0.sector_label_changes,596
+S0.f0_policy_label_mismatch_rows,0
+S0.all_row_policy_label_mismatch_rows,0
+S0.final_record_sector_source,rec.sector
+S0.sector_arr_source,rec.sector
+S0.sector_label_changes,0
 S0.historical_gap_collapsed,True
 S1.alpha,0.08085341880193442
 S1.f0_rowwise_max_gap,0.0
@@ -46,7 +57,11 @@ S1.r_final_inf,9.593278055493213
 S1.r_vector_max_abs_diff,0.0
 S1.r_argmax,"row=97; node=97; z=0; family=F0"
 S1.controls_max_abs_diff,0.0
-S1.sector_label_changes,596
+S1.f0_policy_label_mismatch_rows,0
+S1.all_row_policy_label_mismatch_rows,0
+S1.final_record_sector_source,rec.sector
+S1.sector_arr_source,rec.sector
+S1.sector_label_changes,0
 S1.historical_gap_collapsed,True
 S1.historical_gap_removed,0.6718037653783657
 S2.alpha,0.16170683760386884
@@ -64,7 +79,11 @@ S2.r_final_inf,8.755529626006652
 S2.r_vector_max_abs_diff,0.0
 S2.r_argmax,"row=97; node=97; z=0; family=F0"
 S2.controls_max_abs_diff,0.0
-S2.sector_label_changes,596
+S2.f0_policy_label_mismatch_rows,0
+S2.all_row_policy_label_mismatch_rows,0
+S2.final_record_sector_source,rec.sector
+S2.sector_arr_source,rec.sector
+S2.sector_label_changes,0
 S2.historical_gap_collapsed,True
 S2.historical_gap_removed,1.3379411925537439
 bellman_tolerance_unchanged,0.001
@@ -75,20 +94,21 @@ accepted_new_hjb_iterate,False
 frozen_state_count,3
 final_false_builds_per_state,1
 route_a_final_true_builds_per_state,1
-focused_suite_passed,36
+focused_suite_passed,42
 focused_suite_failed,0
-migrated_six_target_suite_passed,154
-migrated_six_target_suite_failed,0
-migrated_test_dlh_5vu_passed,24
-migrated_test_dlh_5vt_passed,40
-migrated_test_dlh_5vr_passed,18
-migrated_test_dlh_5vq_passed,15
-migrated_test_dlh_5vs_passed,21
-full_suite_passed,635
+focused_six_target_suite_passed,160
+focused_six_target_suite_failed,0
+focused_test_dlh_5vv_passed,42
+focused_test_dlh_5vu_passed,24
+focused_test_dlh_5vt_passed,40
+focused_test_dlh_5vr_passed,18
+focused_test_dlh_5vq_passed,15
+focused_test_dlh_5vs_passed,21
+full_suite_passed,641
 full_suite_failed,0
 full_suite_errors,0
 full_suite_warnings,6
-full_suite_seconds,3143.06
+full_suite_seconds,3402.38
 full_suite_green,True
 full_suite_warnings_all_pre_existing_oracle_MatrixRankWarning,True
 contract_migration_authority,5690304999
