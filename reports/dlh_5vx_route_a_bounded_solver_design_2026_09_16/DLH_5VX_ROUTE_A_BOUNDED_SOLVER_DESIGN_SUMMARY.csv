@@ -1,0 +1,201 @@
+metric,value
+terminal,DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN__MULTIPLE_PLAUSIBLE_ROUTES_REMAIN__OWNER_OR_REVIEWER_ROUTE_SELECTION_REQUIRED
+failure_detail,None
+evidence_issue_count,9
+evidence_issues,('60', '61', '62', '63', '64', '68', '69', '70', '71')
+negative_evidence_count,5
+family_count,4
+admissible_family_count,3
+refuted_family_count,1
+admissible_families,('policy_frozen_regularized_newton', 'residual_jacobi_preconditioned_correction', 'constrained_projected_lsq_trust_region')
+refuted_families,('pseudo_time_resolvent_historical_baseline',)
+selected_contract_name,ROUTE_A_BOUNDED_CONSTRAINED_OUTER_FRAME__DIRECTION_OPEN
+selected_family,
+outer_framework,constrained_projected_lsq_trust_region
+open_sub_choice,direction sub-choice within the frozen outer frame: exactly one of ('policy_frozen_regularized_newton', 'residual_jacobi_preconditioned_correction') must be selected before execution
+selection_rule_satisfied,False
+contract_frozen,True
+ladders,regularization_ladder=(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07); regularization_ladder_length=21; step_fraction_floor=9.5367431640625e-07; step_fraction_ladder=(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07); step_fraction_ladder_length=21; trust_radius_fraction_ladder=(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07); trust_radius_fraction_ladder_length=21
+thresholds,active_boundary_tolerance=1e-12; armijo_coefficient=0.0001; baseline_min_pb=4.8089461301970005e-09; bellman_residual_tol=0.001; candidate_pb_margin=1e-12; constraint_tolerance=1e-09; iterate_change_tol=1e-07; linear_residual_tol=1e-10; linear_solve_rtol=1e-12; min_residual_reduction_absolute=1e-12; pb_safety_margin=1e-12; required_residual_reduction_ratio=0.5; residual_reference=10.435094313164921
+max_attempts,linear_solve_maxiter=4; max_outer_iterations=1000; max_regularization_attempts=21; max_step_fraction_attempts=21; max_total_step_attempts=63; max_trust_radius_attempts=21
+fail_closed_terminals,('BOUNDED_SOLVER_NO_DOMAIN_SAFE_STEP', 'BOUNDED_SOLVER_NO_RESIDUAL_REDUCING_STEP', 'BOUNDED_SOLVER_LINEAR_SOLVE_FAILURE', 'BOUNDED_SOLVER_NONFINITE_EVIDENCE', 'BOUNDED_SOLVER_SINGLE_Q_CONTRACT_FAILURE', 'BOUNDED_SOLVER_ATTEMPT_BUDGET_EXHAUSTED')
+consistency_checks,active_set_uses_full_wall_gradient=True; all_four_families_present=True; armijo_in_unit_interval=True; baseline_family_refuted=True; baseline_min_pb_matches_accepted=True; bellman_tol_matches_accepted=True; contract_all_clauses_present=True; contract_clause_count=True; convergence_criteria_separated=True; every_family_assessed_on_all_axes=True; evidence_covers_60_to_71=True; fail_closed_clause_names_every_terminal=True; iterate_tol_matches_accepted_issue63=True; ladder_floor_matches_issue61=True; ladder_regularization_exact=True; ladder_step_fraction_exact=True; ladder_trust_radius_exact=True; ladders_strictly_descending=True; logging_carries_domain_margin_and_reason=True; material_ratio_matches_accepted=True; max_attempts_all_finite_ints=True; merit_is_residual_based=True; negative_evidence_present=True; no_adaptive_hedge_language=True; pseudocode_has_no_hedge=True; pseudocode_nonempty=True; pseudocode_separates_convergence=True; refuted_families_have_reason=True; regularization_attempts_match_ladder=True; residual_reference_matches_accepted=True; single_q_enforced_by_full_reassembly=True; step_fraction_attempts_match_ladder=True; thresholds_all_finite=True; total_attempt_bound_finite=True; trust_radius_attempts_match_ladder=True
+consistency_check_count,35
+consistency_ok,True
+deterministic_repeat_identical,False
+constructed_new_state,False
+accepted_iterate,False
+trajectory_run,False
+executed_newton,False
+executed_tangent,False
+executed_trust_region,False
+executed_line_search,False
+executed_continuation,False
+executed_pseudo_time,False
+accepted_residual_inf,10.435094313164921
+accepted_residual_argmax,row 97 / node 97 / z 0 / F0
+accepted_cancellation_ratio,0.006665998653866562
+bellman_tolerance,0.001
+hjb_convergence_claimed,False
+evidence.issue60.plain_value_damping,TERMINAL C — invariant-domain safeguarded HJB update; no viable effective-domain resolvent step
+evidence.issue60.plain_value_damping.negative,True
+evidence.issue61.adaptive_resolvent_ladder,delta ladder {1000*2^-k, k=0..20}; floor 0.00095367431640625
+evidence.issue61.adaptive_resolvent_ladder.negative,True
+evidence.issue62.positive_subfloor_safe_step,OUTCOME A — local continuous resolvent / domain-margin geometry; limiting F3 wall geometry quantified
+evidence.issue62.positive_subfloor_safe_step.negative,False
+evidence.issue63.ftb_statistic_vs_bellman,CONVERGENCE_TOL=1e-07; TAU_FTB=0.9; TERMINAL B — effective domain preserved but validated HJB convergence NOT reached
+evidence.issue63.ftb_statistic_vs_bellman.negative,True
+evidence.issue64.policy_frozen_newton_direction,ratio_iter=0.999906663403; material_reduction=False
+evidence.issue64.policy_frozen_newton_direction.negative,True
+evidence.issue68.tangent_projected_geometry,geometry_improvement_ratio=866.2532997045214; plain-Newton ratio=50.55026467396071; Terminal C
+evidence.issue68.tangent_projected_geometry.negative,False
+evidence.issue69.owner_route_a_decision,OWNER SCIENTIFIC DECISION — ROUTE A SELECTED
+evidence.issue69.owner_route_a_decision.negative,False
+evidence.issue70.single_q_contract,accepted selected-Q blob 7857cabb4d28af99cb9d59e2d1c3024b05787c11; integration fb5523d55d01d4b64995d94efb786994b5f8326d
+evidence.issue70.single_q_contract.negative,False
+evidence.issue71.mixed_cancellation_residual,||R||inf=10.435094313164921; mean top-20 cancellation ratio=0.006665998653866562; closure=4.036238010485249e-11; Terminal B
+evidence.issue71.mixed_cancellation_residual.negative,True
+family.policy_frozen_regularized_newton.family,policy_frozen_regularized_newton
+family.policy_frozen_regularized_newton.admissible,True
+family.policy_frozen_regularized_newton.role,direction candidate
+family.policy_frozen_regularized_newton.refuted_by,
+family.policy_frozen_regularized_newton.residual_jacobian_object,Frozen-policy Jacobian J_frozen = d/dV [rho*V - u(V) - Q_frozen*V] with Q and the selected policies held fixed at the current iterate: J_frozen = rho*I - Q_frozen (u does not depend on V at frozen policies).
+family.policy_frozen_regularized_newton.domain_handling,None intrinsic: the raw Newton direction is not domain-aware. Issue #64 measured a tiny positive safe fraction (0.000186673662256), so a separate projection/backoff layer is mandatory.
+family.policy_frozen_regularized_newton.policy_reselection_handling,Policy is frozen for the linear model and reselected once after the step; Q must then be fully reassembled (never partially updated) to preserve single-Q consistency.
+family.policy_frozen_regularized_newton.single_q_consistency,Compatible only if the refresh is a full reassembly through the ONE accepted selected-generator path; a frozen policy must never be mixed with a stale Q.
+family.policy_frozen_regularized_newton.expected_strength,Second-order information about the value function; exact linear residual scale 6.957900922088811e-11 shows the Newton system is solvable to high accuracy.
+family.policy_frozen_regularized_newton.accepted_historical_contradiction,Issue #64: positive boundary-safe Newton step but nonlinear residual reduction insufficient (ratio_iter=0.999906663403, material_reduction=False) at every safe fraction.
+family.policy_frozen_regularized_newton.boundedness,Bounded only with an explicit regularization ladder, trust radius and step-fraction ladder; otherwise unbounded.
+family.policy_frozen_regularized_newton.deterministic_reproducibility,Deterministic given a fixed linear solver, fixed ladders and fixed ordering.
+family.policy_frozen_regularized_newton.suitability_for_mixed_cancellation,Untested directly for cancellation structure: a single direction cannot zero a cancellation remainder, and Issue #64 shows the achievable residual ratio is ~0.9999 at safe fractions.
+family.residual_jacobi_preconditioned_correction.family,residual_jacobi_preconditioned_correction
+family.residual_jacobi_preconditioned_correction.admissible,True
+family.residual_jacobi_preconditioned_correction.role,direction candidate
+family.residual_jacobi_preconditioned_correction.refuted_by,
+family.residual_jacobi_preconditioned_correction.residual_jacobian_object,Residual-based correction with a Jacobi (diagonal) preconditioner: d = -M^-1 R with M = diag(rho - diag(Q)) restricted to the non-degenerate set; equivalent to a damped Richardson/Jacobi sweep on the residual equation.
+family.residual_jacobi_preconditioned_correction.domain_handling,None intrinsic; needs the same projection/backoff layer. A diagonal preconditioner cannot express boundary geometry.
+family.residual_jacobi_preconditioned_correction.policy_reselection_handling,Residual R is evaluated at the current selected policies; policy reselection after the step requires a full Q reassembly.
+family.residual_jacobi_preconditioned_correction.single_q_consistency,Compatible: it consumes R built from the ONE selected Q; it must never be applied to a raw-drift alternate residual.
+family.residual_jacobi_preconditioned_correction.expected_strength,Directly targets the residual norm, needs no Jacobian solve, and is cheap and unconditionally finite when the diagonal is bounded away from zero.
+family.residual_jacobi_preconditioned_correction.accepted_historical_contradiction,Not directly contradicted, but not validated by any accepted trial; its step is a scaled residual descent and is known to converge slowly for cancellation-structured residuals.
+family.residual_jacobi_preconditioned_correction.boundedness,Bounded by construction given a frozen step-fraction ladder; the diagonal must be regularized to avoid a zero divisor.
+family.residual_jacobi_preconditioned_correction.deterministic_reproducibility,Fully deterministic; no factorization, no iteration count.
+family.residual_jacobi_preconditioned_correction.suitability_for_mixed_cancellation,Plausible: it acts on the residual as a whole rather than on one component, which matches the Issue #71 finding that the residual is a cancellation of large competing terms.
+family.constrained_projected_lsq_trust_region.family,constrained_projected_lsq_trust_region
+family.constrained_projected_lsq_trust_region.admissible,True
+family.constrained_projected_lsq_trust_region.role,outer frame (direction-agnostic)
+family.constrained_projected_lsq_trust_region.refuted_by,
+family.constrained_projected_lsq_trust_region.residual_jacobian_object,Constrained correction solved as a bounded least-squares / trust-region subproblem over the admissible direction set: minimize ||J d + R||_2 subject to the active-boundary tangent constraints, ||d|| <= Delta, and the linearized positive-p_b domain-safety inequality.
+family.constrained_projected_lsq_trust_region.domain_handling,Explicit: active boundary gradients (including the full wall-gradient tangent of Issue #68) enter as linear constraints, and positive p_b enters as a linearized inequality with a frozen margin.
+family.constrained_projected_lsq_trust_region.policy_reselection_handling,Policy reselection is deferred to the outer loop; the subproblem uses the frozen-policy Jacobian, and Q is fully reassembled after an accepted step.
+family.constrained_projected_lsq_trust_region.single_q_consistency,Compatible and enforcing: the constraint set and the Jacobian are both built from the ONE selected generator, and the post-step refresh is a full reassembly.
+family.constrained_projected_lsq_trust_region.expected_strength,It is the only family that COMBINES residual reduction with domain geometry: the Issue #68 measurement shows projection expands the safe fraction by 866.2532997045214x, and the trust-region bound makes the step bounded and rejectable.
+family.constrained_projected_lsq_trust_region.accepted_historical_contradiction,Issue #68's residual-reduction failure occurred under the then-unresolved dual-Q validation contract; Issue #70 removed dual-Q, so that specific contradiction is superseded — but no accepted trial has yet measured this family under Route A.
+family.constrained_projected_lsq_trust_region.boundedness,Bounded by construction: trust radius, constraint box and the finite regularization ladder bound both the step and the attempt count.
+family.constrained_projected_lsq_trust_region.deterministic_reproducibility,Deterministic given fixed constraint ordering, fixed active-set tolerance, fixed ladders and a fixed least-squares solver.
+family.constrained_projected_lsq_trust_region.suitability_for_mixed_cancellation,Best-matched as the OUTER FRAME: the merit is residual-based (so it does not presume a dominant component) while the geometry constraints prevent the tiny-safe-fraction failure of Issue #64.
+family.pseudo_time_resolvent_historical_baseline.family,pseudo_time_resolvent_historical_baseline
+family.pseudo_time_resolvent_historical_baseline.admissible,False
+family.pseudo_time_resolvent_historical_baseline.role,historical baseline only
+family.pseudo_time_resolvent_historical_baseline.refuted_by,Issues #60 and #61: exhaustive ladder floor with no viable positive-domain step
+family.pseudo_time_resolvent_historical_baseline.residual_jacobian_object,Not a residual-correction object: an implicit pseudo-time / resolvent update V <- solve((1/delta + rho)I - Q, u + V/delta) with a selected resolvent ladder.
+family.pseudo_time_resolvent_historical_baseline.domain_handling,Historical issue: domain safety was enforced only by iterate acceptance with PB_MARGIN, with no geometric projection.
+family.pseudo_time_resolvent_historical_baseline.policy_reselection_handling,Policy reselection is implicit in each update; the accepted sequence reselected every step.
+family.pseudo_time_resolvent_historical_baseline.single_q_consistency,Compatible with single-Q in principle (the resolve uses the same generator), but it is not a correction of the residual and gives no control over which residual components are addressed.
+family.pseudo_time_resolvent_historical_baseline.expected_strength,Historically the most robust way to move the iterate without destroying the effective domain, and it already produced the accepted 8-step trajectory.
+family.pseudo_time_resolvent_historical_baseline.accepted_historical_contradiction,Issue #60: no viable positive-domain step remained. Issue #61: the resolvent ladder was exhausted at its authorized floor (DELTA_MIN_EXP=20) on the third update request.
+family.pseudo_time_resolvent_historical_baseline.boundedness,Bounded by the finite resolvent ladder and the iteration ceiling.
+family.pseudo_time_resolvent_historical_baseline.deterministic_reproducibility,Deterministic and already accepted.
+family.pseudo_time_resolvent_historical_baseline.suitability_for_mixed_cancellation,Poor as a route: it moves V along a resolvent direction that is not tied to the residual's cancellation structure, and its accepted ladder is provably exhausted.
+ladder.regularization_ladder,(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07)
+ladder.regularization_ladder_length,21
+ladder.trust_radius_fraction_ladder,(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07)
+ladder.trust_radius_fraction_ladder_length,21
+ladder.step_fraction_ladder,(1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625, 0.001953125, 0.0009765625, 0.00048828125, 0.000244140625, 0.0001220703125, 6.103515625e-05, 3.0517578125e-05, 1.52587890625e-05, 7.62939453125e-06, 3.814697265625e-06, 1.9073486328125e-06, 9.5367431640625e-07)
+ladder.step_fraction_ladder_length,21
+ladder.step_fraction_floor,9.5367431640625e-07
+threshold.armijo_coefficient,0.0001
+threshold.required_residual_reduction_ratio,0.5
+threshold.min_residual_reduction_absolute,1e-12
+threshold.constraint_tolerance,1e-09
+threshold.active_boundary_tolerance,1e-12
+threshold.pb_safety_margin,1e-12
+threshold.candidate_pb_margin,1e-12
+threshold.baseline_min_pb,4.8089461301970005e-09
+threshold.linear_solve_rtol,1e-12
+threshold.linear_residual_tol,1e-10
+threshold.iterate_change_tol,1e-07
+threshold.bellman_residual_tol,0.001
+threshold.residual_reference,10.435094313164921
+max_attempts.max_regularization_attempts,21
+max_attempts.max_trust_radius_attempts,21
+max_attempts.max_step_fraction_attempts,21
+max_attempts.max_total_step_attempts,63
+max_attempts.max_outer_iterations,1000
+max_attempts.linear_solve_maxiter,4
+consistency.active_set_uses_full_wall_gradient,True
+consistency.all_four_families_present,True
+consistency.armijo_in_unit_interval,True
+consistency.baseline_family_refuted,True
+consistency.baseline_min_pb_matches_accepted,True
+consistency.bellman_tol_matches_accepted,True
+consistency.contract_all_clauses_present,True
+consistency.contract_clause_count,True
+consistency.convergence_criteria_separated,True
+consistency.every_family_assessed_on_all_axes,True
+consistency.evidence_covers_60_to_71,True
+consistency.fail_closed_clause_names_every_terminal,True
+consistency.iterate_tol_matches_accepted_issue63,True
+consistency.ladder_floor_matches_issue61,True
+consistency.ladder_regularization_exact,True
+consistency.ladder_step_fraction_exact,True
+consistency.ladder_trust_radius_exact,True
+consistency.ladders_strictly_descending,True
+consistency.logging_carries_domain_margin_and_reason,True
+consistency.material_ratio_matches_accepted,True
+consistency.max_attempts_all_finite_ints,True
+consistency.merit_is_residual_based,True
+consistency.negative_evidence_present,True
+consistency.no_adaptive_hedge_language,True
+consistency.pseudocode_has_no_hedge,True
+consistency.pseudocode_nonempty,True
+consistency.pseudocode_separates_convergence,True
+consistency.refuted_families_have_reason,True
+consistency.regularization_attempts_match_ladder,True
+consistency.residual_reference_matches_accepted,True
+consistency.single_q_enforced_by_full_reassembly,True
+consistency.step_fraction_attempts_match_ladder,True
+consistency.thresholds_all_finite,True
+consistency.total_attempt_bound_finite,True
+consistency.trust_radius_attempts_match_ladder,True
+distinction.vs_issue60_pure_value_damping,Issue #60 damped V directly with no residual-correction object and no constraint geometry, and exhausted viable positive-domain steps. The frozen frame never moves V without an explicit residual model, and every candidate is tested for positive-p_b admissibility BEFORE acceptance.
+distinction.vs_issue61_resolvent_ladder,Issue #61 descended a resolvent (pseudo-time) ladder until floor exhaustion. The frozen frame does not use pseudo-time as a route: it uses a bounded CORRECTION of the residual with a separate step-fraction ladder, so exhaustion of a fraction ladder rejects the DIRECTION rather than terminating the route.
+distinction.vs_issue64_raw_frozen_newton,Issue #64's raw Newton direction had a tiny safe fraction and a ~0.9999 residual ratio. The frozen frame adds (a) a regularization ladder, (b) an active-boundary tangent projection that Issue #68 measured as expanding the safe fraction by 866.2532997045214x, and (c) a trust-radius bound, so a direction that is useless unconstrained can still produce an admissible bounded step.
+distinction.vs_issue68_single_wall_tangent_trial,Issue #68 used exactly two official trial fractions of a single-wall tangent projection under the then-unresolved dual-Q validation contract. The frozen frame (a) runs under the accepted single-Q Route-A contract, (b) stacks MULTIPLE active wall gradients rather than a single wall, and (c) uses a bounded three-ladder attempt sequence instead of two fixed trials.
+distinction.how_it_uses_residual_reduction_and_domain_geometry_together,The merit is the residual inf-norm, while admissibility and the direction constraint set come from the boundary geometry; a step must satisfy BOTH, so neither objective silently dominates.
+distinction.how_it_handles_mixed_cancellation,It never attributes the residual to one component: the merit is evaluated on the full residual vector, and the acceptance rule is a sufficient-decrease/form comparison rather than a per-component target.
+distinction.how_it_avoids_the_raw_newton_tiny_safe_fraction,By projecting onto the stacked active wall-gradient tangents and by bounding the step with a trust radius whose initial scale is derived from the first regularized direction; both were measured in Issue #68 to enlarge the safe fraction by orders of magnitude.
+distinction.how_it_avoids_chasing_iterate_change_only,By keeping ITERATE_CHANGE_TOL (1e-07) and BELLMAN_RESIDUAL_TOL (0.001) as separate, non-substitutable criteria, and by reporting a statistic-converged but residual-unconverged terminal distinctly.
+distinction.how_single_q_consistency_is_kept_across_policy_reselection,Q is created only by a full final=False reassembly at the accepted state; the linear model is always built from that SAME Q; no raw-drift alternate generator and no partial Q update exist anywhere in the contract.
+pseudocode,OUTER: given admissible V_0 (accepted V_*)
+pseudocode,  1. build (Q, u, records) = ONE final=False assembly at V; require single-Q consistency and finite Q,u
+pseudocode,  2. R = rho*V - u - Q*V; merit = ||R||inf / RESIDUAL_REFERENCE
+pseudocode,  3. if ||R||inf <= BELLMAN_RESIDUAL_TOL: terminal BELLMAN_CONVERGED
+pseudocode,  4. J = rho*I - Q  (frozen-policy Jacobian from the SAME Q)
+pseudocode,  5. detect active boundary set via CANDIDATE_PB_MARGIN and ACTIVE_BOUNDARY_TOLERANCE; stack FULL wall gradients as constraints
+pseudocode,  6. FOR k_lambda in 0..20:
+pseudocode,       6a. solve (J + lambda_k * ||diag(J)||inf * I) d = -R with LINEAR_SOLVE_RTOL/MAXITER; on failure -> FAILURE_LINEAR_SOLVE
+pseudocode,       6b. project d onto the constraint intersection with CONSTRAINT_TOLERANCE
+pseudocode,       6c. FOR k_delta in 0..20:  Delta = Delta_0 * 2^-k_delta; clip d
+pseudocode,             6c-i. FOR k_alpha in 0..20:  alpha = 2^-k_alpha; V_trial = V + alpha*d
+pseudocode,                 - if V_trial not domain-admissible (min p_b < CANDIDATE_PB_MARGIN or non-finite) -> log and continue
+pseudocode,                 - build ONE final=False assembly at V_trial; require finite
+pseudocode,                 - merit_trial = ||R(V_trial)||inf / RESIDUAL_REFERENCE
+pseudocode,                 - if merit_trial <= merit - ARMIJO_COEFFICIENT*alpha*merit -> ACCEPT, log reason, break out of all three loops
+pseudocode,                 - else log reject reason and continue
+pseudocode,  7. if no candidate accepted after the bounded product -> fail-closed: FAILURE_NO_RESIDUAL_REDUCING_STEP if at least one candidate was domain-admissible, else FAILURE_NO_SAFE_STEP
+pseudocode,  8. reselect policy by ONE final=False reassembly at the accepted V (full Q refresh; never partial)
+pseudocode,  9. statistic = max|V_new - V|; if statistic <= ITERATE_CHANGE_TOL record ITERATE_STATISTIC_CONVERGED (NOT a Bellman convergence claim)
+pseudocode, 10. V <- V_new; if outer count > MAX_OUTER_ITERATIONS -> FAILURE_ATTEMPT_BUDGET
+pseudocode, 11. loop to step 1
+pseudocode,TERMINALS: BELLMAN_CONVERGED (both tests), ITERATE_STATISTIC_CONVERGED only, or one of the frozen fail-closed failures.
