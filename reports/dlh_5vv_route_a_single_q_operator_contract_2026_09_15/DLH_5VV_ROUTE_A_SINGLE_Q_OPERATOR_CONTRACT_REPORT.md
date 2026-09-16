@@ -194,36 +194,112 @@ The control reproduces the accepted Issue #68 magnitudes **and** row sets exactl
 so the collapse is unambiguously attributable to the Route-A consolidation
 implemented here. The working tree was not mutated by the control.
 
-### 5.2 Dependent-suite consequence (DISCLOSED, not worked around)
+### 5.2 Bounded post-Route-A contract migration (completed under Reviewer hold `5690304999`)
 
-Five historical audit test files assert the **pre-Route-A dual-`Q` behaviour**
-that this Issue was authorized to remove, and therefore fail:
+The first submission of this Issue disclosed — rather than worked around — a
+governance/allowlist conflict: five dependent historical audit suites still
+asserted the pre-Route-A dual-`Q` behaviour that Route A was authorized to
+remove, so the repository suite was **not** green (22 failed / 13 errors), and
+resolving it required touching paths outside the four-path allowlist.
 
-| File (outside the Issue #70 allowlist) | failed | errors |
+The Reviewer withheld acceptance and authorized a **bounded post-Route-A
+contract migration** with an exact **six-path** addition (hold `5690304999`).
+The original Issue #70 commit `825e241804c7fb260c807602fc0f1487caf84e56` remains
+the parent of this migration; the candidate reported here is its successor on
+the same branch, with the Route-A scientific implementation untouched.
+
+Migration branch used: **B — preserve and re-assert**. Every affected historical
+expected value is retained as an explicitly labelled historical constant and the
+tests are re-pointed at the true current runtime behaviour. Nothing was silently
+replaced.
+
+#### 5.2.1 The six added paths and their migration result
+
+| Path | Migration |
+|---|---|
+| `tests/test_dlh_5vu_f0_rate_path_divergence.py` | **full re-migration** (see §5.2.2) |
+| `tests/test_dlh_5vt_tangent_projected_newton_geometry.py` | historical Issue #68 trial gaps/rows and terminal C preserved as `HISTORICAL_*`; current trial gap `0.0`, current terminal = Issue #68 `TERMINAL_B` |
+| `tests/test_dlh_5vr_f0_final_rate_provenance.py` | historical pre-Route-A F0 operator gap `1.4210854715202004e-14` preserved as `HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP`; current gap `0.0` |
+| `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` | historical `d_rate_inf = 3.410605131648481e-13` and `q_current_minus_iter = 1.4210854715202004e-14` preserved as `HISTORICAL_PRE_ROUTE_A_*`; current values `0.0` |
+| `tests/test_dlh_5vs_final_validation_zblock_repair.py` | pre-Route-A z-block repair evidence preserved as `PRE_ROUTE_A_FINAL_ZBLOCK_*` and re-verified read-only at the parent commit (`git show HEAD~1:…`) |
+| `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py` | explicit **zero-gap** handling in `f0_component_comparison` (see §5.2.3) |
+
+#### 5.2.2 The Issue #69 audit module is deliberately NOT modified
+
+`src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py` is **not** in
+the authorized path set and was **not** touched. It remains byte-identical to its
+accepted Issue #69 blob `83e9be0febcc03eb721265d3558887bd6b1586a4` (asserted by
+`test_module_is_unmodified_by_route_a`).
+
+Consequence, which is scientifically correct: the audit's frozen rule is that it
+attests a divergence *mechanism* only when the accepted Issue #68 rowwise operator
+gap and row set are **reproduced**. Route A removes that operator gap, so the
+audit now legitimately **fails closed**:
+
+| Field | Current value | Historical (accepted Issue #68/#69) |
 |---|---|---|
-| `tests/test_dlh_5vu_f0_rate_path_divergence.py` | 13 | 0 |
-| `tests/test_dlh_5vt_tangent_projected_newton_geometry.py` | 5 | 0 |
-| `tests/test_dlh_5vr_f0_final_rate_provenance.py` | 1 | 13 |
-| `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` | 2 | 0 |
-| `tests/test_dlh_5vs_final_validation_zblock_repair.py` | 1 | 0 |
+| live terminal | `TERMINAL_C` (`…MIXED_OR_UNRESOLVED_SOURCE_PROVENANCE__OWNER_SCIENTIFIC_REVIEW_REQUIRED`) | `TERMINAL_A` (unique sign/branch mechanism established) |
+| failure reason | `alpha_half: accepted Issue #68 gap/rows not reproduced (gap=0.0 vs 0.6718037653783657; rows=[] vs [452, 453])` | gap `0.6718037653783657`, rows `[452, 453]` |
+| trials / mechanism flags | `0` / all un-established | 2 trials, full attribution |
+| accepted iterate | `False` | `False` |
 
-Cause, precisely: under Route A the F0 rowwise operator gap is **exactly `0.0`**,
-so the Issue #66 audit module `f0_final_rate_provenance_audit.py` never updates
-its gap-argmax row from the `-1` sentinel and then indexes a grid corner where
-`neigh.get("up") is None`, raising
-`TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'` (line 491);
-its 13 setup errors cascade from that. The remaining failures are straightforward
-stale assertions (the S1/S2 gaps are no longer `0.6718…` / `1.3379…`, and the
-trial operators are now equivalent so the Issue #68 / #69 terminals change).
+The module therefore reports the failure instead of attesting a mechanism from
+non-reproducible data — the intended fail-closed behaviour, left as-is by design
+("leave candidate science unchanged").
 
-This is a **governance/allowlist conflict, not a defect in the Route-A
-implementation**: Issue #70 requires the full suite to pass (§10/§13) while
-allowing only four tracked paths (§9), none of which is a dependent test file.
-The conflict is reported rather than worked around, and **no file outside the
-allowlist was modified**. Resolving it requires explicit Reviewer/Owner
-authorization for a bounded post-Route-A test-contract migration (the precedent
-already accepted for Issue #67) and, for the Issue #66 module, authorization to
-touch an accepted Issue #66 implementation source.
+#### 5.2.3 Issue #66 audit module: explicit zero-gap handling
+
+Under Route A the F0 rowwise gap is exactly `0.0`, so the accepted Issue #66 audit
+never updated its gap-argmax row from the `-1` sentinel and then indexed a grid
+corner where `neigh.get("up") is None`, previously raising
+`TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'` at line 491
+(and cascading into 13 setup errors). `f0_component_comparison` now returns an
+explicit, documented **zero-gap** result — `current_gap_zero=True`,
+`current_gap_not_applicable=True`, `max_total_row_entry_diff=0.0`,
+`max_total_row_entry_diff_state=None`, all component contributions `0.0`,
+`max_row_columns_with_diff=0` — and `f0_rowwise_max_abs_gap_state` is guarded to
+`None` when the argmax row is the `-1` sentinel. Verified: `run_issue66_audit()`
+returns `failure_detail=None`, gap `0.0`, gap state `None`, and an identical
+deterministic repeat. **No threshold, criterion or scientific quantity was
+changed** — only the degenerate case that Route A makes reachable.
+
+#### 5.2.4 Measured current behaviour, with the latent mechanism re-verified
+
+The migration did not merely relax assertions: the latent stored-vs-raw b-rate
+divergence that Issue #69 attributed is **independently re-measured** from the
+current accepted sources. It persists with unchanged magnitudes, while the
+operator gap it used to cause is gone:
+
+| Quantity | `alpha_half` (S1) | `alpha_near` (S2) | Historical |
+|---|---|---|---|
+| b-rate-divergent F0 rows | `[452, 453]` | `[452, 453, 482, 483]` | **identical** |
+| max stored-vs-raw b-rate difference | `0.3359018826891829` | `0.6689705962768726` | **identical** |
+| rows carrying an opposing-direction component | `2` | `4` | **identical** |
+| liquid branch / realized drift on those rows | `liquid_label='F'`, `mu_b < 0` | same | same |
+| **operator** rowwise gap | **`0.0`** | **`0.0`** | `0.6718…` / `1.3379…` |
+| a-axis rate difference, net active b-direction | `0.0`, agrees | `0.0`, agrees | agrees |
+
+Two measurement facts are recorded in the migrated suite because they correct the
+historical Issue #69 prose, and the assertions follow the measurement:
+
+* the iteration and raw paths agree exactly on the **net** active b-direction and
+  on the a-axis; the divergence is confined to the per-side stored rate values
+  (the iteration stores a positive b-forward rate of `0.335901883` / `0.668971`
+  where the raw path stores exactly `0.0`, with a correspondingly inflated
+  b-backward rate);
+* the divergence is therefore invisible to the net upwind direction and is
+  removed from the operator only because Route A reuses the stored record
+  verbatim — which is exactly why it no longer reaches `Q`.
+
+#### 5.2.5 An unauthorized change was attempted and reverted (disclosed)
+
+While re-migrating, a remediation of `f0_rate_path_divergence_audit.py` (an
+"all()-over-zero-rows" classification guard) was briefly drafted. It is **not**
+in the authorized path set, so it was **reverted** with `git checkout --` and the
+working tree was restored to the accepted blob
+`83e9be0febcc03eb721265d3558887bd6b1586a4`. This is disclosed here rather than
+omitted: the committed candidate contains **no** change to that module, and the
+final candidate diff is exactly the authorized ten paths.
 
 ## 6. Interpretation ceiling — HJB convergence remains FALSE
 
@@ -277,36 +353,78 @@ no tolerance/convergence-rule change; no accepted iterate; deterministic repeat
 identical; static scan for forbidden machinery.
 
 Full repository suite `python -m pytest tests/ -q`:
-**22 failed, 602 passed, 6 warnings, 13 errors in 3658.07 s (1:00:58)**.
 
-This is **NOT green**, and the cause is the dependent-suite conflict documented
-in §5.2 — five historical audit test files outside the Issue #70 allowlist assert
-the pre-Route-A dual-`Q` behaviour that this Issue was authorized to remove. The
-profile is reproducible and fully attributed: 13 of the errors cascade from the
-single Issue #66 degenerate-gap-argmax `TypeError` at
-`f0_final_rate_provenance_audit.py:491`, and the remaining failures are stale
-assertions on the now-collapsed S1/S2 gaps and the correspondingly changed
-Issue #68 / #69 terminals. **No file outside the four authorized paths was
-modified to produce or to hide this result.** The 6 warnings are the pre-existing
-`MatrixRankWarning` entries from the accepted oracle tests (`test_dlh_5b`,
-`test_dlh_5c`).
+**`635 passed, 6 warnings in 3143.06 s (0:52:23)`** — `EXIT=0`, i.e. **0 failed,
+0 errors, GREEN**.
+
+The 6 warnings are the pre-existing `MatrixRankWarning` entries from the accepted
+oracle tests (`test_dlh_5b`, `test_dlh_5c`) at
+`matlab_faithful_two_asset_ha.py:597`; they are unchanged by this Issue.
 
 Consequence for the completion contract: Issue #70 §10/§13 requires the full
-suite to pass while §9 permits only four tracked paths. Those two requirements
-cannot both hold once the mandated Route-A semantics change is applied. The
-Builder therefore reports the conflict explicitly for Reviewer/Owner resolution
-rather than widening the allowlist unilaterally.
+suite to pass while the original §9 allowlist permitted only four tracked paths.
+Those two requirements could not both hold once the mandated Route-A semantics
+change was applied. The first submission disclosed that conflict (§5.2 of the
+previous revision) rather than widening the allowlist unilaterally; the Reviewer
+then authorized the bounded six-path addition, and after the migration both
+requirements hold simultaneously: the suite is green **and** the cumulative diff
+is exactly the ten authorized paths (§9).
 
-## 9. Authorized files (exact four-path allowlist)
+### 8.1 Migrated-suite results (six added paths)
+
+| Suite | Result | Historical evidence preserved as |
+|---|---|---|
+| `tests/test_dlh_5vu_f0_rate_path_divergence.py` | **24 passed** | `PRE_ROUTE_A_SELECTED_Q_BLOB`, `HISTORICAL_ISSUE68_GAP_HALF/NEAR`, `HISTORICAL_ISSUE68_ROWS_HALF/NEAR`, `HISTORICAL_ISSUE68_B_RATE_DIFF_HALF/NEAR`, `HISTORICAL_ISSUE68_ROW_COUNTS`, `HISTORICAL_ISSUE69_TERMINAL_A` |
+| `tests/test_dlh_5vt_tangent_projected_newton_geometry.py` | **40 passed** | `HISTORICAL_ISSUE68_TRIAL_GAP_HALF/NEAR`, `HISTORICAL_ISSUE68_TRIAL_ROWS_HALF/NEAR`, `HISTORICAL_ISSUE68_TERMINAL_C` |
+| `tests/test_dlh_5vr_f0_final_rate_provenance.py` | **18 passed** | `HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP = 1.4210854715202004e-14` |
+| `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` | **15 passed** | `HISTORICAL_PRE_ROUTE_A_D_RATE_INF = 3.410605131648481e-13`, `HISTORICAL_PRE_ROUTE_A_Q_CURRENT_MINUS_ITER = 1.4210854715202004e-14` |
+| `tests/test_dlh_5vs_final_validation_zblock_repair.py` | **21 passed** | `PRE_ROUTE_A_FINAL_ZBLOCK_*` plus a dedicated preservation test reading the parent commit via `git show HEAD~1:…` |
+| `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py` | exercised by the above | — (authorized zero-gap handling only, §5.2.3) |
+
+Combined six-target focused run: **154 passed in 70.11 s**.
+Issue #70 focused suite alone: **36 passed**.
+
+Every historical expected value is retained as an explicitly named historical
+constant and asserted as history. Nothing was silently replaced, and no
+historical number is asserted as a current runtime expectation:
+`490.756…` / `24.6019…` / `0.6718037653783657` / `1.3379411925537439` appear only
+in historical-labelled constants and in the fail-closed Issue #69 message that
+quotes them as the unreproducible baseline. The current Route-A expectations
+(`0.0` gaps, `TERMINAL_B` for the Issue #68 suite, `f0_rowwise_max_abs_gap_state
+is None`) are asserted separately.
+
+## 9. Authorized files (exact ten-path cumulative diff)
+
+Issue #70 original four-path allowlist:
 
 1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
 2. `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`
 3. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_REPORT.md`
 4. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_SUMMARY.csv`
 
-No fifth tracked Builder path. No accepted source outside the single authorized
-F0 `final=True` assembly was modified; the oracle and all accepted Issue #61–#69
+Reviewer hold `5690304999` adds exactly these six existing paths:
+
+5. `tests/test_dlh_5vu_f0_rate_path_divergence.py`
+6. `tests/test_dlh_5vt_tangent_projected_newton_geometry.py`
+7. `tests/test_dlh_5vr_f0_final_rate_provenance.py`
+8. `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py`
+9. `tests/test_dlh_5vs_final_validation_zblock_repair.py`
+10. `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py`
+
+`git diff --name-only origin/main...HEAD` returns **exactly these ten paths**, and
+is asserted during the completion evidence run. No eleventh path. No accepted
+source outside the single authorized F0 `final=True` assembly and the Issue #66
+zero-gap handling above was modified; the oracle and all accepted Issue #61–#69
 blobs are byte-identical to their accepted values.
+
+### 9.1 Frozen scientific implementation (unchanged by this migration)
+
+The Route-A F0 `final=True` assembly is byte-identical to the originally
+submitted candidate: the selected-Q blob remains
+`35e7dadfa4fb8f1c2a89db21751f2b541bda3cab` and the unchanged oracle blob remains
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`. The migration changes **test
+contracts and one explicitly authorized audit module only**; no Route-A
+scientific quantity, threshold or criterion was altered.
 
 ## 10. Terminal derivation (frozen rule)
 
@@ -322,20 +440,27 @@ blobs are byte-identical to their accepted values.
 
 → **Outcome A**, exactly one terminal. Outcome B does not apply (no material
 final-vs-iteration discrepancy remains: it is exactly zero). Outcome C does not
-apply (no nonfinite evidence, no regression in the Route-A implementation and no
-contract failure — the dependent-suite breakage in §5.2 is stale assertions plus
-one degenerate-argmax code path in a historical audit module, and is disclosed
-separately rather than hidden).
+apply (no nonfinite evidence, no regression in the Route-A implementation, and no
+contract failure).
+
+The §5.2 migration does **not** change this derivation. In particular it does not
+re-open Outcome B and does not introduce a discrepancy: the failing Issue #69
+audit is a *read-only diagnostic* whose frozen rule refuses to attest a mechanism
+from data that no longer contains the accepted gap, and the migrated suite
+asserts that refusal plus the preserved historical evidence. The latent
+stored-vs-raw rate-object divergence is unchanged in magnitude and remains
+disclosed (§5.2.4) — it is simply no longer reachable by the operator.
 
 ## 11. Next gate (for the Owner / reviewer — NOT decided here)
 
 Two separate matters:
 
-1. **Dependent-suite conflict (§5.2).** Resolving the 22 failed / 13 errored
-   historical audit assertions requires a bounded post-Route-A test-contract
-   migration authorization (Issue #67 precedent), including, for
-   `f0_final_rate_provenance_audit.py`, permission to touch an accepted Issue #66
-   implementation source whose degenerate-argmax handling assumes a non-zero gap.
+1. **Contract migration (§5.2) — CLOSED.** The bounded post-Route-A migration
+   authorized by Reviewer hold `5690304999` is complete: six added paths, each
+   historical expected value preserved as an explicitly labelled historical
+   constant, the Issue #69 audit module deliberately untouched and asserted
+   byte-identical, the Issue #66 module's degenerate zero-gap case handled
+   explicitly. The repository suite is green.
 2. **Residual reassessment.** The solve and final validation now share one
    coherent selected generator, so the final Bellman residual at `V_*`
    (`10.435094313164921`) is the genuine single-operator residual. It remains

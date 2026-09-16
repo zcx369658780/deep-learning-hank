@@ -45,6 +45,33 @@ MODULE_SOURCE = MODULE_PATH.read_text(encoding="utf-8")
 
 SELECTED_Q_RELPATH = "src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py"
 
+# ---------------------------------------------------------------------------
+# HISTORICAL (PRE-ROUTE-A) EVIDENCE — accepted Issue #68 trial operator gaps and
+# the pre-Issue-70 selected-Q blob. Retained as regression evidence; NOT current
+# runtime expectations.
+# ---------------------------------------------------------------------------
+PRE_ROUTE_A_SELECTED_Q_BLOB = "556ccc214f03a1a22306cc4f5c7e9f7691bbf897"
+HISTORICAL_ISSUE68_TRIAL_GAP_HALF = 0.6718037653783657
+HISTORICAL_ISSUE68_TRIAL_ROWS_HALF = (452, 453)
+HISTORICAL_ISSUE68_TRIAL_GAP_NEAR = 1.3379411925537439
+HISTORICAL_ISSUE68_TRIAL_ROWS_NEAR = (452, 453, 482, 483)
+HISTORICAL_ISSUE68_TERMINAL_C = (
+    "DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_"
+    "SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED")
+
+# ---------------------------------------------------------------------------
+# CURRENT (OWNER ROUTE A, Issue #70) EXPECTATIONS — the accepted single-Q
+# consolidation makes the trial operators equivalent, which REMOVES the frozen
+# Outcome C inconsistency condition.
+# ---------------------------------------------------------------------------
+CURRENT_ROUTE_A_SELECTED_Q_BLOB = "35e7dadfa4fb8f1c2a89db21751f2b541bda3cab"
+CURRENT_ROUTE_A_TRIAL_GAP = 0.0
+CURRENT_ROUTE_A_TRIAL_INCONSISTENT_ROWS = 0
+CURRENT_ROUTE_A_TERMINAL = (
+    "DLH_5VT_TANGENT_PROJECTED_NEWTON__TANGENT_DIRECTION_FINITE_AND_DOMAIN_"
+    "SAFE_BUT_GEOMETRY_OR_RESIDUAL_IMPROVEMENT_INSUFFICIENT__FURTHER_"
+    "DIRECTION_DESIGN_REQUIRED")
+
 BANNED_TOKENS = (
     "newton_loop", "policy_iteration", "semismooth", "trust_region",
     "continuation", "linesearch", "line_search", "armijo", "backtrack",
@@ -87,14 +114,24 @@ def test_reconstruction_exact(diag):
 
 
 def test_selected_q_repaired_blob_exact():
-    """The repaired selected-Q source must be byte-identical to the accepted blob."""
+    """CURRENT: the selected-Q source is the post-Route-A (Issue #70) candidate.
+
+    The historical pre-Route-A Issue #67 repair blob remains recorded as
+    evidence and is verifiable at the Issue #70 parent commit.
+    """
     import subprocess
 
     repo_root = Path(__file__).resolve().parents[1]
-    out = subprocess.run(
-        ["git", "rev-parse", f"HEAD:{SELECTED_Q_RELPATH}"],
-        cwd=repo_root, capture_output=True, text=True, check=True)
-    assert out.stdout.strip() == m.SELECTED_Q_REPAIRED_BLOB
+
+    def _rev(spec: str) -> str:
+        return subprocess.run(["git", "rev-parse", spec], cwd=repo_root,
+                              capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", check=True).stdout.strip()
+
+    assert _rev(f"HEAD:{SELECTED_Q_RELPATH}") == CURRENT_ROUTE_A_SELECTED_Q_BLOB
+    assert m.SELECTED_Q_REPAIRED_BLOB == PRE_ROUTE_A_SELECTED_Q_BLOB
+    assert PRE_ROUTE_A_SELECTED_Q_BLOB != CURRENT_ROUTE_A_SELECTED_Q_BLOB
+    assert _rev(f"HEAD~1:{SELECTED_Q_RELPATH}") == PRE_ROUTE_A_SELECTED_Q_BLOB
 
 
 # ---------------------------------------------------------------------------
@@ -367,8 +404,13 @@ def test_superseded_single_entry_result_does_not_feed_classification(diag):
     # the official geometry ratio is the corrected one
     assert r.geometry_improvement_ratio == pytest.approx(
         866.2532997045214, rel=1e-9)
-    # and the terminal classification is deterministic
-    assert r.terminal == m.TERMINAL_C
+    # and the terminal classification is deterministic.
+    # CURRENT (Owner Route A): the trial operators are now equivalent, so the
+    # frozen Outcome C inconsistency condition no longer applies and the
+    # residual/geometry shortfall (Outcome B) governs instead. The historical
+    # Outcome C terminal is preserved above as evidence.
+    assert r.terminal == CURRENT_ROUTE_A_TERMINAL
+    assert r.terminal != HISTORICAL_ISSUE68_TERMINAL_C
     assert r.deterministic_repeat_identical is True
 
 
@@ -509,27 +551,26 @@ def test_strict_boundary_safety_at_both_trials(diag):
 
 
 def test_final_vs_iteration_equivalence_at_each_trial(diag):
-    """CORRECTED-PROJECTION FINDING: the two operators are NOT equivalent.
+    """CURRENT (Owner Route A, Issue #70): the two operators ARE equivalent.
 
-    At the corrected full-gradient trial states the re-selected ``final=False``
-    and corrected ``final=True`` operators disagree on a small number of F0
-    rows (the re-selection path uses the accepted policy's ``iteration_*`` rates
-    while the corrected final path recomputes raw drifts). This is asserted as
-    the recorded factual outcome, and is the frozen Outcome C condition.
+    Under the accepted single-Q contract the corrected ``final=True`` row reuses
+    the supplied selected record's stored ``row_entries`` / ``diagonal``, so the
+    trial operators are bit-identical and the historical Issue #68 trial
+    inconsistency (0.6718037653783657 / 1.3379411925537439 on rows
+    {452,453} / {452,453,482,483}) no longer exists. Those historical values
+    remain preserved as named evidence constants above and in the accepted
+    Issue #68 report.
     """
     r, _ = diag
     for t in r.trials:
-        assert t.final_vs_iter_equivalent is False
-        assert t.final_vs_iter_f0_rowwise_gap > m.EQUIVALENCE_TOL
-        assert t.final_vs_iter_inconsistent_row_count > 0
-        assert len(t.final_vs_iter_inconsistent_rows) == (
-            t.final_vs_iter_inconsistent_row_count)
-        # every affected row is an F0 row in the z=1 block
-        for row in t.final_vs_iter_inconsistent_rows:
-            assert 391 <= row < 782
+        assert t.final_vs_iter_equivalent is True
+        assert t.final_vs_iter_f0_rowwise_gap == CURRENT_ROUTE_A_TRIAL_GAP
+        assert t.final_vs_iter_inconsistent_row_count == (
+            CURRENT_ROUTE_A_TRIAL_INCONSISTENT_ROWS)
+        assert t.final_vs_iter_inconsistent_rows == ()
         # the corrected final and reselected residuals still coincide
         assert t.r_final_trial_inf == pytest.approx(t.r_reselect_inf, rel=1e-12)
-    assert r.all_trials_operator_equivalent is False
+    assert r.all_trials_operator_equivalent is True
 
 
 def test_one_reselection_and_one_final_build_per_trial(recon):
@@ -618,23 +659,28 @@ def test_deterministic_repeat_identical(diag):
 
 
 def test_exactly_one_terminal_returned(diag):
+    """CURRENT (Owner Route A): the trial operators are equivalent, so the
+    frozen Outcome C inconsistency clause no longer fires."""
     r, _ = diag
-    assert r.terminal == m.TERMINAL_C
+    assert r.terminal == CURRENT_ROUTE_A_TERMINAL
+    assert r.terminal != HISTORICAL_ISSUE68_TERMINAL_C
     assert r.terminal != m.TERMINAL_A
-    assert r.terminal != m.TERMINAL_B
     assert r.terminal != m.TERMINAL_BLOCKED
+    # exactly one terminal from the frozen Issue #68 set
     assert [r.terminal == t for t in (m.TERMINAL_A, m.TERMINAL_B,
                                       m.TERMINAL_C)].count(True) == 1
 
 
 def test_terminal_rule_is_the_frozen_rule(diag):
-    """Outcome C must follow from the frozen consistency criteria.
+    """CURRENT: the frozen rule must now select Outcome B (material residual
+    reduction not achieved), NOT Outcome C.
 
-    The corrected full-gradient geometry is finite, has an exact tangent
-    identity and both trials are domain-safe, but the corrected ``final=True``
-    and re-selected ``final=False`` operators are NOT equivalent at the trial
-    states, which is the frozen Outcome C condition
-    ("corrected-final vs iteration inconsistency").
+    The corrected full-gradient geometry is still finite, has an exact tangent
+    identity and both trials remain domain-safe -- but under the Owner Route A
+    single-Q contract the corrected ``final=True`` and re-selected
+    ``final=False`` operators ARE equivalent at the trial states, so the frozen
+    Outcome C condition ("corrected-final vs iteration inconsistency") is no
+    longer met and the residual/geometry shortfall governs.
     """
     r, _ = diag
     assert r.failure_detail is None
@@ -642,27 +688,54 @@ def test_terminal_rule_is_the_frozen_rule(diag):
     assert r.has_positive_safe_fraction is True
     assert r.all_trials_domain_safe is True
     assert r.geometry_improving is True
-    # the disqualifying condition
-    assert r.all_trials_operator_equivalent is False
+    # the historical DISQUALIFYING condition is resolved under Route A
+    assert r.all_trials_operator_equivalent is True
     for t in r.trials:
-        assert t.final_vs_iter_equivalent is False
-        assert t.final_vs_iter_f0_rowwise_gap > m.EQUIVALENCE_TOL
+        assert t.final_vs_iter_equivalent is True
+        assert t.final_vs_iter_f0_rowwise_gap == CURRENT_ROUTE_A_TRIAL_GAP
     assert [r.terminal == t for t in (m.TERMINAL_A, m.TERMINAL_B,
                                       m.TERMINAL_C)].count(True) == 1
-    assert r.terminal == m.TERMINAL_C
+    assert r.terminal == CURRENT_ROUTE_A_TERMINAL
+    assert r.terminal == m.TERMINAL_B
 
 
 def test_trial_operator_inconsistency_recorded_precisely(diag):
+    """CURRENT: no trial-level operator inconsistency remains.
+
+    The accepted Issue #68 historical inconsistent rows/gaps are retained above
+    as named evidence constants rather than asserted as current behaviour.
+    """
     r, _ = diag
-    assert r.all_trials_operator_equivalent is False
-    assert r.trials[0].final_vs_iter_inconsistent_row_count == 2
-    assert r.trials[0].final_vs_iter_inconsistent_rows == (452, 453)
-    assert r.trials[0].final_vs_iter_f0_rowwise_gap == pytest.approx(
-        0.6718037653783657, rel=1e-9)
-    assert r.trials[1].final_vs_iter_inconsistent_row_count == 4
-    assert r.trials[1].final_vs_iter_inconsistent_rows == (452, 453, 482, 483)
-    assert r.trials[1].final_vs_iter_f0_rowwise_gap == pytest.approx(
-        1.3379411925537439, rel=1e-9)
+    assert r.all_trials_operator_equivalent is True
+    for t in r.trials:
+        assert t.final_vs_iter_equivalent is True
+        assert t.final_vs_iter_inconsistent_row_count == (
+            CURRENT_ROUTE_A_TRIAL_INCONSISTENT_ROWS)
+        assert t.final_vs_iter_inconsistent_rows == ()
+        assert t.final_vs_iter_f0_rowwise_gap == CURRENT_ROUTE_A_TRIAL_GAP
+    # historical Issue #68 evidence preserved
+    assert HISTORICAL_ISSUE68_TRIAL_GAP_HALF > 0.1
+    assert HISTORICAL_ISSUE68_TRIAL_GAP_NEAR > 0.1
+    assert len(HISTORICAL_ISSUE68_TRIAL_ROWS_HALF) == 2
+    assert len(HISTORICAL_ISSUE68_TRIAL_ROWS_NEAR) == 4
+
+
+def test_historical_issue68_trial_gaps_present_in_audit_module():
+    """The accepted Issue #68 magnitudes and rows remain recorded as historical
+    evidence in the accepted (read-only) Issue #68 report -- history is
+    preserved in the repository, not silently deleted."""
+    repo_root = Path(__file__).resolve().parents[1]
+    report = (repo_root / "reports"
+              / "dlh_5vt_tangent_projected_newton_geometry_2026_09_15"
+              / "DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md")
+    assert report.is_file()
+    text = report.read_text(encoding="utf-8")
+    assert "0.6718037653783657" in text
+    assert "1.3379411925537439" in text
+    # and this test module itself carries them as named evidence constants
+    assert HISTORICAL_ISSUE68_TRIAL_GAP_HALF == 0.6718037653783657
+    assert HISTORICAL_ISSUE68_TRIAL_GAP_NEAR == 1.3379411925537439
+    assert HISTORICAL_ISSUE68_TRIAL_ROWS_NEAR == (452, 453, 482, 483)
 
 
 def test_no_hjb_convergence_claimed(diag):

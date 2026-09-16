@@ -93,6 +93,21 @@ WALL_NODE = 332
 CORRECTED_VS_ITER_TOL = 1.0e-9
 RECONCILE_TOL = 1.0e-9
 
+# ---------------------------------------------------------------------------
+# PRE-ROUTE-A HISTORICAL EVIDENCE (accepted Issue #67 z-block repair, as
+# verified at that time). These record the assembly state of the F0
+# ``final=True`` branch BEFORE the Owner Route A single-Q consolidation
+# (Issue #70 / DLH-5V-V). They remain preserved historical regression
+# evidence; they are NOT current runtime expectations.
+# ---------------------------------------------------------------------------
+PRE_ROUTE_A_FINAL_ZBLOCK_ASSEMBLY_LINE = 978
+PRE_ROUTE_A_FINAL_ZBLOCK_LINE_TEXT = (
+    "rows.append(row); cols.append(nz * self.n + dn); data.append(rate)")
+# CURRENT (Owner Route A) final=F0 branch text: the row is rebuilt from the
+# supplied selected record instead of re-deriving raw-drift rates.
+CURRENT_ROUTE_A_FINAL_LINE_TEXT = "cols.append(nz * self.n + dn)"
+PRE_ROUTE_A_SELECTED_Q_BLOB = "556ccc214f03a1a22306cc4f5c7e9f7691bbf897"
+
 TERMINAL_A = (
     "DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_"
     "MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_"
@@ -544,31 +559,62 @@ def recon():
 
 # -- 1. the authorized source repair is exactly one location ---------------
 def test_source_repair_is_exactly_one_authorized_location():
-    """The repaired source has no bare-destination assembly left, the repaired
-    line sits in the final=True F0 branch, and all three assembly sites (final,
-    iteration, boundary) now use the identical same-z-block placement."""
+    """CURRENT-CONTRACT (Owner Route A): the Issue #67 z-block repair is intact.
+
+    The bare-destination assembly must still be absent and all three assembly
+    sites (final, iteration, boundary) must still use the identical same-z-block
+    template. Under Route A the final=F0 branch is further consolidated to
+    rebuild the row from the supplied selected record, but it retains the very
+    same destination-column placement, so the Issue #67 repair itself is
+    unchanged and only the rate SOURCE inside that branch changed.
+    """
     facts = repair_source_facts()
     src = facts["source"]
-    # 1. no bare-destination assembly survives anywhere
+    # 1. no bare-destination assembly survives anywhere (Issue #67 repair intact)
     assert src.count(REPAIR_OLD) == 0, "unrepaired bare destination assembly remains"
-    # 2. all three assembly sites use the same-z-block placement
+    # 2. all three assembly sites still agree on same-z-block placement
     assert src.count(REPAIR_NEW) == 3, (
         f"expected the three assembly sites to agree, got {src.count(REPAIR_NEW)}")
     assert src.count("cols.append(nz * self.n + dn)") == 3
-    # 3. the repaired site is the final=True F0 branch one
+    lines = src.splitlines()
     hits = facts["hits"]
     assert len(hits) == 3
-    lines = src.splitlines()
-    ln = hits[0][0]
-    assert ln == 978
-    window = "\n".join(lines[ln - 25:ln + 2])
+    # 3. the final=F0 branch is same-z-block AND now record-sourced (Route A)
+    final_line = hits[0][0]
+    window = "\n".join(lines[final_line - 25:final_line + 2])
     assert "if final and f0_policies is not None" in window
-    assert "asset_drifts_matlab_faithful" in window
-    assert "max(-mu_a_v, 0.0) / self.da" in window
-    assert "diag = -(bb + bf + ab + af)" in window
-    # 4. the other two sites are the accepted iteration and boundary paths
+    assert CURRENT_ROUTE_A_FINAL_LINE_TEXT in window
+    assert "rec.row_entries" in window
+    # 4. the pre-Route-A raw-drift final-Q construction is gone (historical)
+    assert "max(-mu_a_v, 0.0) / self.da" not in window
+    assert "diag = -(bb + bf + ab + af)" not in window
+    assert PRE_ROUTE_A_FINAL_ZBLOCK_ASSEMBLY_LINE > 0
+    # 5. the other two sites are the accepted iteration and boundary paths
     assert "local_interior_row" in "\n".join(lines[hits[1][0] - 20:hits[1][0] + 2])
     assert "_boundary_row" in "\n".join(lines[hits[2][0] - 20:hits[2][0] + 2])
+
+
+def test_pre_route_a_zblock_repair_evidence_preserved():
+    """The accepted Issue #67 repair remains auditable in the parent commit.
+
+    The pre-Route-A source (the Issue #70 parent commit) is read read-only and
+    must still show the historical z-block repair: the same-z-block template at
+    THREE sites including the final=F0 branch, and no bare-destination
+    assembly. This preserves the Issue #67 history instead of overwriting it.
+    """
+    import subprocess as _sp
+    repo_root = Path(__file__).resolve().parents[1]
+    pre = _sp.run(["git", "show", f"HEAD~1:{SELECTED_Q_RELPATH}"],
+                  cwd=repo_root, capture_output=True, text=True,
+                  encoding="utf-8", errors="replace", check=True).stdout
+    assert pre.count(PRE_ROUTE_A_FINAL_ZBLOCK_LINE_TEXT) == 3
+    assert "rows.append(row); cols.append(dn); data.append(rate)" not in pre
+    # the pre-Route-A final=F0 branch still rebuilt its rates from raw drift
+    assert "max(-mu_a_v, 0.0) / self.da" in pre
+    blob = _sp.run(["git", "rev-parse", f"HEAD~1:{SELECTED_Q_RELPATH}"],
+                   cwd=repo_root, capture_output=True, text=True,
+                   encoding="utf-8", errors="replace", check=True).stdout.strip()
+    assert blob == PRE_ROUTE_A_SELECTED_Q_BLOB
 
 
 def test_source_repair_is_the_only_selected_q_change():

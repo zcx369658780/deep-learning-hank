@@ -95,7 +95,15 @@ PRE_REPAIR_TERMINAL_A = "DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MA
 # REPAIRED SEMANTICS — current runtime expectations at the same accepted V_*.
 # ---------------------------------------------------------------------------
 REPAIRED_R_FINAL_CURRENT_INF = 10.435094313164921
-REPAIRED_F0_OPERATOR_GAP = 1.4210854715202004e-14
+# POST-REPAIR, PRE-ROUTE-A HISTORICAL EVIDENCE: with the Issue #67 z-block
+# repair in place but BEFORE the Owner Route A single-Q consolidation
+# (Issue #70 / DLH-5V-V), the F0 rowwise final-vs-iteration operator gap was
+# still marginally non-zero because the final=True path rebuilt its rates from
+# raw drift. Preserved as historical regression evidence.
+HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP = 1.4210854715202004e-14
+# CURRENT (Owner Route A): final=True reuses the supplied selected record, so
+# the F0 rowwise gap and the destination-assembly class are EXACTLY zero.
+CURRENT_ROUTE_A_F0_OPERATOR_GAP = 0.0
 REPAIRED_DESTINATION_ASSEMBLY_AFFECTED_ROWS = 0
 REPAIRED_AFFECTED_Z1_F0_ROWS = 0
 REPAIRED_FINAL_VS_ITER_TOL = 1.0e-9
@@ -192,15 +200,18 @@ def test_r_final_current_exact(audit_result):
 def test_f0_gap_exact(audit_result):
     r, _ = audit_result
     # PRE-REPAIR the F0 rowwise max |Q_final_current - Q_iter| was
-    # PRE_REPAIR_F0_OPERATOR_GAP == 24.601971766296664 at F0 node 297 (11,11) z=1.
-    # Issue #67's authorized destination repair removed that cross-z gap.
-    assert r.f0_rowwise_max_abs_gap == pytest.approx(REPAIRED_F0_OPERATOR_GAP,
-                                                     abs=1e-15)
+    # PRE_REPAIR_F0_OPERATOR_GAP == 24.601971766296664 at F0 node 297 (11,11) z=1;
+    # the Issue #67 repair removed that cross-z gap and left the post-repair
+    # PRE-ROUTE-A value HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP. Under the Owner
+    # Route A single-Q contract (Issue #70) the gap is now EXACTLY zero.
+    assert r.f0_rowwise_max_abs_gap == CURRENT_ROUTE_A_F0_OPERATOR_GAP
+    assert r.f0_rowwise_max_abs_gap != HISTORICAL_PRE_ROUTE_A_F0_OPERATOR_GAP
     assert r.f0_rowwise_max_abs_gap <= REPAIRED_FINAL_VS_ITER_TOL
     assert (r.f0_rowwise_max_abs_gap
             != pytest.approx(PRE_REPAIR_F0_OPERATOR_GAP, rel=1e-3))
-    assert r.f0_rowwise_max_abs_gap_state is not None
-    assert r.f0_rowwise_max_abs_gap_state["family"] == "F0"
+    # CURRENT: with a zero gap there is no applicable argmax row, so the
+    # sentinel must NOT be reported as a real state.
+    assert r.f0_rowwise_max_abs_gap_state is None
 
 
 # ---------------------------------------------------------------------------
@@ -460,6 +471,6 @@ def test_runtime_exactly_two_builds_at_vstar(recon):
     finals = [c.kwargs.get("final") for c in spy.call_args_list]
     assert sorted(finals) == [False, True]
     # PRE-REPAIR this gap was PRE_REPAIR_F0_OPERATOR_GAP == 24.601971766296664;
-    # the Issue #67 destination repair reduced it to machine precision
-    assert two["f0_rowwise_max_abs_gap"] == pytest.approx(
-        REPAIRED_F0_OPERATOR_GAP, abs=1e-15)
+    # the Issue #67 destination repair reduced it, and the Owner Route A
+    # single-Q contract (Issue #70) makes it EXACTLY zero.
+    assert two["f0_rowwise_max_abs_gap"] == CURRENT_ROUTE_A_F0_OPERATOR_GAP

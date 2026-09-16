@@ -474,7 +474,46 @@ def f0_component_comparison(solver: BoundaryHJBSolver, two: dict,
                          if aff_asm > 0 else None),
     }
     # max total row-entry difference (rowwise) and its column attribution
-    r0 = int(two["f0_rowwise_max_abs_gap_row"])
+    #
+    # CURRENT-CONTRACT NOTE (Owner Route A, Issue #70):
+    # Under the accepted single-Q contract the current final=True operator
+    # reuses the supplied selected F0 record verbatim, so the current
+    # final-vs-iteration rowwise gap is EXACTLY ZERO. `f0_rowwise_max_abs_gap_row`
+    # is then the initialised sentinel (-1) because no row ever exceeds the
+    # running maximum of 0.0. Treating that sentinel as a real row would index a
+    # grid corner and build destination columns from None neighbours. The
+    # zero-gap case therefore gets an EXPLICIT no-gap representation here:
+    # no argmax row, no directional column attribution, all component
+    # contributions zero, and `not_applicable = True`. Historical pre-Route-A
+    # expectations remain expressed by this module's stored historical
+    # constants; the archived pre-Route-A evidence is unchanged and this branch
+    # is finite, deterministic and fail-safe.
+    # accepted-final-row vs MATLAB-faithful-post-row assembly deviation
+    asm_dev = final_comp["assembly_deviation"]
+    aff_dev = int(np.sum(asm_dev > CLASS_TOL))
+    k_dev = int(np.argmax(asm_dev)) if aff_dev > 0 else 0
+    gap_row_raw = int(two["f0_rowwise_max_abs_gap_row"])
+    current_gap = float(two["f0_rowwise_max_abs_gap"])
+    if gap_row_raw < 0 or current_gap <= CLASS_TOL:
+        return {
+            "f0_row_count": int(len(f0_rows)),
+            "classes": classes,
+            "destination_assembly_max_abs_diff": float(np.max(asm_dev)),
+            "destination_assembly_affected_row_count": aff_dev,
+            "destination_assembly_argmax_state": (_state(int(f0_rows[k_dev]), solver)
+                                                  if aff_dev > 0 else None),
+            "current_gap_zero": True,
+            "current_gap_not_applicable": True,
+            "max_total_row_entry_diff": 0.0,
+            "max_total_row_entry_diff_state": None,
+            "max_row_argmax_component": None,
+            "max_row_component_contributions": {
+                "b_backward": 0.0, "b_forward": 0.0, "a_backward": 0.0,
+                "a_forward": 0.0, "diagonal": 0.0,
+                "switch_matrix_or_other": 0.0},
+            "max_row_columns_with_diff": 0,
+        }
+    r0 = gap_row_raw
     node, zz = r0 % n, r0 // n
     g = solver.grid
     j, i = int(g.j_arr[node]), int(g.i_arr[node])
@@ -507,10 +546,6 @@ def f0_component_comparison(solver: BoundaryHJBSolver, two: dict,
     row_comps["diagonal"] = float(d[r0])
     top = max(row_comps.values())
     row_comps["switch_matrix_or_other"] = float(np.max(d)) - top
-    # accepted-final-row vs MATLAB-faithful-post-row assembly deviation
-    asm_dev = final_comp["assembly_deviation"]
-    aff_dev = int(np.sum(asm_dev > CLASS_TOL))
-    k_dev = int(np.argmax(asm_dev)) if aff_dev > 0 else 0
     return {
         "f0_row_count": int(len(f0_rows)),
         "classes": classes,
@@ -518,6 +553,8 @@ def f0_component_comparison(solver: BoundaryHJBSolver, two: dict,
         "destination_assembly_affected_row_count": aff_dev,
         "destination_assembly_argmax_state": (_state(int(f0_rows[k_dev]), solver)
                                               if aff_dev > 0 else None),
+        "current_gap_zero": False,
+        "current_gap_not_applicable": False,
         "max_total_row_entry_diff": float(np.max(d)),
         "max_total_row_entry_diff_state": _state(r0, solver),
         "max_row_argmax_component": comp,
@@ -840,8 +877,12 @@ def _audit_from_reconstruction(rec: dict) -> F0FinalRateProvenanceResult:
             r_final_current_f0_max=s_fin["f0"]["max_abs"],
             r_final_current_boundary_max=s_fin["boundary"]["max_abs"],
             f0_rowwise_max_abs_gap=two["f0_rowwise_max_abs_gap"],
-            f0_rowwise_max_abs_gap_state=_state(
-                int(two["f0_rowwise_max_abs_gap_row"]), solver),
+            # CURRENT-CONTRACT (Owner Route A, Issue #70): when the current
+            # final-vs-iteration gap is exactly zero the argmax is not
+            # applicable, so the sentinel row is NEVER mapped to a real state.
+            f0_rowwise_max_abs_gap_state=(
+                _state(int(two["f0_rowwise_max_abs_gap_row"]), solver)
+                if int(two["f0_rowwise_max_abs_gap_row"]) >= 0 else None),
             same_controls_max_abs_diff=two["same_controls_max_abs_diff"],
             boundary_row_max_abs_diff=two["boundary_row_max_abs_diff"],
             boundary_u_max_abs_diff=two["boundary_u_max_abs_diff"],

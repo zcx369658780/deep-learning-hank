@@ -66,8 +66,18 @@ REPAIRED_R_FINAL_CURRENT_INF = 10.435094313164921
 REPAIRED_R_FINAL_STALE_INF = 10.435094313165099
 REPAIRED_D_TOTAL_INF = 4.654054919228656e-13
 REPAIRED_D_STALE_INF = 4.654054919228656e-13
-REPAIRED_D_RATE_INF = 3.410605131648481e-13
-REPAIRED_Q_CURRENT_MINUS_ITER = 1.4210854715202004e-14
+# POST-REPAIR, PRE-ROUTE-A HISTORICAL EVIDENCE: with the Issue #67 z-block
+# repair in place but BEFORE the Owner Route A single-Q consolidation
+# (Issue #70 / DLH-5V-V), the residual final-vs-iteration semantics effect and
+# the rowwise final-vs-iteration operator gap were still marginally non-zero
+# because the final=True path rebuilt its rates from raw drift.
+HISTORICAL_PRE_ROUTE_A_D_RATE_INF = 3.410605131648481e-13
+HISTORICAL_PRE_ROUTE_A_Q_CURRENT_MINUS_ITER = 1.4210854715202004e-14
+# CURRENT (Owner Route A) expectations: final=True now reuses the supplied
+# selected record verbatim, so the final-vs-iteration semantics effect and the
+# rowwise operator gap are EXACTLY zero.
+CURRENT_ROUTE_A_D_RATE_INF = 0.0
+CURRENT_ROUTE_A_Q_CURRENT_MINUS_ITER = 0.0
 REPAIRED_FINAL_VS_ITER_TOL = 1.0e-9
 BELLMAN_TOLERANCE_UNCHANGED = 1.0e-3
 
@@ -188,7 +198,11 @@ def test_additive_decomposition_holds(audit):
     assert r.d_total_inf <= REPAIRED_FINAL_VS_ITER_TOL
     assert r.d_total_inf != pytest.approx(PRE_REPAIR_D_TOTAL_INF, rel=1e-3)
     assert r.d_stale_inf == pytest.approx(REPAIRED_D_STALE_INF, abs=1e-15)
-    assert r.d_rate_inf == pytest.approx(REPAIRED_D_RATE_INF, abs=1e-15)
+    # CURRENT (Owner Route A): the final-vs-iteration semantics effect is
+    # exactly zero under the single-Q contract. Before Route A it was
+    # HISTORICAL_PRE_ROUTE_A_D_RATE_INF, which remains preserved above.
+    assert r.d_rate_inf == CURRENT_ROUTE_A_D_RATE_INF
+    assert r.d_rate_inf != HISTORICAL_PRE_ROUTE_A_D_RATE_INF
     # after the repair the residual stale-record effect (R_final_stale -
     # R_final_current) is LARGER than the residual final-vs-iteration
     # semantics effect. Pre-repair the ordering was the opposite
@@ -284,8 +298,11 @@ def test_operator_differences_are_f0_only(audit):
     assert np.isfinite(r.q_stale_minus_current_rowwise_max)
     assert r.q_stale_minus_current_rowwise_max < 1e-3
     assert r.q_current_minus_iter_rowwise_max is not None
-    assert r.q_current_minus_iter_rowwise_max == pytest.approx(
-        REPAIRED_Q_CURRENT_MINUS_ITER, abs=1e-15)
+    # CURRENT (Owner Route A): exactly zero -- final=True reuses the supplied
+    # selected record, so it reproduces the iteration operator bit-identically.
+    assert r.q_current_minus_iter_rowwise_max == CURRENT_ROUTE_A_Q_CURRENT_MINUS_ITER
+    assert (r.q_current_minus_iter_rowwise_max
+            != HISTORICAL_PRE_ROUTE_A_Q_CURRENT_MINUS_ITER)
     assert r.q_current_minus_iter_rowwise_max <= REPAIRED_FINAL_VS_ITER_TOL
     assert (r.q_current_minus_iter_rowwise_max
             != pytest.approx(PRE_REPAIR_F0_OPERATOR_GAP, rel=1e-3))
