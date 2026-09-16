@@ -150,31 +150,113 @@ def test_this_issue_does_not_mutate_any_accepted_source():
 
 
 def test_the_one_accepted_file_correction_is_assertion_only():
-    """The permitted Issue #70-file edit touches an assertion, not the science.
+    """GUARD (Reviewer hold `5695153100`): the ONE permitted fifth-path edit must
+    be an assertion-only repository-state correction.
 
-    Asserted structurally: the Route-A implementation the file is guarding is
-    still the ACCEPTED blob, and the corrected file still pins that blob.
+    This does not trust a hand-written claim: it derives the ACTUAL base-vs-HEAD
+    diff of the permitted Issue #70 file and audits every added and removed line.
+
+    Allowed added lines are exactly:
+      * comments,
+      * the `ISSUE70_ACCEPTED_SELECTED_Q_BLOB = "<accepted blob>"` constant, and
+      * the corrected assertion that compares `origin/main` against that constant.
+    Allowed removed lines are exactly the superseded stale assertion lines that
+    claimed live `main` carried the pre-Route-A revision.
+
+    Any scientific threshold, expectation, tolerance, terminal or operator marker
+    on either side FAILS this test, so a future scientific mutation cannot hide
+    inside this file's authorized correction.
     """
     repo_root = Path(__file__).resolve().parents[1]
+    base = "e1a7a9ac5b00ad4407fcc40bdfb67e46c4ccbe86"
+    relpath = "tests/test_dlh_5vv_route_a_single_q_operator_contract.py"
+    diff = subprocess.run(
+        ["git", "diff", base, "--", relpath], cwd=repo_root,
+        capture_output=True, text=True, encoding="utf-8",
+        errors="replace", check=True).stdout
+    added = [ln[1:] for ln in diff.splitlines()
+             if ln.startswith("+") and not ln.startswith("+++")]
+    removed = [ln[1:] for ln in diff.splitlines()
+               if ln.startswith("-") and not ln.startswith("---")]
 
-    def blob(spec: str, relpath: str) -> str:
+    # --- scientific/tolerance markers may NOT appear on either side
+    forbidden = ("ALPHA_HALF =", "ALPHA_NEAR =", "FINAL_STATISTIC_EXPECTED",
+                 "MIN_BOUNDARY_PB_EXPECTED", "R_ITER_INF_S0", "MACHINE_TOL",
+                 "BELLMAN_TOLERANCE_UNCHANGED", "TOL", "TERMINAL_",
+                 "label_changes", "sector=", "row_entries", "PASSED",
+                 "convergence")
+    for line in added + removed:
+        for token in forbidden:
+            assert token not in line, (token, line)
+
+    # --- every added line is a comment, the accepted-blob constant, or the guard
+    for line in added:
+        stripped = line.strip()
+        assert (stripped.startswith("#")
+                or stripped.startswith("ISSUE70_ACCEPTED_SELECTED_Q_BLOB =")
+                or ("blob(" in line
+                    and "ISSUE70_ACCEPTED_SELECTED_Q_BLOB" in line)
+                or stripped.startswith("assert blob(")
+                ), f"unexpected added line: {line!r}"
+
+    # --- the constant carries exactly the accepted Issue #70 blob
+    const_lines = [ln for ln in added
+                   if ln.strip().startswith("ISSUE70_ACCEPTED_SELECTED_Q_BLOB =")]
+    assert len(const_lines) == 1
+    assert m.SELECTED_Q_ACCEPTED_BLOB in const_lines[0]
+    assert "7857cabb4d28af99cb9d59e2d1c3024b05787c11" in const_lines[0]
+
+    # --- added lines must reference the accepted blob, never the pre-Route-A one
+    for line in added:
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            continue
+        assert "556ccc214f03a1a22306cc4f5c7e9f7691bbf897" not in line, line
+
+    # --- removed lines are only the superseded origin/main assertion + its comment
+    assert removed, "the correction must actually replace something"
+    for line in removed:
+        stripped = line.strip()
+        assert (stripped.startswith("#")
+                or (stripped.startswith("assert blob(") and "origin/main" in line)
+                ), f"unexpected removed line: {line!r}"
+
+    # --- the pre-Route-A anchor is STILL asserted, at an absolute revision
+    corrected = (repo_root / relpath).read_text(encoding="utf-8")
+    assert "825e241804c7fb260c807602fc0f1487caf84e56^" in corrected
+    assert "SELECTED_Q_PRE_ISSUE70_BLOB" in corrected
+    assert "556ccc214f03a1a22306cc4f5c7e9f7691bbf897" in corrected
+    # ...and the corrected file still pins the accepted blob for origin/main
+    assert "origin/main" in corrected
+    assert "live main now carries the ACCEPTED post-Route-A state" in corrected
+    # exactly ONE line in the file asserts origin/main, and it uses the constant
+    main_asserts = [ln for ln in corrected.splitlines()
+                    if "origin/main" in ln and ln.strip().startswith("assert")]
+    assert len(main_asserts) == 1
+    assert "ISSUE70_ACCEPTED_SELECTED_Q_BLOB" in main_asserts[0]
+
+    # --- the implementation under test is STILL the accepted blob
+    def blob(spec: str) -> str:
         return subprocess.run(
-            ["git", "rev-parse", f"{spec}:{relpath}"], cwd=repo_root,
+            ["git", "rev-parse", f"{spec}:{SELECTED_Q_RELPATH}"], cwd=repo_root,
             capture_output=True, text=True, encoding="utf-8",
             errors="replace", check=True).stdout.strip()
 
-    # the implementation under test is unchanged from the accepted revision
-    assert blob("origin/main", SELECTED_Q_RELPATH) == m.SELECTED_Q_ACCEPTED_BLOB
-    corrected = (repo_root / "tests/test_dlh_5vv_route_a_single_q_operator_contract.py"
-                 ).read_text(encoding="utf-8")
-    assert "ISSUE70_ACCEPTED_SELECTED_Q_BLOB = " in corrected
-    assert "7857cabb4d28af99cb9d59e2d1c3024b05787c11" in corrected
-    # the correction states that main carries the ACCEPTED state
-    assert "live main now carries the ACCEPTED post-Route-A state" in corrected
-    # no Route-A scientific expectation was touched by the correction
-    for token in ("sector=rec.sector", "row_entries", "float(rec.diagonal)",
-                  "INTERIOR_FINAL"):
-        assert token in corrected
+    assert blob("origin/main") == m.SELECTED_Q_ACCEPTED_BLOB
+    assert blob(PRE_ROUTE_A_COMMIT) == m.SELECTED_Q_PRE_ISSUE70_BLOB
+
+
+def test_fifth_path_correction_diff_is_bounded_to_two_hunks():
+    """The authorized fifth path must be a SMALL, bounded edit (not a rewrite)."""
+    repo_root = Path(__file__).resolve().parents[1]
+    diff = subprocess.run(
+        ["git", "diff", "--numstat", "e1a7a9ac5b00ad4407fcc40bdfb67e46c4ccbe86",
+         "--", "tests/test_dlh_5vv_route_a_single_q_operator_contract.py"],
+        cwd=repo_root, capture_output=True, text=True, encoding="utf-8",
+        errors="replace", check=True).stdout.split()
+    added, removed = int(diff[0]), int(diff[1])
+    assert added <= 12, added
+    assert removed <= 4, removed
 
 
 def test_authority_marker_present():

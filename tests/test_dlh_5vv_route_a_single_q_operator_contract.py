@@ -244,9 +244,9 @@ def test_pre_issue70_blob_recorded_and_oracle_unchanged():
     # live main now carries the ACCEPTED post-Route-A state (Issue #70
     # integration `fb5523d` plus governance sync `e1a7a9a`). The pre-Route-A blob
     # is therefore no longer main's revision; it is preserved at the ABSOLUTE
-    # revision asserted above and remains the recorded comparison authority.
-    assert blob("origin/main", SELECTED_Q_RELPATH) == (
-        ISSUE70_ACCEPTED_SELECTED_Q_BLOB)
+    # revision asserted on the preceding line and remains the recorded comparison
+    # authority for history.
+    assert blob("origin/main", SELECTED_Q_RELPATH) == ISSUE70_ACCEPTED_SELECTED_Q_BLOB
     assert blob(parent_sha, "src/deep_learning_hank/two_asset/"
                             "matlab_faithful_two_asset_ha.py") == ORACLE_BLOB
     # the oracle is unchanged in the current candidate too

@@ -7,8 +7,11 @@
 **Authority marker:** `DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_AUTHORIZED`
 **Initial authoritative activation:** `5691703381`
 **Final authoritative activation-refresh:** `5691863227`
+**Reviewer HOLD / bounded allowlist expansion:** `5695153100`
 **Live `main` at execution:** `e1a7a9ac5b00ad4407fcc40bdfb67e46c4ccbe86`
 **Dedicated Builder branch:** `dsh/issue-71-dlh-5vw-route-a-hjb-residual-decomposition-2026-09-16`
+**Original candidate:** `8eeb2949d51ff17c631dd664e6d94ee136d0c0d9`
+**Remediation / final candidate SHA:** see §16
 **Date:** 2026-09-16
 
 ## TERMINAL (exactly one)
@@ -279,20 +282,28 @@ The correct reading is that at `V_*` the boundary-HJB residual is a **near-total
 cancellation of large terms**, so a bounded solver-design step — not another
 single-cause hunt — is the appropriate next gate.
 
-## 11. Authorized files (exact four-path allowlist)
+## 11. Authorized files (exact FIVE-path cumulative allowlist)
+
+Original Issue #71 four-path allowlist:
 
 1. `src/deep_learning_hank/two_asset/route_a_hjb_residual_decomposition.py`
 2. `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`
 3. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_REPORT.md`
 4. `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_SUMMARY.csv`
 
-**No fifth tracked Builder path.** No accepted source, test or report was modified.
+Reviewer HOLD `5695153100` authorizes **exactly one** additional path (no sixth):
+
+5. `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`
+
+`git diff --name-only e1a7a9ac5b00ad4407fcc40bdfb67e46c4ccbe86...HEAD` returns **exactly
+these five paths**, and no sixth.
+
 Accepted blobs verified unchanged: selected-Q
 `7857cabb4d28af99cb9d59e2d1c3024b05787c11`, oracle
 `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`, Issue #69 audit
 `83e9be0febcc03eb721265d3558887bd6b1586a4`.
 
-### 11.1 DISCLOSED: one stale Issue #70 assertion corrected (not a fifth path, not science)
+### 11.1 The fifth path: a stale Issue #70 assertion, corrected (assertion-only)
 
 The first full-suite run for this Issue produced **`690 passed, 1 failed`**. The
 single failure was **not** caused by any Issue #71 code; it was a pre-existing
@@ -305,13 +316,14 @@ asserted:
 assert blob("origin/main", SELECTED_Q_RELPATH) == SELECTED_Q_PRE_ISSUE70_BLOB
 ```
 
-That was true only while `main` still pointed at `0bca3b4`. Issue #70 was then
-**accepted and integrated**, so live `main` (`e1a7a9a`, whose parent is the
-accepted integration `fb5523d`) now carries the **accepted** Route-A revision
-`7857cabb…`, not the pre-Route-A revision `556ccc2…`. The assertion therefore
-encoded a fact about the repository that the acceptance itself invalidated.
+**Cause.** That statement was true only while `main` still pointed at `0bca3b4`.
+Issue #70 was then **accepted and integrated** (Reviewer acceptance `5691693472`,
+acceptance integration `5691696204`), so live `main` (`e1a7a9a`, whose parent is
+the accepted integration `fb5523d`) now carries the **accepted** Route-A revision
+`7857cabb…`, not the pre-Route-A revision `556ccc2…`. The assertion encoded a
+repository fact that the acceptance itself invalidated.
 
-The correction is **assertion-only and truthfulness-only**:
+**Correction (repository-state assertion only):**
 
 ```diff
 -    # the same pre-Route-A revision is still the live main revision
@@ -319,28 +331,46 @@ The correction is **assertion-only and truthfulness-only**:
 +    # live main now carries the ACCEPTED post-Route-A state (Issue #70
 +    # integration `fb5523d` plus governance sync `e1a7a9a`). The pre-Route-A blob
 +    # is therefore no longer main's revision; it is preserved at the ABSOLUTE
-+    # revision asserted above and remains the recorded comparison authority.
-+    assert blob("origin/main", SELECTED_Q_RELPATH) == (
-+        ISSUE70_ACCEPTED_SELECTED_Q_BLOB)
++    # revision asserted on the preceding line and remains the recorded comparison
++    # authority for history.
++    assert blob("origin/main", SELECTED_Q_RELPATH) == ISSUE70_ACCEPTED_SELECTED_Q_BLOB
 ```
 
-plus one added constant recording the accepted blob. The pre-Route-A evidence is
-**still asserted**, at the absolute revision `825e241…^` on the preceding line, so
-nothing historical is erased. No Route-A scientific quantity, threshold
-expectation or terminal is touched, and the implementation under test remains the
-accepted blob `7857cabb…`. `test_the_one_accepted_file_correction_is_assertion_only`
-in this Issue's own focused suite pins exactly that.
+plus one recorded constant:
 
-This edit touches one of the ten accepted Issue #70 paths, so it is disclosed
-here explicitly rather than folded silently into the diff. It is required to
-satisfy the Issue #71 completion contract that the full repository suite report
-`0 failed / 0 errors`; the alternative — leaving a knowingly false assertion in
-place — would be worse. The Reviewer may of course treat it as out of scope.
+```python
+ISSUE70_ACCEPTED_SELECTED_Q_BLOB = "7857cabb4d28af99cb9d59e2d1c3024b05787c11"
+```
+
+**Current vs historical anchors, explicitly separated:**
+
+| Anchor | Revision / value | Still asserted |
+|---|---|---|
+| **current** `origin/main` selected-Q blob | `7857cabb4d28af99cb9d59e2d1c3024b05787c11` | yes |
+| **historical** pre-Route-A selected-Q blob | `556ccc214f03a1a22306cc4f5c7e9f7691bbf897` | yes, via the immutable anchor `825e241804c7fb260c807602fc0f1487caf84e56^` |
+
+**Not changed by this edit:** Route-A scientific assertions, tolerances, solver
+semantics, historical Issue #70 evidence, the accepted terminal, and the
+convergence interpretation. No threshold, operator, economics or convergence
+expectation is mutated.
+
+This is enforced structurally, not just claimed. `test_the_one_accepted_file_correction_is_assertion_only`
+derives the ACTUAL base-vs-HEAD diff of the fifth path and audits every added and
+removed line: added lines may only be comments, the single
+`ISSUE70_ACCEPTED_SELECTED_Q_BLOB` constant, or an assertion referencing it; no
+line on either side may contain a scientific/threshold/terminal/operator marker
+(`ALPHA_HALF =`, `FINAL_STATISTIC_EXPECTED`, `MIN_BOUNDARY_PB_EXPECTED`,
+`R_ITER_INF_S0`, `MACHINE_TOL`, `TOL`, `BELLMAN_TOLERANCE_UNCHANGED`, `TERMINAL_`,
+`label_changes`, `sector=`, `row_entries`, `convergence`, …); removed lines must be
+the superseded `origin/main` assertion and its comment.
+`test_fifth_path_correction_diff_is_bounded_to_two_hunks` additionally bounds the
+edit size (`<= 12` added, `<= 4` removed lines), so a future scientific mutation
+cannot hide inside this authorized correction.
 
 ## 12. Tests
 
 Focused suite `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`:
-**50 passed**.
+**52 passed**.
 
 Coverage: selected-Q / oracle / Issue #69 accepted blobs exact; no accepted source
 mutated; authority marker present; exact `V_*` reconstruction, residual norm,
@@ -362,17 +392,18 @@ Full repository suite `python -m pytest tests/ -q`: see §13.
 
 ## 13. Full repository suite
 
-**`692 passed, 6 warnings in 3429.24 s (0:57:09)`** — `EXIT=0`, i.e. **0 failed,
+**`693 passed, 6 warnings in 3557.33 s (0:59:17)`** — `EXIT=0`, i.e. **0 failed,
 0 errors, GREEN**.
 
 The 6 warnings are the pre-existing `MatrixRankWarning` entries from the accepted
 oracle tests (`test_dlh_5b`, `test_dlh_5c`) at
 `matlab_faithful_two_asset_ha.py:597`; they are unchanged by this Issue.
 
-The first run of this suite for this Issue reported `690 passed, 1 failed`. The
-single failure was the stale Issue #70 assertion documented and corrected in
-§11.1; after that assertion-only correction the suite is green at `692 passed`
-(`690 + 1` newly passing plus the `1` added correction-guard test).
+Suite history for this Issue: the **first** run reported `690 passed, 1 failed` —
+the single failure being the stale Issue #70 assertion documented in §11.1. After
+that assertion-only correction the suite was `692 passed`; the remediation then
+added the two strengthening guard tests (§11.1), giving **`693 passed`** with
+`0 failed / 0 errors`.
 
 ## 14. Terminal derivation (frozen rule)
 
@@ -400,3 +431,38 @@ single-`Q` contract failure; no non-finite evidence).
    mass-dynamics work require fresh explicit authorization.
 
 Stationary KFE remains **NOT AUTHORIZED**.
+
+## 16. Bounded remediation record (Reviewer hold `5695153100`)
+
+Reviewer hold `5695153100` reviewed candidate
+`8eeb2949d51ff17c631dd664e6d94ee136d0c0d9`, confirmed the diagnostic is internally
+coherent and **supports Terminal B**, and withheld acceptance for exactly one
+reason: the cumulative diff was **5 paths** while the activated Issue #71 contract
+authorized **4**. The fifth path
+(`tests/test_dlh_5vv_route_a_single_q_operator_contract.py`) was inspected and
+confirmed bounded and assertion-only, and was then **authorized** so that the
+cumulative allowlist becomes exactly 5 paths, with **no sixth path**.
+
+This remediation therefore:
+
+| Requirement | Status |
+|---|---|
+| stay on the same Issue #71 branch | yes |
+| preserve `8eeb2949…` as an ancestor; no rebase | yes |
+| no change to the scientific result (no fresh contradicting evidence) | yes — §4–§8 are bit-identical to the original candidate |
+| keep the Issue #70 edit assertion-only with historical/current separated | yes — §11.1 |
+| record this Reviewer authority in report + summary | yes — this section and the CSV |
+| strengthen the Issue #71 guard proving the edit is assertion-only | yes — `test_the_one_accepted_file_correction_is_assertion_only`, `test_fifth_path_correction_diff_is_bounded_to_two_hunks` |
+| cumulative diff exactly the 5 authorized paths, no sixth | yes — §11 |
+| re-run focused + full suite, `0 failed / 0 errors` | yes — §12, §13 |
+| re-confirm blobs, one-build count, closure, top-20, reproduction, flags, Terminal B, no convergence claim, no iterate, Stationary KFE NOT AUTHORIZED | yes — §2–§10 |
+
+The original candidate `8eeb2949…` remains in this branch's ancestry; the
+remediation is one additional commit on top of it, and the final candidate SHA is
+the remediation commit reported in the completion comment.
+
+**Explicitly not changed by the remediation:** Route-A science, `selected-Q`,
+oracle, Issue #69 audit, `final=False`/`final=True` semantics, policy selection,
+controls, F1–F11, economics/prices/grid/domain/initialization, tolerances /
+`PB_MARGIN` / Bellman tolerance, the convergence criterion, the classification
+flags, and Terminal B. No governance file was mutated.
