@@ -96,19 +96,26 @@ def test_accepted_issue71_science_reference_pinned():
 
 
 def test_this_issue_creates_only_its_own_paths():
+    """Issue #72's cumulative diff versus its governance base is EXACTLY its four
+    authorized paths — computed from a REVISION RANGE, not from transient
+    ``git status`` output (which reports a dirty tree during any in-flight
+    remediation in this same session, and would therefore have produced a spurious
+    failure here exactly as it did in the sibling Issue #71 guard)."""
     repo_root = Path(__file__).resolve().parents[1]
     out = subprocess.run(
-        ["git", "status", "--porcelain"], cwd=repo_root,
-        capture_output=True, text=True, encoding="utf-8",
+        ["git", "diff", "--name-only", f"{GOVERNANCE_BASE}...HEAD"],
+        cwd=repo_root, capture_output=True, text=True, encoding="utf-8",
         errors="replace", check=True).stdout
-    for line in out.splitlines():
-        if not line.strip():
-            continue
-        path = line[3:].strip().rstrip("/")
-        assert (line.startswith("??")
-                or "route_a_bounded_solver_design" in line
-                or "test_dlh_5vx" in line
-                or path in ("docs/governance", "reports")), line
+    paths = sorted(p.strip() for p in out.splitlines() if p.strip())
+    assert paths == sorted((
+        "src/deep_learning_hank/two_asset/route_a_bounded_solver_design.py",
+        "tests/test_dlh_5vx_route_a_bounded_solver_design.py",
+        "reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/"
+        "DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_REPORT.md",
+        "reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/"
+        "DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv",
+    )), paths
+    assert len(paths) == 4, "no fifth path is authorized"
 
 
 def test_authority_marker_and_activations_present():
@@ -388,7 +395,8 @@ def test_every_ladder_is_exact_and_frozen(design):
 
 
 def test_module_ladders_match_issue60_and_issue61_shapes():
-    assert m.REGULARIZATION_LADDER_SIZE == 20
+    assert m.REGULARIZATION_LADDER_MAX_EXPONENT == 20
+    assert m.REGULARIZATION_LADDER_LENGTH == 21
     assert m.REGULARIZATION_LADDER[0] == 1.0
     assert m.REGULARIZATION_LADDER[-1] == 2.0 ** -20
     assert m.STEP_FRACTION_FLOOR == 2.0 ** -20
@@ -613,6 +621,151 @@ def test_deterministic_design_artifact_repeat_identical(design):
     r, ident = design
     assert ident is True
     assert r.deterministic_repeat_identical is True
+
+
+# ---------------------------------------------------------------------------
+# 9b. four-way repeat agreement: runtime == result == report == committed CSV
+# ---------------------------------------------------------------------------
+def _csv_field(csv_text: str, name: str) -> str:
+    prefix = name + ","
+    for line in csv_text.splitlines():
+        if line.startswith(prefix):
+            return line[len(prefix):]
+    raise AssertionError(f"CSV field {name!r} not found")
+
+
+def test_repeat_agreement_runtime_result_report_csv():
+    """REVIEWER-AUTHORIZED GUARD: the measured repeat, the public result field, the
+    report statement and the committed CSV field must all agree.
+
+    Root cause this locks: the committed CSV had been generated from the
+    single-run entry point, so it carried the dataclass default
+    ``deterministic_repeat_identical = False`` while the report claimed ``True``.
+    """
+    repo_root = Path(__file__).resolve().parents[1]
+
+    # (1) MEASURE the repeat freshly through the reporting entry point
+    measured_result = m.run_issue72_design_repeated()
+    measured = measured_result.deterministic_repeat_identical
+
+    # (2) the same measurement independently, via the tuple entry point
+    _, independent = m.run_issue72_design_twice()
+    assert measured is True
+    assert independent is True
+    assert measured == independent
+
+    # (3) the PUBLIC result field
+    assert measured_result.deterministic_repeat_identical is True
+
+    # (4) the committed CSV field
+    csv_path = (repo_root / "reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16"
+                / "DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv")
+    csv_text = csv_path.read_text(encoding="utf-8")
+    csv_value = _csv_field(csv_text, "deterministic_repeat_identical")
+    assert csv_value == "True", (
+        f"committed CSV says {csv_value!r}; it must record the measured repeat")
+
+    # (5) the report statement: the report must state the repeat is identical, and
+    #     must record the flag as True
+    report_path = (repo_root / "reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16"
+                   / "DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_REPORT.md")
+    report_text = report_path.read_text(encoding="utf-8")
+    assert "**Deterministic repeat: identical** (`True`)." in report_text
+    assert "`deterministic_repeat_identical` = `True`" in report_text
+    assert "`deterministic_repeat_identical`" not in report_text.replace(
+        "`deterministic_repeat_identical` = `True`", "")
+
+    # (6) all four agree with each other
+    assert measured is True
+    assert measured_result.deterministic_repeat_identical == measured
+    assert csv_value == str(measured)
+    assert independent == measured
+
+
+def test_committed_csv_matches_a_fresh_run_field_by_field():
+    """The committed CSV must be reproducible from the frozen reporting entry
+    point, so a stale or hand-edited CSV cannot pass."""
+    repo_root = Path(__file__).resolve().parents[1]
+    csv_path = (repo_root / "reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16"
+                / "DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv")
+    committed = csv_path.read_text(encoding="utf-8").splitlines()
+    fresh = m.summary_csv_lines(m.run_issue72_design_repeated())
+    assert committed == fresh
+
+
+def test_single_run_result_is_not_publishable():
+    """A single-run result must FAIL the measured-flag consistency check, so no
+    artifact can be published with an unmeasured repeat flag."""
+    single = m.run_issue72_design()
+    assert single.deterministic_repeat_identical is False
+    assert single.consistency_checks["reported_repeat_flag_is_measured"] is False
+    assert single.consistency_checks[
+        "reported_repeat_flag_agrees_with_measurement"] is False
+    assert single.consistency_ok is False
+    # while the reporting entry point is publishable
+    assert m.run_issue72_design_repeated().consistency_ok is True
+
+
+def test_reporting_entry_point_fails_closed_on_nondeterminism(monkeypatch):
+    """If the two probe runs ever differ, the reporting entry point must raise
+    rather than fabricate a True flag."""
+    real = m._run_design
+    calls = {"n": 0}
+
+    def flaky(measured_repeat_identical=None):
+        calls["n"] += 1
+        r = real(measured_repeat_identical=measured_repeat_identical)
+        # corrupt ONLY the second probe run, so the two probes differ
+        if calls["n"] == 2:
+            r.terminal = "MUTATED_SECOND_RUN"
+        return r
+
+    monkeypatch.setattr(m, "_run_design", flaky)
+    with pytest.raises(m.BoundedSolverDesignFailure):
+        m.run_issue72_design_repeated()
+    # the non-raising tuple entry point must report the MEASURED False truthfully
+    # (a measured False legitimately satisfies the agreement check; what must never
+    #  happen is an UNMEASURED flag being reported)
+    monkeypatch.undo()
+    calls["n"] = 0
+    monkeypatch.setattr(m, "_run_design", flaky)
+    result, identical = m.run_issue72_design_twice()
+    assert identical is False
+    assert result.deterministic_repeat_identical is False
+    assert result.consistency_checks["reported_repeat_flag_is_measured"] is True
+    assert result.consistency_checks[
+        "reported_repeat_flag_agrees_with_measurement"] is True
+
+
+def test_regularization_ladder_naming_is_unambiguous():
+    """Reviewer-authorized housekeeping: the ladder has 21 ELEMENTS with maximum
+    exponent 20; both are stated and locked. The ladder itself is unchanged."""
+    assert m.REGULARIZATION_LADDER_MAX_EXPONENT == 20
+    assert m.REGULARIZATION_LADDER_LENGTH == 21
+    assert len(m.REGULARIZATION_LADDER) == m.REGULARIZATION_LADDER_LENGTH
+    assert m.REGULARIZATION_LADDER_LENGTH == (
+        m.REGULARIZATION_LADDER_MAX_EXPONENT + 1)
+    assert m.REGULARIZATION_LADDER == tuple(2.0 ** (-k) for k in range(0, 21))
+    assert m.REGULARIZATION_LADDER[0] == 1.0
+    assert m.REGULARIZATION_LADDER[-1] == 2.0 ** -20
+    r = m.run_issue72_design_repeated()
+    assert r.consistency_checks[
+        "regularization_ladder_naming_disambiguated"] is True
+    assert r.ladders["regularization_ladder_length"] == 21
+    # the old ambiguous name must be gone
+    assert not hasattr(m, "REGULARIZATION_LADDER_SIZE")
+
+
+def test_accepted_blobs_unchanged_at_head():
+    """Re-verify every accepted anchor after the remediation."""
+    assert _blob("HEAD", SELECTED_Q_RELPATH) == (
+        "7857cabb4d28af99cb9d59e2d1c3024b05787c11")
+    assert _blob("HEAD", ORACLE_RELPATH) == (
+        "76ae5b149993a7edeeb8eb337f1b02b3fe33c51e")
+    assert _blob("HEAD", AUDIT69_RELPATH) == (
+        "83e9be0febcc03eb721265d3558887bd6b1586a4")
+    assert _blob("HEAD", ISSUE71_RELPATH) == (
+        "96dd262a4ae42e26d489a317d9a04a9264b481b1")
 
 
 def test_csv_summary_lines_are_deterministic(design):

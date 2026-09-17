@@ -227,7 +227,7 @@ And the five mandated questions:
   full `final=False` reassembly; the linear model is always built from that same
   `Q`; no raw-drift alternate generator and no partial `Q` update appears anywhere.
 
-## 7. Internal consistency check (deterministic, 35 checks)
+## 7. Internal consistency check (deterministic, 38 checks)
 
 All checks pass (`consistency_ok = True`, zero failures), including:
 ladders exact and strictly descending and matching the accepted Issue #61 floor;
@@ -246,6 +246,25 @@ reassembly; and the logging surface carries both the domain margin and the exact
 decision reason.
 
 **Deterministic repeat: identical** (`True`).
+
+**Measured-repeat record (binding).** The design artifact was produced through the
+frozen reporting entry point, which measures the repeat FIRST and then builds the
+result with that measurement:
+
+```
+deterministic_repeat_identical = True
+```
+
+Recorded as `deterministic_repeat_identical` = `True`.
+
+The measured runtime repeat, the public `DesignResult.deterministic_repeat_identical`
+field, this report statement and the committed summary-CSV field are all the same
+value, and a focused test locks the four-way agreement by re-measuring the repeat,
+reading the public field, parsing the committed CSV and parsing this report.
+The single-run entry point deliberately yields `deterministic_repeat_identical =
+False` and fails the `reported_repeat_flag_is_measured` consistency check, so an
+artifact carrying an *unmeasured* flag can no longer be published. If two runs ever
+differ, the reporting entry point raises instead of reporting a fabricated `True`.
 
 ## 8. What remains open (the single sub-choice)
 
@@ -277,7 +296,7 @@ measured evidence — which this design Issue is explicitly forbidden to generat
 ## 10. Tests
 
 Focused suite `tests/test_dlh_5vx_route_a_bounded_solver_design.py`:
-**50 passed**.
+**56 passed**.
 
 Coverage: accepted selected-Q / oracle / Issue #69 / Issue #71 blobs exact;
 Issue #70–#71 integration SHAs pinned; evidence matrix complete over #60–#71 with
@@ -300,8 +319,13 @@ Full repository suite `python -m pytest tests/ -q`: see §11.
 
 ## 11. Full repository suite
 
-**`743 passed, 6 warnings in 3460.60 s (0:57:40)`** — `EXIT=0`, i.e. **0 failed,
-0 errors, GREEN**.
+**`749 passed, 6 warnings in 3462.89 s (0:57:42)`** — `EXIT=0`, i.e. **0 failed,
+0 errors, GREEN**, measured on the clean tree after this remediation's commit.
+
+On the *uncommitted* worktree the same suite reports `748 passed, 1 failed`, the
+single failure being the sibling **Issue #71** worktree-cleanliness guard — fully
+diagnosed in §15.1 and §16. **No Issue #72 test fails in either state**, and the
+guard passes again as soon as the worktree is clean.
 
 The 6 warnings are the pre-existing `MatrixRankWarning` entries from the accepted
 oracle tests (`test_dlh_5b`, `test_dlh_5c`) at
@@ -309,7 +333,7 @@ oracle tests (`test_dlh_5b`, `test_dlh_5c`) at
 
 ## 12. Terminal derivation (frozen rule)
 
-- design artifacts complete and internally consistent: **yes** (35/35 checks);
+- design artifacts complete and internally consistent: **yes** (38/38 checks);
 - all four families compared on all eight axes without new numerical trials: **yes**;
 - admissible families: **3** (A, B, C); refuted: **1** (D, by #60/#61);
 - unique admissible family: **NO**;
@@ -345,3 +369,138 @@ It does **NOT** mean:
    requires a separate execution Issue; this Issue authorizes none.
 
 Stationary KFE remains **NOT AUTHORIZED**.
+
+## 15. Bounded artifact-consistency remediation (Reviewer hold `5699275937`)
+
+**Blocker as filed.** The completion comment and report stated
+`deterministic_repeat_identical = True` while the **committed** summary CSV
+recorded `deterministic_repeat_identical,False`.
+
+**Root cause (measured, not assumed).** Three hypotheses were tested directly:
+
+| Hypothesis | Test | Result |
+|---|---|---|
+| H1 — the design itself is nondeterministic | compare `_canon` of two independent single runs | **rejected**: canonical forms identical `True` |
+| H2 — the repeat entry point reports wrongly | call `run_issue72_design_twice()` | **rejected**: it returned `True` correctly |
+| H3 — the published CSV was built from the wrong entry point | build the CSV fields from a single run vs the repeat run | **CONFIRMED**: single-run CSV → `False`, repeat-run CSV → `True` |
+
+The defect was therefore an **artifact-generation path defect**, not a
+nondeterminism: the CSV had been generated from `run_issue72_design()`, whose
+returned `DesignResult.deterministic_repeat_identical` carries the **dataclass
+default `False`** because a single run never measures a repeat. The report's `True`
+quoted the separately-measured repeat, so the two published artifacts disagreed.
+**No CSV text was edited to force agreement.**
+
+**Fix (structural, so this class of defect cannot recur).**
+
+1. `_run_design` now takes the **already-measured** repeat value and records it on
+   the result; it no longer hard-codes `False`.
+2. Two new artifact-consistency checks were added:
+   `reported_repeat_flag_is_measured` and
+   `reported_repeat_flag_agrees_with_measurement`. A single-run caller passes
+   `measured_repeat_identical = None` and therefore **fails both checks by
+   construction**, so an artifact carrying an *unmeasured* flag is not publishable
+   (`consistency_ok = False`).
+3. `run_issue72_design_twice()` now measures both probe runs FIRST and then builds
+   its result with the measured value, so every consistency check holds.
+4. `run_issue72_design_repeated()` is the frozen **reporting** entry point: it
+   measures the repeat, builds the result from that measurement, and **raises**
+   `BoundedSolverDesignFailure` if the two runs differ or the agreement check
+   fails — it can never report a fabricated `True`.
+5. The committed snapshot CSV was regenerated from `run_issue72_design_repeated()`.
+
+**Measured repeat result after the fix.** `deterministic_repeat_identical = True`,
+from the frozen comparison contract on two fresh independent design runs.
+
+**Four-way agreement, locked by test.** A focused test re-measures the repeat at
+runtime, reads the public `DesignResult` field, parses the committed CSV, and
+parses this report, and asserts all four are the same value. A second test asserts
+the committed CSV is **field-by-field reproducible** from the frozen reporting
+entry point, so a stale or hand-edited CSV cannot pass. A third asserts that the
+single-run result is **not publishable**. A fourth injects nondeterminism and
+asserts the reporting entry point raises, while the tuple entry point reports a
+truthful measured `False`.
+
+**Optional authorized housekeeping (naming only, no ladder change).** The constant
+`REGULARIZATION_LADDER_SIZE = 20` was ambiguous — the ladder runs `k = 0..20`, so it
+has **21 elements** while its maximum exponent is **20**. It is replaced by
+`REGULARIZATION_LADDER_MAX_EXPONENT = 20` and
+`REGULARIZATION_LADDER_LENGTH = 21`, with a consistency check
+(`regularization_ladder_naming_disambiguated`) and a test asserting
+`LENGTH == MAX_EXPONENT + 1 == len(ladder) == 21`, that the old name is gone, and
+that the ladder **values are unchanged** (`{2^-k, k=0..20}`, `1.0 … 9.5367431640625e-07`).
+
+**Unchanged by this remediation:** Terminal B and the whole scientific result; the
+four-family candidate matrix; the frozen ladders and thresholds; DESIGN-ONLY scope;
+no `V_new`; no Newton / tangent / trust-region / line-search / continuation /
+resolvent execution; no accepted iterate; no trajectory. The cumulative diff
+remains exactly the original four paths, with `d06f53e4…` preserved as the parent
+commit and no rebase.
+
+### 15.1 A second, related defect found, diagnosed — and deliberately NOT fixed here
+
+The first full-suite run for this remediation exposed **one** failure, in the same
+class as the blocker: an assertion checking a **transient worktree property**
+instead of the invariant it is named after.
+
+`tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py::test_this_issue_does_not_mutate_any_accepted_source`
+(Issue #71's suite) asserts that `git status` is EMPTY except for Issue #71's own
+paths. That holds only while no other Issue is in flight, so it fails whenever this
+authorized remediation has the four Issue #72 files modified in the worktree. A
+commit-range reformulation is not a valid alternative either: from a later revision,
+`base...HEAD` resolves to a merge-base that already contains other Issues' work.
+
+**Measured, decisive facts** (each tested directly):
+
+| Fact | Measurement |
+|---|---|
+| the guard fails against a DIRTY worktree carrying the four Issue #72 edits | **confirmed** — full suite `748 passed, 1 failed`, the failure being exactly this guard |
+| the guard passes on a CLEAN tree at the same commit `d06f53e4…` | **confirmed** — `52 passed` for `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py` |
+
+So the sibling guard is **not broken by this remediation** and needs no change: it
+is a worktree-cleanliness assertion that is simply unsatisfiable while any other
+Issue's edits are pending in the same worktree. It passes again the moment those
+edits are committed, because the worktree is then clean again.
+
+**Consequence, stated plainly.** While this remediation sits uncommitted, the full
+suite reports `748 passed, 1 failed` — and that single failure is this sibling
+guard, not any Issue #72 artifact. There is no way to obtain a green full suite at
+`HEAD` with these four paths modified in the worktree, short of adding a **fifth**
+path, which is forbidden here. **After the commit the full suite is
+`749 passed, 0 failed, 0 errors`**, confirming the guard itself is sound.
+
+**Decision — scope discipline over convenience.** Correcting that guard would
+require modifying `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`, a
+**fifth path**, which this remediation is explicitly forbidden to add. The
+temptation to fix a genuinely weak assertion was therefore declined. The sibling
+file is left **byte-identical to its committed revision**, the cumulative diff
+remains exactly the four authorized paths, and the accepted invariant is verified
+by running the full suite against a **clean** tree (the state that exists
+immediately after this remediation's commit).
+
+This is reported as an observation for a future authorized change: the guard should
+eventually assert the durable invariant (accepted-science files byte-identical to
+their accepted blobs) rather than worktree cleanliness. Only the guard in **this**
+Issue's own suite — which IS within the authorized paths — was strengthened, and it
+now computes Issue #72's cumulative diff from the governance base using a
+**revision range** and asserts it is exactly the four authorized paths with no
+fifth (a formulation verified to resolve correctly here, since
+`merge-base(f9bb2b2…, HEAD)` **is** `f9bb2b2…` on this branch).
+
+## 16. Test evidence for this remediation (exact measurements)
+
+All figures below were measured directly, and the distinction between them matters:
+
+| Measurement | State | Result |
+|---|---|---|
+| focused Issue #72 suite | worktree (4 paths modified) | **`56 passed`** |
+| Issue #71 + Issue #72 suites together | worktree | **`108 passed`** |
+| **full repository suite** | **worktree with the 4 paths modified (uncommitted)** | **`748 passed, 1 failed, 6 warnings`** — the single failure is the sibling Issue #71 worktree-cleanliness guard documented in §15.1, NOT an Issue #72 artifact |
+| `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py` alone | **clean tree** at `d06f53e4…` | **`52 passed`** |
+| **full repository suite** | **clean tree after this remediation's commit** | **`749 passed, 6 warnings in 3462.89 s (0:57:42)`** — **0 failed, 0 errors, GREEN** |
+
+The 6 warnings are the pre-existing oracle `MatrixRankWarning`s. The dirty-tree
+failure was fully attributed to the sibling worktree-cleanliness guard and, as
+predicted, it clears the moment the commit lands: in the committed state the full
+suite is **749 passed / 0 failed / 0 errors**. No Issue #72 test fails in either
+state.

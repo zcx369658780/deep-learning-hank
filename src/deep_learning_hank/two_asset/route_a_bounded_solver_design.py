@@ -134,7 +134,12 @@ RESIDUAL_REFERENCE = ACCEPTED_RESIDUAL_INF                    # 10.4350943131649
 
 # --- regularization ladder (exact, finite, descending)
 REGULARIZATION_LADDER = tuple(2.0 ** (-k) for k in range(0, 21))   # {1, 1/2, ..., 2^-20}
-REGULARIZATION_LADDER_SIZE = 20            # k = 0..20 inclusive
+# Naming disambiguation (Reviewer-authorized housekeeping): the ladder runs
+# k = 0..20, i.e. it has 21 ELEMENTS. The maximum exponent is 20, the LENGTH is 21.
+# Both are stated explicitly so neither can be confused with the other. The ladder
+# itself is unchanged.
+REGULARIZATION_LADDER_MAX_EXPONENT = 20    # largest k in the ladder (k = 0..20)
+REGULARIZATION_LADDER_LENGTH = 21          # number of elements in the ladder
 
 # --- trust-radius ladder for the constrained correction (exact, finite)
 TRUST_RADIUS_FRACTION_LADDER = tuple(2.0 ** (-k) for k in range(0, 21))
@@ -920,13 +925,22 @@ def material_distinction() -> dict:
 # ---------------------------------------------------------------------------
 def _artifact_consistency(evidence: list, families: list,
                           contract: dict, ladders: dict, thresholds: dict,
-                          attempts: dict, pseudocode: tuple) -> dict:
-    """Deterministic internal-consistency checks. No numerical experiment."""
+                          attempts: dict, pseudocode: tuple,
+                          reported_repeat_identical: bool,
+                          measured_repeat_identical: Optional[bool]) -> dict:
+    """Deterministic internal-consistency checks. No numerical experiment.
+
+    ``measured_repeat_identical`` is the repeat result actually observed by the
+    caller (``None`` when the caller ran only once, in which case the reported flag
+    is the dataclass default and the agreement check must FAIL rather than pass
+    vacuously).
+    """
     checks = {}
     # ladders exact and finite
     checks["ladder_regularization_exact"] = bool(
         ladders["regularization_ladder"]
-        == tuple(2.0 ** (-k) for k in range(0, REGULARIZATION_LADDER_SIZE + 1)))
+        == tuple(2.0 ** (-k) for k in range(0, REGULARIZATION_LADDER_MAX_EXPONENT + 1))
+        and len(ladders["regularization_ladder"]) == REGULARIZATION_LADDER_LENGTH)
     checks["ladder_trust_radius_exact"] = bool(
         ladders["trust_radius_fraction_ladder"]
         == tuple(2.0 ** (-k) for k in range(0, 21)))
@@ -1045,13 +1059,35 @@ def _artifact_consistency(evidence: list, families: list,
     checks["logging_carries_domain_margin_and_reason"] = bool(
         "domain margin" in contract["reproducibility_logging_fields"]
         and "exact reason" in contract["reproducibility_logging_fields"])
+    # REPORTED repeat flag must agree with the MEASURED repeat. A single-run caller
+    # passes None here and therefore fails this check by construction, so no
+    # reportable artifact can be published with an unmeasured default flag.
+    checks["reported_repeat_flag_is_measured"] = bool(
+        measured_repeat_identical is not None)
+    checks["reported_repeat_flag_agrees_with_measurement"] = bool(
+        measured_repeat_identical is not None
+        and reported_repeat_identical == measured_repeat_identical)
+    # ladder naming disambiguation is stated and self-consistent
+    checks["regularization_ladder_naming_disambiguated"] = bool(
+        REGULARIZATION_LADDER_MAX_EXPONENT == 20
+        and REGULARIZATION_LADDER_LENGTH == 21
+        and len(ladders["regularization_ladder"]) == REGULARIZATION_LADDER_LENGTH
+        and REGULARIZATION_LADDER_LENGTH
+        == REGULARIZATION_LADDER_MAX_EXPONENT + 1)
     return checks
 
 
 # ---------------------------------------------------------------------------
 # 5. the ONE full design run
 # ---------------------------------------------------------------------------
-def _run_design() -> DesignResult:
+def _run_design(measured_repeat_identical: Optional[bool] = None) -> DesignResult:
+    """ONE design run.
+
+    ``measured_repeat_identical`` is the repeat result the caller has ALREADY
+    measured; pass ``None`` only when the caller has not measured a repeat, in
+    which case the artifact-consistency check fails closed (the reported flag would
+    otherwise be an unmeasured dataclass default).
+    """
     failure: Optional[dict] = None
     try:
         evidence = synthesize_evidence()
@@ -1064,8 +1100,12 @@ def _run_design() -> DesignResult:
         pseudocode = deterministic_pseudocode()
         distinction = material_distinction()
 
+        reported_repeat = bool(measured_repeat_identical) if (
+            measured_repeat_identical is not None) else False
         checks = _artifact_consistency(evidence, families, contract, ladders,
-                                       thresholds, attempts, pseudocode)
+                                       thresholds, attempts, pseudocode,
+                                       reported_repeat,
+                                       measured_repeat_identical)
         consistency_ok = bool(all(checks.values()))
 
         admissible = tuple(f.family for f in families if f.admissible)
@@ -1133,7 +1173,7 @@ def _run_design() -> DesignResult:
             consistency_checks=checks,
             consistency_check_count=len(checks),
             consistency_ok=consistency_ok,
-            deterministic_repeat_identical=False,
+            deterministic_repeat_identical=reported_repeat,
             accepted_residual_argmax=(
                 f"row {ACCEPTED_RESIDUAL_ARGMAX_ROW} / node "
                 f"{ACCEPTED_RESIDUAL_ARGMAX_NODE} / z {ACCEPTED_RESIDUAL_ARGMAX_Z} / "
@@ -1148,9 +1188,15 @@ def _run_design() -> DesignResult:
 
 
 def run_issue72_design() -> DesignResult:
-    """Exactly ONE full Issue #72 design run (one evidence synthesis, one
-    candidate-family matrix, one contract, one pseudocode, one consistency check)."""
-    return _run_design()
+    """One single design run with NO repeat measurement.
+
+    The returned ``deterministic_repeat_identical`` field is therefore ``False``
+    and ``consistency_check.reported_repeat_flag_is_measured`` is ``False``: such a
+    result is deliberately NOT publishable. Callers that REPORT the artifact must
+    use :func:`run_issue72_design_repeated`, which measures the repeat first and
+    then builds the result with that measured value.
+    """
+    return _run_design(measured_repeat_identical=None)
 
 
 def _canon(r: DesignResult) -> dict:
@@ -1169,12 +1215,43 @@ def _canon(r: DesignResult) -> dict:
 
 
 def run_issue72_design_twice() -> tuple[DesignResult, bool]:
-    """The ONE deterministic repeat of the full design run."""
-    first = run_issue72_design()
-    second = run_issue72_design()
-    identical = bool(_canon(first) == _canon(second))
-    first.deterministic_repeat_identical = identical
-    return first, identical
+    """The ONE deterministic repeat of the full design run.
+
+    Returns ``(result, identical)`` where ``result`` is built AFTER the repeat is
+    measured, so its ``deterministic_repeat_identical`` field is the measured value
+    and every consistency check holds. This is the same measured result as
+    :func:`run_issue72_design_repeated`.
+    """
+    _probe_a = _run_design(measured_repeat_identical=None)
+    _probe_b = _run_design(measured_repeat_identical=None)
+    identical = bool(_canon(_probe_a) == _canon(_probe_b))
+    result = _run_design(measured_repeat_identical=identical)
+    return result, identical
+
+
+def run_issue72_design_repeated() -> DesignResult:
+    """THE reporting entry point: measure the repeat, then build ONE result whose
+    ``deterministic_repeat_identical`` field IS that measurement.
+
+    Order matters: the repeat is measured FIRST, so the reported artifact is
+    constructed with the measured value and the artifact-consistency check can
+    verify ``reported == measured``. This makes it impossible to publish a report
+    or CSV carrying an unmeasured default flag. If the two runs differ, this raises
+    :class:`BoundedSolverDesignFailure` instead of reporting a fabricated ``True``.
+    """
+    result, measured = run_issue72_design_twice()
+    if measured is not True:
+        raise BoundedSolverDesignFailure(
+            "the design artifact is NOT deterministic: the frozen comparison "
+            "contract found two consecutive runs to differ")
+    if result.deterministic_repeat_identical is not measured:
+        raise BoundedSolverDesignFailure(
+            "measured repeat flag inconsistent with the design result")
+    if not result.consistency_ok:
+        failed = sorted(k for k, v in result.consistency_checks.items() if not v)
+        raise BoundedSolverDesignFailure(
+            f"design artifact consistency failed: {failed}")
+    return result
 
 
 # ---------------------------------------------------------------------------
