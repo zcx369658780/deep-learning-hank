@@ -8,7 +8,7 @@
 本轮发布前 main：`9058be73fc4b4211c8ad49ea0989d4fdc224ed1d`。
 本文件所在文档提交是同步发布锚点；启动时记录实际 fresh main，不把发布前 SHA 当永久 HEAD。导出包外部 manifest 记录确切发布 SHA，避免文件自引用自己的 commit。
 
-Owner 已批准新路线。当前 P0：GitHub 文档发布；项目源人工替换 `PENDING_OWNER_CONFIRMATION`，DSH 同步 `NOT_REPORTED`。科学 Issue NONE。学习模块实现/训练尚未开始，经济耦合未授权。
+Owner 已批准新路线。当前 P0：GitHub 文档发布与项目源上传已完成；DSH 同步 `NOT_REPORTED`。Issue #74 已发布为 **STAGED / NOT OPERATIVE**，在 Reviewer 核对 DSH SYNC_ONLY 回报并发布 activation comment 前不得执行。学习模块实现/训练尚未开始，经济耦合未授权.
 
 ## 最新科学事实（保留，非本轮重跑）
 
@@ -37,6 +37,6 @@ ONE MATLAB-faithful selected generator governs solve/validation；Dual-Q 禁止�
 
 ## 新主线与下一动作
 
-第一版离线学习给定外流比例后的目的地份额；外流比例和家庭总劳动不联合训练。沿用 origin×destination、行归一。先 Owner 上传项目源，再 DSH 零科学同步，之后发布 P1。
+第一版离线学习给定外流比例后的目的地份额；外流比例和家庭总劳动不联合训练。沿用 origin×destination、行归一。Owner 已确认项目源上传。下一步是 DSH 零科学同步并 STOP；Reviewer 核对后激活已 staged 的 Issue #74 / P1A。
 
 路线与合同见 `README_START_HERE.md`。详细旧实验见 post-5VY 交接；本快照不重复全部历史。
