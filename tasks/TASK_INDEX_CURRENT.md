@@ -1,22 +1,28 @@
 # 当前任务指针
 
 更新：2026-09-18。路线：`DLH-WL-V1-20260918`。
-状态：`P1A_ACCEPTED__P1B_NEXT_DESIGN_GATE_PENDING`。
+状态：`P1A_ACCEPTED__ISSUE_75_P1B_STAGED_NOT_OPERATIVE`。
 
 Issue #74 / DLH-WL-P1A：**ACCEPTED / CLOSED / INTEGRATED**。
-- accepted candidate / integration: `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`
-- Reviewer acceptance comment: `5731836951`
-- acceptance integration comment: `5731840451`
-- terminal: `DLH_WL_P1A_OFFLINE_ACCOUNTING_INTERFACE_AND_HOUSEHOLD_REGISTRY__PASS`
+- integration: `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`
+- Reviewer acceptance: `5731836951`
+- integration comment: `5731840451`
 
-P1A 已建立：
-- 冻结家庭依赖 evidence registry（无新增 solved-checkpoint claim）；
-- 独立离线 `W -> P -> F -> Ldest` 核算接口；
-- support mask / 方向 / 守恒 / wage-bill / 退化情形 tiny checks；
-- `conditional_choice_identified` 仅在至少一个正劳动 active row 有 >=2 个结构可用外省目的地时为真。
+下一科学 Builder Issue：
+- #75 / `DLH-WL-P1B: freeze data/label schema and first P2 offline experiment contract`
+- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- publication baseline：`5412a8437fe229ab4d5f3dbaf2d2e72e6f5e910b`
+- 在 Reviewer 发布 final activation comment 前，Builder 不得执行。
 
-P1 尚未全部完成。下一 gate 是 P1B：数据/标签口径、canonical sample schema 与 P2 离线实验合同设计。现实年度 bilateral OD flow labels 仍未由本项目现有证据证明可用；不得因此伪造标签，也不得回到 selected-Q solver 主线。
+#75 设计范围：
+1. 冻结 W^L 数据/标签语义 taxonomy；
+2. 冻结 canonical offline sample schema；
+3. 冻结 P2 首次 method-only synthetic prototype 的 S0/S1、三类 baseline、split、metric、seed、预算与停损；
+4. 不训练、不下载数据、不调用 HJB/KFE/GE/MATLAB。
 
-当前科学 Builder Issue：**NONE**（待 Reviewer 发布 P1B）。
+现实年度 bilateral OD flow labels 仍未由本项目现有证据证明可用；不能把 stock/multiyear/proxy 改名为 annual flow。
 
-P2 neural training、HJB/KFE/GE、MATLAB、policy/welfare 仍未授权。
+当前权威：
+- Owner decision / route lock；
+- current Roadmap / Snapshot；
+- Issue #75 full body + 后续 final activation comment。
