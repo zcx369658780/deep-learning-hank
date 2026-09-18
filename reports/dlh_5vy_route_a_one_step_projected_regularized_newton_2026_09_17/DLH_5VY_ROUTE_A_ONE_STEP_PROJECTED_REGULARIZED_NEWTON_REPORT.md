@@ -225,48 +225,179 @@ Full repository suite `python -m pytest tests/ -q`: see §11.
 
 ## 11. Full repository suite
 
-**`791 passed, 1 failed, 6 warnings in 4038.48 s (1:07:18)`**.
+**The headline result is negative and is the most important finding in this
+Issue: under the delivered remediation, `python -m pytest tests/ -q` CANNOT reach
+`0 failed / 0 errors`. The blocker is a genuine contract contradiction in the
+authorization, not a defect in the one-step science.**
 
-The single failure is **NOT an Issue #73 artifact**. It is a latent defect in the
-**Issue #72** path guard
-(`tests/test_dlh_5vx_route_a_bounded_solver_design.py::test_this_issue_creates_only_its_own_paths`).
+Three full-suite runs were executed. They are reported exactly as measured.
 
-**Diagnosis (measured).** That guard computes
-`git diff --name-only <f9bb2b2…>...HEAD` and asserts the result is *exactly equal*
-to Issue #72's four paths. But `f9bb2b2…` is that branch's **merge-base**, so the
-range legitimately contains 7 paths:
+| Run | Revision graded | Result |
+|---|---|---|
+| A (pre-remediation) | candidate `862952592…` (clean tree) | `791 passed, 1 failed` — Issue #72's stale guard |
+| B (both edits, uncommitted) | candidate + dirty worktree | `791 passed, 1 failed` — Issue #72's stale guard |
+| C (remediation committed) | `ae37b0a6…`, before the self-reference fix | `791 passed, 1 failed` — see §11.1 |
+| D (remediation committed, corrected) | `ae37b0a6…` (final) | `2 failed` — see §11.3 |
+| Final configuration | `ae37b0a6…`, worktree clean | both blockers resolved to one irreducible failure, §11.3 |
 
+### 11.3 THE BLOCKER — the authorization is self-contradictory (measured)
+
+The hold requires **exactly five** authorized paths, one of which is the
+**authorized new** path `tests/test_dlh_5vx_route_a_bounded_solver_design.py`.
+Issue #73's own guard, in
+`tests/test_dlh_5vy_…_projected_regularized_newton.py:131-141`, hard-codes the
+opposite:
+
+```python
+assert len(paths) <= 4, paths
+for p in paths:
+    assert ("route_a_one_step_projected_regularized_newton" in p
+            or "test_dlh_5vy" in p), p
 ```
-docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md       <- Issue #72 governance sync
-docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md <- Issue #72 governance sync
-tasks/TASK_INDEX_CURRENT.md                           <- Issue #72 governance sync
-reports/dlh_5vx_…_REPORT.md                           <- Issue #72 deliverable
-reports/dlh_5vx_…_SUMMARY.csv                         <- Issue #72 deliverable
-src/…/route_a_bounded_solver_design.py                <- Issue #72 deliverable
-tests/…/test_dlh_5vx_…_bounded_solver_design.py       <- Issue #72 deliverable
-```
 
-Filtering out the three governance-sync paths leaves **exactly the four Issue #72
-paths**, which confirms that the guard's *set* is right and only its
-**exact-equality** comparison is wrong: it needs a subset test (or a
-governance-aware filter), not `==`. The property the guard is named for — "no
-FOREIGN path appeared" — holds for this Issue.
+Measured on the final commit, the guard's own query
+(`git diff --name-only f9bb2b2…...HEAD`) returns **11 paths**; filtering the three
+governance-sync paths and Issue #72's four deliverables leaves **5** Issue #73-side
+paths, and the authorized fifth path
+`tests/test_dlh_5vx_route_a_bounded_solver_design.py` matches neither permitted
+substring. So both parts of the guard necessarily fail.
 
-**Why it fails now and not before.** The assertion is also unsatisfiable on a
-*clean* tree, because an empty range is not equal to four paths; it can only ever
-pass while the Issue #72 worktree is dirty. It is therefore a fragile rather than a
-sound guard, and it lies outside Issue #73's authority.
+**The two guards are mutually exclusive — proven by executing both configurations:**
 
-**Disposition — reported, deliberately NOT fixed here.** Correcting it requires
-editing `tests/test_dlh_5vx_route_a_bounded_solver_design.py`, which would be a
-**fifth path**, explicitly forbidden by Issue #73 §10 and §12. That file is
-therefore left **byte-identical to its accepted revision**, and this finding is
-reported for a future authorized fix. **No Issue #73 test fails**; the focused
-Issue #73 suite is fully green.
+| Configuration | Issue #72's guard | Issue #73's guard |
+|---|---|---|
+| Original candidate (`862952592…`) | **FAIL** (`791 passed, 1 failed`) | pass |
+| Remediated, 5 paths (`ae37b0a6…`) | **pass** (invariant) | **FAIL** (measured) |
+
+There is no third configuration: the fifth path either exists in the branch diff or
+it does not. Issue #73's guard is therefore **unsatisfiable alongside the authorized
+five-path layout**, and repairing it would require editing
+`tests/test_dlh_5vy_route_a_one_step_projected_regularized_newton.py` — a **sixth
+path**, which the hold forbids ("no sixth path"). This Issue is also forbidden by
+the same hold from touching Issue #73's one-step science, and that module is a
+science deliverable of this Issue.
+
+**Disposition — reported, NOT worked around.** The guard is left
+**byte-identical** to the candidate's revision, and this contradiction is escalated
+for the Reviewer to rule on. Two rulings would unblock it, both outside this
+Issue's authority:
+
+1. authorize the Issue #73 test module as a **sixth** path and replace its
+   hard-coded `<= 4` with the same durable formulation used in §11.1 (an explicit
+   allowlist of the authorized path plus Issue #73's own paths, rather than a bare
+   count); or
+2. accept the five-path layout with the Issue #73 count guard disclosed as a known
+   unsatisfiable pre-existing assertion.
+
+Option 1 is the durable repair and mirrors exactly what this Issue did for Issue
+#72; it is recommended, but **not** taken unilaterally.
+
+**Scope note on the final commit.** The report text in this section was refined
+*after* run D to record this blocker. Those later edits are documentation-only:
+they change no measurement, no test, and no module. Runs A–D graded
+`tests/test_dlh_5vy_route_a_one_step_projected_regularized_newton.py` and
+`src/deep_learning_hank/two_asset/route_a_one_step_projected_regularized_newton.py`
+**byte-identically to what the final commit carries** (`git diff --name-only
+862952592…..HEAD` lists only this report and the Issue #72 test module), so every
+result above applies to the final revision.
 
 The 6 warnings are the pre-existing `MatrixRankWarning` entries from the accepted
 oracle tests (`test_dlh_5b`, `test_dlh_5c`) at
 `matlab_faithful_two_asset_ha.py:597`; they are unchanged by this Issue.
+
+### 11.1 Bounded test-contract remediation (Reviewer hold `5726491164`)
+
+**Root cause of the stale guard.** The Issue #72 guard
+`tests/test_dlh_5vx_route_a_bounded_solver_design.py::test_this_issue_creates_only_its_own_paths`
+asserted that the cumulative path set of `GOVERNANCE_BASE...HEAD` (base
+`f9bb2b2…`) was **exactly equal** to Issue #72's four authorized paths.
+
+That contract cannot be durable: the same range keeps accruing legitimate paths as
+authorized work proceeds. At the Issue #73 candidate it contained Issue #72's four
+deliverables, Issue #72's three governance-sync CURRENT files, and Issue #73's four
+deliverables. Filtering the governance paths leaves exactly Issue #72's four
+deliverables, which shows the guard's *set* was right and only its
+**exact-equality** comparison was wrong. It was also unsatisfiable on a clean tree,
+where the range is empty.
+
+**The repair — durable accepted-artifact invariant.** The cumulative-range equality
+was **not** patched further. It was replaced by a direct check of the property that
+actually matters: for each accepted Issue #72 artifact that this Issue does not own,
+the blob at `HEAD` must equal the blob at the **accepted Issue #72 integration**
+`5d2f489f8dfb3527c0e4bd7dc418e35139b9dbd9`.
+
+| Accepted Issue #72 path | Blob (accepted) | Blob at HEAD | Disposition |
+|---|---|---|---|
+| `src/deep_learning_hank/two_asset/route_a_bounded_solver_design.py` | `f99ff6eb0d0a74cccc400ba83162a8affa9c6924` | `f99ff6eb0d0a74cccc400ba83162a8affa9c6924` | **byte-identical** |
+| `tests/test_dlh_5vx_route_a_bounded_solver_design.py` | `7807212cb6310b20dada1b42e60492767c449f25` | `9e56b3d9b7cf822f1eb7f90e7878d887177de2c3` | **owned by this remediation** (see below) |
+| `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_REPORT.md` | `bef6d091f1960066ccaf88c904881fd2391bf719` | `bef6d091f1960066ccaf88c904881fd2391bf719` | **byte-identical** |
+| `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv` | `9e9f9f170c8044468063c677781425fd9d227bcf` | `9e9f9f170c8044468063c677781425fd9d227bcf` | **byte-identical** |
+
+All eight blob values were measured directly with `git rev-parse <rev>:<path>`.
+
+**Self-reference exclusion (measured, not assumed).** The second row is where a
+literal reading of the hold defeats itself, and this was caught by execution rather
+than by inspection. The hold named Issue #72's four accepted paths as the
+byte-identity anchor set — but one of those four paths
+(`tests/test_dlh_5vx_route_a_bounded_solver_design.py`) is *also* the single path
+this remediation is authorized to rewrite, because the stale guard lives inside it.
+A first attempt pinned all four; on the committed revision it failed with exactly
+one row differing:
+
+```
+HEAD:9e56b3d9…  !=  accepted:7807212cb6…   <- tests/test_dlh_5vx_…_bounded_solver_design.py
+```
+
+That is not a mutation — it is the authorized edit. A file cannot be required to
+equal a revision while simultaneously being required to change away from it, so the
+anchor set was reduced to the **three** accepted artifacts this Issue does not own;
+all three are byte-identical. The excluded module is not left ungraded: the new
+`test_sealed_actor_diff_is_the_bounded_remediation_and_nothing_else` asserts the
+module **must** differ from its accepted revision, every other accepted Issue #72
+artifact must **not**, and the replacement must name the accepted integration. The
+exclusion and its reason are also recorded in the invariant's own docstring, so it
+cannot be mistaken for an oversight.
+
+This is the one place where the delivered contract is narrower than the hold's
+literal wording, disclosed here and in the completion comment so the Reviewer can
+rule on it directly.
+
+This is the durable invariant the Reviewer specified: Issue #72's accepted artifacts
+remain **byte-identical to their accepted integration**. It infers nothing from
+`git status` and nothing from a cumulative path set, so it stays true as later
+Issues add their own authorized paths — and it still detects a genuine mutation,
+because any content change alters the blob.
+
+**Unchanged by the repair:** every Issue #72 scientific/design assertion
+(admissibility axes, family matrix, frozen ladders, thresholds, terminals), every
+Issue #73 one-step assertion, and the entire Issue #73 one-step result. Only the
+stale ownership check was replaced — and the repair *strengthens* coverage, since
+the module now has one graded actor check more than before (`56` → `57` tests).
+
+### 11.2 Post-remediation measurements
+
+| Run | Result |
+|---|---|
+| `tests/test_dlh_5vx_route_a_bounded_solver_design.py` (Issue #72) | **`57 passed`** |
+| `...::test_this_issue_creates_only_its_own_paths` (durable invariant) | **`1 passed`** |
+| `...::test_sealed_actor_diff_is_the_bounded_remediation_and_nothing_else` | **`1 passed`** |
+| `...::test_this_issue_does_not_mutate_any_accepted_source` (Issue #71 cleanliness guard, on the clean tree) | **`1 passed`** |
+| `tests/test_dlh_5vy_route_a_one_step_projected_regularized_newton.py` (Issue #73) | **`42 passed, 1 failed`** — the `<= 4` count guard of §11.3; **not** one-step science |
+| Issue #73 suite with **only** that guard deselected | **`42 passed, 1 deselected`** — isolates the blocker to the single count guard |
+| full repository suite | **not green** — see §11.3 |
+
+Runs A–D (§11) all reported `791 passed`; the only failures ever observed were the
+Issue #72 stale guard (runs A/B), the worktree-cleanliness guard while the tree was
+dirty (runs B/D), and the Issue #73 count guard of §11.3. **No one-step scientific
+assertion failed in any run.**
+
+The Issue #73 one-step science was **not** re-derived under a new route: this
+remediation changed no scientific module and no accepted source, so the §1–§9
+results stand exactly as measured (baseline `10.435094313164921`, accepted attempt
+1340, tuple `(3, 0, 16)`, trial `10.435094286652339`, decrease `2.6512582351756464e-08`,
+ratio `0.9999999974592868`, min `p_b = 5.41690375095121e-10`,
+`max|Q1| = 4.85061990573854e-12`, Armijo PASS, material flag FALSE, zero active
+constraints at baseline, deterministic repeat identical).
 
 ## 12. Interpretation ceiling — no convergence claim
 
