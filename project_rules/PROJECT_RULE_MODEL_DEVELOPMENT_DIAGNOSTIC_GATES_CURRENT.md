@@ -1,81 +1,16 @@
-# Deep Learning + HANK 模型开发与诊断门禁
+# 模型开发与用途分层验收
 
-最后更新：2026-08-19
+更新：2026-09-18。当前阶段以主路线图 P0–P5 为准；旧 DLH 编号保留历史含义，不重新编号已接受 Issue。
 
-## 0. CURRENT stage-numbering authority / 编号消歧
+P0 文档/三端同步：零科学运行。
+P1 家庭依赖登记、W^L 接口、数据分类与小型核算：不调用 HJB/KFE。
+P2 小型离线学习：需要 activated Issue、事前配置、基准、数据来源/划分与预算；不需要当前 selected-Q 固定点已解。
+P3 现实数据独立验证：目标与观测口径一致；存量/多年转移不冒充年度流量；预测不等于因果。
+P4 经济耦合：仅在所用家庭版本/价格/域具备用途适配证据后另行授权；HJB、最终 Q、KFE、分布、核算与 GE 检查各自通过。
+P5 完整名义 HANK / 规模扩张 / 动态 / 政策福利：名义刚性、通胀/Phillips、货币/Fisher、财政债务及家庭回报一致性单独冻结；Results 另行验收。
 
-本文件最初建立时，下面的 `DLH-0`～`DLH-8` 是一套 **generic diagnostic-gate labels**。项目随后在 accepted DLH-0R1 + `docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md` 中形成了新的 CURRENT project-stage roadmap。
+本次 Owner 路线调整显式替代旧“所有神经训练必须等 household/GE 全部完成”的全局前置，仅对独立离线学习解耦；不解除经济耦合前置。
 
-因此从 2026-08-19 起：
+任何 PASS 不自动授权下一 gate。loss 降低、GPU 成功、pytest PASS 或图表生成不能替代科学验收。ML/HJB/KFE/GE 误差分账；无关失效只阻塞相关用途。
 
-- **CURRENT project stage identity 以 fresh live `main` 上的 Master Roadmap + `tasks/TASK_INDEX_CURRENT.md` + 当前 open GitHub Issue 为准；**
-- 本文件下面的旧 `DLH-*` 标签只保留为 generic diagnostic-category provenance，不得覆盖 CURRENT roadmap stage identity；
-- 特别是 CURRENT roadmap 中 `DLH-3` = **minimal genuine single-region HANK nominal/New-Keynesian layer**，不是下方旧 generic label 中的 “neural method specification”；
-- neural-method specification / training 仍必须等待未来 CURRENT roadmap / GitHub Issue 明确授权，不能因本文件的旧编号自动启动；
-- 若 generic gate label 与 CURRENT roadmap / Task Index / active Issue 冲突，Builder MUST fail closed，并以 CURRENT roadmap + Task Index + active Issue 的更具体 authority 为准，不得自行扩大 scope。
-
-任何 PASS 不自动授权下一 gate。
-
-## Legacy generic gate sequence — provenance only
-
-1. `DLH-0` Scientific constitution / scope freeze
-2. `DLH-1` Legacy & literature read-only reference inventory
-3. `DLH-2` Transparent economic baseline / special cases
-4. `DLH-3` Neural method specification
-5. `DLH-4` Small neural prototype
-6. `DLH-5` Economic + neural validation
-7. `DLH-6` Transition / conditional experiment
-8. `DLH-7` Scaling / robustness / performance
-9. `DLH-8` Results eligibility / manuscript evidence
-
-## Generic DLH-0 category
-
-必须冻结：研究问题、HANK 最小结构、深度学习的 exact role、state/control、regional link、market clearing、shock、benchmark、validation、software boundary。
-
-禁止写 solver、训练网络、跑模型。
-
-## Generic DLH-1 category
-
-只读收集旧代码/论文笔记。所有导入 reference 有 manifest/hash。不得运行旧 Matlab。
-
-## Generic DLH-2 category
-
-建立可诊断经济基线或 analytic/special-case benchmark。必须能计算至少：
-
-- relevant equation residuals；
-- distribution mass/non-negativity（如适用）；
-- market/accounting identities；
-- deterministic reproducibility。
-
-## Legacy generic DLH-3 category — neural specification, NOT CURRENT project-stage DLH-3
-
-冻结 neural inputs/outputs、architecture family、objective、economic constraints、training data provenance、split、OOD test、baseline。
-
-本节当前不构成 neural Builder authority。CURRENT project-stage `DLH-3` 的含义由 Master Roadmap / Task Index / active Issue 决定。
-
-## Generic DLH-4 category
-
-仅 small problem。训练成功必须同时输出 neural metrics 与 economic diagnostics。
-
-## Generic DLH-5 category
-
-至少检查：
-
-- train/validation/test error；
-- equilibrium residuals；
-- boundary feasibility；
-- mass/accounting/clearing；
-- limiting/special cases；
-- reproducibility；
-- OOD/sensitivity；
-- benchmark comparison。
-
-仅 loss 降低、GPU 成功、pytest PASS、figure produced 均不足以构成 scientific PASS。
-
-## Generic DLH-6/7 categories
-
-进入 transition/full-region/scaling 前必须单独授权 exact config, command, device, timeout, output root, retry policy。默认 no-overwrite、failure no automatic retry。
-
-## Generic DLH-8 Results category
-
-只有 accepted diagnostics + human review 才可提升到 D3/D4 candidate evidence。正式 Results prose、政策结论、省份排名、福利比较必须单独 gate。
+家庭代码冻结不等于已收敛解冻结；#73 candidate 不可作 optimal-policy 标签、GE 家庭解或福利基线。ONE selected-Q 和同一控制过程的 backward/forward 一致性继续绑定。

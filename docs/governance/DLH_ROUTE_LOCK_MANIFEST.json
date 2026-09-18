@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "route_id": "DLH-WL-V1-20260918",
+  "owner_approval_date": "2026-09-18",
+  "publication_parent_sha": "9058be73fc4b4211c8ad49ea0989d4fdc224ed1d",
+  "authority": "Owner explicit approval recorded in the dated decision; model changes do not reset authority",
+  "original_decision": {
+    "path": "docs/decisions/DLH_OWNER_ROUTE_FREEZE_WL_V1_2026_09_18.md",
+    "git_blob_sha1": "038aad696dc66eeacabdf25bd7b96a49bd9d9c4c",
+    "sha256": "4b87eab29d46e8e53d5da77a7c6210cc9dbaee5b12d852379528d36c25ebd38c"
+  },
+  "roadmap_locked_section": {
+    "path": "docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md",
+    "begin_marker": "<!-- OWNER_LOCKED_ROUTE_BEGIN DLH-WL-V1-20260918 -->",
+    "end_marker": "<!-- OWNER_LOCKED_ROUTE_END DLH-WL-V1-20260918 -->",
+    "canonical_encoding": "UTF-8; LF; inclusive markers; exactly one LF after end marker",
+    "sha256": "4d2ef5c125bfbf0bbb59bbb416734485ad3df6b4c4b50b17c760d4718b555ce8"
+  },
+  "manifest_change_policy": "Owner-approved dated amendment required for protected semantics; do not update hashes to conceal unapproved changes",
+  "enforcement": "Content audit and workflow contract only; no server-side branch protection configured by this sync"
+}

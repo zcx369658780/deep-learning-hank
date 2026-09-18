@@ -1,38 +1,13 @@
-# Deep Learning + HANK 项目总定位规则
+# 项目总定位
 
-最后更新：2026-08-19
+更新：2026-09-18。Owner-approved route：`DLH-WL-V1-20260918`。
 
-## 1. 项目目标
+目标是结构化区域 HANK 与可解释学习映射的结合，不是无限打磨传统 solver，也不是默认神经网络替代 HJB。
 
-建立一个从零设计的 Python Deep Learning + HANK research platform，用于研究深度学习方法如何在异质性主体新凯恩斯模型中近似、加速或求解高维经济对象，并逐步扩展到多省份/区域联系。
+Owner 是最终 scientific authority。ChatGPT 是 L3 independent Reviewer / scientific-route advisor / task issuer；DSH 是 bounded Builder / numerical analyst。GitHub live main 是仓库事实来源，不代表任意已写入文本都能替代 Owner 科学授权。
 
-## 2. 角色
+第一版学 `W^L` 条件目的地份额；外流比例、家庭总劳动是给定接口输入，不联合估计。离线训练不要求当前 selected-Q 实验固定点先收敛；经济耦合则必须有用途适配的家庭/分布证据与单独授权。
 
-### Owner
+旧代码不是自动生产权威。历史单资产、旧 `B_hh=B_gov=1`、nested cold-start Brent 路线不恢复。冻结现有家庭参考依赖不是新增 solved-checkpoint 认证。
 
-最终 scientific-direction authority；决定研究问题、模型机制、是否进入高成本运行、是否接受论文结论。
-
-### ChatGPT
-
-独立 scientific-route authority / GitHub L3 reviewer / task issuer。负责规格、任务、证据边界、验收和下一 gate；不得伪造本地运行或论文证据。
-
-### DeepSeek Harness (DSH)
-
-bounded Builder。只执行当前 GitHub Issue 明确授权的读、写、复制、测试、运行和 commit 范围。不得 self-accept、扩大科学范围、直接把工程 PASS 升级为研究 PASS。
-
-## 3. Clean-slate 原则
-
-旧多省份 Matlab HANK、旧 R4H/R5、旧 Codex 报告均为 `HISTORICAL_REFERENCE_ONLY`。
-
-允许借鉴：经济模块、变量语义、失败模式、测试设计、论文笔记。
-
-禁止自动继承：旧数值结果、旧 calibration、旧 shock path、旧 parser verdict、旧代码架构、旧 Results authority。
-
-## 4. 新项目第一原则
-
-- economics definition 与 neural approximation 分离；
-- neural training loss 与 equilibrium diagnostics 分离；
-- correctness before performance；
-- small auditable cases before full scale；
-- no-overwrite and provenance by default；
-- Results blocked until accepted diagnostics。
+始终分别记录学习误差、HJB 残差、KFE/算子误差、GE 残差。失败实验保留；运行成功不等于经济结论成立。隐私、参考根目录只读与证据等级规则不变。

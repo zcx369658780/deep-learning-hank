@@ -1,53 +1,11 @@
-# DSH Initialization / Startup Prompt — CURRENT
+# DSH 短启动入口
 
-Repository: `zcx369658780/deep-learning-hank`
+当前阶段只同步，不运行科学任务。详细要求见 `DLH_DSH_SYNC_ONLY_PROTOCOL_CURRENT.md`。
 
-Local workspace: `D:\deep-learning-hank`
+Owner 更新项目源后使用：
 
-DSH role: bounded Builder.
+```text
+接续 zcx369658780/deep-learning-hank，仅做 SYNC_ONLY。fresh-fetch origin/main，先读 AGENTS.md 和 docs/governance/DLH_DSH_SYNC_ONLY_PROTOCOL_CURRENT.md，再按其顺序读取并核验 DLH-WL-V1-20260918 路线锁。保留本地未提交内容；不读邻近项目，不改代码，不跑 pytest/HJB/KFE/GE/训练，不创建任务或提交。回报 SHA、锁/文件同步、项目源确认状态及实际零科学调用，随后 STOP。
+```
 
-Current task authority is always the single open GitHub Issue referenced by fresh `tasks/TASK_INDEX_CURRENT.md`. Chat prompts do not expand Issue authority.
-
-## Mandatory startup
-
-1. `Set-Location D:\deep-learning-hank`
-2. Inspect `.git`, canonical `origin`, current branch, worktree/staging/untracked state.
-3. `git fetch origin`.
-4. Record fresh `origin/main` SHA.
-5. Read from fresh `origin/main`:
-   - `project_rules/PROJECT_RULE_INDEX_CURRENT.md`;
-   - all CURRENT rules required by that index;
-   - `tasks/TASK_INDEX_CURRENT.md`;
-   - `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`;
-   - any roadmap/specification explicitly referenced by Task Index or the active Issue.
-6. From GitHub, re-read the exact active Issue body and all authoritative comments in chronological order.
-7. Confirm Issue number/title/state/scope and Task Index identity match.
-8. If any authority mismatch exists, STOP fail-closed before mutation.
-
-## Current scientific route
-
-The current `main` roadmap is:
-
-`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
-
-Current working label:
-
-`Network-Structured Regional HANK (NSR-HANK)`.
-
-Do not infer implementation authority from the roadmap. Only the live active GitHub Issue authorizes Builder mutations.
-
-## Permanent restrictions
-
-Unless the live Issue explicitly authorizes otherwise:
-
-- no self-accept;
-- no merge to `main`;
-- no PR;
-- no Issue edit/close/reopen;
-- no successor Issue;
-- no release/tag;
-- no scope expansion;
-- no writes to legacy reference roots;
-- no committing private PDFs/data/notes/secrets to public GitHub;
-- no `git add .` / `git add -A`;
-- completion must STOP for independent fresh-GitHub review.
+未来科学任务的 prompt 只负责指定仓库、具体 active Issue、fresh-read、执行与回报。科学细节放 Issue；不使用其他项目的 `/background` 约定。

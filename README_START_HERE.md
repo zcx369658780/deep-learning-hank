@@ -1,56 +1,17 @@
-# Deep Learning + HANK Project Source — Start Here
+# 从这里恢复项目
 
-当前项目已进入 GitHub-governed workflow。
+日期：2026-09-18。路线 ID：`DLH-WL-V1-20260918`。
 
-## Authoritative repository
+先 fresh-read GitHub live main，再读 `AGENTS.md`、规则索引、Owner 决策、Task Index、Startup Snapshot、当前主路线图。项目源是指定提交的镜像，不覆盖后续合法的 live 状态。
 
-`zcx369658780/deep-learning-hank`
+**状态更新不等于路线重设。**即使某次 main 修改了规划，没有对应 Owner 授权的战略改动也不能自动获得科学权威。模型切换后首先继承决策，不从零挑选路线。
 
-Live GitHub `main` is the synchronized repository/governance authority.
+当前只允许按同步协议读取/同步已发布文档；科学 Builder Issue：NONE。下一实质任务须在 Owner 完成项目源替换、DSH 同步回报经过核对后另行发布。
 
-## Current scientific roadmap
+当前合同：
+- `docs/contracts/DLH_FROZEN_HOUSEHOLD_DEPENDENCY_CONTRACT_CURRENT.md`
+- `docs/contracts/DLH_WL_CONDITIONAL_DESTINATION_V1_CURRENT.md`
+- `docs/governance/DLH_DSH_SYNC_ONLY_PROTOCOL_CURRENT.md`
 
-`docs/roadmaps/DLH_MASTER_ROADMAP_INITIAL_2026_08_19.md`
-
-Working scientific label:
-
-`Network-Structured Regional HANK (NSR-HANK)`
-
-核心方向：
-
-- 省内 household / firm / HJB / KFE 保持结构经济学硬模块；
-- 第一代 learned object 是可解释的省际劳动力流量权重 `W^L`；
-- `W^K` 与财政模块后置；
-- household home-region identity 第一代固定；
-- Python 为主实现语言；
-- 既有单省 Python HJB/firm code 需要先审计再迁入；
-- one-region real HA/Aiyagari 仅作为 computational benchmark；
-- minimal genuine HANK 是下一独立结构层；
-- 跨年共享 learned structural parameters，但每一年按 year-specific observables 单独求条件稳态；
-- time-invariant geography 与 time-varying development features 必须分离；
-- GNN/message passing 在 flow-weight baseline 稳定后再进入。
-
-## Current Builder authority
-
-Do not trust this file alone for the active task.
-
-Every DSH invocation must first refresh GitHub and read:
-
-1. `project_rules/PROJECT_RULE_INDEX_CURRENT.md`
-2. all CURRENT rules required by that index
-3. `tasks/TASK_INDEX_CURRENT.md`
-4. `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
-5. the exact active GitHub Issue body and authoritative comments
-
-GitHub Issue = sole Builder task authority.
-
-## Local workspace
-
-`D:\deep-learning-hank`
-
-## Permanent read-only reference roots
-
-- `D:\MatlabProgram\2023年12月2日 多省份神经网络HANK`
-- `D:\Zotero-Analytical-Workflow`
-
-Only the live active Issue can authorize bounded reads/copy-outs. The source roots themselves remain read-only.
+历史导航：`docs/archive/pre_wl_route_2026_09_18/README.md`。
+旧日期交接、旧 CURRENT 副本及旧项目源压缩包仅供历史追溯，不作为启动入口。论文和原始研究资料保留，不因更换操作文档而删除。

@@ -1,0 +1,1223 @@
+# Deep Learning + HANK Task Index
+
+Status: `ISSUE_73_DLH_5VY_NEXT_ACTIVE__BUILDER_NOT_YET_OPERATIVE`
+
+Last synchronized: 2026-09-17
+
+Repository: `zcx369658780/deep-learning-hank`
+
+## Builder authority
+
+Issue #73 / DLH-5V-Y is **NEXT ACTIVE — BUILDER NOT YET OPERATIVE**.
+
+Title:
+
+`DLH-5V-Y: Execute one bounded Route-A projected regularized-Newton step at V*`
+
+Task type:
+
+`SCIENTIFIC_NUMERICAL_EXECUTION__ROUTE_A_SINGLE_Q_ONE_STEP_PROJECTED_REGULARIZED_NEWTON`
+
+Reviewer bounded numerical route selection:
+
+`POLICY_FROZEN_REGULARIZED_NEWTON_DIRECTION_WITHIN_ACCEPTED_PROJECTED_CONSTRAINED_OUTER_FRAME`
+
+Authority marker:
+
+`DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON_AUTHORIZED`
+
+Initial authoritative activation:
+
+`5714125203`
+
+Final authoritative activation-refresh: **NOT YET PUBLISHED**. Until that
+refresh confirms the post-sync live `main`, Builder execution is
+**NOT YET OPERATIVE**. No scientific source, test or report may be modified by
+the Builder until then.
+
+Dedicated future Builder branch:
+
+`dsh/issue-73-dlh-5vy-one-step-projected-regularized-newton-2026-09-17`
+
+## Issue #73 exact execution scope (as activated)
+
+This is a **bounded one-step scientific numerical execution** — the first Issue
+authorized to take an actual numerical step since Issue #63. Its ceiling is exactly:
+
+- ONE deterministic reconstruction of the accepted `V_*`;
+- exactly ONE baseline Route-A `final=False` selected-`Q` build;
+- ONE baseline residual / Jacobian construction;
+- ONE bounded ordered candidate search using the frozen rungs below;
+- at most **ONE** accepted experimental candidate;
+- **STOP immediately** after the first acceptable candidate, or fail closed when
+  the authorized rungs are exhausted;
+- ONE deterministic repeat.
+
+**No second outer step. No trajectory. No HJB convergence claim.**
+
+Frozen baseline to reproduce before any trial: steps `8`; final statistic
+`3.6614352438846254e-08`; min boundary `p_b = 4.8089461301970005e-09`; wall
+`F3 (13,13), z=1, node 332`; `||R||inf = 10.435094313164921`; argmax row `97` /
+node `97` / z `0` / `F0`; Bellman tolerance `1e-3`.
+
+Selected direction: policy-frozen Jacobian `J = rho I - Q` from the SAME frozen
+selected operator, with regularized rungs
+`(J + lambda_k * ||diag(J)||inf I) d = -R`, `lambda_k = 2^-k`, `k = 0..20`.
+Boundary handling uses the accepted full-wall-gradient semantics, stacking
+**multiple** active gradients and never averaging them; candidate-state domain
+safety is authoritative (`min p_b >= 1e-12`).
+
+Frozen lexicographic attempt order: `k_lambda = 0..20`, then trust-radius fraction
+`2^-k_Delta` with `k_Delta = 0..20`, then step fraction `alpha = 2^-k_alpha` with
+`k_alpha = 0..20`. **No outcome-driven tuning and no extra rung.** The actual number
+of attempted candidates must be reported, and the search stops at the **first**
+candidate satisfying every acceptance criterion.
+
+Each candidate must full-reassemble the same Route-A selected generator. Acceptance
+requires ALL of: finite; `min p_b(V_trial) >= 1e-12`; `max|Q_trial 1|` within the
+accepted numerical conservativity scale; single-`Q` contract passes;
+`||R_trial||inf < ||R||inf` by at least `1e-12` absolute; and the frozen Armijo-style
+sufficient-decrease rule with coefficient `1e-4` and the attempted `alpha`.
+
+The stronger historical material-reduction ratio `<= 0.5` must be **reported** but
+is **not** required for one-step acceptance.
+
+Required per-attempt reporting: `(k_lambda, k_Delta, k_alpha)`; lambda, trust
+fraction/radius, alpha; raw and projected direction norms; active constraint count
+and identifiers; linear solve residual; candidate min `p_b`; baseline/trial
+`||R||inf` and ratio; Armijo RHS and pass/fail; absolute residual decrease; the
+`0.5` material-reduction flag; `max|Q1|`; and accepted/rejected with the exact
+reason.
+
+Any accepted state is an **Issue #73 experimental one-step candidate only** — it is
+**not** an accepted HJB solution and does not authorize downstream use.
+
+Issue #73 exact four-path Builder allowlist:
+
+1. `src/deep_learning_hank/two_asset/route_a_one_step_projected_regularized_newton.py`;
+2. `tests/test_dlh_5vy_route_a_one_step_projected_regularized_newton.py`;
+3. `reports/dlh_5vy_route_a_one_step_projected_regularized_newton_2026_09_17/DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON_REPORT.md`;
+4. `reports/dlh_5vy_route_a_one_step_projected_regularized_newton_2026_09_17/DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON_ATTEMPTS.csv`.
+
+**No fifth tracked Builder path.** No PR / merge / Issue close / successor /
+self-accept.
+
+Issue #73 terminal set (exactly ONE to be reported):
+
+- A `DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON__DOMAIN_SAFE_SINGLE_Q_RESIDUAL_REDUCING_CANDIDATE_ACCEPTED__TRAJECTORY_DESIGN_GATE_READY`
+- B `DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON__AUTHORIZED_SEARCH_EXHAUSTED_WITH_NO_ACCEPTABLE_STEP__DIRECTION_RECONSIDERATION_REQUIRED`
+- C `DLH_5VY_ROUTE_A_ONE_STEP_PROJECTED_REGULARIZED_NEWTON__REPRODUCTION_LINEAR_SOLVE_DOMAIN_OR_SINGLE_Q_CONTRACT_FAILURE__SCIENTIFIC_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VY_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+Explicitly NOT authorized in this Issue:
+
+- mutating selected-Q, the oracle, or any accepted Issue #60–#72 scientific source;
+- changing `final=False` / `final=True` semantics;
+- changing policy selection;
+- changing economics / prices / grid / domain / initialization / calibration;
+- changing tolerances / `PB_MARGIN` / Bellman tolerance / the convergence rule;
+- using the residual / Jacobi direction (not selected in this Issue);
+- adding or tuning ladder rungs;
+- accepting a second outer step;
+- running a trajectory;
+- claiming HJB convergence;
+- KFE / stationary KFE / steady state / `solve_household_steady_state`;
+- downstream GE / SCC / global-Q / multi-region / neural / nominal / calibration /
+  policy / welfare / Results;
+- successor Issue activation;
+- any Builder scientific branch beyond the dedicated Issue #73 branch named above.
+
+Stationary KFE remains **NOT AUTHORIZED**.
+
+## Accepted task — Issue #72 / DLH-5V-X (ACCEPTED / CLOSED)
+
+Issue #72 is CLOSED completed at **Terminal B**. It was a DESIGN / SPECIFICATION
+ONLY task that synthesized accepted Issues #60–#71 evidence, compared four candidate
+numerical families, and froze a complete executable bounded solver contract —
+while honestly declining to select a single route, because three families remained
+admissible.
+
+Accepted candidate / integration:
+
+`5d2f489f8dfb3527c0e4bd7dc418e35139b9dbd9`
+
+Reviewer acceptance:
+
+`5714106614`
+
+Acceptance integration:
+
+`5714110964`
+
+Accepted verdict:
+
+`DLH_5VX_ACCEPTED__TERMINAL_B_CONFIRMED__BOUNDED_SINGLE_Q_OUTER_FRAME_FROZEN__THREE_DIRECTION_FAMILIES_REMAIN_ADMISSIBLE_AT_FAMILY_LEVEL__PSEUDO_TIME_RESOLVENT_REFUTED__DIRECTION_SELECTION_GATE_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN__MULTIPLE_PLAUSIBLE_ROUTES_REMAIN__OWNER_OR_REVIEWER_ROUTE_SELECTION_REQUIRED`
+
+Reviewer hold / bounded artifact-consistency remediation:
+
+`5699275937`
+
+Preserved ancestry (no rebase): original candidate
+`d06f53e4fe55d8823f2d7cca3a9838cd79b1a107`; remediation / accepted candidate
+`5d2f489f8dfb3527c0e4bd7dc418e35139b9dbd9`.
+
+Accepted facts:
+
+- the constrained / projected residual-balanced outer frame is frozen;
+- pseudo-time / resolvent is **refuted** by accepted Issues #60 and #61 evidence;
+- admissible family-level directions include policy-frozen / regularized Newton,
+  residual / Jacobi preconditioned correction, and the constrained / projected
+  outer frame itself;
+- every ladder and threshold is frozen exactly in-Issue, with no adaptive hedge
+  language;
+- deterministic repeat = **TRUE** (structurally guaranteed: the reporting entry
+  point measures the repeat first and fails closed on nondeterminism);
+- consistency checks = **38/38**;
+- focused suite = **56 passed**;
+- full clean-tree suite = **749 passed / 0 failed / 0 errors / 6** pre-existing
+  oracle warnings;
+- **no `V_new`**, no executed numerical solver step, no accepted iterate;
+- **HJB convergence = FALSE**; Stationary KFE remains **NOT AUTHORIZED**.
+
+Reviewer route selection made AFTER Issue #72 (recorded here, activated in
+Issue #73):
+
+`POLICY_FROZEN_REGULARIZED_NEWTON_DIRECTION_WITHIN_ACCEPTED_PROJECTED_CONSTRAINED_OUTER_FRAME`.
+Selection basis: Issue #64 contains direct measured Newton-direction evidence and
+Issue #68 contains accepted full-wall projected geometry plus residual-reduction
+evidence on the iteration operator, while the residual / Jacobi direction remains
+entirely unmeasured. This is a **bounded first-probe choice only** — NOT a claim of
+global superiority or convergence.
+
+## Accepted task — Issue #71 / DLH-5V-W (ACCEPTED / CLOSED)
+
+Issue #71 is CLOSED completed at **Terminal B**. It performed the read-only,
+source-backed additive decomposition of the remaining Route-A single-`Q` HJB
+residual at the accepted `V_*`, with a deterministic top-20 residual ranking and a
+read-only reproduction audit of the accepted local-policy records.
+
+Accepted candidate / integration:
+
+`e1d79d6aa6677ca262df1699e21007eaf9690c4d`
+
+Reviewer acceptance:
+
+`5696620837`
+
+Acceptance integration:
+
+`5696624495`
+
+Accepted verdict:
+
+`DLH_5VW_ACCEPTED__TERMINAL_B_CONFIRMED__ROUTE_A_SINGLE_Q_RESIDUAL_DECOMPOSITION_CLOSES__TOP20_POLICY_RECORDS_REPRODUCE_EXACTLY__NO_UNIQUE_DOMINANT_COMPONENT__MIXED_FIXED_POINT_IMBALANCE_REQUIRES_BOUNDED_SOLVER_DESIGN`
+
+Accepted terminal:
+
+`DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION__DECOMPOSITION_AND_POLICY_REPRODUCTION_PASS_BUT_RESIDUAL_IS_MIXED_FIXED_POINT_IMBALANCE__BOUNDED_SOLVER_DESIGN_REQUIRED`
+
+Reviewer hold / bounded allowlist expansion (fifth path authorized):
+
+`5695153100`
+
+Preserved ancestry (no rebase):
+
+- original candidate `8eeb2949d51ff17c631dd664e6d94ee136d0c0d9`;
+- remediation commit / accepted candidate
+  `e1d79d6aa6677ca262df1699e21007eaf9690c4d`.
+
+Accepted facts:
+
+- exact `V_*` reproduction (`8` steps; statistic `3.6614352438846254e-08`; min
+  boundary `p_b = 4.8089461301970005e-09`; wall `F3 (13,13), z=1, node 332`);
+- `||R||inf = 10.435094313164921`; argmax row `97` / node `97` / z `0` / `F0`;
+- exactly ONE Route-A `final=False` scientific `Q` build; no second scientific `Q`
+  path;
+- decomposition closure max = `4.036238010485249e-11`;
+- independent row reconstruction max = `2.816165078911581e-10`;
+- rate attribution mismatch rows = `0`;
+- `max|Q1| = 2.4253377084448857e-12` (unchanged);
+- deterministic top-20 are all F0 / z=0;
+- policy reproduction = `20 / 20`;
+- controls / utility / drifts / stored rates differences = `0`;
+- `DOMINANT_COMPONENT_IDENTIFIED = NO`; `MIXED_OR_UNRESOLVED = YES`;
+- mean top-20 cancellation ratio = `0.006665998653866562` (the residual is ~0.67%
+  of the gross component mass, i.e. a near-total cancellation of `O(1e3)` terms);
+- full repository suite: `693 passed`, `0 failed`, `0 errors`, `6` pre-existing
+  oracle warnings;
+- deterministic repeat identical.
+
+Reviewer-held engineering note (binding, narrow): the Issue #71 cumulative diff
+was authorized to exactly **five** paths, the fifth being
+`tests/test_dlh_5vv_route_a_single_q_operator_contract.py`, whose change is a
+bounded **repository-state assertion correction only** (current `origin/main` is
+checked against the accepted selected-Q blob
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`, while the historical pre-Route-A blob
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897` remains pinned at the immutable anchor
+`825e241804c7fb260c807602fc0f1487caf84e56^`). No sixth path is authorized, and no
+Route-A scientific assertion, tolerance, solver semantic, historical Issue #70
+evidence, accepted terminal or convergence interpretation was changed.
+
+Accepted scientific interpretation (binding):
+
+- **HJB convergence = FALSE**; the accepted residual `10.435094313164921` remains
+  ~`10435`× the **unchanged** Bellman tolerance `1e-3`;
+- **no accepted new HJB iterate** and **no new trajectory**;
+- the acceptance identifies a **mixed fixed-point imbalance** only, and does
+  **not** select a solver design;
+- Owner Route A remains binding: ONE MATLAB-faithful selected generator governs
+  the HJB solve and validation; dual-`Q` semantics are **NOT AUTHORIZED**;
+- the accepted selected-Q blob remains
+  `7857cabb4d28af99cb9d59e2d1c3024b05787c11`;
+- accepted Issue #69 audit blob remains
+  `83e9be0febcc03eb721265d3558887bd6b1586a4` and accepted oracle blob remains
+  `76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`;
+- **Stationary KFE remains NOT AUTHORIZED**.
+
+## OWNER SCIENTIFIC DECISION RESOLVED — ROUTE A SELECTED
+
+The Issue #69 Owner gate is closed. The Owner explicitly selected **Route A** on
+2026-09-15:
+
+> MATLAB-faithful iteration-rate semantics remain authoritative for the HJB
+> operator.
+
+Binding single-`Q` operator contract from this Owner decision:
+
+- Route A selected by the Owner;
+- MATLAB-faithful selected iteration-rate semantics ARE authoritative for the HJB
+  operator;
+- the solve, final validation and any future authorized `Q^T` mass dynamics must
+  share **one coherent selected generator**;
+- raw-drift `max(±mu)/step` is **NOT** an independent final-validation `Q`
+  authority;
+- **dual-`Q` semantics are NOT AUTHORIZED**;
+- Route B and Route C are not selected.
+
+## Accepted task — Issue #70 / DLH-5V-V (ACCEPTED / CLOSED)
+
+Issue #70 is CLOSED completed at Terminal A. It consolidated the Owner-selected
+Route A single-`Q` F0 operator contract so that final validation reuses the SAME
+MATLAB-faithful selected generator as the solve, and revalidated the final
+Bellman operator at all three frozen states.
+
+Accepted candidate / integration:
+
+`fb5523d55d01d4b64995d94efb786994b5f8326d`
+
+Reviewer acceptance:
+
+`5691693472`
+
+Acceptance integration:
+
+`5691696204`
+
+Accepted verdict:
+
+`DLH_5VV_ACCEPTED__TERMINAL_A_CONFIRMED__OWNER_ROUTE_A_SINGLE_Q_F0_CONTRACT_CONSOLIDATED__FINAL_VALIDATION_BIT_IDENTICAL_TO_SELECTED_ITERATION_GENERATOR_AT_S0_S1_S2__POLICY_LABEL_IDENTITY_RESTORED__FULL_SUITE_GREEN__HJB_RESIDUAL_REASSESSMENT_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__FINAL_VALIDATION_REUSES_MATLAB_FAITHFUL_SELECTED_ITERATION_GENERATOR_AT_ALL_FROZEN_STATES__DUAL_RATE_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_READY`
+
+Preserved ancestry (no rebase):
+
+- original scientific commit `825e241804c7fb260c807602fc0f1487caf84e56`;
+- contract-migration commit `0e3a9597cd5550a237452aeaa57ed0a145aa6c83`;
+- final remediation commit / accepted candidate
+  `fb5523d55d01d4b64995d94efb786994b5f8326d`.
+
+Accepted selected-Q blob:
+
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`
+
+Accepted facts:
+
+- S0 / S1 / S2: `Q_final == Q_iter` **exactly** and `u_final == u_iter`
+  **exactly**;
+- controls / `mu` / diagonal / destinations / represented rates / residual vector
+  all identical;
+- policy/sector label mismatch rows = `0` / `0` / `0`;
+- historical pre-Route-A gaps preserved as history: S1 =
+  `0.6718037653783657`, S2 = `1.3379411925537439`;
+- current Route-A gaps: S1 = `0.0`, S2 = `0.0`;
+- full repository suite: `641 passed`, `0 failed`, `0 errors`, `6` pre-existing
+  oracle warnings;
+- S0 residual = `10.435094313164921`;
+- Bellman tolerance = `1e-3` (unchanged);
+- the F0 `final=True` Route-A branch directly reuses the supplied record's
+  `row_entries` / `diagonal` / `utility` / controls / realized drifts /
+  `rec.sector`; no `INTERIOR_FINAL` retag and no second raw-drift F0 generator
+  remain;
+- accepted Issue #69 audit module remains byte-identical to blob
+  `83e9be0febcc03eb721265d3558887bd6b1586a4` and now legitimately fails closed
+  under its historical reproduction gate;
+- accepted Issue #66 zero-gap handling is explicit, finite and deterministic and
+  does not rewrite historical evidence.
+
+Therefore, binding accepted interpretation:
+
+- **HJB convergence = FALSE.** The S0 residual remains `10.435094313164921`,
+  ~`10435`× the **unchanged** Bellman tolerance `1e-3`;
+- **no new HJB iterate** and **no new HJB trajectory** were accepted;
+- the acceptance establishes **operator-contract coherence only**, NOT
+  convergence;
+- dual-`Q` validation semantics are removed; one coherent MATLAB-faithful
+  selected generator now governs F0 solve and final validation;
+- **Stationary KFE remains NOT AUTHORIZED**.
+
+## Issue #70 exact scientific change (as accepted)
+
+Only authorized scientific source mutation:
+
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` — the F0
+`final=True` validation assembly only.
+
+Binding contract:
+
+- the supplied selected F0 record's stored `row_entries` / iteration rates /
+  `diagonal` / `utility` **directly define** the final-validation row;
+- preserve same-z-block destination indexing;
+- do **NOT** construct a second F0 `Q` from
+  `asset_drifts_matlab_faithful` + `max(±mu)/step`;
+- `final=True` must use the SAME selected-generator semantics as `final=False`.
+
+Exact equivalent implementation is allowed if and only if it yields the identical
+selected F0 generator row as `final=False` under the same selected record.
+
+Never changed by this Issue:
+
+- the accepted oracle;
+- `final=False` iteration semantics;
+- `select_matlab_faithful_local_policy`;
+- boundary families F1–F11;
+- switch matrix;
+- controls / policy selection;
+- economics / prices / grid / domain / initialization / calibration;
+- tolerances / `PB_MARGIN` / Bellman tolerance;
+- convergence criterion.
+
+Exact validation states (only three, no search, no alpha tuning):
+
+- **S0** — accepted Issue #63 stagnation state `V_*`;
+- **S1** — accepted Issue #68 `alpha_half = 0.08085341880193442`;
+- **S2** — accepted Issue #68 `alpha_near = 0.16170683760386884`.
+
+At each state exactly: ONE `final=False` build; then, using those SAME records,
+ONE Route-A `final=True` build. Must check F0 rowwise `Q` gap; non-F0 `Q` gap;
+global `Q` gap; `u` gap; diagonal/rate/destination identity; `Q` conservativity;
+Bellman residual identity; and that controls / labels are unchanged.
+
+Expected after consolidation (all now ACCEPTED as measured): `Q_final == Q_iter`
+and `u_final == u_iter` to machine precision at all three states; the historical
+Issue #68 S1/S2 gaps (`0.6718037653783657`, `1.3379411925537439`) collapsed to
+exactly `0.0`. S0 residual remained `10.435094313164921` exactly as expected.
+**No HJB convergence claim.**
+
+Issue #70 exact four-path Builder allowlist:
+
+1. `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`;
+2. `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`;
+3. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_REPORT.md`;
+4. `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_SUMMARY.csv`.
+
+No fifth tracked Builder path. No PR / merge / Issue close / successor /
+self-accept.
+
+Issue #70 terminal set (exactly ONE was to be reported; **Terminal A** was
+reported and accepted):
+
+- A `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__FINAL_VALIDATION_REUSES_MATLAB_FAITHFUL_SELECTED_ITERATION_GENERATOR_AT_ALL_FROZEN_STATES__DUAL_RATE_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_READY`
+- B `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__ROUTE_A_IMPLEMENTED_BUT_MATERIAL_FINAL_VS_ITERATION_OPERATOR_DISCREPANCY_REMAINS__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
+- C `DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT__NONFINITE_REGRESSION_OR_CONTRACT_FAILURE__SCIENTIFIC_REPAIR_REVIEW_REQUIRED`
+- Blocked `BLOCKED_DLH_5VV_AUTHORITY_OR_DEPENDENCY_CONFLICT`
+
+Explicitly NOT authorized in this Issue (the frozen Issue #70 ceiling; unchanged
+and carried forward by Issue #71):
+
+- mutating the accepted oracle;
+- modifying iteration `final=False` rate semantics;
+- modifying policy selection / controls;
+- modifying F1–F11 boundary semantics;
+- changing economics, prices, grid/domain, initialization, tolerances,
+  `PB_MARGIN`, Bellman tolerance;
+- changing the convergence criterion;
+- accepting any state as a new HJB iterate;
+- running multi-step Newton / policy iteration / semismooth / trust-region /
+  continuation / line search;
+- tuning alpha or adding trial states;
+- price / Wmax / resolution sweeps;
+- KFE / stationary KFE / `solve_household_steady_state`;
+- SCC/global-Q; GE / multi-region / neural / nominal / calibration / policy /
+  welfare / Results;
+- successor Issue activation;
+- any Builder scientific branch beyond the dedicated Issue #70 branch named
+  above (not yet created).
+
+## Accepted task — Issue #69 / DLH-5V-U (ACCEPTED / CLOSED)
+
+Issue #69 is CLOSED completed at Terminal A. It performed the read-only
+diagnostic / provenance audit of the latent F0 iteration-rate vs raw-drift sign
+divergence away from `V_*`, using exactly the two accepted Issue #68 frozen trial
+states.
+
+Accepted candidate / integration:
+
+`a08ad35c1dfea212fdc34c276e332b985af1a59f`
+
+Reviewer acceptance:
+
+`5678488562`
+
+Acceptance integration:
+
+`5678493024`
+
+Accepted verdict:
+
+`DLH_5VU_ACCEPTED__TERMINAL_A_CONFIRMED__UNIQUE_SOURCE_BACKED_F0_B_RATE_SIGN_BRANCH_DIVERGENCE_FULLY_ACCOUNTS_FOR_ISSUE68_TRIAL_OPERATOR_GAPS__OWNER_RATE_SEMANTICS_DECISION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VU_F0_RATE_PATH_DIVERGENCE__UNIQUE_SIGN_OR_BRANCH_MECHANISM_ESTABLISHED_AND_FULLY_ACCOUNTS_FOR_TRIAL_OPERATOR_GAPS__RATE_SEMANTICS_SCIENTIFIC_REVIEW_GATE_READY`
+
+Accepted facts:
+
+- `alpha_half` gap = `0.6718037653783657`, rows `{452, 453}`;
+- `alpha_near` gap = `1.3379411925537439`, rows `{452, 453, 482, 483}`;
+- total F0 rows = `596`;
+- b-rate divergent rows = `2` / `4`;
+- a-rate divergent rows = `0` / `0`;
+- destination-layout divergent rows = `0` / `0`;
+- omitted-rate divergent rows = `0` / `0`;
+- max decomposition residual = `3.552713678800501e-15`;
+- stored and recomputed realized `mu_a` / `mu_b` are bit-identical on the
+  affected rows;
+- all affected rows have realized `mu_b < 0`;
+- the corrected raw-drift path therefore has `b_forward = 0`;
+- the iteration path nevertheless carries a positive
+  `iteration_b_forward_rate`;
+- accepted source provenance: iteration b-rates come from branch-gated
+  `sc_b`/`sc_f` + `sdh_b`/`sdh_f` FOC/shadow objects;
+- corrected final raw rates come from `max(±mu_b)/db`;
+- the unique observed mechanism: `liquid_label == "F"` / branch-gated positive
+  forward iteration component while realized `mu_b < 0`;
+- the observed Issue #68 gaps are fully accounted for by this sign/branch b-rate
+  divergence;
+- no authoritative rate path has been selected.
+
+Reviewer qualification (binding, narrower than a global theorem):
+
+- the acceptance is **limited to attribution of the observed Issue #68 trial
+  discrepancies**;
+- it does **NOT** adopt the broader claim that the two rate constructions
+  coincide *only* whenever `liquid_label == "0"` as a global theorem over the
+  entire state/control space;
+- the accepted scientific fact is that the affected rows share the unique
+  source-backed `liquid_label == "F"` / positive iteration forward component
+  mechanism while realized `mu_b < 0`, with full decomposition closure.
+
+Accepted scientific interpretation (binding):
+
+- **no HJB convergence**; the accepted residual `10.435094313164921` remains
+  ~`10435`× the unchanged Bellman tolerance `1e-3`;
+- **no accepted new HJB iterate**;
+- no accepted source mutation and no authoritative rate-path choice;
+- selected-Q repaired blob remains
+  `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Superseded accepted task — Issue #68 / DLH-5V-T (ACCEPTED / CLOSED)
+
+Issue #68 is CLOSED completed at Terminal C. It diagnosed single-wall
+tangent-projected frozen-policy Newton geometry at the accepted post-repair
+`V_*`, and its Reviewer-authorized gradient-semantics remediation made the full
+two-entry chain-rule wall gradient the controlling construction.
+
+Accepted candidate / integration:
+
+`15083e5c9f089406aa69326bc84dbe2db0e42be8`
+
+Reviewer acceptance:
+
+`5676811925`
+
+Acceptance integration:
+
+`5676816068`
+
+Original scientific candidate / remediation commit:
+
+`b194eb3886af7a5e3d5abe85dad114fdc6ed98eb` /
+`15083e5c9f089406aa69326bc84dbe2db0e42be8` (fast-forward, not a merge commit)
+
+Accepted verdict:
+
+`DLH_5VT_ACCEPTED__TERMINAL_C_CONFIRMED__FULL_CHAIN_RULE_TANGENT_GEOMETRY_EXPANDS_SAFE_FRACTION_MATERIALLY__TRIAL_LEVEL_FINAL_VS_ITERATION_RATE_PATH_DIVERGENCE_INVALIDATES_CLEAN_RESIDUAL_CONTRACT__RATE_PATH_PROVENANCE_REVIEW_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VT_TANGENT_PROJECTED_NEWTON__NONFINITE_INCONSISTENT_OR_NO_POSITIVE_SAFE_TANGENT_GEOMETRY__BOUNDARY_HJB_ROUTE_REVIEW_REQUIRED`
+
+Accepted facts:
+
+- controlling wall gradient = full two-entry chain rule;
+- `g[wall] = +1/db`, `g[down] = -1/db`, basis identity error = `0`;
+- `alpha_cross_T = 0.16170699931086815`;
+- `alpha_near = 0.16170683760386884`, `alpha_half = 0.08085341880193442`;
+- geometry ratio = `866.2532997045214`;
+- both trials domain-safe;
+- indicative residual ratios: `alpha_half = 0.9193283517706523`,
+  `alpha_near = 0.8390465254310803`;
+- these ratios are **NOT** clean contractual residual evidence because corrected
+  `final=True` and `final=False` become inconsistent under the SAME controls;
+- `alpha_half`: F0 operator gap `0.6718037653783657`, inconsistent rows
+  `{452, 453}`;
+- `alpha_near`: F0 operator gap `1.3379411925537439`, inconsistent rows
+  `{452, 453, 482, 483}`;
+- controls / utility bit-identical across the two operator constructions at the
+  affected rows;
+- selected-Q repaired blob remains `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`;
+- at accepted `V_*` the two rate paths agree to machine precision, so the
+  divergence is latent and appears only away from `V_*`.
+
+Accepted scientific interpretation (binding):
+
+- the single-wall full-gradient tangent projection **does** relax the
+  first-order wall geometry by ~`866`×;
+- the clean nonlinear residual experiment is invalidated at those larger steps
+  because the accepted `final=False` iteration-rate path and the corrected
+  `final=True` raw-drift rate path diverge under identical controls near an
+  upwind sign boundary;
+- this does **NOT** establish which rate path is scientifically correct away
+  from `V_*`, does **NOT** authorize mutating either path, and does **NOT**
+  establish HJB nonexistence or convergence failure;
+- **no HJB convergence**; **no accepted new iterate**;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Superseded accepted task — Issue #67 / DLH-5V-S (ACCEPTED / CLOSED)
+
+Issue #67 is CLOSED completed at Terminal A. It performed the minimal
+Owner-authorized `final=True` F0 z-block destination repair and a corrected
+validation re-check, followed by a Reviewer-authorized bounded post-repair
+test-contract migration.
+
+Accepted candidate / integration:
+
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32`
+
+Reviewer acceptance:
+
+`5674741491`
+
+Acceptance integration:
+
+`5674743972`
+
+Original scientific candidate / remediation commit:
+
+`281cfe01b2925364a92308ca172a84a724c6ea58` /
+`a5753bb9fa329a3d85a5652b03d101fa0be6cd32` (fast-forward, not a merge commit)
+
+Accepted verdict:
+
+`DLH_5VS_ACCEPTED__TERMINAL_A_CONFIRMED__MINIMAL_ZBLOCK_DESTINATION_REPAIR_EXACT__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__FULL_SUITE_GREEN__HJB_RESIDUAL_REASSESSMENT_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR__CORRECTED_FINAL_OPERATOR_MATCHES_MATLAB_FAITHFUL_LAYOUT__SPURIOUS_CROSS_Z_VALIDATION_GAP_REMOVED__HJB_RESIDUAL_REASSESSMENT_GATE_READY`
+
+Accepted facts (at the frozen stagnation state `V_*`):
+
+- selected-Q repaired blob = `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`;
+- the exact scientific source repair remains only
+  `cols.append(dn)` → `cols.append(nz * self.n + dn)`;
+- corrected final residual = `10.435094313164921`;
+- accepted `R_iter` = `10.435094313164921`;
+- corrected-final vs ITER rowwise operator gap = `1.4210854715202004e-14`;
+- historical pre-repair current final residual = `490.7560414005864`;
+- historical pre-repair operator gap = `24.601971766296664`;
+- ~`480.32` excess residual attributed to the cross-z destination-index defect;
+- z=0 unchanged;
+- non-F0 boundary `Q`/`u` diff = `0`;
+- utility/source diff = `0`;
+- conservativity preserved;
+- expansions = `0`;
+- artificial bindings = `0`;
+- historical Issue #64/#65/#66 test constants preserved;
+- post-repair runtime contracts migrated;
+- full suite = **534 passed / 0 failed / 6 pre-existing warnings**.
+
+Accepted scientific interpretation (binding):
+
+- **HJB convergence = FALSE**;
+- Bellman tolerance remains `1e-3`;
+- the corrected residual is ~`10435`× the tolerance;
+- `R_iter` is **NOT** declared the accepted final convergence residual;
+- the genuine post-repair HJB residual reassessment remains outstanding;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Superseded accepted task — Issue #66 / DLH-5V-R (ACCEPTED / CLOSED)
+
+Issue #66 is CLOSED completed at Terminal A and establishes the concrete
+accepted validation-operator assembly defect / provenance mismatch that
+requires an Owner decision before any source repair.
+
+Accepted candidate / integration:
+
+`a31f17e6d965ddfe8214cd1b83d4074833310625`
+
+Reviewer acceptance:
+
+`5666168154`
+
+Acceptance integration:
+
+`5666172248`
+
+Accepted verdict:
+
+`DLH_5VR_ACCEPTED__TERMINAL_A_CONFIRMED__ITERATION_OPERATOR_IS_MATLAB_FAITHFUL__FINAL_TRUE_F0_ROW_ASSEMBLY_DROPS_Z_BLOCK_OFFSET_FOR_Z1__VALIDATION_OPERATOR_SCIENTIFIC_REPAIR_OWNER_GATE_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VR_F0_FINAL_RATE_PROVENANCE__ITERATION_OPERATOR_MATCHES_ACCEPTED_MATLAB_FAITHFUL_HJB__FINAL_RAW_RATE_OPERATOR_NON_EQUIVALENT__VALIDATION_OPERATOR_REDESIGN_REVIEW_GATE_READY`
+
+Accepted facts (at the same frozen stagnation state `V_*`):
+
+- `ITER_EQ_MATLAB = true`;
+- `FINAL_EQ_MATLAB = false`;
+- `BOTH_EQUIVALENT = false`;
+- `MIXED_OR_UNRESOLVED = false`;
+- F0 directional rate formulas coincide within machine tolerance;
+- utility/source terms identical;
+- non-F0 boundary rows identical;
+- destination assembly is the material discrepancy;
+- 298 z=1 F0 rows affected;
+- rowwise max operator gap = `24.601971766296664`;
+- accepted `final=True` F0 off-diagonal path uses bare `dn`;
+- accepted iteration and boundary paths use `nz*n + dn`;
+- therefore z=1 `final=True` F0 destinations are incorrectly placed in the
+  z=0 block.
+
+Accepted scientific interpretation (trajectory-bounded / local attribution
+only):
+
+- the accepted iteration operator is the MATLAB-faithful iteration operator;
+- the accepted FINAL-RAW row's rate formulas equal the accepted oracle
+  post-convergence formula, but its assembled row is not the MATLAB-faithful
+  discrete HJB row because the z-block destination offset is dropped for z=1
+  rows;
+- no conclusion yet that the convergence criterion itself should change;
+- correction of accepted `final=True` source semantics required explicit Owner
+  authorization — the Owner granted exactly that authorization on 2026-09-15
+  through Issue #67 / DLH-5V-S, limited to the minimal z-block destination
+  repair described above;
+- `R_iter` is NOT declared an accepted final convergence residual;
+- does NOT prove the HJB fixed point does not exist;
+- the next route is `OWNER SCIENTIFIC DECISION REQUIRED — MINIMAL
+  FINAL-VALIDATION OPERATOR REPAIR` — subsequently granted by the Owner on
+  2026-09-15 through Issue #67 / DLH-5V-S;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Prior accepted task — Issue #65 / DLH-5V-Q (ACCEPTED / CLOSED)
+
+Issue #65 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the F0 `final=True` rate/discretization operator
+dominance audited by Issue #66.
+
+Accepted candidate / integration:
+
+`44cb7bda1a040cacfc94fa45cda689755daa5a4e`
+
+Reviewer acceptance:
+
+`5656806015`
+
+Acceptance integration:
+
+`5656807180`
+
+Accepted verdict:
+
+`DLH_5VQ_ACCEPTED__TERMINAL_B_CONFIRMED__FINAL_TRUE_F0_RATE_SEMANTICS_DOMINATE_ACCEPTED_VALIDATION_GAP__STALE_RECORD_EFFECT_NEGLIGIBLE__F0_FINAL_OPERATOR_PROVENANCE_REVIEW_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VQ_F0_FINAL_VALIDATION_SEMANTICS__FINAL_RATE_SEMANTICS_DOMINATE_OR_TIE_ACCEPTED_VALIDATION_GAP__F0_FINAL_OPERATOR_REVIEW_REQUIRED`
+
+Accepted facts (at the same frozen stagnation state `V_*`):
+
+- `||R_iter||_inf = 10.435094313164921`;
+- `||R_final_stale||_inf = 490.7560425919994`;
+- `||R_final_current||_inf = 490.7560414005864`;
+- `||D_total||_inf = 488.0988429898615`;
+- `||D_stale||_inf = 1.8406872158038823e-05`;
+- `||D_rate||_inf = 488.0988417984485`;
+- `D_total = D_stale + D_rate` with additive error `0.0`;
+- `D_total` / `D_stale` / `D_rate` non-F0 boundary contribution is exactly
+  `0` for all three;
+- 596 F0 rows: changed sector/transfer label = 0, but continuous controls are
+  NOT identical;
+- max |Δ consumption| = `1.2570318563831506e-08`;
+- max |Δ labor| = `3.527538039449496e-09`;
+- max |Δ transfer| = `2.0576147896633756e-07`;
+- max |Δ mu_a| = `2.0576147896633756e-07`;
+- max |Δ mu_b| = `4.029644697922663e-07`;
+- max |Δ utility| = `1.088601719878568e-08`;
+- rowwise max |`Q_final_stale` - `Q_final_current`| ≈ `1.4847075143e-06`;
+- rowwise max |`Q_final_current` - `Q_iter`| ≈ `24.6019717663`.
+
+Accepted scientific interpretation (trajectory-bounded / local attribution
+only):
+
+- stale F0 records contribute negligibly to the ~490.756 accepted
+  final-validation gap;
+- a record refresh cannot eliminate that gap;
+- the accepted `final=True` F0 rate/discretization semantics are the dominant
+  source of the gap;
+- the conclusion is local attribution at the fixed `V_*` only;
+- neither `R_iter`, `R_final_current`, nor any other counterfactual is
+  declared to already be the correct convergence criterion;
+- does NOT prove the HJB fixed point does not exist;
+- the next step must audit the provenance/equivalence of the `final=True` F0
+  rate construction against the MATLAB-faithful iteration / discrete HJB
+  operator;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Prior accepted task — Issue #64 / DLH-5V-P (ACCEPTED / CLOSED)
+
+Issue #64 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the F0 final-validation semantic gap audited by Issue
+#65.
+
+Accepted candidate / integration:
+
+`5db144a65796ff6a7e0f59d2d2a75a0446c13b83`
+
+Reviewer acceptance:
+
+`5653190792`
+
+Acceptance integration:
+
+`5653192646`
+
+Accepted verdict:
+
+`DLH_5VP_ACCEPTED__TERMINAL_B_CONFIRMED__F0_FINAL_SEMANTICS_DOMINATE_VALIDATION_GAP__FROZEN_POLICY_NEWTON_IS_BOUNDARY_SAFE_BUT_GEOMETRICALLY_CAPPED_AND_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VP_STAGNATION_NEWTON_GEOMETRY__POSITIVE_BOUNDARY_SAFE_NEWTON_STEP_BUT_NONLINEAR_RESIDUAL_REDUCTION_INSUFFICIENT__FURTHER_DIRECTION_DESIGN_REQUIRED`
+
+Accepted scientific interpretation (trajectory-bounded / local evidence only):
+
+- the accepted Issue #63 stagnation state is reconstructed exactly (8
+  root-controlled FTB steps; final step statistic ≈
+  `3.6614352438846254e-08`; final min boundary `p_b ≈
+  4.8089461301970005e-09`; wall state F3 (13,13), z=1; accepted
+  final-validation residual ≈ `490.7560425919994`);
+- `||R_iter||_inf = 10.435094313164921`;
+- accepted `||R_final_stale||_inf = 490.7560425919994`;
+- `||R_final_stale - R_iter||_inf = 488.0988429898615`;
+- the residual difference is entirely on F0 rows; non-F0 boundary-row
+  difference is exactly zero;
+- frozen-policy Newton solve is finite/correct
+  (`||J_iter d_N + R_iter||_inf ≈ 6.96e-11`);
+- `alpha_cross ≈ 1.8667384893e-4`; limiting state remains F3 (13,13), z=1;
+- `alpha_half` / `alpha_near` both strictly domain-safe;
+- authorized trials yield iteration/final residual ratios ≈ 0.9998–0.9999;
+- dual material-reduction threshold 0.50 not met;
+- plain frozen-policy Newton direction therefore not a viable local
+  residual-reducing route under this wall geometry;
+- does NOT prove HJB fixed point nonexistence or failure of future
+  constrained/tangent directions;
+- sector-switch count 0 must not be interpreted as proof continuous controls
+  unchanged;
+- Stationary KFE remains **NOT AUTHORIZED**.
+
+## Prior accepted task — Issue #63 / DLH-5V-O (ACCEPTED / CLOSED)
+
+Issue #63 is CLOSED completed at Terminal B and remains the controlling
+accepted evidence for the FTB-stagnation state reconstructed by Issue #64.
+
+Accepted candidate / integration:
+
+`a552dc6ebb2c82ad19fe26cd747d362ceecdfdcc`
+
+Reviewer acceptance:
+
+`5652576918`
+
+Acceptance integration:
+
+`5652579072`
+
+Accepted verdict:
+
+`DLH_5VO_ACCEPTED__TERMINAL_B_CONFIRMED__CONTINUOUS_FTB_PRESERVES_EFFECTIVE_DOMAIN_BUT_STAGNATES_AT_BOUNDARY_WITH_MATERIAL_BELLMAN_RESIDUAL__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VO_CONTINUOUS_FTB_RESOLVENT__EFFECTIVE_DOMAIN_PRESERVED_BUT_VALIDATED_HJB_CONVERGENCE_NOT_REACHED`
+
+Accepted scientific interpretation (trajectory-bounded):
+
+- the continuous FTB controller successfully preserves the effective domain on
+  the frozen central selected-Q case;
+- 8 accepted root-controlled FTB steps in total; cap-direct = 0,
+  root-controlled = 8;
+- the limiting wall state is locked to F3 (13,13), z=1 on the accepted path;
+- selected delta and the boundary margin shrink approximately geometrically;
+- final min boundary p_b ≈ 4.81e-9, still > `PB_MARGIN=1e-12`;
+- the accepted-step trigger fired at iteration 8:
+  `max|V_{n+1}-V_n| ≈ 3.66e-8 < 1e-7`;
+- but the final re-selection / validation shows Bellman residual
+  ≈ 490.756 >> 1e-3;
+- the raw fixed-point direction norm stays ≈ 10.43-10.88 on the trajectory and
+  does NOT approach 0;
+- therefore the accepted interpretation is **FTB_STAGNATION**: a tiny step
+  caused by boundary-following geometry, NOT validated HJB convergence;
+- Q conservative, 0 artificial bindings, 0 optimizer expansions;
+- deterministic repeat identical;
+- the Issue #62 positive local safe radius is real but does NOT suffice for
+  validated convergence under this frozen FTB controller;
+- trajectory-bounded evidence only: does NOT prove that all FTB controllers
+  globally fail to converge; does NOT prove the absence of another
+  fixed-point-preserving direction/operator; does NOT prove the HJB fixed
+  point does not exist; does NOT authorize KFE / stationary KFE.
+
+Non-blocking metadata observation (recorded for CURRENT / roadmap wording):
+
+- the candidate result field `converged=True` means only that the accepted-step
+  statistic trigger was reached;
+- scientific validated convergence = FALSE, because the final Bellman
+  validation failed;
+- CURRENT / roadmap must NOT phrase that field as HJB convergence;
+- recommended wording:
+  `step-size convergence trigger reached; validated HJB convergence failed (FTB_STAGNATION)`.
+
+## Prior accepted task — Issue #62 / DLH-5V-N (ACCEPTED / CLOSED)
+
+Issue #62 is CLOSED completed at Outcome A and remains the controlling
+authority for the frozen central case and the local geometry facts.
+
+Accepted candidate / integration:
+
+`7ba2d75978033064c588230b15d760b60bec9e00`
+
+Reviewer acceptance:
+
+`5652208157`
+
+Acceptance integration:
+
+`5652209372`
+
+Accepted verdict:
+
+`DLH_5VN_ACCEPTED__OUTCOME_A_CONFIRMED__POSITIVE_SUBFLOOR_LOCAL_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+Accepted terminal:
+
+`DLH_5VN_LOCAL_RESOLVENT_GEOMETRY__POSITIVE_SUBFLOOR_SAFE_STEP_AND_REPRODUCIBLE_MARGIN_CROSSING__CONTINUATION_DESIGN_GATE_READY`
+
+Accepted local facts (trajectory-bounded / local evidence only):
+
+- Issue #61 terminal event is authorized ladder-floor exhaustion;
+- frozen Issue #61 terminal operator has a strictly positive sub-floor safe delta;
+- continuous margin crossing reproducible in `[0, 1000*2^-20]`;
+- `delta_cross ≈ 7.8246e-4` (~0.8205 of the old floor);
+- first-order prediction `delta_margin_linear ≈ 7.5943e-4` (ratio ≈ 1.0303);
+- root/below/above limiting state is F3 (13,13), z=1;
+- corrected directional accounting: 186 required boundary states, 105
+  negative-direction, 40 `i == 0` V-independent states with exact zero
+  directional derivative;
+- R1 true fail-closed non-finite handling is part of the accepted
+  implementation;
+- does NOT prove continuation convergence (and Issue #63 now confirms the FTB
+  continuation stagnates at the boundary on the frozen central case).
+
+## Prior accepted task — Issue #61 / DLH-5V-M (ACCEPTED / CLOSED)
+
+Issue #61 is CLOSED completed at Terminal C.
+
+Accepted candidate / integration:
+
+`2721dadbfd0ad49813f12c8424f6be77fcaf3f85`
+
+Reviewer acceptance:
+
+`5651495744`
+
+Acceptance integration:
+
+`5651496951`
+
+Accepted verdict:
+
+`DLH_5VM_ACCEPTED__TERMINAL_C_CONFIRMED__ADAPTIVE_RESOLVENT_LADDER_EXHAUSTED_ON_FROZEN_CENTRAL_TRAJECTORY__ROUTE_RECONSIDERATION_REQUIRED`
+
+Accepted terminal:
+
+`DLH_5VM_ADAPTIVE_RESOLVENT__NO_VIABLE_EFFECTIVE_DOMAIN_RESOLVENT_STEP__ROUTE_RECONSIDERATION_REQUIRED`
+
+## Prior accepted task — Issue #60 / DLH-5V-L (ACCEPTED / CLOSED)
+
+Issue #60 is CLOSED completed at Terminal C.
+
+Accepted candidate / integration:
+
+`9b1538feabe2cc4634653721e725ee3e46d449bb`
+
+Reviewer acceptance:
+
+`5650057012`
+
+Acceptance integration:
+
+`5650059195`
+
+Accepted verdict:
+
+`DLH_5VL_ACCEPTED__TERMINAL_C_CONFIRMED__VALUE_UPDATE_ONLY_INVARIANT_SAFEGUARD_FAILS_ON_FROZEN_CENTRAL_TRAJECTORY__RAW_OPERATOR_ROUTE_RECONSIDERATION_REQUIRED`
+
+## Frozen household / same-process authority
+
+Accepted household oracle remains immutable/read-only:
+
+`src/deep_learning_hank/two_asset/matlab_faithful_two_asset_ha.py`
+
+Git blob:
+
+`76ae5b149993a7edeeb8eb337f1b02b3fe33c51e`
+
+Accepted selected-Q implementation — repaired and accepted under Issue #67 /
+DLH-5V-S. **The ONLY accepted scientific source that Issue #70 / DLH-5V-V is
+authorized to modify, and then only within the F0 `final=True` validation
+assembly.** Read-only for every other Issue:
+
+`src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py`
+
+Pre-Issue-70 accepted Git blob (frozen comparison authority for Issue #70):
+
+`556ccc214f03a1a22306cc4f5c7e9f7691bbf897`
+
+Historical pre-repair Git blob (retained as the accepted Issue #64–#66
+comparison authority; not a live target):
+
+`7ea342ccbe15d852b90743b14bb4b02977c2d78b`
+
+Accepted scientific source changes to date: the Issue #67 Owner-authorized
+z-block destination-index repair
+`cols.append(dn)` → `cols.append(nz * self.n + dn)`, and the Issue #70
+Owner-selected Route-A single-`Q` consolidation of the F0 `final=True`
+validation assembly (including the accepted policy-label-preservation
+remediation so the supplied selected record's policy/sector label is reused
+verbatim: `sector=rec.sector` and `sector_arr[node, nz] = rec.sector`, with no
+`INTERIOR_FINAL` retag remaining). No other mutation of this file is authorized.
+
+Accepted Issue #61 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/adaptive_resolvent_hjb.py`
+
+Git blob:
+
+`043e146ef499e985a49d256c4cec2f397f93e4e1`
+
+Accepted Issue #62 local-geometry implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/local_resolvent_domain_geometry.py`
+
+Git blob:
+
+`cb6533475d0ba115e6f52bd73e61aeb85c9b6ea7`
+
+Accepted Issue #63 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/continuous_ftb_resolvent_hjb.py`
+
+Git blob:
+
+`746799509c517746ba6a321e5526c57a8f4698e4`
+
+Accepted Issue #64 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/stagnation_newton_geometry.py`
+
+Git blob:
+
+`3ca2371c7da1939d1fed55df5728baefb27d8aa7`
+
+Accepted Issue #65 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/f0_final_validation_semantics_audit.py`
+
+Git blob:
+
+`bb4045378bf19607f68d7d4a7628b3431afcd676`
+
+Accepted Issue #66 implementation remains read-only evidence:
+
+`src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py`
+
+Git blob:
+
+`44d47c7545f279dfe9189736f5cdcdfa30c3b84b`
+
+Accepted Issue #67 deliverable implementation/test/report paths remain
+read-only evidence:
+
+- `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (repaired;
+  blob `556ccc214f03a1a22306cc4f5c7e9f7691bbf897`);
+- `tests/test_dlh_5vs_final_validation_zblock_repair.py`;
+- `tests/test_dlh_5vp_stagnation_newton_geometry.py` (migrated contracts);
+- `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` (migrated
+  contracts);
+- `tests/test_dlh_5vr_f0_final_rate_provenance.py` (migrated contracts);
+- `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_REPORT.md`;
+- `reports/dlh_5vs_final_validation_zblock_repair_2026_09_15/DLH_5VS_FINAL_VALIDATION_ZBLOCK_REPAIR_SUMMARY.csv`.
+
+Accepted Issue #68 deliverable paths remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/tangent_projected_newton_geometry.py`;
+- `tests/test_dlh_5vt_tangent_projected_newton_geometry.py`;
+- `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_REPORT.md`;
+- `reports/dlh_5vt_tangent_projected_newton_geometry_2026_09_15/DLH_5VT_TANGENT_PROJECTED_NEWTON_GEOMETRY_SUMMARY.csv`.
+
+Accepted Issue #69 deliverable paths remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/f0_rate_path_divergence_audit.py`;
+- `tests/test_dlh_5vu_f0_rate_path_divergence.py`;
+- `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_REPORT.md`;
+- `reports/dlh_5vu_f0_rate_path_divergence_2026_09_15/DLH_5VU_F0_RATE_PATH_DIVERGENCE_SUMMARY.csv`.
+
+Accepted Issue #70 deliverable paths (the exact ten-path cumulative diff
+integrated at `fb5523d55d01d4b64995d94efb786994b5f8326d`) remain read-only
+evidence:
+
+- `src/deep_learning_hank/two_asset/boundary_hjb_selected_q.py` (Route A + the
+  accepted policy-label remediation; blob
+  `7857cabb4d28af99cb9d59e2d1c3024b05787c11`);
+- `src/deep_learning_hank/two_asset/f0_final_rate_provenance_audit.py`
+  (authorized Issue #66 zero-gap handling only);
+- `tests/test_dlh_5vv_route_a_single_q_operator_contract.py`;
+- `tests/test_dlh_5vu_f0_rate_path_divergence.py` (migrated contracts);
+- `tests/test_dlh_5vt_tangent_projected_newton_geometry.py` (migrated
+  contracts);
+- `tests/test_dlh_5vr_f0_final_rate_provenance.py` (migrated contracts);
+- `tests/test_dlh_5vq_f0_final_validation_semantics_audit.py` (migrated
+  contracts);
+- `tests/test_dlh_5vs_final_validation_zblock_repair.py` (migrated contracts);
+- `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_REPORT.md`;
+- `reports/dlh_5vv_route_a_single_q_operator_contract_2026_09_15/DLH_5VV_ROUTE_A_SINGLE_Q_OPERATOR_CONTRACT_SUMMARY.csv`.
+
+Issue #71 may create only its own four paths above; it may **not** modify any
+accepted Issue #61–#70 scientific source, test or report.
+
+Accepted Issue #71 deliverable paths (the exact five-path cumulative diff
+integrated at `e1d79d6aa6677ca262df1699e21007eaf9690c4d`; Reviewer hold
+`5695153100` authorized the fifth) remain read-only evidence:
+
+- `src/deep_learning_hank/two_asset/route_a_hjb_residual_decomposition.py`;
+- `tests/test_dlh_5vw_route_a_hjb_residual_decomposition.py`;
+- `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_REPORT.md`;
+- `reports/dlh_5vw_route_a_hjb_residual_decomposition_2026_09_16/DLH_5VW_ROUTE_A_HJB_RESIDUAL_DECOMPOSITION_SUMMARY.csv`;
+- `tests/test_dlh_5vv_route_a_single_q_operator_contract.py` (bounded
+  repository-state assertion correction only).
+
+Issue #72 may create only its own four paths above; it may **not** modify any
+accepted Issue #60–#71 scientific source, test or report.
+
+Accepted Issue #72 deliverable paths (the exact four-path cumulative diff
+integrated at `5d2f489f8dfb3527c0e4bd7dc418e35139b9dbd9`) remain read-only
+evidence:
+
+- `src/deep_learning_hank/two_asset/route_a_bounded_solver_design.py`;
+- `tests/test_dlh_5vx_route_a_bounded_solver_design.py`;
+- `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_REPORT.md`;
+- `reports/dlh_5vx_route_a_bounded_solver_design_2026_09_16/DLH_5VX_ROUTE_A_BOUNDED_SOLVER_DESIGN_SUMMARY.csv`.
+
+Issue #73 may create only its own four paths above; it may **not** modify any
+accepted Issue #60–#72 scientific source, test or report.
+
+Binding law remains:
+
+```text
+HJB boundary policy <=> KFE boundary transition law
+Q backward
+future KFE exactly Q^T
+Q_ij>=0 for i!=j
+Q_ii=-sum of ACTUAL represented outgoing rates
+Q1=0 by construction
+same selected candidate/rates for HJB and future KFE
+```
+
+Stationary KFE remains **NOT AUTHORIZED**.
+
+## Hard ceiling
+
+**ISSUE #73 / DLH-5V-Y IS NEXT ACTIVE — BUILDER NOT YET OPERATIVE.** Issue #72 /
+DLH-5V-X is ACCEPTED / CLOSED at Terminal B and integrated to `main` at
+`5d2f489f8dfb3527c0e4bd7dc418e35139b9dbd9` (accepted selected-Q blob
+`7857cabb4d28af99cb9d59e2d1c3024b05787c11`). Owner Route A remains binding:
+MATLAB-faithful selected iteration-rate semantics are authoritative for the HJB
+operator, the solve / final validation / future authorized `Q^T` share **one
+coherent selected generator**, raw-drift `max(±mu)/step` is **not** an
+independent final-validation `Q` authority, and dual-`Q` semantics are **NOT
+AUTHORIZED**. Builder execution on Issue #73 remains NOT YET OPERATIVE until the
+final authoritative activation-refresh confirms the post-sync live `main`.
+
+The Issue #73 ceiling is exactly: ONE deterministic reconstruction of the accepted
+`V_*` (reproducing steps `8`, statistic `3.6614352438846254e-08`, min `p_b`
+`4.8089461301970005e-09`, wall `F3 (13,13) z=1 node 332`, `||R||inf`
+`10.435094313164921`, argmax row `97`/node `97`/z `0`/F0); ONE baseline Route-A
+`final=False` selected-`Q` build; ONE baseline residual/Jacobian; ONE bounded
+lexicographic candidate search over `k_lambda`, `k_Delta`, `k_alpha` each
+`0..20` using the policy-frozen regularized Newton direction
+`(J + lambda_k*||diag(J)||inf I) d = -R` with `J = rho I - Q`; at most ONE accepted
+experimental candidate; immediate STOP at the first acceptable candidate or
+fail-closed on authorized-search exhaustion; ONE deterministic repeat; focused
+tests plus the full repository suite — within the exact four-path allowlist above.
+Explicitly NOT authorized: mutating selected-Q, the oracle, or any accepted Issue
+#60–#72 source; modifying `final=False` / `final=True` semantics; modifying policy
+selection; modifying F1–F11 boundary semantics; changing economics / prices / grid /
+domain / initialization / calibration; changing tolerances / `PB_MARGIN` / Bellman
+tolerance / convergence rule; using the residual/Jacobi direction; adding or tuning
+ladder rungs; accepting a second outer step; running a trajectory; claiming HJB
+convergence; KFE / stationary KFE / steady state /
+`solve_household_steady_state`; SCC/global-Q;
+GE/multi-region/neural/nominal/calibration/policy/welfare/Results; successor Issue
+activation; any Builder scientific branch beyond the dedicated Issue #73 branch
+(not yet created); PR / merge / Issue close / self-accept.
+Stationary KFE remains **NOT AUTHORIZED**.
+
+## Current governance files
+
+- `docs/governance/DLH_STARTUP_SNAPSHOT_CURRENT.md`
+- `docs/roadmaps/DLH_MASTER_ROADMAP_CURRENT_2026_09_01.md`
+- Issue #73 body/comments (OPEN; initial authoritative activation `5714125203`;
+  final authoritative activation-refresh not yet published).
+- Issue #72 body/comments (accepted/closed; reviewer acceptance `5714106614`,
+  acceptance integration `5714110964`).
+- Issue #71 body/comments (accepted/closed; reviewer acceptance `5696620837`,
+  acceptance integration `5696624495`).
+- Issue #70 body/comments (accepted/closed; reviewer acceptance `5691693472`,
+  acceptance integration `5691696204`).
+- Issue #69 body/comments (accepted/closed; reviewer acceptance `5678488562`,
+  acceptance integration `5678493024`).
+- Issue #68 body/comments (accepted/closed; reviewer acceptance `5676811925`,
+  acceptance integration `5676816068`).
+- Issue #67 body/comments (accepted/closed; reviewer acceptance `5674741491`,
+  acceptance integration `5674743972`).
+- Issue #66 body/comments (accepted/closed; reviewer acceptance `5666168154`,
+  acceptance integration `5666172248`).
+- Issue #65 body/comments (accepted/closed).
+- Issue #64 body/comments (accepted/closed).
+- Issue #63 body/comments (accepted/closed).

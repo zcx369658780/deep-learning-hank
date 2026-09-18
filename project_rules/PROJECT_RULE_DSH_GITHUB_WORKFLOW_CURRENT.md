@@ -1,85 +1,25 @@
-# DSH + GitHub Governed Workflow
+# DSH + GitHub 工作流
 
-最后更新：2026-08-19
+更新：2026-09-18。路线：`DLH-WL-V1-20260918`。
 
-## 1. Authority hierarchy
+## 科学任务
 
-本项目正式采用 GitHub-governed workflow：
+Owner 决定科研方向；ChatGPT 独立审查并发布任务；DSH 有界执行。科学 source/test/config 修改、训练、模型调用均须一个明确 open Issue 及权威 activation。Task Index 是指针，不能扩大 Issue 或 Owner 授权。planning 不等于 implementation，implementation 不等于 run，run 不等于 Results。
 
-- live GitHub `main` = 唯一 synchronized repository/governance authority；
-- **open GitHub Issue = sole Builder task authority**；
-- `tasks/TASK_INDEX_CURRENT.md` = active Issue pointer / synchronization aid，不能扩大 Issue authority；
-- DSH = bounded Builder；
-- ChatGPT = independent GitHub reviewer / scientific-route authority / task issuer；
-- Owner = final scientific-direction authority。
+启动：核对 `D:\deep-learning-hank`、origin、分支和 dirty 状态；fresh-fetch；读取 fresh main 上 AGENTS/规则/锁定决定/Task Index/Snapshot/Roadmap/相关合同；有活动 Issue 时读取 full body/comments，并确认任务与路线一致。
 
-聊天中的 prompt 只负责启动 DSH 去读取指定 GitHub Issue；聊天文字本身不得扩大 Issue 中 committed/published 的 authority。
+## 唯一无科学 Issue 的同步例外
 
-若 Issue、Task Index、`main` 或 prompt 之间出现 scope/identity mismatch，DSH 必须 fail closed。
+Owner 本轮已批准先同步三端再开工。按 `docs/governance/DLH_DSH_SYNC_ONLY_PROTOCOL_CURRENT.md` 做 SYNC_ONLY，可 fetch、读已发布文件、静态 hash、建立新 detached worktree；干净且可快进的本地 main 可仅快进到已发布 origin/main。该例外不允许生成新提交、写 scientific source/test/config、训练、HJB/KFE/GE、pytest 或下载数据/权重，不允许远端写操作。
 
-## 2. 每次 DSH task startup
+这是本地取得已发布提交，不是 DSH 集成自己的代码到 main。不存在活动科学 Issue 时，同步完就停止，不从旧 Issue 推导下一任务。
 
-每个任务开始必须：
+## 执行与验收
 
-1. `Set-Location D:\deep-learning-hank`；
-2. 确认当前目录、`.git`、remote 和 worktree 状态；
-3. `git fetch origin`；
-4. 记录 fresh `origin/main` SHA；
-5. 读取 fresh `origin/main` 上：
-   - `project_rules/PROJECT_RULE_INDEX_CURRENT.md`；
-   - 规则索引要求的全部 CURRENT rules；
-   - `tasks/TASK_INDEX_CURRENT.md`；
-6. 从 GitHub 读取 Task Index 指向的唯一 active Issue 的**最新 authoritative body/comments**；
-7. 确认 Issue number/title/status 与 Task Index 一致；
-8. 在任何 mutation 前检查 worktree dirty state 与 branch identity。
+每个科学 Issue 有专用分支和明确 allowed paths；只显式 stage，不用 `git add .`/`git add -A`。不覆盖旧产物，不改参考根目录，不提交私有 PDF/raw data/笔记/凭据。
 
-不得根据旧聊天记忆、旧本地文件或 Builder 自己保存的 task copy 推断 current authority。
+DSH 不得 self-accept、擅自 PR/merge/tag、关闭/重开/创建 successor Issue。完成后报 baseline、candidate、changed paths、预算/实际调用、检查证据、限制并 STOP。Reviewer fresh-read commit/diff/产物后才能验收。
 
-## 3. Builder 禁止事项
+科学 mismatch：暂停受影响科学任务。普通过期指针/路径合同：局部同步或 bounded repair，不升级小时级 scientific blocker。检查范围按测试成本规则，不默认 full suite。
 
-未经当前 GitHub Issue 明确授权，DSH 不得：
-
-- 创建、编辑、关闭、reopen successor Issue；
-- self-accept / mark Ready / mark scientific PASS；
-- merge 到 `main`；
-- 创建 PR（除非 Issue 明确授权）；
-- release/tag；
-- 删除历史 evidence；
-- 扩大 model mechanisms / calibration / data scope；
-- 运行 full-scale model；
-- 进入 Results prose；
-- 修改两个只读 legacy source roots；
-- 把本地私有 references、PDF、数据库、raw/private data、checkpoints、secrets 提交公共 GitHub。
-
-正确的 fail-closed `BLOCKED` 可以是有效 completion，但仍须 ChatGPT 独立验收。
-
-## 4. Branch / commit discipline
-
-除非 Issue 另有说明：
-
-- 一个 Issue 对应一个 dedicated bounded branch；
-- branch name 应含 task/issue identity；
-- `main` 不由 DSH 修改；
-- 禁止 `git add .` / `git add -A`；
-- 只显式 stage Issue allowlist path；
-- commit 前后报告 changed paths、status、ahead/behind 和 candidate SHA；
-- push 仅推 dedicated branch；
-- DSH completion 后 STOP，等待 ChatGPT fresh GitHub review。
-
-## 5. Completion report minimum
-
-DSH completion 必须报告：
-
-- terminal classification；
-- GitHub Issue number/title；
-- refreshed baseline `origin/main` SHA；
-- branch / candidate commit SHA；
-- exact changed paths；
-- files read / copied / written；
-- tests/checks and commands relevant to acceptance；
-- source-root readonly check；
-- forbidden-operation check；
-- known caveats / blockers；
-- recommended next gate（仅建议，不自行创建）。
-
-Builder 的 completion summary 不是验收证据。ChatGPT 必须从 fresh live GitHub 独立读取 Issue、candidate commit/diff/evidence 后，才可决定 ACCEPT/BLOCKED_ACCEPTED、merge、close Issue 或发布 successor Issue。
+Owner 路线锁优先于过期历史任务中“下一步”的指示；新 Issue 无权暗改锁定内容。
