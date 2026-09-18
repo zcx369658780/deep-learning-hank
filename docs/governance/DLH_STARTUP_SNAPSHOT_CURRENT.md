@@ -8,7 +8,7 @@
 本轮发布前 main：`9058be73fc4b4211c8ad49ea0989d4fdc224ed1d`。
 本文件所在文档提交是同步发布锚点；启动时记录实际 fresh main，不把发布前 SHA 当永久 HEAD。导出包外部 manifest 记录确切发布 SHA，避免文件自引用自己的 commit。
 
-Owner 已批准新路线。P0 三端同步已经完成并经 Reviewer fresh GitHub 核对：项目源已上传，DSH SYNC_ONLY 完成且科学/模型/训练/pytest 调用均为 0。Issue #74 / P1A 现为 **ACTIVE / OPERATIVE**；其 exact Builder branch 与 operative baseline 由 final activation comment 指定。学习训练尚未授权，经济耦合未授权.
+Owner 已批准新路线。P0 三端同步已完成。Issue #74 / P1A 已 **ACCEPTED / CLOSED / INTEGRATED** 于 `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`（Reviewer acceptance `5731836951`；integration `5731840451`）。P1A 只建立离线 W/P/F 核算接口与家庭依赖登记；学习训练尚未授权，经济耦合未授权.
 
 ## 最新科学事实（保留，非本轮重跑）
 
@@ -37,6 +37,6 @@ ONE MATLAB-faithful selected generator governs solve/validation；Dual-Q 禁止�
 
 ## 新主线与下一动作
 
-第一版离线学习给定外流比例后的目的地份额；外流比例和家庭总劳动不联合训练。沿用 origin×destination、行归一。当前下一步是执行已激活的 Issue #74 / P1A：家庭已有证据登记、离线 W/P/F 核算接口与非对称 tiny tests；不调用家庭、不训练。
+第一版离线学习给定外流比例后的目的地份额；外流比例和家庭总劳动不联合训练。沿用 origin×destination、行归一。P1A 已验收；下一步是 P1B 数据/标签口径、canonical sample schema 与 P2 离线实验合同设计，不训练、不调用家庭。
 
 路线与合同见 `README_START_HERE.md`。详细旧实验见 post-5VY 交接；本快照不重复全部历史。
