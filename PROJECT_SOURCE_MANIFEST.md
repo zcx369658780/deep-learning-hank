@@ -1,22 +1,28 @@
-# 项目源导出与替换清单
+# 项目源分发清单：仅上传一个入口
 
-路线：`DLH-WL-V1-20260918`。日期：2026-09-18。
-GitHub 是仓库事实来源，项目源是文档发布提交的镜像。包内外部 `SOURCE_EXPORT_MANIFEST.json` 记录实际发布 SHA、每个导出文件的 repository path、Git blob、SHA-256 和包路径；不要求本文写自身 commit SHA。
+分发模式：`THIN_INDEX_SINGLE_FILE`。更新：2026-09-18。
+科研路线仍为 `DLH-WL-V1-20260918`，原始发布提交为 `01daaf10c5854437870039a46435a075c664d9a3`。
+本次根据 Owner 关于文档数量与索引入口的要求，只精简分发方式；不改变科研路线、合同、哈希或执行授权。
 
-## 当前上传集合
+## 唯一必须上传的操作文档
 
-AGENTS、README_START_HERE、规则索引及所有必读规则、Owner dated decision、路线锁 manifest、主路线图、Task Index、Startup Snapshot、家庭合同、W^L 合同、DSH 同步协议/短入口、当前会话交接。文档按 GitHub 相同字节导出到 `UPLOAD_CURRENT/`，不编辑成第二套 authority。
+`DLH_PROJECT_SOURCE_ENTRY_CURRENT.md`（仓库根目录）。
 
-## 包目录
+项目源是轻量入口，不再是整套仓库文档镜像。完整主路线图、规则、Owner 决定、路线锁、Task Index、Snapshot、两份合同、DSH 协议、交接与历史证据仍留在 GitHub，按入口索引读取。
+本文件自身也无需另行上传。原 25 文件 `UPLOAD_CURRENT/` 清单与对应替换说明不再是当前上传要求；旧包可离线保留，不要求恢复已删除的操作附件。
 
-- `UPLOAD_CURRENT/`：当前权威镜像，按仓库相对路径存放；
-- `REFERENCE_ONLY/`：只读方法说明及可选 Owner 原始指南，非状态权威；
-- `REPLACEMENT_INSTRUCTIONS/`：旧文件→新文件替换说明、简短接续提示和发布核验记录。
+## 分发与核验
 
-原始指南不提交公共仓库，不从另一个仓库拉代码。论文/PDF/raw data/私有笔记不打进 GitHub 文档提交。
+单份 Markdown 按仓库发布版本逐字导出；可提供仅含该文件的 zip 作为下载备份，但项目源只需上传解压后的 Markdown，不上传两份。
+入口写明稳定仓库路径、原始路线锚点、读取顺序与保护摘要，不把写入时 SHA 当永久 HEAD。每次新会话先取得 live main，再按该 SHA 读取一致的文档版本。入口不是自动抓取服务，必须实际调用 GitHub 读取工具。
+上传确认只要求 Owner 确认该入口已保存到项目源；不检查 25 份附件是否齐全。生成文件、发布 GitHub、能在本会话看到文件均不等于项目源上传完成。
 
-## 旧上传处理
+## 清理与缺失
 
-替换旧 master-roadmap、多个 startup-snapshot、旧 task index、旧启动 prompt、旧 CURRENT 规则/交接及早期 bootstrap 压缩包。具体文件名在压缩包替换说明逐项列出。保留论文、文献、原始数据与唯一科学资料；旧操作文档可离线归档。
+项目源中的旧 CURRENT/旧 roadmap/旧启动快照/旧规则副本/旧 bootstrap 包可移除，不删除 GitHub 中的文件与 accepted/failed evidence。无法立即清理的旧副本仍为历史参考。
+论文、文献、原始数据与唯一科学资料保留；私有或受版权限制材料不移入公共 GitHub。已经缺失的原始材料不要求本轮补传，未来确需引用时再取得并读取，不能声称已恢复或已审阅。
+当前连一个文件都无法上传时，可粘贴入口中的最短恢复句继续读取 GitHub；DSH 可先做 local/GitHub 同步，项目源确认仍如实标为 PENDING。上传故障不重开 solver、不触发科学重跑，也不自动授权 P1/P2。
 
-历史实验与 dated handoff 在 GitHub 保留，通过新入口追溯，不删除 accepted/failed evidence。上传后由 Owner 确认，再让 DSH 同步；打包完成不等于用户上传完成或 DSH 已同步。
+## 不变项
+
+Owner 原始决定、主路线图全文及锁区块、锁 manifest、两份科学合同保持不变。本次不改科学源码、测试、配置、历史实验，不创建科学 Issue。DSH 同步条件见 `docs/governance/DLH_DSH_SYNC_ONLY_PROTOCOL_CURRENT.md`。
