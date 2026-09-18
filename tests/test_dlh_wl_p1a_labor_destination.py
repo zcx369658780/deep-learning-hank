@@ -6,6 +6,11 @@ Authority: Issue #74 ``DLH-WL-P1A``; final Reviewer activation comment
 ``DLH_WL_P1A_OFFLINE_ACCOUNTING_AND_HOUSEHOLD_REGISTRY_AUTHORIZED``.
 Operative baseline ``e046feccf9f98adad0d7db713eca427e0e7f1e36``.
 
+This file also carries the bounded remediation of Reviewer HOLD ``5731223867``:
+``conditional_choice_identified`` is TRUE only when at least one row has
+``m_i > 0``, ``ell_i > 0``, a valid conditional-share row and at least two
+structurally available foreign destinations (see the section-1b tests).
+
 Scope ceiling (binding): offline algebra only.  No household solver, no HJB, no
 KFE, no GE/outer fixed point, no MATLAB, no training, no data download, no
 repository-wide suite.  Expensive scientific/model calls = 0.
@@ -173,6 +178,103 @@ def test_orientation_and_scope_metadata_are_recorded():
     assert result.diagnostics["single_region_limit"] is False
     assert result.conditional_choice_identified is True
     assert result.units is None
+    # the 3-region fixture has >= 2 available foreign options in its active rows,
+    # so the corrected identification flag stays TRUE
+    assert result.rows_with_conditional_choice.tolist() == [True, True, False]
+    assert result.diagnostics["rows_with_conditional_choice"] == [0, 1]
+    assert result.diagnostics["rows_with_conditional_choice_count"] == 2
+
+
+# --------------------------------------------------------------------------
+# 1b. conditional_choice_identified semantics (Reviewer HOLD 5731223867)
+# --------------------------------------------------------------------------
+def test_conditional_choice_not_identified_when_only_active_row_has_zero_labor():
+    """>=3 regions, active row with ell_i = 0 and otherwise valid W -> False."""
+    result = m.build_labor_destination_accounting(
+        m=np.array([0.25, 0.0, 0.0]),
+        ell=np.array([0.0, 50.0, 40.0]),
+        W=np.array([[0.0, 0.6, 0.4], [0.5, 0.0, 0.5], [0.5, 0.5, 0.0]]),
+    )
+    assert result.region_count == 3
+    # the only m_i > 0 row carries no labor, so it supplies no identifiable target
+    assert result.active_row_mask.tolist() == [True, False, False]
+    assert result.rows_without_identifiable_target.tolist() == [True, True, True]
+    assert np.all(result.F[0] == 0.0)
+    assert result.conditional_choice_identified is False
+    assert result.rows_with_conditional_choice.tolist() == [False, False, False]
+    assert result.diagnostics["rows_with_conditional_choice"] == []
+    assert result.diagnostics["rows_with_conditional_choice_count"] == 0
+    # W/P/F accounting and conservation are untouched by the flag change
+    np.testing.assert_allclose(result.P[0], [0.75, 0.15, 0.1], rtol=0.0, atol=1e-15)
+    np.testing.assert_allclose(result.F.sum(axis=1), result.ell, rtol=0.0, atol=1e-15)
+
+
+def test_conditional_choice_not_identified_with_one_available_foreign_destination():
+    """>=3 regions, every active positive-labor row has exactly one available foreign
+    destination under support_mask -> False (degenerate choice)."""
+    result = m.build_labor_destination_accounting(
+        m=np.array([0.3, 0.0, 0.4]),
+        ell=np.array([100.0, 20.0, 30.0]),
+        W=np.array([[0.0, 1.0, 0.0], [0.5, 0.0, 0.5], [0.0, 1.0, 0.0]]),
+        support_mask=np.array(
+            [[False, True, False], [True, False, True], [False, True, False]]
+        ),
+    )
+    assert result.region_count == 3
+    # both active rows are supported by exactly ONE foreign destination
+    assert result.active_row_mask.tolist() == [True, False, True]
+    assert result.support_mask.sum(axis=1).tolist() == [1, 2, 1]
+    assert result.F[0].tolist() == [70.0, 30.0, 0.0]
+    assert result.F[2].tolist() == [0.0, 12.0, 18.0]
+    assert result.conditional_choice_identified is False
+    assert result.rows_with_conditional_choice.tolist() == [False, False, False]
+    assert result.diagnostics["rows_with_conditional_choice_count"] == 0
+    assert result.diagnostics["n_regions_available_per_origin_min"] == 1
+    # a row with only one option is not reported as having no identifiable target:
+    # it does carry labor abroad, it simply has no choice to identify
+    assert not bool(result.rows_without_identifiable_target[0])
+
+
+def test_conditional_choice_not_identified_in_large_economy_with_one_option():
+    """The old >= 3 regions shortcut must not matter: 4 regions can still be False."""
+    result = m.build_labor_destination_accounting(
+        m=np.array([0.3, 0.0, 0.0, 0.0]),
+        ell=np.array([100.0, 20.0, 30.0, 10.0]),
+        W=np.array(
+            [
+                [0.0, 1.0, 0.0, 0.0],
+                [0.25, 0.0, 0.25, 0.5],
+                [0.25, 0.25, 0.0, 0.5],
+                [0.25, 0.25, 0.5, 0.0],
+            ]
+        ),
+        support_mask=np.array(
+            [
+                [False, True, False, False],
+                [True, False, True, True],
+                [True, True, False, True],
+                [True, True, True, False],
+            ]
+        ),
+    )
+    assert result.region_count == 4
+    assert result.conditional_choice_identified is False
+    assert result.diagnostics["rows_with_conditional_choice_count"] == 0
+
+
+def test_conditional_choice_identified_with_two_available_foreign_destinations():
+    """>=3 regions, active positive-labor row with >= 2 available options -> True."""
+    result = m.build_labor_destination_accounting(
+        m=np.array([0.4, 0.0, 0.3]),
+        ell=np.array([100.0, 20.0, 30.0]),
+        W=np.array([[0.0, 0.6, 0.4], [0.4, 0.0, 0.6], [0.5, 0.5, 0.0]]),
+        support_mask=np.array(
+            [[False, True, True], [True, False, True], [True, True, False]]
+        ),
+    )
+    assert result.diagnostics["n_regions_available_per_origin_min"] >= 2
+    assert result.rows_with_conditional_choice.tolist() == [True, False, True]
+    assert result.conditional_choice_identified is True
 
 
 # --------------------------------------------------------------------------

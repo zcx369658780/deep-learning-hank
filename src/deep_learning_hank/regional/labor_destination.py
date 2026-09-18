@@ -35,7 +35,12 @@ Scope guards implemented here:
   *not* structural unavailability;
 - a single region is only the ``m = 0``, ``P = [[1]]`` accounting limit;
 - two regions are accounting-only for conditional-choice learning because the
-  foreign destination is unique there (reported via ``conditional_choice_identified``);
+  foreign destination is unique there;
+- ``conditional_choice_identified`` is TRUE only when at least one row has
+  ``m_i > 0``, ``ell_i > 0``, a valid conditional-share row and **at least two
+  structurally available foreign destinations** (Reviewer HOLD 5731223867):
+  neither a zero-labor active row nor a single-available-destination row may make
+  the flag TRUE just because the economy has three or more regions;
 - validation is fail-closed: invalid input raises before any array is built.
 
 This module is deliberately standalone offline algebra.  It must not import or
@@ -114,6 +119,7 @@ class LaborDestinationAccounting:
     valid_row_mask: np.ndarray
     rows_without_identifiable_target: np.ndarray
     rows_without_foreign_option: np.ndarray
+    rows_with_conditional_choice: np.ndarray
     conditional_choice_identified: bool
     diagnostics: dict[str, Any]
 
@@ -371,6 +377,9 @@ def build_labor_destination_accounting(
 
     rows_without_foreign_option = ~foreign_option_rows
     rows_without_identifiable_target = ~foreign_labor_rows
+    # a conditional destination choice is only identified for a row that carries
+    # labor abroad AND may actually choose among at least two foreign destinations
+    rows_with_conditional_choice = foreign_labor_rows & (available_counts >= 2)
 
     identity = {
         "contract_version": contract_version,
@@ -400,6 +409,8 @@ def build_labor_destination_accounting(
             rows_without_identifiable_target
         ).tolist(),
         "rows_without_foreign_option": np.flatnonzero(rows_without_foreign_option).tolist(),
+        "rows_with_conditional_choice": np.flatnonzero(rows_with_conditional_choice).tolist(),
+        "rows_with_conditional_choice_count": int(rows_with_conditional_choice.sum()),
         "single_region_limit": bool(region_count == 1),
         "two_region_accounting_only": bool(region_count == 2),
         "n_regions_with_positive_labor": int((ell_vec > 0.0).sum()),
@@ -417,9 +428,12 @@ def build_labor_destination_accounting(
             np.isclose(wage_bill_left, wage_bill_right, rtol=1e-12, atol=1e-12)
         )
 
-    # non-degenerate conditional destination learning needs >= 3 regions; training
-    # itself is NOT authorized by Issue #74, so this is a reported gate only.
-    conditional_choice_identified = bool(region_count >= 3 and np.any(valid_rows))
+    # non-degenerate conditional destination learning needs at least one row that
+    # carries labor abroad and can actually choose among >= 2 foreign destinations.
+    # Reviewer HOLD 5731223867: a zero-labor row or a single-available-destination
+    # row must not make this flag TRUE merely because the economy has >= 3 regions.
+    # Training itself is NOT authorized by Issue #74; this is a reported gate only.
+    conditional_choice_identified = bool(np.any(rows_with_conditional_choice))
 
     return LaborDestinationAccounting(
         contract_version=contract_version,
@@ -440,6 +454,7 @@ def build_labor_destination_accounting(
         valid_row_mask=valid_rows,
         rows_without_identifiable_target=rows_without_identifiable_target,
         rows_without_foreign_option=rows_without_foreign_option,
+        rows_with_conditional_choice=rows_with_conditional_choice,
         conditional_choice_identified=conditional_choice_identified,
         diagnostics=identity,
     )

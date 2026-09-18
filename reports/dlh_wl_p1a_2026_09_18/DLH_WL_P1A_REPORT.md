@@ -4,8 +4,12 @@ Issue: **#74 / `DLH-WL-P1A`** — OPEN / ACTIVE / OPERATIVE.
 Owner route: **`DLH-WL-V1-20260918`**.
 Authority marker: `DLH_WL_P1A_OFFLINE_ACCOUNTING_AND_HOUSEHOLD_REGISTRY_AUTHORIZED`.
 Final Reviewer activation comment: **`5730955781`** (2026-09-18T13:50:32Z).
+Reviewer HOLD remediated in this revision: **`5731223867`** (bounded
+identification-flag remediation; same Issue, same branch).
 Operative baseline (activation-named live `main`): **`e046feccf9f98adad0d7db713eca427e0e7f1e36`**.
 Dedicated Builder branch: **`dsh/issue-74-dlh-wl-p1a-offline-labor-destination-2026-09-18`**.
+Commits on that branch: builder completion `937072a42b90ed3a03a6095829efedb923e471e3`,
+then the bounded remediation commit carrying this revision.
 
 Reading this file is not an economic result. It records a bounded offline
 accounting interface plus a read-only evidence registry. **No model was trained,
@@ -46,14 +50,16 @@ successor Issue, no PR/merge/close, no self-acceptance.
 ## 2. Exact changed paths
 
 Exactly the four Issue-authorized paths; no CURRENT roadmap/rule/decision/contract
-was touched, and no historical scientific result was modified.
+was touched, and no historical scientific result was modified. The Reviewer HOLD
+`5731223867` remediation further modified three of those four paths (paths 1-3
+below) and left the read-only registry (path 4) untouched.
 
-| # | Path | Status | LOC |
-|---|---|---|---|
-| 1 | `src/deep_learning_hank/regional/labor_destination.py` | created | 445 |
-| 2 | `tests/test_dlh_wl_p1a_labor_destination.py` | created | 782 |
-| 3 | `reports/dlh_wl_p1a_2026_09_18/DLH_WL_P1A_REPORT.md` | created (this file) | 265 |
-| 4 | `reports/dlh_wl_p1a_2026_09_18/DLH_WL_P1A_HOUSEHOLD_DEPENDENCY_REGISTRY.md` | created | 182 |
+| # | Path | Status | LOC (cumulative) | Touched by HOLD remediation |
+|---|---|---|---|---|
+| 1 | `src/deep_learning_hank/regional/labor_destination.py` | created | 460 | yes |
+| 2 | `tests/test_dlh_wl_p1a_labor_destination.py` | created | 879 | yes |
+| 3 | `reports/dlh_wl_p1a_2026_09_18/DLH_WL_P1A_REPORT.md` | created (this file) | 332 | yes |
+| 4 | `reports/dlh_wl_p1a_2026_09_18/DLH_WL_P1A_HOUSEHOLD_DEPENDENCY_REGISTRY.md` | created | 182 | no (read-only) |
 
 `git status --porcelain` on the dedicated branch shows only these four entries
 (plus this report directory). No other tracked file differs from the operative
@@ -130,8 +136,17 @@ carries one deterministic prefix:
   limit; `m > 0` fails closed;
 - **two regions** are accounting-only for conditional-choice learning because the
   foreign destination is unique there — reported via
-  `conditional_choice_identified = False` (non-degenerate learning would need at
-  least three regions, and **training is not authorized here**);
+  `conditional_choice_identified = False`;
+- **`conditional_choice_identified` (corrected meaning, Reviewer HOLD
+  `5731223867`)**: TRUE only when **at least one row** simultaneously has
+  `m_i > 0`, `ell_i > 0`, a valid conditional-share row, and **at least two
+  structurally available foreign destinations**. A zero-labor active row or a
+  row whose support allows only one foreign destination can no longer make the
+  flag TRUE merely because the economy has three or more regions. The supporting
+  per-row mask `rows_with_conditional_choice` and the
+  `rows_with_conditional_choice_count` diagnostic are exposed for auditing. The
+  region count is no longer consulted by the flag. **Training remains not
+  authorized here**;
 - **standalone**: the module imports only `__future__`, `dataclasses`, `typing`
   and `numpy`, contains no dynamic import/eval/exec/compile/`open` call, and
   references no household/HJB/KFE/GE entry point.
@@ -146,8 +161,21 @@ Command actually used (focused file only, from the dedicated worktree):
 PYTHONPATH=<worktree>/src python -B -m pytest tests/test_dlh_wl_p1a_labor_destination.py -p no:cacheprovider -q
 ```
 
-Result: **43 passed** (deterministic; no random seed used, no fixture reuses a
-solver).
+Result: **47 passed** (deterministic; no random seed used, no fixture reuses a
+solver). The remediation commit of Reviewer HOLD `5731223867` added four
+identification tests (43 -> 47):
+
+| Remediation test | Required semantics | Result |
+|---|---|---|
+| `test_orientation_and_scope_metadata_are_recorded` (extended) | original asymmetric 3-region case stays TRUE and reports the asserting rows | TRUE, rows `[0, 1]` |
+| `test_conditional_choice_not_identified_when_only_active_row_has_zero_labor` | 3 regions, only active row has `ell_i = 0` with otherwise valid `W` | **False** |
+| `test_conditional_choice_not_identified_with_one_available_foreign_destination` | 3 regions, every active positive-labor row allowed exactly one foreign destination by `support_mask` | **False** |
+| `test_conditional_choice_not_identified_in_large_economy_with_one_option` | 4 regions (old region-count shortcut must not matter) | **False** |
+| `test_conditional_choice_identified_with_two_available_foreign_destinations` | 3 regions, active rows with >= 2 available options | TRUE |
+
+W/P/F accounting, row normalization, support-mask enforcement and
+`rows_without_identifiable_target` semantics are unchanged; only the
+identification flag and its audit mask/diagnostic were added.
 
 Coverage mapped onto the Issue-required list:
 
@@ -168,13 +196,30 @@ Coverage mapped onto the Issue-required list:
 | 12. structural support mask | `test_structural_support_mask_blocks_unavailable_destination`, `test_support_mask_rejects_mass_on_unavailable_destination`, `test_support_mask_diagonal_must_be_unavailable`, `test_support_mask_shape_and_encoding_fail_closed` |
 | 13. invalid / non-finite / negative / dimension mismatch | `test_dimension_mismatch_fails_closed`, `test_matrix_shape_mismatch_fails_closed`, `test_non_1d_input_fails_closed`, `test_m_out_of_range_fails_closed`, `test_negative_ell_fails_closed`, `test_negative_share_fails_closed`, `test_non_finite_input_fails_closed`, `test_illegal_diagonal_fails_closed`, `test_invalid_row_sum_fails_closed`, `test_zero_conditional_mass_on_required_row_fails_closed`, `test_unsupported_destination_without_mass_fails_closed`, `test_wage_vector_dimension_mismatch_fails_closed`, `test_wage_vector_non_finite_fails_closed`, `test_error_messages_carry_reason_prefix` |
 | 14. import/static guard, no household/HJB/KFE/GE execution | `test_module_imports_only_offline_safe_names`, `test_module_has_no_dynamic_import_or_file_access_calls`, `test_test_file_does_not_import_forbidden_scientific_modules`, `test_module_never_references_household_or_solver_entrypoints`, `test_subprocess_import_loads_no_household_hjb_kfe_or_ge_modules`, `test_allowlist_paths_and_untouched_scientific_modules` |
+| 15. `conditional_choice_identified` semantics (HOLD `5731223867`) | `test_conditional_choice_not_identified_when_only_active_row_has_zero_labor`, `test_conditional_choice_not_identified_with_one_available_foreign_destination`, `test_conditional_choice_not_identified_in_large_economy_with_one_option`, `test_conditional_choice_identified_with_two_available_foreign_destinations`, plus the extended `test_orientation_and_scope_metadata_are_recorded` (3-region case stays TRUE) |
 
 Additional static checks run in this Issue (no scientific execution):
 
-- `python -B -m py_compile` on both new Python files — exit 0;
+- `python -B -m py_compile` on both new Python files — exit 0 (re-run after the
+  HOLD remediation);
 - an AST dead-name scan of the new module — no unused module-level definition
   remains (`_column` was removed after this scan flagged it);
-- `git status --porcelain` scope check — only the four authorized paths.
+- `git status --porcelain` scope check — only the authorized paths.
+
+### Identification diagnostics on the original fixture (post-remediation)
+
+```
+active_row_mask              = [True, True, False]
+valid_row_mask               = [True, True, False]
+rows_with_conditional_choice = [True, True, False]   (>=2 available options each)
+rows_without_identifiable_target = [2]
+conditional_choice_identified = True
+```
+
+Degenerate counterparts return `False` with
+`rows_with_conditional_choice_count == 0`: an active `ell_i = 0` row, a
+single-available-destination support, and a four-region economy whose active row
+still has only one option.
 
 ### Orientation and conservation diagnostics (fixture values)
 
@@ -244,18 +289,59 @@ any `deep_learning_hank.two_asset` module nor `scipy`/`torch`/`tensorflow`/
   foreign destination at all"; a row whose given `W` row is an all-zero row while
   `m_i > 0` is refused earlier as `ROW_SUM` (malformed conditional matrix).
 - No empirical bilateral OD label set is claimed or used. Two-region cases are
-  accounting-only; non-degenerate conditional-choice learning would require at
-  least three regions and is not authorized here.
+  accounting-only; a non-degenerate conditional-choice claim requires at least one
+  row with positive labor and at least two structurally available foreign
+  destinations (`conditional_choice_identified`), and no such claim is made here
+  because training is not authorized in this Issue.
+- The identification flag is a **reported gate only**. It says nothing about
+  whether any label set exists, and it is not a data-availability claim.
 - No economic coupling, no HJB/KFE/GE consistency claim, and no policy or welfare
   interpretation is offered. Error accounting remains split: this report contains
   **no** HJB residual, KFE, or GE error statement because none was computed.
 - The household registry (`DLH_WL_P1A_HOUSEHOLD_DEPENDENCY_REGISTRY.md`) records
   only existing repository evidence; fields not supported by existing evidence
-  are marked `NOT_VERIFIED`. It adds no new solved-checkpoint claim.
+  are marked `NOT_VERIFIED`. It adds no new solved-checkpoint claim. It is
+  **read-only for this remediation** and was not modified.
 
 ---
 
-## 7. Terminal
+## 7. Remediation record (Reviewer HOLD `5731223867`)
+
+Scope: same Issue #74, same dedicated branch, **no successor Issue**. Only the
+three hold-authorized paths were modified:
+
+1. `src/deep_learning_hank/regional/labor_destination.py`
+2. `tests/test_dlh_wl_p1a_labor_destination.py`
+3. `reports/dlh_wl_p1a_2026_09_18/DLH_WL_P1A_REPORT.md` (this file)
+
+Defect repaired: the candidate had
+`conditional_choice_identified = (region_count >= 3 and any(valid_rows))`, which
+could report TRUE (a) when the only active row had `ell_i = 0` — a case the same
+interface correctly reports as having no identifiable target — and (b) when an
+active positive-labor row had only one structurally available foreign destination,
+i.e. a degenerate conditional choice inside an economy with three or more regions.
+
+Corrected semantics now implemented:
+
+`conditional_choice_identified = any(rows_with_conditional_choice)` where a row is
+in `rows_with_conditional_choice` iff `m_i > 0` **and** `ell_i > 0` **and** the
+conditional-share row is valid **and** the row has **>= 2 structurally available
+foreign destinations**. The region count is no longer part of the condition.
+
+Unchanged by this remediation: `W`/`P`/`F` accounting, row normalization rules,
+support-mask enforcement, `rows_without_identifiable_target` and
+`rows_without_foreign_option` semantics, all fail-closed error reasons, and the
+public accounting object's existing fields. The only additions are the per-row
+audit mask `rows_with_conditional_choice` and the
+`rows_with_conditional_choice_count` diagnostic, both inside the existing public
+result object.
+
+Focused result after remediation: **47 passed** (was 43). No unrelated cleanup and
+no route/contract/governance mutation was performed.
+
+---
+
+## 8. Terminal
 
 ```
 DLH_WL_P1A_OFFLINE_ACCOUNTING_INTERFACE_AND_HOUSEHOLD_REGISTRY__PASS
