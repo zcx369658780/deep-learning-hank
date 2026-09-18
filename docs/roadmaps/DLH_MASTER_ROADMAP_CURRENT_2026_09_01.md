@@ -79,9 +79,9 @@ P4/5 分别报告 ML、HJB、KFE/operator、GE/accounting 误差。资本 B/A �
 
 ## 7. 当前状态与下一交付
 
-已完成：Owner 路线确认。当前：P0 文档发布/导出；项目源人工上传与 DSH 同步未回报。科学 Issue NONE；本文件不预先占用 #74。
+已完成：Owner 路线确认、P0 GitHub 文档发布、项目源人工上传确认。当前：DSH SYNC_ONLY 尚未回报。Issue #74 / P1A 已发布为 STAGED / NOT OPERATIVE；在 Reviewer 核对同步回报并发布 activation 前不得执行。
 
-同步通过后的第一实质任务应限定于 P1：记录现有依赖、落地离线条件份额/流量接口和非对称 tiny tests，并事前设计 P2；不另起一轮家庭大审计。真实训练由后续明确 Issue 授权。
+同步通过后的第一实质任务已具体化为 Issue #74 / P1A：记录现有依赖、落地离线条件份额/流量接口和非对称 tiny tests；不另起一轮家庭大审计。真实训练由后续明确 Issue 授权。
 
 每个新任务注明 route ID、具体问题、预算、数据性质、allowed paths、产物与停止条件。Reviewer 可完善这些实施细节，不得改变锁定核心。
 
