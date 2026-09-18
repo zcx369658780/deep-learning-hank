@@ -9,7 +9,7 @@
 
 #73 已 completed；残差仍约 10.435，单步合法微降非 HJB 解，active constraints=0。没有第二步、trajectory、KFE/GE 授权。保留同一 Q，不能引入 Dual-Q。
 
-当前顺序：Issue #75 / P1B 已发布但 STAGED / NOT OPERATIVE → Reviewer final activation → DSH fresh-fetch 执行 P1B design → Reviewer 验收 → 再发布 P2 首次小型离线训练。P1A 已建立家庭依赖登记及离线 W/P/F 接口；P1B 不重新审计 HA、不训练。
+当前顺序：Issue #75 / P1B 已 ACTIVE / OPERATIVE → DSH fresh-fetch 并读取 final activation → 执行 P1B design → Reviewer 验收 → 再发布 P2 首次小型离线训练。P1A 已建立家庭依赖登记及离线 W/P/F 接口；P1B 不重新审计 HA、不训练。
 
 m 与家庭总劳动给定；W origin×destination、foreign 行归一；P 含 home；完整流量保留。两区只测核算，三区以上才有条件选择学习。合成/规则和现实标签分开；真实 OD 可用性尚未证明，不编造数据。
 
