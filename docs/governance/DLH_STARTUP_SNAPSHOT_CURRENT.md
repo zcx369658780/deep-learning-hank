@@ -8,7 +8,7 @@
 本轮发布前 main：`9058be73fc4b4211c8ad49ea0989d4fdc224ed1d`。
 本文件所在文档提交是同步发布锚点；启动时记录实际 fresh main，不把发布前 SHA 当永久 HEAD。导出包外部 manifest 记录确切发布 SHA，避免文件自引用自己的 commit。
 
-Owner 已批准新路线。P0 三端同步已完成。Issue #74 / P1A 已 **ACCEPTED / CLOSED / INTEGRATED** 于 `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`（Reviewer acceptance `5731836951`；integration `5731840451`）。P1A 只建立离线 W/P/F 核算接口与家庭依赖登记；学习训练尚未授权，经济耦合未授权.
+Owner 已批准新路线。P0 三端同步已完成。Issue #74 / P1A 已 **ACCEPTED / CLOSED / INTEGRATED** 于 `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`（Reviewer acceptance `5731836951`；integration `5731840451`）。P1A 只建立离线 W/P/F 核算接口与家庭依赖登记；学习训练尚未授权，经济耦合未授权. Issue #75 / P1B 已发布为 **STAGED / NOT OPERATIVE**，用于冻结数据/标签 schema 与 P2 首次离线实验合同；final activation 前不得执行。
 
 ## 最新科学事实（保留，非本轮重跑）
 
