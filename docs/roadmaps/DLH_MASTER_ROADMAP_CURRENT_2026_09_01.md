@@ -102,3 +102,6 @@ P2 method gate completed at Issue #79. The accepted synthetic result is delibera
 
 
 P3A completed at Issue #80 with Branch B. No direct annual bilateral OD flow target is verified, but bilateral transition/stock objects are documented strongly enough to justify a separately authorized bridge-design gate. P3B must compare and preregister bridge assumptions before any adapter or empirical fit, and must keep E3/source-schema, region-dictionary, m/ell, weighting and leakage gaps explicit.
+
+
+P3B completed with a preregisterable T-family bridge candidate. Before any empirical bridge execution, P3C must freeze numerical tolerances, root-search semantics, uniqueness/identification claim ceilings and source-verification requirements. In particular, finding one numerical stochastic root in 31 dimensions may not be treated as proof of uniqueness.
