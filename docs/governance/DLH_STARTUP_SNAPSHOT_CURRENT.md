@@ -54,4 +54,4 @@ Issue #76 is CLOSED with accepted terminal `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTY
 
 ## P2B clean replication staged — 2026-09-19
 
-Issue #77 has been published as **STAGED / NOT OPERATIVE**. It preserves the #75 frozen scientific design and reuses the #76 scientific module byte-for-byte. The replication requires an immutable PRE_RUN_FREEZE commit, exactly one science invocation, durable per-fit attempt logging, immutable raw results, and zero-fit render-only publication. No execution before Reviewer final activation.
+Issue #77 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific design and reuses the #76 scientific module byte-for-byte. The replication requires an immutable PRE_RUN_FREEZE commit, exactly one science invocation, durable per-fit attempt logging, immutable raw results, and zero-fit render-only publication. Exact operative baseline and branch are named by the Reviewer final activation.
