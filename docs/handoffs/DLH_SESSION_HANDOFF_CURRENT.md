@@ -20,3 +20,7 @@ m 与家庭总劳动给定；W origin×destination、foreign 行归一；P 含 h
 
 ## P2A staged
 Issue #76 is ACTIVE / OPERATIVE. DSH must fresh-fetch, read the final activation, create the exact dedicated branch from the activation baseline, implement only the P2 harness/focused tests/results paths, then execute the frozen 12-planned-fit synthetic experiment under the 1800s / <=13-attempt ceiling. No outcome-driven tuning.
+
+
+## P2A gate-fail accepted
+Issue #76 is complete as a protocol-gate-failed experiment. Do not reopen or rerun it. Observed S0/S1 metrics are audit evidence only. The next task must preserve the frozen #75 design and obtain a clean replication by separating the one authorized scientific execution from zero-fit artifact rendering.
