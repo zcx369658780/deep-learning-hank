@@ -72,3 +72,7 @@ Issue #82 is ACTIVE / OPERATIVE. It must freeze thresholds/search semantics and 
 
 ## Human/source verification gate active
 P3C is accepted. Do not start a Builder bridge/data task. The next scientific authority action is human/Owner review of H1–H7 against primary official evidence. DSH may later receive a bounded implementation Issue only after the required H items for a chosen source/wave are resolved and recorded by Owner/Reviewer authority.
+
+
+## Latent labor measurement amendment
+Owner approved a structural+measurement interpretation: keep distance/economic-gap mobility as latent backbone; treat census/employment/social-insurance/unit-employment data as noisy/partial anchors; do not hard-set latent W or ell equal to observed series. H1–H4 remain human verification. A parallel docs/config-only Builder task may formalize measurement equations, wedge dimensionality/regularization and the required STRUCTURAL_ONLY vs NAIVE_DATA_PROXY vs LATENT_MEASUREMENT_ADJUSTED comparison. No data fitting yet.
