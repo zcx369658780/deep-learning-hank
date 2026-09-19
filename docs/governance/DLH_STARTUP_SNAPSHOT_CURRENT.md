@@ -44,4 +44,4 @@ ONE MATLAB-faithful selected generator governs solve/validation；Dual-Q 禁止�
 
 ## P2 current gate — 2026-09-19
 
-P1B accepted/integrated at `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`. Issue #76 / P2A has been published as **STAGED / NOT OPERATIVE** for the first frozen method-only synthetic execution. No Builder execution before final activation. P2A may train only the frozen small neural prototype; it cannot alter the P1B contract/config or use real data/HJB/KFE/GE/MATLAB.
+P1B accepted/integrated at `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`. Issue #76 / P2A is now **ACTIVE / OPERATIVE** for the first frozen method-only synthetic execution; exact operative baseline and branch are named by the final activation comment. P2A may train only the frozen small neural prototype; it cannot alter the P1B contract/config or use real data/HJB/KFE/GE/MATLAB.
