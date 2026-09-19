@@ -4,12 +4,14 @@ Issue: **#75 / `DLH-WL-P1B`** — OPEN / ACTIVE / OPERATIVE (design / specificat
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
+Reviewer HOLD remediated by revision 2 of this deliverable: **`5738867875`**.
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
 Dedicated branch: `dsh/issue-75-dlh-wl-p1b-data-schema-p2-contract-2026-09-18`.
 
 This report records a bounded **design** deliverable. No model was trained, no data
 was downloaded, scraped or purchased, no solver was called, and no empirical
-label set is claimed.
+label set is claimed. Section 9 records the bounded remediation of the Reviewer
+HOLD and supersedes the affected numbers in sections 3-5.
 
 ---
 
@@ -62,9 +64,16 @@ a row with `m_i = 0` or `ell_i = 0` has no identifiable conditional target and m
 not receive a fabricated uniform label; evidence level is a per-row property and
 may not be silently promoted.
 
-`label_is_direct_target` is a frozen predicate: `true` iff
+`label_is_direct_target` is a frozen **empirical-directness** predicate: `true` iff
 `label_semantics == TRUE_ANNUAL_OD_FLOW` **and** `time_semantics == CALENDAR_YEAR`
 **and** both origin and destination are observed for the same move.
+`target_available` is a **separate usable-target** flag: `true` iff a usable target
+exists for the declared purpose. A `SYNTHETIC` row is therefore
+`label_is_direct_target = false` **and** `target_available = true`; bridged
+stock/transition/proxy classes can only reach `target_available = true` after an
+explicit dated bridge record. The evidence-level enum is frozen to
+`E0 | E1 | E2 | E3 | NOT_APPLICABLE_NON_EMPIRICAL`, and synthetic/rule-generated
+rows are never placed on the empirical ladder.
 
 The inherited evidence status is preserved verbatim: per
 `docs/data/DLH_1A_CHINA_INTERPROVINCIAL_LABOR_FLOW_DATA_FEASIBILITY_2026_08_19.md`
@@ -102,84 +111,98 @@ no identified choice below two available destinations, offline-only imports).
 
 **Method-only, synthetic, not executed in this Issue.** Frozen:
 
-- universe: `R = 5` regions, `T = 4` periods, 20 allocation blocks, 18 evaluable
-  foreign share cells per block (`72` in total), support counts `[4, 4, 4, 3, 3]`
-  with blocked pairs `(R03,R02)` and `(R04,R02)` marked `STRUCTURAL_ZERO`;
+- universe: `R = 5` regions, `T = 4` periods, 20 allocation blocks, **18 evaluable
+  share cells per time slice** across all origins (`18 × 4 = 72` in total; each
+  block has 3 or 4 allowed cells), support counts `[4, 4, 4, 3, 3]` with blocked
+  pairs `(R03,R02)` and `(R04,R02)` marked `STRUCTURAL_ZERO`, and
+  `support_mask_ii = false` always because home retention is carried by
+  `P_ii = 1 - m_i` rather than by the W support mask;
 - deterministic inputs `DIST`, `GDP`, `WAGE`, `URB`, `W_IJ`, `ELL`, `m`,
-  `ACCESS` with declared ranges `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]`;
-- identical frozen feature list of five pair features, four node features, one time
-  feature and one static feature, all available at prediction time, no label or
-  future-information leakage, `m`/`ell` never used as features;
-- **S0** (parametric control): `sigma*(beta_d*GDP_j - beta_o*GDP_i - gamma_dist*DIST)`
-  masked-softmax shares with `sigma = 1.0`, `beta_d = 0.30`, `beta_o = 0.20`,
-  `gamma_dist = 0.60`, deterministic (no noise);
-- **S1** (bounded nonlinear): the same linear core plus exactly two pre-registered
-  nonlinear interactions, `+0.05*X2*U` and `+0.15*X3*U`, with
-  `X2 = zscore(log1p(DIST))^2` and `X3 = max(0, DIST - 1)*log(GDP_j)`, both shown
-  **non-nestable** relative to the S0 linear span even with simple feature
-  engineering;
+  `ACCESS` with declared ranges `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]`; the wage
+  process is deliberately **not** proportional to GDP so the declared parametric
+  design has full column rank (6/6);
+- identical frozen feature list of six pair features taken from the declared
+  parametric vocabulary, four node features, one time feature and one static
+  feature, all available at prediction time, no label or future-information
+  leakage, `m`/`ell` never used as features;
+- **S0** (parametric control): an exact linear combination of the declared
+  parametric vocabulary — `1.50*log_gdp_dest − 0.80*log_gdp_origin +
+  0.60*log_wage_gap − 1.20*log_adj_distance + 0.30*adjacency −
+  0.40*log_accessibility_dest` — masked-softmax shares, deterministic (no noise),
+  **nested by construction** and verified statically at numerical precision
+  (residuals `2.2e-15` / `1.6e-14` / `1.1e-15`);
+- **S1** (bounded nonlinear): the same corrected S0 core plus exactly two
+  pre-registered within-block-centred interactions, `+0.05*X2` and `+0.15*X3`,
+  with `X2 = (centred log1p(DIST))^2` and `X3 = max(0, DIST − 1)*centred log(GDP_j)`,
+  both shown **non-nestable against that same actual design space** (residuals
+  `0.0057` for S1, `0.0907` for `X2`, `0.0315` for `X3`);
 - exactly **three** baseline families: support-normalized uniform fixed baseline;
-  gravity multinomial logit (12 free parameters, weighted MLE); small neural
+  gravity multinomial logit (13 free parameters = 6 declared features + 2 extras +
+  5 per-origin destination intercepts, weighted MLE); small neural
   pair-scorer with `2` hidden layers of widths `16` and `8` (both `<= 32`) followed
   by masked row normalization. No GNN/attention/transformer/recurrent/embedding/
   end-to-end HANK component;
-- single frozen fold (`DLH_WL_P2_SPLIT_V1`): `TRAIN = t∈{1,2,3} × {R00,R01,R02}`
+- single frozen fold (`DLH_WL_P2_SPLIT_V1`) with an explicit excluded/reference
+  state so all 20 blocks are accounted for: `TRAIN = t∈{1,2,3} × {R00,R01,R02}`
   (9 blocks), `VALIDATION = t=4 × {R00,R01,R02}` (3 blocks),
-  `TEST = t=4 × {R03,R04}` (2 blocks, region-blocked). The test split shares
-  neither time nor regions with training; preprocessing statistics are fitted on
-  `TRAIN` only; test is used once after the final checkpoint;
+  `TEST = t=4 × {R03,R04}` (2 blocks, region-blocked), and
+  `EXCLUDED_REFERENCE_ONLY = t∈{1,2,3} × {R03,R04}` (6 blocks) which may be
+  generated only for deterministic reference/arithmetic checks and are never used
+  for fitting, early stopping or final metrics. Counts satisfy `9+3+2+6 = 20`. The
+  test split shares neither time nor regions with training; preprocessing
+  statistics are fitted on `TRAIN` only; test is used once after the final
+  checkpoint; P2 reports the excluded-block count explicitly (expected `6`);
 - training protocol: weighted cross entropy, Adam `lr = 0.01`, full batch,
   `max_steps = 1500`, `eval_every = 50`, `early_stop_patience = 200`,
-  `min_delta = 1e-4`, `NEURAL_SEEDS = [0, 1, 2]`, deterministic algorithms on, one
-  deterministic identical-seed repeat required, no hyper-parameter search and no
-  architecture change after observing outcomes;
+  `min_delta = 1e-4`, `NEURAL_SEEDS = [0, 1, 2]`, deterministic algorithms on,
+  determinism verification on four configurations only (both parametric fits and
+  the neural seed-0 fits), no hyper-parameter or seed search, and no architecture
+  change after observing outcomes;
 - pre-registered metrics: weighted cross entropy, mean absolute share error, row
   normalization violation, negativity and support violation counts, determinism
-  deviation and runtime (primary), plus top-1 destination accuracy, mean per-block
-  KL and the S0/S1 cross-entropy delta (secondary);
+  deviation, runtime and excluded-block count (primary), plus top-1 destination
+  accuracy, mean per-block KL and the S0/S1 cross-entropy delta (secondary);
 - acceptance philosophy: P2 PASS means the bounded experiment executed
   reproducibly and the comparisons are interpretable. **There is no rule that the
   neural model must beat the parametric baseline**, and a correctly reported
   negative result is acceptable;
-- cost ceiling: `1800 s` (30 minutes) wall-clock across the whole run, at most `8`
-  trained fits (2 parametric MLE + 6 neural, i.e. 3 seeds × 2 regimes), no
-  hyper-parameter search, at most `1` deterministic engineering retry, and budget
-  exhaustion stops the experiment without auto-creating a successor;
+- cost ceiling: `8` primary fit configurations, `12` planned fit executions
+  (8 primary + 2 parametric repeats + 2 neural seed-0 repeats), an absolute attempt
+  ceiling of `13` after at most one engineering-only retry, all inside a single
+  `1800 s` (30 minute) wall-clock ceiling, with `0` search runs and no automatic
+  successor on budget exhaustion;
 - P2/P3 boundary: P2 carries no empirical content and cannot be cited about Chinese
   interprovincial flows or about the existence of any bilateral OD label set; the
   `UNRESOLVED` real-label status does not block P2 because P2 uses no real labels.
 
 ## 4. Machine-readable twin
 
-`configs/dlh_wl_p2_offline_prototype.toml` mirrors all frozen choices in 16
-sections (`authority`, `scope`, `universe`, `inputs`, `support`, `features`,
-`regime_s0`, `regime_s1`, `non_nestability_check`, `baselines`,
+`configs/dlh_wl_p2_offline_prototype.toml` (revision 2) mirrors all frozen choices
+in 17 sections (`authority`, `scope`, `universe`, `inputs`, `support`, `features`,
+`regime_s0`, `regime_s1`, `design_space_checks`, `baselines`,
 `architecture_neural`, `train_protocol`, `split`, `metrics`, `budget`,
-`checks_this_issue`) and carries `executed_in_this_issue = false`.
+`label_semantics_policy`, `checks_this_issue`) and carries
+`executed_in_this_issue = false`.
 The contract document is the normative text; the TOML is the executable form.
 
 ## 5. Static checks performed (no training, no test-suite execution)
 
-| Check | Result |
-|---|---|
-| TOML parse (`tomllib`) | **parses**, 16 sections, section set exactly as declared |
-| internal arithmetic: `m`/`ell` ranges re-derived from the frozen formulas | `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]` — match the declarations |
-| accessibility reference recomputed | `ACCESS[time_id 1][R00] = 23.376667` |
-| support counts recomputed from the blocked-pair rule | `[4, 4, 4, 3, 3]`, minimum `3 ≥ 2` |
-| S0/S1 reference shares recomputed from the frozen formulas, masked softmax, blocked pairs excluded | reproduced to `< 5e-7`; every reference block sums to `1.000000000000` |
-| block accounting | `18` evaluable cells per block `× 4` periods `= 72` |
-| budget accounting | `2` parametric `+ 6` neural `= 8 = max_training_runs`; `6 = 3 seeds × 2 regimes`; wall clock `1800 s`; `0` search runs |
-| split accounting | train `9` + validation `3` + test `2` blocks; test disjoint in time **and** region from train |
-| architecture ceiling | 2 hidden layers, widths `[16, 8]`, max `16 ≤ 32`, no unauthorized family enabled |
-| cross-document consistency | route id, baseline SHA, activation id, authority marker, support counts, and all reference-share values identical across the three deliverables |
-| prohibition scan | design documents make no test-execution claim and no undeclared training claim |
-| **total** | **99 static checks, 0 failures** (`_tmp_consistency_check.py`, run once, deleted before commit) |
+Superseded table: the authoritative, post-remediation results are in section 9.
+The pre-remediation revision reported:
 
-Two authoring defects were caught by these checks and fixed **before** commit:
-an inconsistent `D_MEAN` constant (`2.0` → `2.5`), and reference share vectors that
-had been generated without applying the blocked-pair support rule (`R04` correctly
-has only 3 allowed foreign destinations, so its reference vector has 3 entries).
-Neither fix changed a scientific choice; both removed internal inconsistency.
+| Check | Result (revision 1) |
+|---|---|
+| TOML parse (`tomllib`) | parsed, 16 sections |
+| internal arithmetic: `m`/`ell` ranges re-derived | `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]` |
+| support counts recomputed from the blocked-pair rule | `[4, 4, 4, 3, 3]` |
+| S0/S1 reference shares recomputed | reproduced, each block summing to `1.000000000000` |
+| total | 99 static checks, 0 failures |
+
+Two authoring defects were caught by these checks and fixed **before** commit in
+revision 1: an inconsistent `D_MEAN` constant (`2.0` → `2.5`), and reference share
+vectors generated without applying the blocked-pair support rule (`R04` correctly
+has only 3 allowed foreign destinations). Revision 2 additionally found and fixed
+the seven inconsistencies listed in section 9.
 
 ## 6. Zero-call counts
 
@@ -210,11 +233,14 @@ was imported; no household, HJB, KFE or GE code was touched or triggered.
 - the region dictionary is declared as
   `DLH_WL_REGION_DICT_V1_2026_09_18`; the concrete dictionary is a later
   deliverable and is not created here;
-- conditional shares are time-invariant by construction in S0 and nearly so in S1
-  (uniform cross-region GDP growth); time variation enters only through `m` and
-  `ell`. This is deliberate for an interpretable control, not a defect;
-- the synthetic control is deliberately small (20 blocks / 72 evaluable share
-  cells); it is a method-validation device and carries no economic content;
+- conditional shares carry only **small deterministic time variation** (S0 `~2.4e-4`,
+  S1 `~2.6e-4` absolute between `time_id 1` and `time_id 4`) because the wage process
+  grows differently from GDP; neither regime is exactly time-invariant, and both
+  `time_id 1` and `time_id 4` reference vectors are frozen in the config.
+  Time variation in the *accounting* still enters mainly through `m` and `ell`;
+- the synthetic control is deliberately small (20 blocks, 18 evaluable share cells
+  per time slice / 72 total, 8 blocks usable for fitting); it is a method-validation
+  device and carries no economic content;
 - inherited repository test-contract debt from Issue #73 is untouched, and no
   repository-wide green is claimed (no suite was run here).
 
@@ -226,3 +252,68 @@ DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY
 
 One terminal only. No PR, merge, close, successor Issue or self-acceptance was
 performed. Independent Reviewer verification is required.
+
+---
+
+## 9. Remediation record (Reviewer HOLD `5738867875`)
+
+Scope: same Issue #75, same dedicated branch, no successor Issue. Only the original
+four allowlist paths were modified. All seven HOLD items were repaired **before
+any execution** — P2 has never run, so this is pre-execution design correction, not
+outcome-driven tuning.
+
+| HOLD item | Repair |
+|---|---|
+| **A. synthetic target availability contradictory** | `label_is_direct_target` is now purely the **empirical-directness** flag (`TRUE_ANNUAL_OD_FLOW` + `CALENDAR_YEAR` + both endpoints observed); `target_available` is a separate **usable-target** flag that `SYNTHETIC`/`RULE_GENERATED` rows may set `true` while remaining non-empirical; bridged classes need a dated bridge record; numerator/denominator are required by semantic applicability (`derived from raw counts`) rather than by the old blanket rule; the evidence-level enum is frozen to `E0 \| E1 \| E2 \| E3 \| NOT_APPLICABLE_NON_EMPIRICAL` with no promotion; the canonical example now uses the frozen S0 reference share `0.477725159` with `label_is_direct_target=false`, `target_available=true` |
+| **B. support diagonal** | frozen `conditional_support_diagonal_always_false = true` / `support_mask_ii = false` for the `W^L` object, with an explicit statement that home retention is represented only by `P_ii = 1 - m_i`; schema and contract both updated |
+| **C. split not exhaustive** | added the stable state `EXCLUDED_REFERENCE_ONLY` for the six blocks `t∈{1,2,3} × {R03,R04}`; counts `9+3+2+6 = 20`; those blocks may be generated only for deterministic reference/arithmetic checks and are never used for fitting, early stopping or final metrics; `excluded_block_count` added to the primary metrics with expected value `6`; the six blocks were **not** moved into `TRAIN` |
+| **D. cell counting wording** | corrected everywhere: **18 evaluable share cells per time slice** across all five origins, `18 × 4 = 72` total, each block having 3 or 4 allowed cells; TOML names are now `evaluable_share_cells_per_time = 18`, `evaluable_share_cells_total = 72`, `foreign_cells_per_block_nominal = 4` and `foreign_cells_per_block_actual = [4, 4, 4, 3, 3]` |
+| **E. S1 invariance contradiction** | both regimes now declare `conditional_shares_time_invariant = false` with `SMALL_DETERMINISTIC` variation, and both `time_id 1` and `time_id 4` reference vectors are frozen in the TOML and quoted in the normative text |
+| **F. repeat vs budget arithmetic** | frozen accounting: **8 primary configurations** (2 parametric + 6 neural = 3 seeds × 2 regimes) → **12 planned executions** (+2 parametric repeats +2 neural seed-0 repeats) → **13 absolute attempts** (+ at most 1 engineering retry) inside **<= 1800 s**; determinism gating covers only the 4 verification configurations; seeds 1 and 2 are sensitivity replications, not duplicate determinism checks; no seed or hyper-parameter search |
+| **G. S0 nesting claim** | S0 is now an **exact linear combination of the declared parametric baseline vocabulary** (`log_gdp_dest`, `log_gdp_origin`, `log_wage_gap`, `log_adj_distance`, `adjacency`, `log_accessibility_dest`) with no raw levels; representability is verified against the actual design (6 features + per-origin destination intercepts, block-additive under masked softmax) at numerical precision; the wage process was made independent of GDP to restore full design rank (6/6); S1 is the corrected S0 core plus the two pre-registered within-block-centred interactions, and non-nestability is checked against that **same** design space |
+
+### 9.1 Post-remediation static checks
+
+```
+tomllib parse of configs/dlh_wl_p2_offline_prototype.toml : PASS (17 sections)
+remediation static/arithmetic/cross-document checker      : 120 checks, 0 failures
+```
+
+Included, as required by the HOLD: TOML parses; every universe block has exactly
+one split state and counts sum to `20`; the canonical synthetic example is
+internally consistent and supplies a usable non-empirical target; the support
+diagonal is `false` for conditional `W`; per-time and total cell counts are
+`18`/`72`; S0 representability passes at numerical precision against the actual
+parametric design; S1 non-nestability is measured against that same design space
+plus block-additive constants; S1/S0 `t1`/`t4` machine-readable references agree
+with the normative text and are not marked invariant; run-budget arithmetic is
+`8 / 12 / <=13 / <=1800 s`; and the cross-document consistency check was updated
+and rerun.
+
+### 9.2 Regenerated reference values (revision 2)
+
+```
+S0  R00 t1 [0.477725159, 0.221843778, 0.164194930, 0.136236133]   R04 t1 [0.152928167, 0.196744187, 0.650327646]
+    R00 t4 [0.477966319, 0.221836852, 0.164104853, 0.136091976]   R04 t4 [0.153106303, 0.196861942, 0.650031755]
+S1  R00 t1 [0.479223272, 0.219532182, 0.163400470, 0.137844076]   R04 t1 [0.150941617, 0.194939240, 0.654119143]
+    R00 t4 [0.479478444, 0.219535648, 0.163308523, 0.137677385]   R04 t4 [0.151139135, 0.195055970, 0.653804895]
+design rank 6/6 | S0 residual <= 1.6e-14 | S1 residual 0.0056595644561093505
+X2 residual 0.0907191779 | X3 residual 0.0314502493 | precision floor 1e-12
+```
+
+### 9.3 Zero-call counts for this remediation
+
+```
+neural training runs              = 0
+data download / scrape / purchase = 0
+HJB / KFE / GE / MATLAB           = 0
+test-suite executions             = 0 (none, any scope)
+environment / package changes     = 0
+expensive scientific/model calls  = 0
+```
+
+Only document/config authoring, `tomllib` parsing, plain-Python arithmetic and
+linear-algebra checks (stdlib + numpy on frozen synthetic constants), and `git`
+metadata commands were executed. No scientific module, household code, solver or
+network access was used.
+

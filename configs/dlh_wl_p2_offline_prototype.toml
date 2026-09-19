@@ -1,17 +1,19 @@
 # DLH-WL-P2 — first offline prototype config (method-only synthetic controls).
 #
 # PRODUCED BY Issue #75 / DLH-WL-P1B (DESIGN ONLY). NOT EXECUTED BY P1B.
+# Revision 2 (Reviewer HOLD 5738867875 remediation).
+#
 # Owner route: DLH-WL-V1-20260918. Authority marker:
 # DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED.
-# Reviewer activation comment: 5731890746.
+# Activation comment: 5731890746. Remediation authority: HOLD 5738867875.
 # Operative baseline: 4b4dc8c39d6a18b8928407308248f4020c10602c.
 #
-# This config is the machine-readable twin of
+# Machine-readable twin of
 # docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md and
 # docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md.
-# Frozen in advance: no value here may be changed after observing S0/S1 outcomes.
-# No hyper-parameter search, no architecture change, no data download, no training
-# in Issue #75.
+# Every value is frozen in advance; no value may change after observing S0/S1
+# outcomes. No hyper-parameter search, no seed search, no data download, and no
+# training in Issue #75.
 
 [authority]
 issue = 75
@@ -19,8 +21,10 @@ task_id = "DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT"
 authority_marker = "DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED"
 owner_route = "DLH-WL-V1-20260918"
 activation_comment = 5731890746
+remediation_hold_comment = 5738867875
 operative_baseline = "4b4dc8c39d6a18b8928407308248f4020c10602c"
 design_only_in_this_issue = true
+config_revision = 2
 route_lock_verified_static = true
 route_lock_block_sha256 = "4d2ef5c125bfbf0bbb59bbb416734485ad3df6b4c4b50b17c760d4718b555ce8"
 owner_decision_sha256 = "4b87eab29d46e8e53d5da77a7c6210cc9dbaee5b12d852379528d36c25ebd38c"
@@ -50,20 +54,26 @@ time_count = 4
 time_ids = [1, 2, 3, 4]
 region_dictionary_version = "DLH_WL_REGION_DICT_V1_2026_09_18"
 allocation_blocks = 20
-foreign_cells_per_block = 4
-evaluable_share_cells = 18
-uniform_share_scale = 0.25
+foreign_cells_per_block_nominal = 4
+foreign_cells_per_block_actual = [4, 4, 4, 3, 3]
+evaluable_share_cells_per_time = 18
+evaluable_share_cells_total = 72
+uniform_share_scale_nominal = 0.25
 index_convention = "origin_x_destination"
+cell_count_rule = "18 allowed foreign cells per TIME SLICE across all five origins; 18 x 4 time slices = 72"
 
 [inputs]
 gdp_intercept = 10.0
 gdp_region_step = 0.2
 gdp_time_step = 0.05
-wage_multiplier = 0.90
+wage_intercept = 9.0
+wage_region_step = 0.10
+wage_time_step = 0.08
+wage_not_proportional_to_gdp = true
 urbanization_base = 0.55
 urbanization_region_step = 0.05
 urbanization_time_step = 0.01
-w_ij_vector = [0.80, 0.50, 0.30, 0.10, 0.05]
+w_ij_by_destination = [0.80, 0.50, 0.30, 0.10, 0.05]
 ell_base_vector = [100.0, 80.0, 120.0, 60.0, 90.0]
 ell_time_growth = 0.02
 m_base_vector = [0.10, 0.12, 0.08, 0.14, 0.09]
@@ -73,13 +83,14 @@ distance_definition = "abs(i-j)"
 accessibility_definition = "sum_k gdp_t_k / (1 + dist_i_k)"
 declared_m_range = [0.07, 0.17]
 declared_ell_range = [60.0, 127.2]
-reference_accessibility_t1_r00 = 23.376667
 
 [support]
 blocked_pairs = [[3, 2], [4, 2]]
 blocked_cell_zero_kind = "STRUCTURAL_ZERO"
 blocked_cell_reason = "SYNTHETIC_PAIR_UNAVAILABLE"
 own_region_available = false
+conditional_support_diagonal_always_false = true
+home_retention_representation = "P_ii_equals_one_minus_m_i__NOT_the_W_support_mask"
 available_foreign_counts = [4, 4, 4, 3, 3]
 min_available_foreign_destinations_required = 2
 all_blocks_valid_rows = true
@@ -87,11 +98,22 @@ all_blocks_identifiable_targets = true
 resulting_conditional_choice_identified = true
 
 [features]
-pair_features = [
-  "log_distance",
-  "adjacency",
-  "log_gdp_pc_gap",
+parametric_baseline_vocabulary = [
+  "log_gdp_dest",
+  "log_gdp_origin",
   "log_wage_gap",
+  "log_adj_distance",
+  "adjacency",
+  "log_accessibility_dest",
+  "w_ij",
+  "per_origin_destination_intercept",
+]
+pair_features = [
+  "log_gdp_dest",
+  "log_gdp_origin",
+  "log_wage_gap",
+  "log_adj_distance",
+  "adjacency",
   "log_accessibility_dest",
 ]
 node_features = ["log_gdp_pc", "log_wage", "log_accessibility", "urbanization"]
@@ -99,9 +121,14 @@ time_features = ["t_normalized"]
 static_features = ["w_ij"]
 pair_feature_order_frozen = true
 node_feature_order_frozen = true
-log1p_used_for_distance = true
 zscore_fit_on = "TRAIN_ONLY"
-zscored_features = ["log_distance", "log_gdp_pc_gap", "log_wage_gap", "log_accessibility_dest"]
+zscored_features = [
+  "log_gdp_dest",
+  "log_gdp_origin",
+  "log_wage_gap",
+  "log_adj_distance",
+  "log_accessibility_dest",
+]
 raw_features = ["adjacency", "t_normalized", "w_ij"]
 feature_availability = "ALL_FEATURES_AVAILABLE_AT_PREDICTION_TIME"
 leakage_flags = []
@@ -109,75 +136,76 @@ m_or_ell_as_features = false
 
 [regime_s0]
 id = "S0_PARAMETRIC_CONTROL"
-description = "gravity/logit linear score, correctly specified for the parametric baseline"
-score_form = "sigma * (beta_d*gdp_t_j - beta_o*gdp_t_i - gamma_dist*dist_ij)"
-sigma = 1.0
-beta_d = 0.30
-beta_o = 0.20
-gamma_dist = 0.60
-beta_sq = 0.0
-beta_relu = 0.0
+description = "exact linear combination of the declared parametric baseline vocabulary; nested by construction"
+score_form = "sum over the six declared pair features of s0_coefficients, then masked softmax over allowed foreign destinations"
+s0_coefficients = { log_gdp_dest = 1.50, log_gdp_origin = -0.80, log_wage_gap = 0.60, log_adj_distance = -1.20, adjacency = 0.30, log_accessibility_dest = -0.40 }
+s0_coefficients_support = "EXACT_SUBSET_OF_PARAMETRIC_BASELINE_VOCABULARY"
+s0_uses_raw_gdp_levels = false
+s0_uses_non_vocabulary_transform = false
 noise_sigma = 0.0
 deterministic = true
-reference_shares_r00_t1 = [0.471644168, 0.274849815, 0.160168249, 0.093337767]
-reference_shares_r04_t1 = [0.098255616, 0.190104212, 0.711640172]
-reference_shares_r04_allowed_destinations = [0, 1, 3]
+conditional_shares_time_invariant = false
+conditional_shares_time_variation = "SMALL_DETERMINISTIC"
+reference_shares_r00_t1 = [0.477725159, 0.221843778, 0.164194930, 0.136236133]
+reference_shares_r00_t4 = [0.477966319, 0.221836852, 0.164104853, 0.136091976]
+reference_shares_r00_destinations = [1, 2, 3, 4]
+reference_shares_r04_t1 = [0.152928167, 0.196744187, 0.650327646]
+reference_shares_r04_t4 = [0.153106303, 0.196861942, 0.650031755]
+reference_shares_r04_destinations = [0, 1, 3]
 reference_share_sums = 1.000000000000
-conditional_shares_time_invariant = true
-conditional_shares_invariance_reason = "UNIFORM_GDP_CENTRE_SHIFT_ACROSS_REGIONS"
 
 [regime_s1]
 id = "S1_BOUNDED_NONLINEAR"
-description = "same linear core plus two pre-registered nonlinear interactions"
-sigma = 1.0
-beta_d = 0.30
-beta_o = 0.20
-gamma_dist = 0.60
+description = "corrected S0 core plus exactly two pre-registered nonlinear interactions of the same declared features"
+s1_core = "IDENTICAL_TO_REGIME_S0"
 beta_sq = 0.05
 beta_relu = 0.15
 d_star = 1.0
-interaction_definition = "(dist_ij / d_mean_i) * (gdp_t_j - mean_k gdp_t_k)"
-x2_definition = "zscore(log1p(dist_ij))^2 over ordered i!=j pairs"
-x3_definition = "max(0, dist_ij - d_star) * log(gdp_t_j)"
-d_mean_i = 2.5
+x2_definition = "(log1p(dist_ij) - block_mean_k log1p(dist_ik))^2 over allowed foreign k"
+x3_definition = "max(0, dist_ij - d_star) * (log_gdp_dest_ij - block_mean_k log_gdp_dest_ik)"
+s1_extra_terms = "beta_sq * X2 + beta_relu * X3 (no other change)"
 noise_sigma = 0.0
 deterministic = true
-reference_shares_r00_t1 = [0.411547386, 0.240956772, 0.168652417, 0.178843425]
-reference_shares_r04_t1 = [0.049978191, 0.172580247, 0.777441563]
-reference_shares_r04_allowed_destinations = [0, 1, 3]
+conditional_shares_time_invariant = false
+conditional_shares_time_variation = "SMALL_DETERMINISTIC"
+reference_shares_r00_t1 = [0.479223272, 0.219532182, 0.163400470, 0.137844076]
+reference_shares_r00_t4 = [0.479478444, 0.219535648, 0.163308523, 0.137677385]
+reference_shares_r00_destinations = [1, 2, 3, 4]
+reference_shares_r04_t1 = [0.150941617, 0.194939240, 0.654119143]
+reference_shares_r04_t4 = [0.151139135, 0.195055970, 0.653804895]
+reference_shares_r04_destinations = [0, 1, 3]
 reference_share_sums = 1.000000000000
-conditional_shares_time_invariant = true
-conditional_shares_invariance_reason = "UNIFORM_GDP_CENTRE_SHIFT_ACROSS_REGIONS"
 
-[non_nestability_check]
-span_basis = [
-  "1",
-  "distance",
-  "gdp_destination",
-  "gdp_origin",
-  "distance_x_gdp_destination",
-  "distance_x_gdp_origin",
-  "gdp_origin_x_gdp_destination",
-]
-x2_max_abs_residual = 0.3828362419
-x3_max_abs_residual = 0.0007618439
-conclusion = "NEITHER_NONLINEAR_TERM_IS_IN_THE_S0_LINEAR_SPAN"
+[design_space_checks]
+parametric_design_span = "6 declared pair features + per-origin destination intercepts (block-additive softmax invariance)"
+s0_representability = "EXACT_BY_CONSTRUCTION"
+s0_max_abs_residual_features_only = 2.220446049250313e-15
+s0_max_abs_residual_with_intercepts = 1.554312234475219e-14
+s0_block_centred_max_abs_residual = 1.1102230246251565e-15
+parametric_design_rank = 6
+parametric_design_columns = 6
+s1_non_nestability = "RESIDUAL_PRESENT_AGAINST_THE_SAME_DESIGN_SPACE_AND_BLOCK_ADDITIVE_CONSTANTS"
+s1_max_abs_residual_with_intercepts = 0.0056595644561093505
+s1_max_abs_residual_features_only = 0.010014012922771653
+x2_max_abs_residual_with_intercepts = 0.0907191779
+x3_max_abs_residual_with_intercepts = 0.0314502493
+residual_precision_floor = 1e-12
 
 [baselines]
 family_count = 3
 families = ["fixed_support_normalized_uniform", "gravity_multinomial_logit", "small_neural_score_mapping"]
-fixed_baseline = { name = "fixed_support_normalized_uniform", free_parameters = 0, trained = false, definition = "uniform over available foreign destinations" }
-parametric_baseline = { name = "gravity_multinomial_logit", free_parameters = 12, trained = true, fit = "weighted maximum likelihood" }
+fixed_baseline = { name = "fixed_support_normalized_uniform", free_parameters = 0, trained = false, definition = "uniform over allowed foreign destinations" }
+parametric_baseline = { name = "gravity_multinomial_logit", free_parameters = 13, trained = true, fit = "weighted maximum likelihood", design_columns = 6, intercept_parameters = 5 }
 neural_baseline = { name = "small_neural_score_mapping", trained = true }
 parametric_score_terms = [
-  "alpha_d_log_gdp_pc_dest",
-  "alpha_o_log_gdp_pc_origin",
-  "alpha_dw_log_wage_gap",
-  "alpha_dist_log_distance",
-  "alpha_adj_adjacency",
-  "alpha_acc_log_accessibility_dest",
-  "alpha_w_w_ij",
-  "destination_intercepts",
+  "log_gdp_dest",
+  "log_gdp_origin",
+  "log_wage_gap",
+  "log_adj_distance",
+  "adjacency",
+  "log_accessibility_dest",
+  "w_ij",
+  "per_origin_destination_intercept",
 ]
 
 [architecture_neural]
@@ -211,17 +239,26 @@ early_stop_metric = "validation_weighted_cross_entropy"
 hyperparameter_search = false
 deterministic_algorithms = true
 neural_seeds = [0, 1, 2]
+determinism_verification_configs = ["parametric_s0", "parametric_s1", "neural_s0_seed0", "neural_s1_seed0"]
+sensitivity_replication_configs = ["neural_s0_seed1", "neural_s0_seed2", "neural_s1_seed1", "neural_s1_seed2"]
 parametric_seed = "NOT_APPLICABLE_DETERMINISTIC"
 fixed_baseline_seed = "NOT_APPLICABLE"
 
 [split]
 split_policy_id = "DLH_WL_P2_SPLIT_V1"
-scheme = "single_fold_blocked_time_and_region"
+scheme = "single_fold_blocked_time_and_region_with_explicit_excluded_reference_blocks"
+states = ["TRAIN", "VALIDATION", "TEST", "EXCLUDED_REFERENCE_ONLY"]
 train = { times = [1, 2, 3], origins = ["R00", "R01", "R02"], blocks = 9 }
 validation = { times = [4], origins = ["R00", "R01", "R02"], blocks = 3 }
 test = { times = [4], origins = ["R03", "R04"], blocks = 2, split_block_id = "TEST_REGION_R03_R04" }
+excluded_reference_only = { times = [1, 2, 3], origins = ["R03", "R04"], blocks = 6, split_block_id = "EXCLUDED_REGION_R03_R04_TIMES_1_3", used_for_fitting = false, used_for_early_stopping = false, used_for_final_metrics = false, allowed_for = ["DETERMINISTIC_REFERENCE_SHARE_CHECKS", "ARITHMETIC_INTEGRITY_CHECKS"] }
+split_counts_sum = 20
+split_counts = { TRAIN = 9, VALIDATION = 3, TEST = 2, EXCLUDED_REFERENCE_ONLY = 6 }
+every_block_has_exactly_one_state = true
 test_touches_train_time = false
 test_touches_train_region = false
+excluded_shares_time_with_train = true
+excluded_shares_region_with_test = true
 preprocessing_fit_on = "TRAIN_ONLY"
 test_used_once_after_final_checkpoint = true
 
@@ -234,37 +271,60 @@ primary = [
   "support_violation_count",
   "determinism_deviation",
   "runtime_seconds",
+  "excluded_block_count",
 ]
 secondary = [
   "top1_destination_accuracy",
   "share_kl_per_block_mean",
   "cross_entropy_s0_vs_s1_delta",
 ]
+determinism_scope = "TWO_PARAMETRIC_REPEATS_AND_NEURAL_SEED0_REPEATS_ONLY"
+replication_scope = "NEURAL_SEEDS_1_AND_2_ARE_SENSITIVITY_REPLICATIONS_NOT_DUPLICATE_DETERMINISM_CHECKS"
 report_split_primary = "TEST"
 report_split_secondary = "VALIDATION"
 row_normalization_tolerance = 1e-10
 determinism_tolerance = 1e-12
+excluded_block_count_expected = 6
 metrics_frozen_before_execution = true
 neural_must_beat_parametric = false
 
 [budget]
 wall_clock_seconds_max = 1800
-max_training_runs = 8
-fixed_baseline_runs = 0
-parametric_runs = 2
-neural_runs = 6
+primary_fit_configurations = 8
+parametric_primary_configs = 2
+neural_primary_configs = 6
+planned_fit_executions = 12
+parametric_verification_repeats = 2
+neural_seed0_verification_repeats = 2
+absolute_attempt_ceiling = 13
 max_engineering_retries = 1
 retry_policy = "ONE_DETERMINISTIC_RERUN_OF_IDENTICAL_CONFIG_AND_SEED_FOR_ENGINEERING_FAILURE_ONLY"
 hyperparameter_search_runs = 0
+seed_search_runs = 0
+budget_covers_primary_repeats_and_retry = true
 budget_exhaustion_action = "STOP_NO_AUTO_SUCCESSOR"
 executed_in_this_issue = false
+
+[label_semantics_policy]
+empirical_direct_flag = "label_is_direct_target"
+usable_target_flag = "target_available"
+synthetic_usable_target_allowed = true
+rule_generated_usable_target_allowed = true
+bridged_classes_need_dated_assumption = true
+evidence_level_enum = ["E0", "E1", "E2", "E3", "NOT_APPLICABLE_NON_EMPIRICAL"]
+synthetic_evidence_level = "NOT_APPLICABLE_NON_EMPIRICAL"
+synthetic_evidence_level_promoted = false
 
 [checks_this_issue]
 static_document_consistency = true
 toml_parse_check = true
 grep_reference_check = true
 arithmetic_sanity_check = true
-pytest_runs = 0
+representability_check = true
+non_nestability_check = true
+split_exhaustiveness_check = true
+budget_arithmetic_check = true
+test_suite_runs = 0
 training_runs = 0
 data_downloads = 0
 hjb_kfe_ge_matlab_calls = 0

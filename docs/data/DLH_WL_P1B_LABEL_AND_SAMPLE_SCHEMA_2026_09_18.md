@@ -4,9 +4,10 @@ Issue: **#75 / `DLH-WL-P1B`** — design / specification only.
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
+Reviewer HOLD remediated by this revision: **`5738867875`**.
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
-Status: **frozen design**. No data was downloaded, scraped, purchased or ingested;
-no model was trained; no E0/E1 evidence was upgraded.
+Status: **frozen design, revision 2**. No data was downloaded, scraped, purchased or
+ingested; no model was trained; no E0/E1 evidence was upgraded.
 
 This document is one of the four Issue #75 deliverables. Its machine-readable
 counterpart is `configs/dlh_wl_p2_offline_prototype.toml`; the experiment contract
@@ -142,20 +143,38 @@ canonical; wide matrices are a lossless view of a block.
 | Field | Type | Required | Semantics |
 |---|---|---|---|
 | `label_semantics` | enum | yes | exactly one of the six frozen classes |
-| `label_evidence_level` | enum | yes | `E0`, `E1`, `E2`, `E3` (per the project evidence rule) |
-| `label_is_direct_target` | bool | yes | derivation-free predicate: `true` iff the row may be used as a supervision target for `W^L_ij,t` |
-| `label_bridge_assumption` | string or null | required unless `label_is_direct_target` | the declared bridge used to reach a share, or `null` |
-| `share_numerator` | float or null | required unless `label_is_direct_target` | raw pair quantity before normalization |
-| `share_denominator` | float or null | required unless `label_is_direct_target` | raw origin-level denominator before normalization |
+| `label_evidence_level` | enum | yes | closed enum: `E0`, `E1`, `E2`, `E3`, or `NOT_APPLICABLE_NON_EMPIRICAL`. `NOT_APPLICABLE_NON_EMPIRICAL` is the only valid value for `SYNTHETIC` and `RULE_GENERATED` rows and does **not** place them anywhere on the E0–E3 empirical ladder (no promotion) |
+| `label_is_direct_target` | bool | yes | **empirical-directness flag**: `true` iff the row is a direct empirical observation of an annual bilateral flow, i.e. `label_semantics == TRUE_ANNUAL_OD_FLOW` and `time_semantics == CALENDAR_YEAR` and both origin and destination are observed for the same move. It does **not** by itself say whether the row may be used for supervision |
+| `label_bridge_assumption` | string or null | required when the row is a bridged empirical class and `target_available` is `true`; otherwise the declared literal `NONE_REQUIRED_DIRECT_EMPIRICAL` or `NONE_REQUIRED_NON_EMPIRICAL`; `null` only when the row produces no share at all | the declared bridge used to obtain a share |
+| `share_numerator` | float or null | required iff the share is derived from raw counts (`ANNUAL_OD_STOCK_OR_SAMPLE_CROSSTAB`, `MULTIYEAR_TRANSITION_OR_DERIVED_PROXY`, `PROVINCIAL_AGGREGATE_PROXY`); `null` for `TRUE_ANNUAL_OD_FLOW`, `RULE_GENERATED` and `SYNTHETIC` | raw pair quantity before normalization |
+| `share_denominator` | float or null | same rule as `share_numerator` | raw origin-level denominator before normalization |
 | `raw_unit` | enum | yes | `PERSONS`, `HOUSEHOLDS`, `EFFICIENCY_LABOR`, `NORMALIZED_SHARE`, or a declared alternative |
-| `target_W_ij_t` | float or null | yes (nullable) | the conditional share, present **only** when a target is identifiable |
-| `target_available` | bool | yes | `true` iff `target_W_ij_t` is not null |
+| `target_W_ij_t` | float or null | yes (nullable) | the conditional share used as a supervision target; non-null **iff** `target_available` is `true` |
+| `target_available` | bool | yes | **usable-target flag, independent of empirical directness**: `true` iff a usable target for the declared purpose exists. `SYNTHETIC` and `RULE_GENERATED` rows may be `true` for method validation while `label_is_direct_target` stays `false`; a bridged empirical class may become `true` only after an explicit dated bridge/assumption record; `MISSING` rows can never be `true` |
 
-Derivation rule (frozen): `label_is_direct_target = true` **iff**
-`label_semantics == TRUE_ANNUAL_OD_FLOW` **and** `time_semantics == CALENDAR_YEAR`
-**and** both origin and destination are observed for the same move. For every other
-combination it is `false`, and `label_bridge_assumption` must name the bridge or
-state `NONE_REQUIRED_RULE_OR_SYNTHETIC`.
+Derivation rules (frozen, revised):
+
+```
+label_is_direct_target = (label_semantics == TRUE_ANNUAL_OD_FLOW)
+                         and (time_semantics == CALENDAR_YEAR)
+                         and both endpoints observed for the same move
+
+target_available       = (zero_kind != MISSING)
+                         and (support_mask_ij == true)
+                         and identifiable_conditional_target
+                         and (target_W_ij_t is not null)
+                         and (   label_is_direct_target
+                              or label_semantics in {RULE_GENERATED, SYNTHETIC}
+                              or (label_semantics is a bridged empirical class
+                                  and a dated bridge/assumption record exists) )
+```
+
+The two flags are orthogonal and must never be conflated:
+`label_is_direct_target` answers *"is this an empirical annual bilateral flow?"*;
+`target_available` answers *"can this row supervise the declared purpose?"*.
+A `SYNTHETIC` row is therefore `label_is_direct_target = false` **and**
+`target_available = true` — which is exactly the P2 method-validation case, and can
+never be promoted into empirical directness.
 
 ### 3.3 Given accounting inputs (never learning targets)
 
@@ -177,7 +196,7 @@ feature set of any learned mapping and forbids treating them as targets.
 
 | Field | Type | Required | Semantics |
 |---|---|---|---|
-| `support_mask_ij` | bool | yes | `true` = destination structurally available to this origin (including the own region where relevant) |
+| `support_mask_ij` | bool | yes | `true` = destination structurally available to this origin. **For the conditional `W^L` object the diagonal is false always** (`support_mask_ii = false`, including the own region); home retention is *not* represented here but separately by `P_ii = 1 - m_i` |
 | `zero_kind` | enum | yes | `STRUCTURAL_ZERO`, `OBSERVED_ZERO`, `MISSING`, `NOT_APPLICABLE` |
 | `structural_zero_reason` | string or null | required iff `zero_kind == STRUCTURAL_ZERO` | declared reason |
 | `missing_pattern_id` | string or null | required iff `zero_kind == MISSING` | declared missingness mechanism |
@@ -185,12 +204,16 @@ feature set of any learned mapping and forbids treating them as targets.
 
 Normative rules:
 
+- **conditional-support diagonal**: for the V1 conditional object `W^L`,
+  `support_mask_ii = false` always. The own region is never an allowed foreign
+  destination, and the W support mask must never be used to encode home retention;
+  home retention is carried only by the accounting identity `P_ii = 1 - m_i`;
 - `STRUCTURAL_ZERO`: the realization is impossible or excluded by design; it must
   receive zero conditional mass and is excluded from the row sum;
 - `OBSERVED_ZERO`: a realized zero inside the support. It is **not** structural
   impossibility, and it must not be deleted after seeing evaluation results;
 - `MISSING`: unobserved, which is neither a zero nor an impossibility. Missing rows
-  may be predicted but never supervised;
+  may be predicted but never supervised, and can never set `target_available = true`;
 - the support set is part of the experiment design: changing it is a design change
   and may not be done after evaluating outcomes.
 
@@ -223,7 +246,7 @@ only; `m` and `ell` are never features.
 | `coverage_note` | string | yes | coverage and known undercoverage |
 | `sample_weight` | float or null | required for survey-derived rows, else null | survey/design weight |
 | `sample_weight_source` | string or null | paired with `sample_weight` | weight variable identity and harmonization status |
-| `split_assignment` | enum | yes | `TRAIN`, `VALIDATION`, `TEST` |
+| `split_assignment` | enum | yes | exactly one of `TRAIN`, `VALIDATION`, `TEST`, `EXCLUDED_REFERENCE_ONLY`. Every allocation block of the universe must carry exactly one state, and the state counts must sum to the universe block count |
 | `split_block_id` | string | yes | the block (time and/or region) that defines the split unit |
 | `split_policy_id` | string | yes | the frozen split policy applied |
 | `identifiable_conditional_target` | bool | yes | whether this allocation block supplies an identifiable conditional target at all |
@@ -246,25 +269,30 @@ The last two rules are exactly the accepted P1A semantics
 (`rows_without_identifiable_target`, `rows_with_conditional_choice`,
 `conditional_choice_identified`); the schema may not redefine them.
 
-### 3.7 Canonical record (normative example shape)
+### 3.7 Canonical record (normative example)
+
+The example is a real row of the frozen P2 synthetic control (regime S0,
+`time_id 1`, origin `R00`, destination `R01`); the numeric share is the frozen S0
+reference value from `configs/dlh_wl_p2_offline_prototype.toml` and is a **usable
+target that is not an empirical direct label**.
 
 ```yaml
 record:
   origin_id: "R00"
-  destination_id: "R02"
+  destination_id: "R01"
   time_id: 1
   time_semantics: "SYNTHETIC_STEP"
   same_region: false
   region_dictionary_version: "DLH_WL_REGION_DICT_V1_2026_09_18"
   label_semantics: "SYNTHETIC"
-  label_evidence_level: "NOT_APPLICABLE_SYNTHETIC"
+  label_evidence_level: "NOT_APPLICABLE_NON_EMPIRICAL"
   label_is_direct_target: false
-  label_bridge_assumption: "NONE_REQUIRED_RULE_OR_SYNTHETIC"
+  label_bridge_assumption: "NONE_REQUIRED_NON_EMPIRICAL"
   share_numerator: null
   share_denominator: null
   raw_unit: "NORMALIZED_SHARE"
-  target_W_ij_t: null
-  target_available: false
+  target_W_ij_t: 0.477725159
+  target_available: true
   m_i: 0.12
   m_provenance_id: "P2_SYNTHETIC_M_V1"
   ell_i: 100.0
@@ -278,21 +306,21 @@ record:
   structural_zero_reason: null
   missing_pattern_id: null
   observed_value_present: true
-  pair_feature_names: ["log_distance", "adjacency", "log_gdp_pc_gap"]
+  pair_feature_names: ["log_gdp_dest", "log_gdp_origin", "log_wage_gap", "log_adj_distance", "adjacency", "log_accessibility_dest"]
   node_feature_names: ["log_gdp_pc", "log_wage", "log_accessibility", "urbanization"]
-  X_pair_ij_t: [-0.35667494393873245, 0.0, 0.1823215567939546]
-  X_node_i_t: [10.0, 9.9, 8.2, 0.55]
-  X_node_j_t: [10.2, 10.1, 8.4, 0.6]
-  X_time_t: [1.0]
-  feature_availability_time: ["T0_STATIC", "T0_STATIC", "T-1"]
+  X_pair_ij_t: [2.322387720290225, 2.302585092994046, 0.011049836186584727, 0.6931471805599453, 1.0, 3.282163564104119]
+  X_node_i_t: [2.302585092994046, 2.1972245773362196, 3.1517383738807094, 0.55]
+  X_node_j_t: [2.322387720290225, 2.2082744135228043, 3.282163564104119, 0.6]
+  X_time_t: [0.0]
+  feature_availability_time: ["T0_STATIC", "T0_STATIC", "T-1", "T0_STATIC", "T0_STATIC", "T-1"]
   feature_available_at_prediction_time: true
   leakage_flags: []
-  transformation_log: ["log", "log", "difference_of_logs"]
+  transformation_log: ["log", "log", "difference_of_logs", "log1p", "none", "log"]
   source_id: "P2_SYNTHETIC_GRAVITY_S0"
   provider: "DLH_PROJECT_INTERNAL"
-  source_version: "V1_2026_09_18"
+  source_version: "V2_2026_09_18"
   license: "SYNTHETIC_INTERNAL"
-  coverage_note: "pre-registered synthetic control; method-only evidence"
+  coverage_note: "pre-registered synthetic control; method-only evidence; not empirical"
   sample_weight: null
   sample_weight_source: null
   split_assignment: "TRAIN"
@@ -301,11 +329,15 @@ record:
   identifiable_conditional_target: true
   available_foreign_destination_count: 4
   block_valid_row: true
-  notes: null
+  notes: "synthetic usable target: target_available=true while label_is_direct_target=false"
 ```
 
-The example above is illustrative of shape only; the frozen numeric content for P2
-is in `configs/dlh_wl_p2_offline_prototype.toml`.
+Self-consistency of this example: `label_is_direct_target = false` (the class is
+`SYNTHETIC`, so it can never be an empirical direct label) while
+`target_available = true` and `target_W_ij_t` is non-null, because the row is inside
+the support, is not `MISSING`, has an identifiable conditional target and its class
+is `SYNTHETIC`. Neither flag implies the other, and the synthetic row is not
+assigned any E0–E3 evidence level.
 
 ---
 
