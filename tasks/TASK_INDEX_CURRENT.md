@@ -1,7 +1,7 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P2_METHOD_GATE_COMPLETE__ISSUE_80_P3A_STAGED_NOT_OPERATIVE`。
+状态：`P2_METHOD_GATE_COMPLETE__ISSUE_80_P3A_ACTIVE_OPERATIVE`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
 Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
@@ -15,9 +15,9 @@ Issue #79 / P2D：ACCEPTED / CLOSED / INTEGRATED — P2 METHOD GATE COMPLETE。
 
 下一科学 Builder Issue：
 - #80 / `DLH-WL-P3A: real-data label/provenance evidence gate`
-- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- 状态：**OPEN / ACTIVE / OPERATIVE**
 - publication baseline：`a8ceac192ac0cab3c02c3b45dda0ff1bf3c341af`
-- final activation comment 发布前不得执行。
+- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
 
 #80 是 P3 现实数据证据门，不训练、不估计：
 - 核实 source object / year-window / population / origin-destination / stock-flow-transition semantics；
