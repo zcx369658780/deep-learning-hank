@@ -79,4 +79,4 @@ Owner approved a structural+measurement interpretation: keep distance/economic-g
 
 
 ## P3E staged in parallel with #83
-Issue #84 is docs/config-only. Builder may formalize the latent labor measurement architecture but may not resolve H1–H7, inspect real sources, ingest data or fit any model. #83 remains the human evidence authority.
+Issue #84 is ACTIVE / OPERATIVE and docs/config-only. Builder may formalize the latent labor measurement architecture but may not resolve H1–H7, inspect real sources, ingest data or fit any model. #83 remains the human evidence authority.
