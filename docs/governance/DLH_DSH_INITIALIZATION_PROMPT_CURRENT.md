@@ -1,12 +1,12 @@
 # DSH 短启动入口
 
-当前科学任务：Issue #80 / DLH-WL-P3A。
+当前候选科学任务：Issue #81 / DLH-WL-P3B。
 路线：`DLH-WL-V1-20260918`。
 
-使用：
+在 Reviewer final activation comment 发布前，#81 为 STAGED / NOT OPERATIVE。
+
+final activation 后使用：
 
 ```text
-接续 zcx369658780/deep-learning-hank，执行 GitHub Issue #80。fresh-fetch origin/main，读取 AGENTS.md、Task Index、路线锁、DLH_1A China interprovincial labor-flow feasibility evidence、accepted P1B label/schema contract、accepted P2D method report，以及 #80 full body/comments。确认 final activation、operative baseline 与 branch。严格按 #80 exact allowlist 做 P3A real-data evidence/provenance audit：核实 raw object、year/window、population、origin/destination、bilateral support、stock-vs-flow-vs-transition、direct_W_supervision、bridge requirement、claim ceiling、provider/version/licence/access、feature timing/leakage。可读公开 source metadata（如可达），但不得 scrape/download/ingest/purchase，不得训练/估计，不跑 HJB/KFE/GE/MATLAB/full suite。最终只给 Branch D/B/P，commit+push 专用 branch，留一次 completion comment并 STOP。
+接续 zcx369658780/deep-learning-hank，执行 GitHub Issue #81。fresh-fetch origin/main，读取 AGENTS.md、Task Index、路线锁、accepted P3A Branch-B evidence package、accepted P1B schema，以及 #81 full body/comments。确认 final activation、operative baseline 与 branch。严格按 #81 exact allowlist 做 bridge/source preregistration：比较 multi-year annualization、stock-to-flow、population-to-labor-service bridge，冻结 region dictionary、m/ell provenance、weights/harmonization、timing/leakage 和 sensitivity requirements。允许数学推导和 primary metadata 只读核验；禁止下载/摄取数据、经验 adapter、估计/训练、HJB/KFE/GE/MATLAB/full suite。完成后 commit+push 专用 branch，留一次 completion comment并 STOP。
 ```
-
-聊天 prompt 不扩大 Issue authority。若 source metadata 无法核实，必须标 NOT_VERIFIED_EXTERNAL，不得猜测或升级 evidence。
