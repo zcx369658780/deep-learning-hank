@@ -70,3 +70,8 @@ Issue #78 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific 
 ## P2C adjudicated — 2026-09-19
 
 Issue #78 is CLOSED with accepted terminal `DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__GATE_FAIL__NO_SCIENCE_RERUN_AUTHORIZED`, integrated at `0758daccfe5b207e1dfaaae976559e3f2adc7a6e`. Its durability machinery is accepted: one science invocation, 12 durable completed fits, full persisted predictions, zero-fit rendering. The scientific Gate Fail is isolated to a missing `universe._design_matrix = design` assignment: neural optimization used TRAIN-z-scored inputs but final persisted predictions used raw-design fallback. Next replication keeps the #75 design and #78 durability protocol unchanged and repairs only that state propagation.
+
+
+## P2D minimal corrected replication staged — 2026-09-19
+
+Issue #79 is published as **STAGED / NOT OPERATIVE**. It preserves the #75 frozen scientific design and #78 accepted durable-output protocol. The only science-path repair is explicit `universe._design_matrix = design` propagation before neural fits, with a zero-fit pre-run prediction-path test that must distinguish the z-scored design from raw fallback. No execution before Reviewer final activation.
