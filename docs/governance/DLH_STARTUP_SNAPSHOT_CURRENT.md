@@ -84,4 +84,4 @@ Issue #79 / P2D is ACCEPTED / CLOSED / INTEGRATED at `8ae4561ca3b0c78ba1d4704518
 
 ## P3A real-data evidence gate staged — 2026-09-19
 
-Issue #80 is published as **STAGED / NOT OPERATIVE**. It is evidence/schema validation only: source object, timing, population, bilateral OD support, stock/flow/transition semantics, direct-vs-bridged W status, provenance/licence and feature timing/leakage. No data ingestion or empirical fitting is authorized before Reviewer final activation and later P3A acceptance.
+Issue #80 is now **ACTIVE / OPERATIVE**. It is evidence/schema validation only: source object, timing, population, bilateral OD support, stock/flow/transition semantics, direct-vs-bridged W status, provenance/licence and feature timing/leakage. Exact operative baseline and branch are named by the Reviewer final activation. No data ingestion or empirical fitting is authorized in P3A.
