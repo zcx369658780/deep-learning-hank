@@ -40,3 +40,8 @@ ONE MATLAB-faithful selected generator governs solve/validation；Dual-Q 禁止�
 第一版离线学习给定外流比例后的目的地份额；外流比例和家庭总劳动不联合训练。沿用 origin×destination、行归一。P1A 已验收；下一步是 P1B 数据/标签口径、canonical sample schema 与 P2 离线实验合同设计，不训练、不调用家庭。
 
 路线与合同见 `README_START_HERE.md`。详细旧实验见 post-5VY 交接；本快照不重复全部历史。
+
+
+## P2 current gate — 2026-09-19
+
+P1B accepted/integrated at `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`. Issue #76 / P2A has been published as **STAGED / NOT OPERATIVE** for the first frozen method-only synthetic execution. No Builder execution before final activation. P2A may train only the frozen small neural prototype; it cannot alter the P1B contract/config or use real data/HJB/KFE/GE/MATLAB.
