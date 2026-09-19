@@ -1,0 +1,295 @@
+# DLH-WL-P3C — bridge execution-readiness freeze (machine-readable).
+#
+# Issue #82 / `DLH-WL-P3C`. Owner route: DLH-WL-V1-20260918.
+# Authority marker: DLH_WL_P3C_EXECUTION_READINESS_FREEZE_AUTHORIZED.
+# Reviewer final activation comment: 5741497930.
+#
+# This file freezes the numerical, search and claim contract for the FIRST real
+# T-family bridge execution. It contains NO empirical value: no transition matrix,
+# no root, no m, no ell, no W, no region mass.
+#
+# Consistency rule: every numeric value below is copied verbatim from the Issue #82
+# body and the activation comment. Where P3B (Issue #81) deliberately left a value
+# open ("frozen by Reviewer authority before execution"), this file is the place it
+# is now frozen. No value may be relaxed after a real bridge outcome is observed.
+#
+# Companion documents:
+#   docs/specifications/DLH_WL_P3C_EXECUTION_READINESS_FREEZE_2026_09_19.md
+#   docs/data/DLH_WL_P3C_HUMAN_SOURCE_VERIFICATION_PACKET_2026_09_19.md
+#   reports/dlh_wl_p3c_2026_09_19/DLH_WL_P3C_REPORT.md
+
+schema_version = "DLH_WL_P3C_READINESS_V1"
+frozen_utc_date = "2026-09-19"
+
+[authority]
+issue = 82
+task_id = "DLH_WL_P3C_EXECUTION_READINESS_FREEZE"
+authority_marker = "DLH_WL_P3C_EXECUTION_READINESS_FREEZE_AUTHORIZED"
+owner_route = "DLH-WL-V1-20260918"
+route_lock = "DLH_WL_V1_20260918"
+activation_comment = 5741497930
+operative_baseline = "2b7b0b7d506907ecbf41509bc526ad2b5ea794a6"
+publication_baseline = "60d71ec068c044f73da0f56e86b1cb4bbf7c4a8d"
+inherited_preregistration_issue = 81
+inherited_preregistration_integration = "1819b0a5a36b2a8ffde3641c711892df2cdcede7"
+binding_hierarchy = [
+  "owner_route",
+  "accepted_P1B_P3A_semantics",
+  "accepted_P3B_preregistration",
+  "issue_82_body",
+  "activation_comment_5741497930",
+]
+frozen_before_any_real_transition_matrix = true
+relaxation_after_outcome_observed = false
+amendment_rule = "Only a dated pre-execution Reviewer amendment may replace a value in this file."
+
+[scope]
+real_bridge_executed = false
+real_transition_matrix_inspected = false
+data_downloaded_scraped_purchased_ingested = false
+empirical_adapter_created = false
+fit_training_estimation_performed = false
+hjb_kfe_ge_matlab_household_calls = 0
+pytest_or_full_suite_runs = 0
+
+# --------------------------------------------------------------------------- thresholds
+[thresholds.low_mobility]
+route = "T2"
+pi_max = 0.15
+definition = "pi^(k) = max_i ( 1 - T^(k)_ii )"
+eligibility_rule = "T2 is eligible for a window only if pi^(k) <= pi_max"
+evaluated_per = "window"
+rationale = "at k = 5 the leading matrix-error scale (pi^(k))^2 / k is approximately 0.0045 at the boundary, which keeps the low-mobility route in a deliberately conservative regime"
+is_a_claim_about_real_data = false
+kind = "methodological_tolerance"
+
+[thresholds.identification_spread]
+tau_W_abs = 0.02
+tau_m_abs = 0.02
+evaluated_per = "window"
+W_spread_definition = "max over admissible (i,j), j != i, and over pairs P,Q in F_search, of abs( W_ij(P) - W_ij(Q) )"
+m_spread_definition = "max over origins i and over pairs P,Q in F_search, of abs( m_i(P) - m_i(Q) )"
+vacuous_value_when_single_root = 0.0
+fail_status = "NOT_IDENTIFIED_BY_ANNUALIZATION"
+pass_status = "SEARCH_SET_STABLE_WITHIN_PREREGISTERED_TOLERANCE"
+pass_status_grants_global_uniqueness = false
+degenerate_root_rule = "if any retained root has min_i m_i(P) <= 0 the window fails closed to NOT_IDENTIFIED_BY_ANNUALIZATION regardless of spreads"
+
+[thresholds.region_mapping]
+unmappable_mass_share_max = 0.01
+evaluated_per = "source_origin_time_block"
+definition = "share of the block's mass that cannot be assigned to the pinned canonical universe after declared exclusions and merges"
+exceed_action = "FAIL_CLOSED_WHOLE_BLOCK"
+redistribution_or_imputation_allowed = false
+mass_threshold_numeric_choice = "frozen_here_by_issue_82"
+
+# --------------------------------------------------------------------------- numerical validity
+[numerical.row_stochasticity]
+row_sum_abs_tol = 1e-10
+check = "abs( sum_j P_ij - 1 ) <= row_sum_abs_tol for every origin row"
+
+[numerical.negativity]
+hard_failure_below = -1e-10
+cosmetic_zero_lower = -1e-12
+cosmetic_zero_upper_exclusive = 0.0
+soft_negativity_band = "[-1e-10, -1e-12)"
+soft_negativity_action = "RETAIN_AND_RECORD_NOT_ZEROED"
+cosmetic_zero_ordering = "only after all other validity checks have been established on the candidate matrix, and the retained matrix must then pass every check again"
+cosmetic_zero_delta_recorded = true
+
+[numerical.support]
+forbidden_support_mass_tol = 1e-12
+P_side_check = "max over forbidden (i,j) of abs(P_ij) <= forbidden_support_mass_tol"
+P_side_sum_recorded = true
+Tk_side_precheck = "no positive off-diagonal of T^(k) on a pair forbidden by the declared annual transition support; positive means > forbidden_support_mass_tol"
+Tk_side_precheck_failure = "FAIL_CLOSED_BLOCK"
+w_support_diagonal_always_false = true
+transition_support_diagonal_allowed = true
+support_mask_widening_to_fit_an_observation_allowed = false
+
+[numerical.root_residual]
+k_step_max_abs_residual = 1e-8
+residual_definition = "max_abs( P^k - T^(k) )"
+objective = "frobenius_squared_norm_of_Pk_minus_Tk"
+retention_rule = "a candidate root is retained in F_search only if residual_definition <= k_step_max_abs_residual"
+objective_value_recorded = true
+residual_value_recorded = true
+
+[numerical.generator]
+row_sum_abs_tol = 1e-10
+offdiagonal_hard_failure_below = -1e-10
+checks = [
+  "abs( sum_j Q_ij ) <= row_sum_abs_tol for every origin row",
+  "no off-diagonal below offdiagonal_hard_failure_below",
+  "P = exp(Q) satisfies every row-stochasticity, negativity, support and root-residual check",
+]
+generator_uniqueness_claimed = false
+
+[numerical.reality]
+imaginary_part_abs_tol = 1e-10
+applies_to = ["candidate_real_matrix", "candidate_real_root", "candidate_real_logarithm"]
+
+[numerical.dedup]
+max_abs_separation = 1e-7
+definition = "two retained roots P_a, P_b are the same discovered root for reporting iff max_abs(P_a - P_b) <= max_abs_separation"
+applies_to = "F_search_reporting"
+
+# --------------------------------------------------------------------------- search protocol
+[search]
+routes_in_execution_order = [
+  "R1_principal_real_kth_root",
+  "R2_generator_embedding",
+  "R3_low_mobility_T2_initialization",
+  "R4_constrained_multistart_root_search",
+]
+route_order_is_execution_order_only = true
+bridge_convention_preference_owner = "P3B section 2.6"
+bridge_convention_preference_order = [
+  "generator_embedding",
+  "principal_real_nonnegative_kth_root",
+  "low_mobility_T2_when_C1_passes",
+  "fail_closed",
+]
+all_applicable_routes_must_run = true
+outcome_driven_stopping_allowed = false
+
+[search.R1_principal_real_kth_root]
+retain_only_if = "real within imaginary_part_abs_tol, fully stochastic, support-valid, and root residual within k_step_max_abs_residual"
+
+[search.R2_generator_embedding]
+logarithm = "Q = (1/k) log( T^(k) )"
+retain_only_if = "Q satisfies the generator checks and P = exp(Q) satisfies every stochastic, support and root-residual check"
+generator_uniqueness_claimed = false
+
+[search.R3_low_mobility_T2_initialization]
+eligible_only_if = "C1 passes, i.e. pi^(k) <= pi_max"
+role = "initialization_candidate_only"
+exact_root_status_requires = "the candidate must independently pass the root residual before it may be called an exact T1 root"
+report_status_when_eligible = "LOW_MOBILITY_APPROXIMATION__PREREGISTERED"
+
+[search.R4_constrained_multistart]
+rng_family = "numpy.random.Generator, PCG64, constructed by numpy.random.default_rng"
+rng_seed = 20260919
+deterministic_start_count = 64
+max_iterations_per_start = 5000
+extra_starts_after_observing_results = false
+restarts_allowed = false
+search_family_change_after_observing_results = false
+parameterization = "allowed_support_row_simplex_bound_constrained"
+parameterization_note = "one free vector per origin row over that row's allowed transition support; bounds 0 <= P_ij <= 1 per entry; one equality constraint sum_j P_ij = 1 per row; structural zeros held at exactly 0 by removing them from the variable set"
+softmax_row_parameterization_used = false
+softmax_row_parameterization_rejection_reason = "a softmax parameterization cannot attain an exact interior zero, which would place admissible roots outside the reach of F_search and silently weaken the completeness question"
+objective = "frobenius_squared_norm_of_Pk_minus_Tk"
+convergence_and_validity_decided_only_by = "the frozen tolerances in this file"
+non_converged_start_action = "RECORD_AS_NOT_CONVERGED_NO_RESTART"
+search_is_joint_over_all_origins = true
+start_distribution = "dirichlet_with_alpha_ones_on_the_allowed_support_row_simplex"
+start_distribution_free_numeric_parameters = "none"
+start_draw_order = "origin rows in ascending canonical index order; within a row, the allowed-support entries in ascending canonical index order; start indices in ascending order"
+special_start_count = 4
+special_start_positions = "start indices 1..4; constructed exactly in P-space and excluded from the RNG stream so the stream is unaffected"
+special_starts = [
+  "identity",
+  "T2_candidate",
+  "principal_root_candidate",
+  "embedding_candidate",
+]
+special_start_omission_rule = "a special start that is not valid for a window is recorded as omitted with a reason; the remaining positions are not re-drawn"
+random_start_count = 60
+random_start_positions = "start indices 5..64"
+start_stream_version_dependent = true
+numpy_version_recorded = true
+start_manifest_hash_required = true
+start_manifest_hash_purpose = "make the actual 64 starts auditable even if a future numpy release changes the Generator stream"
+
+# --------------------------------------------------------------------------- claim boundary
+[root_sets]
+mathematical_set = "F_all"
+mathematical_set_definition = "the mathematical set of all admissible annual stochastic roots of P^k = T^(k) under the declared support"
+discovered_set = "F_search"
+discovered_set_definition = "the finite set of admissible roots discovered by the preregistered numerical search and retained after deduplication"
+F_search_is_subset_of_F_all = true
+F_search_may_be_called_F_all = false
+F_search_may_be_called_complete_or_global = false
+completeness_requires = "a separate analytical, interval, verified-continuation or equivalent mathematical certificate covering the admissible domain"
+P3B_alias_map = { "F_all" = "P3B_calligraphic_F_of_Tk", "F_search" = "P3B_F_enum" }
+
+[status_vocabulary.uniqueness]
+allowed = [
+  "GLOBAL_UNIQUENESS_CERTIFIED",
+  "MULTIPLE_ADMISSIBLE_ROOTS_FOUND",
+  "ONE_ROOT_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED",
+  "NO_ADMISSIBLE_ROOT_FOUND__EXISTENCE_NOT_PROVEN",
+]
+exactly_one_required_per_window = true
+GLOBAL_UNIQUENESS_CERTIFIED_requires_certificate = true
+exactly_one_root_found_status = "ONE_ROOT_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED"
+zero_roots_found_status = "NO_ADMISSIBLE_ROOT_FOUND__EXISTENCE_NOT_PROVEN"
+
+[status_vocabulary.window]
+allowed = [
+  "NOT_IDENTIFIED_BY_ANNUALIZATION",
+  "SEARCH_SET_STABLE_WITHIN_PREREGISTERED_TOLERANCE",
+]
+
+[status_vocabulary.t2]
+allowed = ["LOW_MOBILITY_APPROXIMATION__PREREGISTERED"]
+
+[status_vocabulary.forbidden]
+terms = [
+  "UNIQUE_ROOT",
+  "GLOBALLY_UNIQUE",
+  "NO_ROOT_EXISTS",
+  "NON_EXISTENCE_PROVEN",
+  "F_search_IS_F_all",
+  "COMPLETE_ROOT_SET",
+  "ALL_ROOTS_FOUND",
+]
+rule = "a forbidden term may appear only inside a statement that it is forbidden"
+
+[claim_ceiling]
+one_root_found = "the selected bridge is assumption-defined and search-defined, never data-identified"
+multiple_roots_within_tolerance = "SEARCH_SET_STABLE_WITHIN_PREREGISTERED_TOLERANCE may be claimed; global uniqueness still may not"
+multiple_roots_outside_tolerance = "NOT_IDENTIFIED_BY_ANNUALIZATION; no empirical W target is emitted"
+zero_roots_found = "existence is not proven; non-existence is not proven either"
+generator_or_principal_preference = "selects a bridge convention, not an identification theorem; alternative discovered roots and their spreads remain reportable"
+T2 = "an approximation reported as LOW_MOBILITY_APPROXIMATION__PREREGISTERED unless it independently passes the exact root residual"
+
+# --------------------------------------------------------------------------- provenance separation
+[provenance]
+pair_level_field = "lambda_ij"
+pair_level_definition = "expected labor service per observed mover or person, conditional on i -> j"
+origin_level_field = "ell_i"
+origin_level_definition = "total origin labor amount entering F_ij = ell_i * m_i * W_ij"
+lambda_and_ell_are_separate_provenance_fields = true
+lambda_may_be_inferred_from_ell = false
+ell_may_be_inferred_from_lambda = false
+consistency_condition_id = "C-LINK"
+consistency_condition = "ell_i = ell_i^movers + ell_i^stay + ell_i^unobserved"
+consistency_condition_rule = "supply all three components from one coherent frame, or declare which are unobserved and report the residual; never assume the identity by construction"
+single_coherent_frame_proven = false
+
+# --------------------------------------------------------------------------- human verification
+[human_verification]
+packet_document = "docs/data/DLH_WL_P3C_HUMAN_SOURCE_VERIFICATION_PACKET_2026_09_19.md"
+items = ["H1", "H2", "H3", "H4", "H5", "H6", "H7"]
+all_items_unresolved_at_this_issue = true
+self_promotion_allowed = false
+e3_promotion_authority = "human_owner_act_only"
+builder_may_prepare_packet = true
+builder_may_promote = false
+unresolved_item_action = "source_family_blocked_for_that_wave"
+real_bridge_may_proceed_with_unresolved_items = false
+
+# --------------------------------------------------------------------------- forbidden actions
+[forbidden]
+real_transition_matrix_bridge_execution = false
+data_download_scrape_purchase_ingestion = false
+empirical_adapter_creation = false
+fit_training_estimation = false
+hjb_kfe_ge_matlab_household = false
+full_suite = false
+source_code_tests_current_governance_or_p3b_edits = false
+pr_merge_close_successor_or_self_acceptance = false
+tolerance_relaxation_after_outcome = false
+outcome_driven_route_or_start_selection = false
