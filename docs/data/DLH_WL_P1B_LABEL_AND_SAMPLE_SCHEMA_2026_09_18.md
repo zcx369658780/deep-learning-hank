@@ -4,9 +4,9 @@ Issue: **#75 / `DLH-WL-P1B`** — design / specification only.
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
-Reviewer HOLD remediated by this revision: **`5738867875`**.
+Reviewer HOLDs remediated by this revision: **`5738867875`** and **`5739104810`**.
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
-Status: **frozen design, revision 2**. No data was downloaded, scraped, purchased or
+Status: **frozen design, revision 3**. No data was downloaded, scraped, purchased or
 ingested; no model was trained; no E0/E1 evidence was upgraded.
 
 This document is one of the four Issue #75 deliverables. Its machine-readable
@@ -219,21 +219,45 @@ Normative rules:
 
 ### 3.5 Feature fields
 
+Every model input is declared once by name and once by value, and its availability
+and transformation metadata are **keyed by feature group**, so no metadata list can
+be aligned to the wrong group.
+
 | Field | Type | Required | Semantics |
 |---|---|---|---|
-| `pair_feature_names` | list[string] | yes | frozen ordered list of pair-level feature names |
-| `node_feature_names` | list[string] | yes | frozen ordered list of node-level feature names |
-| `X_pair_ij_t` | list[float] | yes | frozen-order pair features for `(i,j,t)` |
-| `X_node_i_t`, `X_node_j_t` | list[float] | yes | frozen-order node features for origin and destination |
-| `X_time_t` | list[float] | yes | frozen-order time features |
-| `feature_availability_time` | list[string] | yes | for each feature, the period at which its value would have been known |
-| `feature_available_at_prediction_time` | bool | yes | `false` iff any used feature becomes known only after `time_id` |
+| `pair_feature_names` | list[string] | yes | frozen ordered pair-level feature names |
+| `node_feature_names` | list[string] | yes | frozen ordered node-level feature names |
+| `time_feature_names` | list[string] | yes | frozen ordered time-level feature names |
+| `static_feature_names` | list[string] | yes | frozen ordered time-invariant pair feature names |
+| `X_pair_ij_t` | list[float] | yes | pair values, in `pair_feature_names` order |
+| `X_node_i_t`, `X_node_j_t` | list[float] | yes | node values for origin and destination, in `node_feature_names` order |
+| `X_time_t` | list[float] | yes | time values, in `time_feature_names` order |
+| `X_static_ij` | list[float] | yes | static pair values, in `static_feature_names` order |
+| `pair_feature_availability_time` | list[string] | yes | availability of each entry of `pair_feature_names`, same length and order |
+| `node_feature_availability_time` | list[string] | yes | availability of each entry of `node_feature_names`, same length and order |
+| `time_feature_availability_time` | list[string] | yes | availability of each entry of `time_feature_names`, same length and order |
+| `static_feature_availability_time` | list[string] | yes | availability of each entry of `static_feature_names`, same length and order |
+| `pair_feature_transformation_log` | list[string] | yes | exact deterministic transformation applied to each pair feature, same length and order |
+| `node_feature_transformation_log` | list[string] | yes | as above for node features |
+| `time_feature_transformation_log` | list[string] | yes | as above for time features |
+| `static_feature_transformation_log` | list[string] | yes | as above for static features |
+| `feature_available_at_prediction_time` | bool | yes | `false` iff any declared input becomes known only after `time_id` |
 | `leakage_flags` | list[string] | yes | `USES_LABEL`, `USES_FUTURE_INFORMATION`, `USES_TEST_REGION_INFORMATION`, or empty |
-| `transformation_log` | list[string] | yes | exact deterministic transformation applied to each feature (for example `log`, `zscore_fit_on_train_only`) |
 
-Normative rules: features must not encode the label, the same-period realized flow,
-or any future information; any normalization statistics are fitted on training data
-only; `m` and `ell` are never features.
+Normative rules:
+
+- the four `*_feature_names` lists are frozen, and each corresponding `X_*` value
+  vector must have exactly the same length as its name list: the schema admits no
+  unnamed input and no name without a value;
+- each availability list and each transformation list must have exactly the same
+  length and order as its feature-name list, so metadata is unambiguous per group;
+- a per-feature mapping keyed by feature name is an accepted equivalent encoding,
+  provided every declared name appears exactly once with both an availability and a
+  transformation entry;
+- features must not encode the label, the same-period realized flow, or any future
+  information; normalization statistics are fitted on training data only;
+- `m` and `ell` are **never** features, and the group metadata may not imply
+  otherwise.
 
 ### 3.6 Provenance, weights and split fields
 
@@ -302,23 +326,32 @@ record:
   calendar_lag_definition: null
   outer_iteration_lag_definition: null
   support_mask_ij: true
-  zero_kind: "OBSERVED_ZERO"
+  zero_kind: "NOT_APPLICABLE"
   structural_zero_reason: null
   missing_pattern_id: null
   observed_value_present: true
-  pair_feature_names: ["log_gdp_dest", "log_gdp_origin", "log_wage_gap", "log_adj_distance", "adjacency", "log_accessibility_dest"]
+  pair_feature_names: ["log_gdp_dest", "log_wage_gap", "log_adj_distance", "adjacency", "log_accessibility_dest"]
   node_feature_names: ["log_gdp_pc", "log_wage", "log_accessibility", "urbanization"]
-  X_pair_ij_t: [2.322387720290225, 2.302585092994046, 0.011049836186584727, 0.6931471805599453, 1.0, 3.282163564104119]
+  time_feature_names: ["t_normalized"]
+  static_feature_names: ["w_ij"]
+  X_pair_ij_t: [2.322387720290225, 0.011049836186584727, 0.6931471805599453, 1.0, 3.282163564104119]
   X_node_i_t: [2.302585092994046, 2.1972245773362196, 3.1517383738807094, 0.55]
   X_node_j_t: [2.322387720290225, 2.2082744135228043, 3.282163564104119, 0.6]
   X_time_t: [0.0]
-  feature_availability_time: ["T0_STATIC", "T0_STATIC", "T-1", "T0_STATIC", "T0_STATIC", "T-1"]
+  X_static_ij: [0.5]
+  pair_feature_availability_time: ["T0_STATIC", "T-1", "T0_STATIC", "T0_STATIC", "T-1"]
+  node_feature_availability_time: ["T-1", "T-1", "T-1", "T-1"]
+  time_feature_availability_time: ["T0_STATIC"]
+  static_feature_availability_time: ["T0_STATIC"]
   feature_available_at_prediction_time: true
   leakage_flags: []
-  transformation_log: ["log", "log", "difference_of_logs", "log1p", "none", "log"]
+  pair_feature_transformation_log: ["log", "difference_of_logs", "log1p", "none", "log"]
+  node_feature_transformation_log: ["log", "log", "log", "none"]
+  time_feature_transformation_log: ["none"]
+  static_feature_transformation_log: ["none"]
   source_id: "P2_SYNTHETIC_GRAVITY_S0"
   provider: "DLH_PROJECT_INTERNAL"
-  source_version: "V2_2026_09_18"
+  source_version: "V3_2026_09_18"
   license: "SYNTHETIC_INTERNAL"
   coverage_note: "pre-registered synthetic control; method-only evidence; not empirical"
   sample_weight: null
@@ -329,15 +362,22 @@ record:
   identifiable_conditional_target: true
   available_foreign_destination_count: 4
   block_valid_row: true
-  notes: "synthetic usable target: target_available=true while label_is_direct_target=false"
+  notes: "synthetic usable target: target_available=true while label_is_direct_target=false; zero_kind=NOT_APPLICABLE because the target is nonzero"
 ```
 
-Self-consistency of this example: `label_is_direct_target = false` (the class is
-`SYNTHETIC`, so it can never be an empirical direct label) while
-`target_available = true` and `target_W_ij_t` is non-null, because the row is inside
-the support, is not `MISSING`, has an identifiable conditional target and its class
-is `SYNTHETIC`. Neither flag implies the other, and the synthetic row is not
-assigned any E0–E3 evidence level.
+Self-consistency of this example:
+
+- `label_is_direct_target = false` (the class is `SYNTHETIC`, so it can never be an
+  empirical direct label) while `target_available = true` and `target_W_ij_t` is
+  non-null, because the row is inside the support, is not `MISSING`, has an
+  identifiable conditional target and its class is `SYNTHETIC`. Neither flag implies
+  the other, and the synthetic row is assigned no E0–E3 evidence level;
+- `zero_kind = "NOT_APPLICABLE"` because the target value is **nonzero**;
+  `OBSERVED_ZERO` is **reserved** for a realized numeric zero inside the support and
+  must never be attached to a positive value;
+- the four feature-name lists and their value vectors have matching lengths
+  (`5 / 4 / 1 / 1`), and each availability and transformation list has exactly the
+  length and order of its own name list.
 
 ---
 

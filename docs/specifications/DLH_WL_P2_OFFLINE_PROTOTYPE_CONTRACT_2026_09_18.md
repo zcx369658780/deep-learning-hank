@@ -5,7 +5,8 @@ only by a later activated P2 Issue).
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
-Reviewer HOLD remediated by this revision: **`5738867875`**.
+Reviewer HOLDs remediated by this revision: **`5738867875`** (seven-item pass) and
+**`5739104810`** (identifiability/schema closure pass; configuration revision 3).
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
 Machine-readable twin: `configs/dlh_wl_p2_offline_prototype.toml`.
 Status: **frozen design; not executed.** No training ran in P1B.
@@ -96,65 +97,82 @@ observed zeros and must not be deleted or re-added after seeing results.
 
 ### 1.3 Frozen feature list (identical for S0 and S1)
 
-Declared parametric baseline vocabulary (the design space that S0 must live in):
+Fitted parametric columns (contrast-identifiable, destination/pair-varying — this is
+the entire trained parametric parameter vector, `parametric_free_parameters = 6`):
 
 ```
 1. log_gdp_dest           = log(GDP[t][j])
-2. log_gdp_origin         = log(GDP[t][i])
-3. log_wage_gap           = log(WAGE[t][j]) - log(WAGE[t][i])
-4. log_adj_distance       = log1p(DIST[i][j])
-5. adjacency              = 1{DIST[i][j] == 1}
-6. log_accessibility_dest = log(ACCESS[t][j])
-7. w_ij                   = W_IJ[i][j]                      (static)
-8. per-origin destination intercept (block-additive in the softmax)
+2. log_wage_gap           = log(WAGE[t][j]) - log(WAGE[t][i])
+3. log_adj_distance       = log1p(DIST[i][j])
+4. adjacency              = 1{DIST[i][j] == 1}
+5. log_accessibility_dest = log(ACCESS[t][j])
+6. w_ij                   = W_IJ[i][j]                      (static)
 ```
 
-Pair features (`X_pair_ij_t`, order fixed) are the first six entries above.
+Non-fitted context columns (declared, but **not** parametric MLE coefficients, because
+they are constant within an `(origin,time)` block and cancel from the masked softmax):
+
+```
+log_gdp_origin              = log(GDP[t][i])   origin-only regressor
+per_origin_destination_intercept               block-additive intercept
+```
+
+They may be used as neural/schema context only, and are never counted as parameters.
+
+Pair features (`X_pair_ij_t`, order fixed) are the five destination/pair-varying pair
+features above; the sixth fitted column, `w_ij`, is the static feature.
 Node features (`X_node_i_t`, order fixed): `log_gdp_pc`, `log_wage`,
 `log_accessibility`, `urbanization`.
 Time features (`X_time_t`): `t_normalized = t / (T - 1)`.
-Static weight feature: `w_ij`.
+Static features (`X_static_ij`): `w_ij`.
 
-Availability: every feature is available at prediction time; `feature_availability_time`
-is `T0_STATIC` / `T-1` per the schema, `leakage_flags = []`. No feature uses the
-label, the same-period realized flow, or the held-out test region.
+Availability: every feature is available at prediction time; the schema records
+availability per feature group (`T0_STATIC` / `T-1`), `leakage_flags = []`. No
+feature uses the label, the same-period realized flow, or the held-out test region.
 
 ---
 
 ## 2. Regime S0 — parametric control (nested by construction)
 
-S0 uses an **exact linear combination of the declared parametric baseline
-vocabulary**, with no raw levels and no non-vocabulary transform:
+S0 uses an **exact linear combination of the six fitted, contrast-identifiable
+parametric columns**, with no raw levels, no origin-only term and no block-additive
+intercept of its own:
 
 ```
-s0_ij,t = 1.50*log_gdp_dest + (-0.80)*log_gdp_origin + 0.60*log_wage_gap
-          + (-1.20)*log_adj_distance + 0.30*adjacency + (-0.40)*log_accessibility_dest
+s0_ij,t = 1.50*log_gdp_dest + 0.60*log_wage_gap + (-1.20)*log_adj_distance
+          + 0.30*adjacency + (-0.40)*log_accessibility_dest + 0.00*w_ij
 W_ij,t  = softmax_{k available(i,·)} s0_ik,t
 ```
 
-Frozen coefficients: `log_gdp_dest = 1.50`, `log_gdp_origin = -0.80`,
-`log_wage_gap = 0.60`, `log_adj_distance = -1.20`, `adjacency = 0.30`,
-`log_accessibility_dest = -0.40`. **No random term** (`noise_sigma = 0.0`). Realized
-flows are then computed through the accepted P1A accounting (`F = ell * P`), so
-origin and national conservation hold by construction.
+Frozen coefficients: `log_gdp_dest = 1.50`, `log_wage_gap = 0.60`,
+`log_adj_distance = -1.20`, `adjacency = 0.30`,
+`log_accessibility_dest = -0.40`, `w_ij = 0.00`. The old `log_gdp_origin` term is
+**deleted from S0** (it is block-constant and cancels from the masked softmax, so it
+could never support a "true coefficient" claim). **No random term**
+(`noise_sigma = 0.0`). Realized flows are then computed through the accepted P1A
+accounting (`F = ell * P`), so origin and national conservation hold by construction.
 
-Purpose: the low-dimensional parametric baseline family is genuinely nested by
-construction, so the pipeline must not require a neural model to win. The nesting
-is verified statically, not asserted (§11 and G1 below).
+Purpose: the low-dimensional parametric family is genuinely nested by construction,
+so the pipeline must not require a neural model to win.
 
-Representability (conditional logits up to block-additive constants, i.e. the
-softmax invariance of the masked per-origin row):
+Representability is checked in the **within-block contrast representation** — the
+conditional logits are taken as differences against each block's first allowed
+destination, which is the identified parameterization of the masked softmax:
 
 ```
-6 declared pair features + per-origin destination intercepts -> 6 x 20 + 20 columns, rank 6 for the feature block
-S0 residual, features only                : max abs 2.220446049250313e-15   (numerical precision)
-S0 residual, with block intercepts        : max abs 1.554312234475219e-14   (numerical precision)
-S0 block-centred residual                 : max abs 1.1102230246251565e-15  (numerical precision)
+fitted contrast design on TRAIN : 27 rows x 6 columns, rank 6 / 6 (full rank)
+contrast singular values        : [5.418462466, 2.710476939, 0.7452778, 0.256755503, 0.009277778, 0.00042083]
+full-universe contrast design   : rank 6 / 6
+S0 contrast residual on TRAIN   : max abs 1.1102230246251565e-15   (numerical precision)
+S0 contrast residual, all blocks: max abs 1.3322676295501878e-15   (numerical precision)
+recovered coefficients          : [1.5, 0.6, -1.2, 0.3, -0.4, 0.0] = the frozen S0 coefficients
 ```
 
-Because S0 is inside the span, the weighted MLE of the parametric family has the
-true coefficient vector as its (unique) optimum, so S0 is a correctly specified
-control case and must not lose systematically.
+Precise claim (replacing the earlier over-strong uniqueness wording): because S0 lies
+inside the span of the fitted contrast design, weighted maximum likelihood over that
+full-rank design has the true coefficient vector among its maximizers; under the
+frozen split the contrast design has full column rank `6 / 6`, so the fitted
+coefficients are identified and the S0 control case must not lose systematically.
 
 Reference values (static arithmetic, §11):
 
@@ -184,22 +202,23 @@ s1_ij,t   = core_ij,t + BETA_SQ * X2[i][j] + BETA_RELU * X3[i][j]
 ```
 
 Frozen nonlinear coefficients: `BETA_SQ = 0.05`, `BETA_RELU = 0.15`, `D_STAR = 1.0`.
-Both terms are within-block centred, so they cannot be absorbed by the
-block-additive constants of the softmax.
+Both terms are within-block centred and destination-varying, so they cannot be
+absorbed by any block-constant term.
 
-Non-nestability is pre-registered and checked statically against **that same actual
-design space** (§11, G2): regressing `S1`, `X2` and `X3` on
-`[6 declared pair features | per-origin intercepts]` leaves residuals far above
-numerical precision, so neither S1 nor either interaction is representable by the
-parametric baseline.
+Non-nestability is pre-registered and checked statically against **that same fitted
+contrast design** (§11, H7):
 
 ```
-S1 residual, features + block intercepts : max abs 0.0056595644561093505
-S1 residual, features only               : max abs 0.010014012922771653
-X2 residual, features + block intercepts : max abs 0.0907191779
-X3 residual, features + block intercepts : max abs 0.0314502493
-residual precision floor                 : 1e-12
+S1 contrast residual on TRAIN    : max abs 0.008699130793511367
+S1 contrast residual, all blocks : max abs 0.009792673243044892
+X2 contrast residual on TRAIN    : max abs 0.17058604712292663
+X3 contrast residual on TRAIN    : max abs 0.019805631317407806
+residual precision floor         : 1e-12
 ```
+
+Every residual is nine or more orders of magnitude above the precision floor, so
+neither S1 nor either interaction is representable by the six fitted parametric
+columns.
 
 Reference values:
 
@@ -224,13 +243,18 @@ agree.
 | # | Family | Definition | Free parameters | Trained |
 |---|---|---|---|---|
 | 1 | fixed baseline | support-normalized uniform prior: `W_ij,t = 1 / available_count(i)` on allowed foreign cells, `0` on the diagonal and blocked cells | 0 | no |
-| 2 | low-dimensional parametric baseline | gravity multinomial logit over the declared vocabulary: `score_ij,t = alpha_d*log_gdp_dest + alpha_o*log_gdp_origin + alpha_dw*log_wage_gap + alpha_dist*log_adj_distance + alpha_adj*adjacency + alpha_acc*log_accessibility_dest + alpha_w*w_ij + per-origin destination intercept`, masked softmax over allowed foreign cells; fitted by weighted maximum likelihood | `6 + 2 + 5 = 13` | yes |
-| 3 | small neural score mapping | per-pair MLP scoring `score_ij,t = f_theta(X_pair_ij_t, X_node_i_t, X_node_j_t, X_time_t, w_ij)` followed by masked softmax over allowed foreign cells | see capacity ceiling | yes |
+| 2 | low-dimensional parametric baseline | gravity multinomial logit over the **six fitted contrast-identifiable columns**: `score_ij,t = alpha_d*log_gdp_dest + alpha_dw*log_wage_gap + alpha_dist*log_adj_distance + alpha_adj*adjacency + alpha_acc*log_accessibility_dest + alpha_w*w_ij`, masked softmax over allowed foreign cells; fitted by weighted maximum likelihood | **`6`** | yes |
+| 3 | small neural score mapping | per-pair MLP scoring `score_ij,t = f_theta(X_pair_ij_t, X_node_i_t, X_node_j_t, X_time_t, X_static_ij)` followed by masked softmax over allowed foreign cells | see capacity ceiling | yes |
 
-The parametric family's design block has 6 columns (the declared pair features, rank
-6) plus 5 per-origin destination intercepts; the intercepts are block-additive and
-therefore leave the masked-softmax row probabilities invariant up to a constant, so
-all 20 blocks can be represented. S0 lives inside this span by construction (G1).
+The parametric estimand is the masked conditional softmax **within each
+`(origin,time)` block**, so only destination/pair-varying columns are identified.
+`log_gdp_origin` and any per-origin block-additive intercept are block-constant,
+cancel from the probabilities, and are therefore **excluded from the fitted
+parameter vector** — they are declared as contextual columns only and
+`parametric_free_parameters = 6`. In the within-block contrast representation
+(differences against each block's first allowed destination) the fitted design has
+`27` rows and `6` columns on `TRAIN` and **rank `6 / 6`**, and S0 lies inside that
+span by construction (H5/H7).
 
 Capacity ceiling (hard, frozen): `input -> Linear(16) -> ReLU -> Linear(8) -> Tanh
 -> Linear(1)`, i.e. **two hidden layers**, widths `16` and `8`, both `<= 32`, one
@@ -238,11 +262,11 @@ scalar output per pair. No GNN, attention, transformer, embedding bank, recurren
 layer, or end-to-end HANK component is authorized in the first P2 run. No
 architecture change is permitted after observing S0/S1 outcomes.
 
-Preprocessing: fixed declaration — neural inputs `log_gdp_dest`, `log_gdp_origin`,
-`log_wage_gap`, `log_adj_distance` and `log_accessibility_dest` are z-scored with
-mean and standard deviation fitted **on the training split only**; `adjacency` and
-`t_normalized` are used raw; `w_ij` is used raw. Any other transformation is
-forbidden.
+Preprocessing: fixed declaration — the neural inputs `log_gdp_dest`, `log_wage_gap`,
+`log_adj_distance` and `log_accessibility_dest` are z-scored with mean and standard
+deviation fitted **on the training split only**; `adjacency`, `w_ij` and
+`t_normalized` are used raw. Any other transformation is forbidden, and every
+transformation is recorded per feature group in the canonical schema.
 
 Loss: weighted cross entropy
 `L = - sum_blocks w_block * sum_{j allowed} W_ij,t * log W_hat_ij,t`,
@@ -332,11 +356,14 @@ other metric may be added after execution.
 are interpretable**:
 
 1. all fits ran inside the frozen budget;
-2. determinism deviation `<= 1e-12` for each family/seed;
+2. determinism deviation `<= 1e-12` for **exactly the four determinism verification
+   configurations** (both parametric fits, S0 and S1, and the neural seed-0 fits in
+   both regimes); neural seeds 1 and 2 are sensitivity replications and are **not**
+   duplicate determinism checks;
 3. row normalization, non-negativity and support diagnostics are at or below
    `1e-10` / `0` / `0` respectively;
 4. S0 and S1 results are reported for all three families without post-hoc
-   selection.
+   selection, and the excluded-block count is reported (expected `6`).
 
 There is **no rule that the neural model must beat the parametric baseline**. In S0
 a correctly specified simple baseline need not lose; in S1 the neural mapping is
@@ -409,21 +436,29 @@ Deterministic arithmetic checks performed while freezing the constants
 |---|---|
 | `m` inside `[0,1]` | `min 0.07`, `max 0.17` |
 | `ell` non-negative | `min 60.0`, `max 127.2` |
-| support counts | `[4, 4, 4, 3, 3]`, all `>= 2`; diagonal always `false` |
-| parametric design rank / columns | `6 / 6` (full column rank after the independent wage process) |
-| **G1 S0 representability** (features only) | `max abs residual 2.220446049250313e-15` → numerical precision |
-| **G1 S0 representability** (with block intercepts) | `max abs residual 1.554312234475219e-14` → numerical precision |
-| **G1 S0 block-centred residual** | `1.1102230246251565e-15` → numerical precision |
-| **G2 S1 non-nestability** (same design space + block constants) | `max abs residual 0.0056595644561093505` |
-| **G2 X2 / X3 non-nestability** | `0.0907191779` / `0.0314502493` |
+| support counts | `[4, 4, 4, 3, 3]`, all `>= 2`; conditional diagonal always `false` |
+| parametric fitted vocabulary | exactly the six contrast-identifiable columns; `log_gdp_origin` and per-origin intercepts are contextual only |
+| `parametric_free_parameters` | `6` |
+| **H5 TRAIN contrast design** | `27` rows × `6` columns, **rank `6 / 6`** |
+| contrast singular values (TRAIN) | `[5.418462466, 2.710476939, 0.7452778, 0.256755503, 0.009277778, 0.00042083]` |
+| full-universe contrast design | rank `6 / 6` |
+| **H7 S0 representability** (TRAIN contrast) | `max abs residual 1.1102230246251565e-15` → numerical precision |
+| **H7 S0 representability** (all blocks) | `max abs residual 1.3322676295501878e-15` → numerical precision |
+| recovered S0 coefficients | `[1.5, 0.6, -1.2, 0.3, -0.4, 0.0]` = the frozen coefficients |
+| **H7 S1 / X2 / X3 non-nestability** (TRAIN contrast) | `0.008699130793511367` / `0.17058604712292663` / `0.019805631317407806` |
+| S1 residual over all blocks | `0.009792673243044892` |
+| residual precision floor | `1e-12` |
+| canonical example | nonzero `target_W_ij_t = 0.477725159` with `zero_kind = NOT_APPLICABLE`; `target_available = true`, `label_is_direct_target = false` |
+| canonical feature metadata | `pair/node/time/static` name lists of length `5 / 4 / 1 / 1` with matching value vectors and per-group availability and transformation lists |
 | reference-share sums | `1.000000000000` for every reference block in both regimes and both time slices |
 | S0 reference shares | `R00 t1 [0.477725159, 0.221843778, 0.164194930, 0.136236133]`, `R00 t4 [0.477966319, 0.221836852, 0.164104853, 0.136091976]`; `R04 t1 [0.152928167, 0.196744187, 0.650327646]`, `R04 t4 [0.153106303, 0.196861942, 0.650031755]` |
 | S1 reference shares | `R00 t1 [0.479223272, 0.219532182, 0.163400470, 0.137844076]`, `R00 t4 [0.479478444, 0.219535648, 0.163308523, 0.137677385]`; `R04 t1 [0.150941617, 0.194939240, 0.654119143]`, `R04 t4 [0.151139135, 0.195055970, 0.653804895]` |
 | time variation | S0 `~2.4e-4`, S1 `~2.6e-4` absolute between `time_id 1` and `time_id 4`; **not** invariant |
-| blocked-pair accounting | `R04` and `R03` have 3 allowed destinations, so their reference vectors have 3 entries |
-| split exhaustiveness | `9 + 3 + 2 + 6 = 20` with every block in exactly one state |
-| budget arithmetic | `8` primary configs, `12` planned executions, `13` absolute attempts, `<= 1800 s` |
-| checks executed | static consistency + arithmetic checker rerun after remediation (see report) |
+| blocked-pair accounting | `R03` and `R04` have 3 allowed destinations, so their reference vectors have 3 entries |
+| split | `9 TRAIN / 3 VALIDATION / 2 TEST / 6 EXCLUDED_REFERENCE_ONLY = 20` with every block in exactly one state |
+| budget arithmetic | `8` primary configurations / `12` planned executions / `<= 13` absolute attempts / `<= 1800 s` |
+| determinism acceptance scope | exactly the four verification configurations |
+| checks executed | HOLD-2 post-remediation checker rerun after remediation (see report) |
 
 No training, no optimization, no data access and no scientific solver was invoked
 to produce these numbers.

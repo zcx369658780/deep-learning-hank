@@ -22,9 +22,10 @@ authority_marker = "DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED"
 owner_route = "DLH-WL-V1-20260918"
 activation_comment = 5731890746
 remediation_hold_comment = 5738867875
+remediation_hold2_comment = 5739104810
 operative_baseline = "4b4dc8c39d6a18b8928407308248f4020c10602c"
 design_only_in_this_issue = true
-config_revision = 2
+config_revision = 3
 route_lock_verified_static = true
 route_lock_block_sha256 = "4d2ef5c125bfbf0bbb59bbb416734485ad3df6b4c4b50b17c760d4718b555ce8"
 owner_decision_sha256 = "4b87eab29d46e8e53d5da77a7c6210cc9dbaee5b12d852379528d36c25ebd38c"
@@ -108,38 +109,56 @@ parametric_baseline_vocabulary = [
   "w_ij",
   "per_origin_destination_intercept",
 ]
+parametric_fitted_vocabulary = [
+  "log_gdp_dest",
+  "log_wage_gap",
+  "log_adj_distance",
+  "adjacency",
+  "log_accessibility_dest",
+  "w_ij",
+]
+parametric_nuisance_vocabulary = [
+  "log_gdp_origin",
+  "per_origin_destination_intercept",
+]
+parametric_nuisance_role = "BLOCK_CONSTANT_CANCELS_IN_MASKED_SOFTMAX__NOT_FITTED__NOT_A_PARAMETER"
 pair_features = [
   "log_gdp_dest",
-  "log_gdp_origin",
   "log_wage_gap",
   "log_adj_distance",
   "adjacency",
   "log_accessibility_dest",
 ]
+pair_feature_roles = { log_gdp_dest = "FITTED_PARAMETRIC", log_wage_gap = "FITTED_PARAMETRIC", log_adj_distance = "FITTED_PARAMETRIC", adjacency = "FITTED_PARAMETRIC", log_accessibility_dest = "FITTED_PARAMETRIC" }
 node_features = ["log_gdp_pc", "log_wage", "log_accessibility", "urbanization"]
+node_feature_roles = "NEURAL_AND_SCHEMA_CONTEXT_ONLY"
 time_features = ["t_normalized"]
+time_feature_roles = { t_normalized = "BLOCK_CONSTANT_PER_ORIGIN_TIME__NEURAL_AND_SCHEMA_CONTEXT_ONLY" }
 static_features = ["w_ij"]
+static_feature_roles = { w_ij = "FITTED_PARAMETRIC_AND_NEURAL_PAIR_INPUT" }
+context_only_columns = ["log_gdp_origin", "per_origin_destination_intercept"]
 pair_feature_order_frozen = true
 node_feature_order_frozen = true
 zscore_fit_on = "TRAIN_ONLY"
 zscored_features = [
   "log_gdp_dest",
-  "log_gdp_origin",
   "log_wage_gap",
   "log_adj_distance",
   "log_accessibility_dest",
 ]
-raw_features = ["adjacency", "t_normalized", "w_ij"]
+raw_features = ["adjacency", "w_ij", "t_normalized"]
 feature_availability = "ALL_FEATURES_AVAILABLE_AT_PREDICTION_TIME"
 leakage_flags = []
 m_or_ell_as_features = false
 
 [regime_s0]
 id = "S0_PARAMETRIC_CONTROL"
-description = "exact linear combination of the declared parametric baseline vocabulary; nested by construction"
-score_form = "sum over the six declared pair features of s0_coefficients, then masked softmax over allowed foreign destinations"
-s0_coefficients = { log_gdp_dest = 1.50, log_gdp_origin = -0.80, log_wage_gap = 0.60, log_adj_distance = -1.20, adjacency = 0.30, log_accessibility_dest = -0.40 }
-s0_coefficients_support = "EXACT_SUBSET_OF_PARAMETRIC_BASELINE_VOCABULARY"
+description = "exact linear combination of the six contrast-identifiable fitted parametric columns; nested by construction"
+score_form = "sum over the six fitted pair/static columns of s0_coefficients; log_gdp_origin and per-origin intercepts contribute nothing"
+s0_coefficients = { log_gdp_dest = 1.50, log_wage_gap = 0.60, log_adj_distance = -1.20, adjacency = 0.30, log_accessibility_dest = -0.40, w_ij = 0.0 }
+s0_coefficients_support = "EXACT_SUBSET_OF_FITTED_PARAMETRIC_VOCABULARY"
+s0_uses_log_gdp_origin = false
+s0_uses_block_additive_intercept = false
 s0_uses_raw_gdp_levels = false
 s0_uses_non_vocabulary_transform = false
 noise_sigma = 0.0
@@ -177,36 +196,48 @@ reference_shares_r04_destinations = [0, 1, 3]
 reference_share_sums = 1.000000000000
 
 [design_space_checks]
-parametric_design_span = "6 declared pair features + per-origin destination intercepts (block-additive softmax invariance)"
-s0_representability = "EXACT_BY_CONSTRUCTION"
-s0_max_abs_residual_features_only = 2.220446049250313e-15
-s0_max_abs_residual_with_intercepts = 1.554312234475219e-14
-s0_block_centred_max_abs_residual = 1.1102230246251565e-15
-parametric_design_rank = 6
-parametric_design_columns = 6
-s1_non_nestability = "RESIDUAL_PRESENT_AGAINST_THE_SAME_DESIGN_SPACE_AND_BLOCK_ADDITIVE_CONSTANTS"
-s1_max_abs_residual_with_intercepts = 0.0056595644561093505
-s1_max_abs_residual_features_only = 0.010014012922771653
-x2_max_abs_residual_with_intercepts = 0.0907191779
-x3_max_abs_residual_with_intercepts = 0.0314502493
+parametric_estimand = "masked conditional softmax within each (origin,time) block; only destination/pair-varying contrasts are identified"
+parametric_design_span = "the 6 fitted columns, evaluated in within-block contrast representation (differences against the block's first allowed destination)"
+contrast_reference_rule = "REFERENCE_DESTINATION_IS_THE_BLOCKS_FIRST_ALLOWED_DESTINATION"
+contrast_rows_train = 27
+contrast_columns = 6
+contrast_rank_train = 6
+contrast_rank_train_full_rank = true
+contrast_singular_values_train = [5.418462466, 2.710476939, 0.7452778, 0.256755503, 0.009277778, 0.00042083]
+contrast_rank_full_universe = 6
+s0_representability = "EXACT_BY_CONSTRUCTION_IN_THE_CONTRAST_DESIGN"
+s0_max_abs_residual_train_contrast = 1.1102230246251565e-15
+s0_max_abs_residual_full_universe_contrast = 1.3322676295501878e-15
+s0_fitted_coefficients = [1.5, 0.6, -1.2, 0.3, -0.4, 0.0]
+s1_non_nestability = "RESIDUAL_PRESENT_AGAINST_THE_SAME_FITTED_CONTRAST_DESIGN"
+s1_max_abs_residual_train_contrast = 0.008699130793511367
+s1_max_abs_residual_full_universe_contrast = 0.009792673243044892
+x2_max_abs_residual_train_contrast = 0.17058604712292663
+x3_max_abs_residual_train_contrast = 0.019805631317407806
+log_gdp_origin_in_fitted_design = false
+block_additive_intercept_in_fitted_design = false
+uniqueness_claim = "CONDITIONAL_ON_THE_CONTRAST_DESIGN_HAVING_FULL_COLUMN_RANK_6_OVER_6_ON_THE_FITTED_SPLIT"
 residual_precision_floor = 1e-12
 
 [baselines]
 family_count = 3
 families = ["fixed_support_normalized_uniform", "gravity_multinomial_logit", "small_neural_score_mapping"]
 fixed_baseline = { name = "fixed_support_normalized_uniform", free_parameters = 0, trained = false, definition = "uniform over allowed foreign destinations" }
-parametric_baseline = { name = "gravity_multinomial_logit", free_parameters = 13, trained = true, fit = "weighted maximum likelihood", design_columns = 6, intercept_parameters = 5 }
+parametric_baseline = { name = "gravity_multinomial_logit", free_parameters = 6, trained = true, fit = "weighted maximum likelihood on the contrast design", fitted_columns = 6, nuisance_terms = 0 }
 neural_baseline = { name = "small_neural_score_mapping", trained = true }
-parametric_score_terms = [
+parametric_fitted_terms = [
   "log_gdp_dest",
-  "log_gdp_origin",
   "log_wage_gap",
   "log_adj_distance",
   "adjacency",
   "log_accessibility_dest",
   "w_ij",
+]
+parametric_non_fitted_terms = [
+  "log_gdp_origin",
   "per_origin_destination_intercept",
 ]
+parametric_non_fitted_reason = "BLOCK_CONSTANT_AND_CANCELLED_BY_THE_MASKED_SOFTMAX__CONTEXT_ONLY"
 
 [architecture_neural]
 type = "mlp_pair_scorer"

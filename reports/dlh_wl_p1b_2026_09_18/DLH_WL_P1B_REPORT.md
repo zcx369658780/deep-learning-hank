@@ -4,7 +4,8 @@ Issue: **#75 / `DLH-WL-P1B`** — OPEN / ACTIVE / OPERATIVE (design / specificat
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
-Reviewer HOLD remediated by revision 2 of this deliverable: **`5738867875`**.
+Reviewer HOLDs remediated by this deliverable: **`5738867875`** (revision 2, seven
+items) and **`5739104810`** (revision 3, identifiability/schema closure).
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
 Dedicated branch: `dsh/issue-75-dlh-wl-p1b-data-schema-p2-contract-2026-09-18`.
 
@@ -35,12 +36,12 @@ HOLD and supersedes the affected numbers in sections 3-5.
 
 ## 2. Exact changed paths (4/4, allowlist-exact)
 
-| # | Path | Status | Lines | Git blob |
-|---|---|---|---|---|
-| 1 | `docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md` | created | 365 | `bb9ca93d477e50432d483a957a8d369caa6c2d9f` |
-| 2 | `docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md` | created | 342 | `7800ede094032c1c49b1b33412c581d4e865d287` |
-| 3 | `configs/dlh_wl_p2_offline_prototype.toml` | created | 270 | `20b45217f5a013fd039cca9b3f37c127851b8dc4` |
-| 4 | `reports/dlh_wl_p1b_2026_09_18/DLH_WL_P1B_REPORT.md` | created | this file | — |
+| # | Path | Status | Lines (rev 3) |
+|---|---|---|---|
+| 1 | `docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md` | created | 437 |
+| 2 | `docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md` | created | 465 |
+| 3 | `configs/dlh_wl_p2_offline_prototype.toml` | created (config revision 3) | 361 |
+| 4 | `reports/dlh_wl_p1b_2026_09_18/DLH_WL_P1B_REPORT.md` | created | this file |
 
 No source code, test, CURRENT governance, Owner decision, route lock, household
 file or historical result was modified. Staging is explicit per path (no wide
@@ -119,28 +120,32 @@ no identified choice below two available destinations, offline-only imports).
   `P_ii = 1 - m_i` rather than by the W support mask;
 - deterministic inputs `DIST`, `GDP`, `WAGE`, `URB`, `W_IJ`, `ELL`, `m`,
   `ACCESS` with declared ranges `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]`; the wage
-  process is deliberately **not** proportional to GDP so the declared parametric
-  design has full column rank (6/6);
-- identical frozen feature list of six pair features taken from the declared
-  parametric vocabulary, four node features, one time feature and one static
-  feature, all available at prediction time, no label or future-information
-  leakage, `m`/`ell` never used as features;
-- **S0** (parametric control): an exact linear combination of the declared
-  parametric vocabulary — `1.50*log_gdp_dest − 0.80*log_gdp_origin +
-  0.60*log_wage_gap − 1.20*log_adj_distance + 0.30*adjacency −
-  0.40*log_accessibility_dest` — masked-softmax shares, deterministic (no noise),
-  **nested by construction** and verified statically at numerical precision
-  (residuals `2.2e-15` / `1.6e-14` / `1.1e-15`);
+  process is deliberately **not** proportional to GDP so the fitted contrast design
+  has full column rank (6/6);
+- identical frozen feature list of five pair features, four node features, one time
+  feature and one static feature, all available at prediction time, no label or
+  future-information leakage, `m`/`ell` never used as features;
+- **S0** (parametric control): an exact linear combination of the six fitted
+  contrast-identifiable columns — `1.50*log_gdp_dest + 0.60*log_wage_gap −
+  1.20*log_adj_distance + 0.30*adjacency − 0.40*log_accessibility_dest +
+  0.00*w_ij` (no `log_gdp_origin`, no intercept) — masked-softmax shares,
+  deterministic (no noise), **nested by construction** and verified statically in
+  the within-block contrast design at numerical precision
+  (`1.11e-15` on TRAIN, `1.33e-15` over all blocks, with the frozen coefficients
+  recovered exactly);
 - **S1** (bounded nonlinear): the same corrected S0 core plus exactly two
   pre-registered within-block-centred interactions, `+0.05*X2` and `+0.15*X3`,
   with `X2 = (centred log1p(DIST))^2` and `X3 = max(0, DIST − 1)*centred log(GDP_j)`,
-  both shown **non-nestable against that same actual design space** (residuals
-  `0.0057` for S1, `0.0907` for `X2`, `0.0315` for `X3`);
+  both shown **non-nestable against that same fitted contrast design** (TRAIN
+  residuals `0.008699` for S1, `0.170586` for `X2`, `0.019806` for `X3` against a
+  `1e-12` precision floor);
 - exactly **three** baseline families: support-normalized uniform fixed baseline;
-  gravity multinomial logit (13 free parameters = 6 declared features + 2 extras +
-  5 per-origin destination intercepts, weighted MLE); small neural
-  pair-scorer with `2` hidden layers of widths `16` and `8` (both `<= 32`) followed
-  by masked row normalization. No GNN/attention/transformer/recurrent/embedding/
+  gravity multinomial logit over the **six** fitted contrast-identifiable columns
+  (weighted MLE, `parametric_free_parameters = 6`; `log_gdp_origin` and per-origin
+  block-additive intercepts are contextual only and cancel in the masked softmax);
+  small neural pair-scorer with `2` hidden layers of widths `16` and `8` (both
+  `<= 32`) followed by masked row normalization. No
+  GNN/attention/transformer/recurrent/embedding/
   end-to-end HANK component;
 - single frozen fold (`DLH_WL_P2_SPLIT_V1`) with an explicit excluded/reference
   state so all 20 blocks are accounted for: `TRAIN = t∈{1,2,3} × {R00,R01,R02}`
@@ -177,9 +182,9 @@ no identified choice below two available destinations, offline-only imports).
 
 ## 4. Machine-readable twin
 
-`configs/dlh_wl_p2_offline_prototype.toml` (revision 2) mirrors all frozen choices
-in 17 sections (`authority`, `scope`, `universe`, `inputs`, `support`, `features`,
-`regime_s0`, `regime_s1`, `design_space_checks`, `baselines`,
+`configs/dlh_wl_p2_offline_prototype.toml` (configuration revision 3) mirrors all
+frozen choices in 17 sections (`authority`, `scope`, `universe`, `inputs`, `support`,
+`features`, `regime_s0`, `regime_s1`, `design_space_checks`, `baselines`,
 `architecture_neural`, `train_protocol`, `split`, `metrics`, `budget`,
 `label_semantics_policy`, `checks_this_issue`) and carries
 `executed_in_this_issue = false`.
@@ -187,22 +192,9 @@ The contract document is the normative text; the TOML is the executable form.
 
 ## 5. Static checks performed (no training, no test-suite execution)
 
-Superseded table: the authoritative, post-remediation results are in section 9.
-The pre-remediation revision reported:
-
-| Check | Result (revision 1) |
-|---|---|
-| TOML parse (`tomllib`) | parsed, 16 sections |
-| internal arithmetic: `m`/`ell` ranges re-derived | `m ∈ [0.07, 0.17]`, `ell ∈ [60.0, 127.2]` |
-| support counts recomputed from the blocked-pair rule | `[4, 4, 4, 3, 3]` |
-| S0/S1 reference shares recomputed | reproduced, each block summing to `1.000000000000` |
-| total | 99 static checks, 0 failures |
-
-Two authoring defects were caught by these checks and fixed **before** commit in
-revision 1: an inconsistent `D_MEAN` constant (`2.0` → `2.5`), and reference share
-vectors generated without applying the blocked-pair support rule (`R04` correctly
-has only 3 allowed foreign destinations). Revision 2 additionally found and fixed
-the seven inconsistencies listed in section 9.
+Superseded table: the authoritative, post-remediation results are in sections 9 and
+10. The first revision reported 99 static checks with 0 failures, and revision 2
+reported 120 checks with 0 failures.
 
 ## 6. Zero-call counts
 
@@ -216,9 +208,10 @@ expensive scientific/model calls     = 0
 external network reads               = 0 (only GitHub reads of the live main ref and Issue #75)
 ```
 
-Only document authoring, `tomllib` parsing, plain-Python arithmetic checks, `git`
-metadata commands and the GitHub reads above were executed. No scientific module
-was imported; no household, HJB, KFE or GE code was touched or triggered.
+Only document authoring, `tomllib` parsing, plain-Python arithmetic and
+linear-algebra checks on frozen synthetic constants, `git` metadata commands and the
+GitHub reads above were executed. No scientific module was imported; no household,
+HJB, KFE or GE code was touched or triggered.
 
 ## 7. Known limitations and open items
 
@@ -239,23 +232,14 @@ was imported; no household, HJB, KFE or GE code was touched or triggered.
   `time_id 1` and `time_id 4` reference vectors are frozen in the config.
   Time variation in the *accounting* still enters mainly through `m` and `ell`;
 - the synthetic control is deliberately small (20 blocks, 18 evaluable share cells
-  per time slice / 72 total, 8 blocks usable for fitting); it is a method-validation
+  per time slice / 72 total, 9 training blocks); it is a method-validation
   device and carries no economic content;
 - inherited repository test-contract debt from Issue #73 is untouched, and no
   repository-wide green is claimed (no suite was run here).
 
-## 8. Terminal
-
-```
-DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY
-```
-
-One terminal only. No PR, merge, close, successor Issue or self-acceptance was
-performed. Independent Reviewer verification is required.
-
 ---
 
-## 9. Remediation record (Reviewer HOLD `5738867875`)
+## 9. Remediation record (Reviewer HOLD `5738867875`, revision 2)
 
 Scope: same Issue #75, same dedicated branch, no successor Issue. Only the original
 four allowlist paths were modified. All seven HOLD items were repaired **before
@@ -316,4 +300,69 @@ Only document/config authoring, `tomllib` parsing, plain-Python arithmetic and
 linear-algebra checks (stdlib + numpy on frozen synthetic constants), and `git`
 metadata commands were executed. No scientific module, household code, solver or
 network access was used.
+
+---
+
+## 10. Remediation record (Reviewer HOLD 2 `5739104810`, revision 3)
+
+Scope: same Issue #75, same dedicated branch, no successor Issue. Only the original
+four allowlist paths were modified, and the work was done **before any execution** —
+P2 has never run, so this is again pre-execution design correction rather than
+outcome-driven tuning. The universe, the neural architecture and the Owner route are
+unchanged.
+
+| HOLD 2 item | Repair |
+|---|---|
+| **H. parametric baseline must be contrast-identifiable** | the fitted parametric score now uses **only the six contrast-identifiable columns** `log_gdp_dest`, `log_wage_gap`, `log_adj_distance`, `adjacency`, `log_accessibility_dest`, `w_ij`; `log_gdp_origin` and the per-origin block-additive intercept are **removed from the fitted parameter vector** and declared as non-fitted context columns that cancel in the masked softmax; `parametric_free_parameters = 6`; the "unique optimum" wording is replaced by a precise claim conditioned on the contrast design being full rank `6 / 6` |
+| **H5. rank on the actual TRAIN contrast design** | recomputed from the repository constants: **27 rows × 6 columns, rank `6 / 6`** on TRAIN (and `6 / 6` over the full universe), singular values `[5.418462466, 2.710476939, 0.7452778, 0.256755503, 0.009277778, 0.00042083]` |
+| **H6/H7. S0 and S1 re-checked in that exact space** | S0 now excludes the origin term entirely and is an exact linear combination of the six fitted columns; in the contrast representation its residual is `1.1102230246251565e-15` on TRAIN and `1.3322676295501878e-15` over all blocks, recovering the frozen coefficients `[1.5, 0.6, -1.2, 0.3, -0.4, 0.0]`; S1/`X2`/`X3` remain non-nested against the same design with TRAIN residuals `0.008699130793511367` / `0.17058604712292663` / `0.019805631317407806` against a `1e-12` precision floor |
+| **I. canonical nonzero target had the wrong zero-kind** | the canonical synthetic example now sets `zero_kind = "NOT_APPLICABLE"` for its nonzero `target_W_ij_t = 0.477725159`, and the schema states explicitly that `OBSERVED_ZERO` is **reserved** for a realized numeric zero inside the support |
+| **J. canonical feature schema must encode every frozen input** | added explicit `time_feature_names` and `static_feature_names` plus the `X_static_ij` value vector, and replaced the two flat metadata lists with **per-group** `pair/node/time/static_feature_availability_time` and `pair/node/time/static_feature_transformation_log`, each required to match its own name list in length and order; the example now has name/value lengths `5 / 4 / 1 / 1` with matching grouped metadata; the P2 mapping/adapter obligations were updated; `m`/`ell` remain non-features |
+| **K1. report split wording** | the report now states **9 training blocks** (validation `3`, test `2`, excluded `6`) instead of the earlier, incorrect smaller fitting-block count |
+| **K2. determinism acceptance scope** | contract §7 acceptance now limits the determinism tolerance to **exactly the four verification configurations** (both parametric fits and the neural seed-0 fits), matching §5/§8, instead of the earlier blanket per-fit-family wording |
+| **K3/K4. counts and machine config** | every parametric parameter count/reference was corrected (`6`, not `13`), and the machine-readable config plus the consistency checker were updated accordingly |
+
+### 10.1 Post-remediation static checks (revision 3)
+
+```
+tomllib parse of configs/dlh_wl_p2_offline_prototype.toml : PASS (17 sections)
+HOLD-2 static/arithmetic/cross-document checker           : 83 checks, 0 failures
+```
+
+Coverage required by the HOLD, all verified: TOML parses; the actual TRAIN contrast
+design with all six fitted columns has rank `6 / 6`; the S0 contrast residual is at
+numerical precision in that exact design and recovers the frozen coefficients;
+S1/`X2`/`X3` remain non-nested against that exact design; the canonical example has a
+nonzero target with `zero_kind = NOT_APPLICABLE`; every declared pair/node/time/static
+feature has an explicit canonical value and unambiguous grouped
+availability/transformation metadata; split counts remain `9 / 3 / 2 / 6 = 20`; the
+budget remains `8` primary / `12` planned / `<= 13` attempts / `<= 1800 s`; the
+determinism acceptance scope is exactly the four verification configurations; and
+cross-document consistency passes (route id, baseline SHA, activation id, HOLD ids,
+support counts, cell counts, budget arithmetic and every reference-share value).
+
+### 10.2 Reference values after revision 3
+
+The six-column S0 change does not move any reference share (the dropped
+`log_gdp_origin` term was block-constant and the added `w_ij` coefficient is `0.00`),
+so all values remain as frozen in revision 2 and are re-verified by the checker:
+
+```
+S0  R00 t1 [0.477725159, 0.221843778, 0.164194930, 0.136236133]   R04 t1 [0.152928167, 0.196744187, 0.650327646]
+    R00 t4 [0.477966319, 0.221836852, 0.164104853, 0.136091976]   R04 t4 [0.153106303, 0.196861942, 0.650031755]
+S1  R00 t1 [0.479223272, 0.219532182, 0.163400470, 0.137844076]   R04 t1 [0.150941617, 0.194939240, 0.654119143]
+    R00 t4 [0.479478444, 0.219535648, 0.163308523, 0.137677385]   R04 t4 [0.151139135, 0.195055970, 0.653804895]
+```
+
+---
+
+## 11. Terminal
+
+```
+DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY
+```
+
+One terminal only. No PR, merge, close, successor Issue or self-acceptance was
+performed. Independent Reviewer verification is required.
+
 
