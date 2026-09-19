@@ -119,4 +119,4 @@ Owner approved: real population/employment observations are measurement anchors 
 
 ## P3E latent labor measurement architecture staged — 2026-09-19
 
-Issue #84 is **STAGED / NOT OPERATIVE**. It is docs/config-only and runs in parallel with Owner-only #83. It formalizes latent W*/ell*, the distance+economic-gap structural backbone, measurement equations, identification/regularization of labor wedges, residual-budget restrictions and STRUCTURAL_ONLY / NAIVE_DATA_PROXY / LATENT_MEASUREMENT_ADJUSTED comparisons. No real source/data read or empirical execution is authorized.
+Issue #84 is now **ACTIVE / OPERATIVE**. It is docs/config-only and runs in parallel with Owner-only #83. It formalizes latent W*/ell*, the distance+economic-gap structural backbone, measurement equations, identification/regularization of labor wedges, residual-budget restrictions and STRUCTURAL_ONLY / NAIVE_DATA_PROXY / LATENT_MEASUREMENT_ADJUSTED comparisons. No real source/data read or empirical execution is authorized.
