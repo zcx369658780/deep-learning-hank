@@ -94,4 +94,4 @@ Issue #80 is ACCEPTED / CLOSED / INTEGRATED at `a1505cf0deeaee58c0cde9dc886a16ec
 
 ## P3B bridge preregistration staged — 2026-09-19
 
-Issue #81 is published as **STAGED / NOT OPERATIVE**. It compares and freezes bridge assumptions only: timing annualization, stock-to-flow, population-to-labor-service semantics, region dictionary, m/ell provenance, weights/harmonization, leakage and sensitivity axes. No empirical data ingestion, adapter or fit is authorized before final activation.
+Issue #81 is now **ACTIVE / OPERATIVE**. It compares and freezes bridge assumptions only: timing annualization, stock-to-flow, population-to-labor-service semantics, region dictionary, m/ell provenance, weights/harmonization, leakage and sensitivity axes. Exact operative baseline and branch are named by the Reviewer final activation. No empirical data ingestion, adapter or fit is authorized in P3B.
