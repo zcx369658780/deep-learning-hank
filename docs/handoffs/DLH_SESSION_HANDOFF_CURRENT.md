@@ -35,4 +35,4 @@ Issue #77 is complete. Do not rerun it. Its ledger proves 12 completed fits but 
 
 
 ## P2C staged
-Issue #78 is STAGED / NOT OPERATIVE. After activation, DSH must first prove with a fake 12-fit ledger that the exact zero-fit aggregation/render path works end-to-end. Then it freezes pre-run code, executes science exactly once, and persists full predictions inside every FIT_COMPLETED record before proceeding to the next fit.
+Issue #78 is ACTIVE / OPERATIVE. DSH must read the final activation, then first prove with a fake 12-fit ledger that the exact zero-fit aggregation/render path works end-to-end. Then it freezes pre-run code, executes science exactly once, and persists full predictions inside every FIT_COMPLETED record before proceeding to the next fit.
