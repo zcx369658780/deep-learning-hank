@@ -90,3 +90,8 @@ Issue #80 is now **ACTIVE / OPERATIVE**. It is evidence/schema validation only: 
 ## P3A Branch B accepted — 2026-09-19
 
 Issue #80 is ACCEPTED / CLOSED / INTEGRATED at `a1505cf0deeaee58c0cde9dc886a16ec502ddae9` (Reviewer acceptance `5741207677`; integration `5741209478`). No direct annual bilateral flow target is verified. Branch B is accepted because bilateral multi-year transition and stock OD objects are sufficiently documented to justify a separately authorized bridge-design gate. E3 remains 0 and no empirical fitting is authorized. Next gate is P3B bridge/source preregistration, not training.
+
+
+## P3B bridge preregistration staged — 2026-09-19
+
+Issue #81 is published as **STAGED / NOT OPERATIVE**. It compares and freezes bridge assumptions only: timing annualization, stock-to-flow, population-to-labor-service semantics, region dictionary, m/ell provenance, weights/harmonization, leakage and sensitivity axes. No empirical data ingestion, adapter or fit is authorized before final activation.
