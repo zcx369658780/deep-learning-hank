@@ -85,3 +85,8 @@ Issue #79 / P2D is ACCEPTED / CLOSED / INTEGRATED at `8ae4561ca3b0c78ba1d4704518
 ## P3A real-data evidence gate staged — 2026-09-19
 
 Issue #80 is now **ACTIVE / OPERATIVE**. It is evidence/schema validation only: source object, timing, population, bilateral OD support, stock/flow/transition semantics, direct-vs-bridged W status, provenance/licence and feature timing/leakage. Exact operative baseline and branch are named by the Reviewer final activation. No data ingestion or empirical fitting is authorized in P3A.
+
+
+## P3A Branch B accepted — 2026-09-19
+
+Issue #80 is ACCEPTED / CLOSED / INTEGRATED at `a1505cf0deeaee58c0cde9dc886a16ec502ddae9` (Reviewer acceptance `5741207677`; integration `5741209478`). No direct annual bilateral flow target is verified. Branch B is accepted because bilateral multi-year transition and stock OD objects are sufficiently documented to justify a separately authorized bridge-design gate. E3 remains 0 and no empirical fitting is authorized. Next gate is P3B bridge/source preregistration, not training.
