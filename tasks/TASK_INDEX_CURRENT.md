@@ -36,6 +36,6 @@ Issue #83 仍为 human verification gate；A/B/C/D/E Owner choices 已记录于 
 
 
 Parallel Builder Issue：#84 / `DLH-WL-P3E: latent labor measurement architecture freeze`。
-状态：**OPEN / STAGED / NOT OPERATIVE**。
+状态：**OPEN / ACTIVE / OPERATIVE**。
 publication baseline：`7012bb5eb7ed05b0c85fb4835a350773e9ac9c6f`。
 #84 仅冻结 latent W*/ell*、structural distance+economic-gap backbone、measurement equations、wedge identification、residual budget 与 S0/S1/S2 comparison；不得读取真实数据，不得替代 #83 H1–H4 人工核验。
