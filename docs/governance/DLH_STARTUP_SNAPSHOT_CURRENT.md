@@ -45,3 +45,8 @@ ONE MATLAB-faithful selected generator governs solve/validation；Dual-Q 禁止�
 ## P2 current gate — 2026-09-19
 
 P1B accepted/integrated at `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`. Issue #76 / P2A is now **ACTIVE / OPERATIVE** for the first frozen method-only synthetic execution; exact operative baseline and branch are named by the final activation comment. P2A may train only the frozen small neural prototype; it cannot alter the P1B contract/config or use real data/HJB/KFE/GE/MATLAB.
+
+
+## P2A adjudicated — 2026-09-19
+
+Issue #76 is CLOSED with accepted terminal `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED`, integrated at `8c5a9a7f474ce1feac3c63e449e07753141d8984`. The published metrics and neural non-gain are observational only; there is no accepted P2 PASS because the absolute fit-attempt ceiling was breached (minimum proven 36, Builder-reported 48 vs ceiling 13). Next gate is a clean replication with immutable pre-run scientific code and no science rerun on reporting failure.
