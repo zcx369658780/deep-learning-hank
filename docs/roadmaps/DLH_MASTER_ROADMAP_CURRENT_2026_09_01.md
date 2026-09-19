@@ -79,9 +79,9 @@ P4/5 分别报告 ML、HJB、KFE/operator、GE/accounting 误差。资本 B/A �
 
 ## 7. 当前状态与下一交付
 
-已完成：Owner 路线确认、P0 三端同步、Issue #74 / P1A。P1A accepted/integrated 于 `d34f00a31e8d23dd8134b9e9ba1be0319e7901bc`，建立家庭依赖证据登记与独立离线 W/P/F 核算接口。
+已完成：Owner 路线确认、P0 三端同步、Issue #74 / P1A、Issue #75 / P1B。P1B accepted/integrated 于 `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`；P1 已完成，数据/标签 schema 与首次 P2 method-only synthetic experiment contract 已冻结。
 
-P1 剩余下一任务为 P1B：冻结数据/标签语义、canonical offline sample schema、简单 baseline 与 P2 实验合同。现实 OD 标签仍按现有证据分级，不因缺口恢复 solver 主线。真实训练由后续明确 Issue 授权。
+下一 gate 为 P2 首次小型离线实验：严格执行已冻结 S0/S1、fixed/parametric/small-neural 三基准、split、metrics 与预算；不因结果修改合同。现实 OD 标签仍按现有证据分级，不因缺口恢复 solver 主线。
 
 每个新任务注明 route ID、具体问题、预算、数据性质、allowed paths、产物与停止条件。Reviewer 可完善这些实施细节，不得改变锁定核心。
 
