@@ -32,3 +32,7 @@ Issue #77 is ACTIVE / OPERATIVE. DSH must read the final activation, then build 
 
 ## P2B gate-fail accepted
 Issue #77 is complete. Do not rerun it. Its ledger proves 12 completed fits but cannot reconstruct predictions or final metrics. The next replication must make FIT_COMPLETED itself the durable scientific artifact: full predictions and sufficient fitted state are persisted/fsynced per fit, so all later aggregation/rendering is zero-fit recoverable.
+
+
+## P2C staged
+Issue #78 is STAGED / NOT OPERATIVE. After activation, DSH must first prove with a fake 12-fit ledger that the exact zero-fit aggregation/render path works end-to-end. Then it freezes pre-run code, executes science exactly once, and persists full predictions inside every FIT_COMPLETED record before proceeding to the next fit.
