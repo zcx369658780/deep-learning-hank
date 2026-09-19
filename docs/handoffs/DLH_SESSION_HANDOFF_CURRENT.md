@@ -40,3 +40,7 @@ Issue #78 is ACTIVE / OPERATIVE. DSH must read the final activation, then first 
 
 ## P2C gate-fail accepted
 Issue #78 is complete. Do not rerun it. The next replication must retain the accepted durable per-fit-output protocol and add only the missing neural preprocessing state propagation: the runner must set `universe._design_matrix = design` before any neural fit and prove pre-run, without optimization, that the final prediction path reads that same TRAIN-z-scored design.
+
+
+## P2D staged
+Issue #79 is STAGED / NOT OPERATIVE. After activation, DSH must prove pre-run with zero optimizer steps that the accepted final neural prediction path reads the same TRAIN-z-scored design used for training, and that clearing the design state reproduces a materially different raw fallback. Then freeze code and execute science exactly once under the retained P2C durability protocol.
