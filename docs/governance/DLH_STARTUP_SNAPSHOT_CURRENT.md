@@ -100,3 +100,8 @@ Issue #81 is now **ACTIVE / OPERATIVE**. It compares and freezes bridge assumpti
 ## P3B bridge candidate accepted — 2026-09-19
 
 Issue #81 is ACCEPTED / CLOSED / INTEGRATED at `1819b0a5a36b2a8ffde3641c711892df2cdcede7` (Reviewer acceptance `5741469418`; integration `5741471600`). A T-family bridge candidate is preregisterable, but no empirical bridge is executable yet. Before any data-side implementation, P3C must freeze numerical tolerances/search semantics and the claim ceiling for stochastic-root uniqueness, plus the human source/schema verification checklist.
+
+
+## P3C execution-readiness freeze staged — 2026-09-19
+
+Issue #82 is published as **STAGED / NOT OPERATIVE**. It freezes Reviewer-side thresholds, numerical root-search semantics, uniqueness/non-existence claim ceilings and the E3 human source-verification packet before any real transition matrix is executed. No bridge/data/model execution is authorized before final activation.
