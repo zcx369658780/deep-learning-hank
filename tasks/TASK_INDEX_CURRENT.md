@@ -1,7 +1,7 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P2B_GATE_FAIL_ACCEPTED__ISSUE_78_P2C_STAGED_NOT_OPERATIVE`。
+状态：`P2B_GATE_FAIL_ACCEPTED__ISSUE_78_P2C_ACTIVE_OPERATIVE`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
 Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
@@ -14,9 +14,9 @@ Issue #77 / P2B：clean-replication GATE FAIL EVIDENCE ACCEPTED / CLOSED / INTEG
 
 下一科学 Builder Issue：
 - #78 / `DLH-WL-P2C: durable per-fit-output replication of frozen synthetic prototype`
-- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- 状态：**OPEN / ACTIVE / OPERATIVE**
 - publication baseline：`f6390ccea1eee27fb6528c3ba2572551a7e8dd06`
-- final activation comment 发布前不得执行。
+- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
 
 #78 保持 #75 scientific design 不变，但把每个 FIT_COMPLETED 变成可零-fit恢复的完整科学记录：
 - full predictions 持久化 + fsync；
