@@ -64,4 +64,4 @@ Issue #77 is CLOSED with accepted terminal `DLH_WL_P2B_CLEAN_REPLICATION__GATE_F
 
 ## P2C durable-output replication staged — 2026-09-19
 
-Issue #78 is published as **STAGED / NOT OPERATIVE**. It preserves the #75 frozen scientific design and accepted P2 scientific module. The new durability rule is that every FIT_COMPLETED ledger record must persist the full prediction tensor and sufficient FitOutcome metadata, fsynced before the next fit begins; all later metrics/constraints/rendering must be reconstructible with zero optimizer steps. No execution before Reviewer final activation.
+Issue #78 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific design and accepted P2 scientific module. The new durability rule is that every FIT_COMPLETED ledger record must persist the full prediction tensor and sufficient FitOutcome metadata, fsynced before the next fit begins; all later metrics/constraints/rendering must be reconstructible with zero optimizer steps. Exact operative baseline and branch are named by the Reviewer final activation.
