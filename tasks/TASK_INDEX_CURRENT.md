@@ -27,3 +27,9 @@ Current active gate：Owner/human verification of H1–H7 primary-source evidenc
 Owner/human review Issue：#83 / `DLH-WL-P3D: Owner human/source verification gate H1–H7`。
 状态：**OPEN / OWNER-HUMAN REVIEW ONLY / NO BUILDER AUTHORITY**。
 完成规则：Owner/Reviewer 对 H1–H7 分别记录 primary-source provenance 与决策 token；在此之前 DSH 不得执行 P3 bridge、adapter 或 empirical fit。
+
+
+Owner route amendment active：`DLH_OWNER_ROUTE_AMENDMENT_LATENT_LABOR_MEASUREMENT_2026_09_19`。
+核心：真实人口/就业数据 = measurement anchors；latent W*/ell* 由 structural backbone + measurement layer 联合约束；保留 distance + economic-gap 流动骨架；政府投资 residual 不得与 labor wedges 同时无限自由。
+Issue #83 仍为 human verification gate；A/B/C/D/E Owner choices 已记录于 comment 5742312556。
+允许并行创建一个 docs/config-only Builder Issue，用于冻结 latent labor measurement architecture；不得读取/拟合真实数据，不替代 #83 的 H1–H4 人工核验。
