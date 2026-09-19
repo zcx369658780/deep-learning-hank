@@ -96,3 +96,6 @@ P2B clean replication respected the single-invocation rule but ended Gate Fail a
 
 
 P2C fixed the durability layer but exposed one isolated scientific runner defect: the neural optimizer received the TRAIN-z-scored design while final prediction fell back to raw_design because the runner omitted `universe._design_matrix = design`. The next bounded replication changes no scientific design; it retains the accepted P2C durability machinery and repairs only this preprocessing-state propagation, with a dedicated zero-fit pre-run prediction-path test.
+
+
+P2 method gate completed at Issue #79. The accepted synthetic result is deliberately negative: the small neural mapping does not outperform the correctly specified parametric baseline on S0/S1, and no tuning is performed. P3 now begins with an evidence gate, not training: real source semantics, timing, population, origin/destination support, direct-vs-bridged W target status, provenance/licence and leakage availability must be verified before any empirical fitting or HANK coupling.
