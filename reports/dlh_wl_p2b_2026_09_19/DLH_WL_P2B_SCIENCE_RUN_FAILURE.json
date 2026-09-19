@@ -1,0 +1,83 @@
+{
+  "durable_evidence": {
+    "ledger_blob_sha1": "0e044cd2ec831f20e5598f0b068ccb4c78ebea82",
+    "ledger_records": 24,
+    "ledger_relpath": "reports/dlh_wl_p2b_2026_09_19/DLH_WL_P2B_ATTEMPT_LEDGER.jsonl",
+    "ledger_sha256_lf": "3920DB9C4EFF4CB346139DE2C1EDA0975679A1457743472C7428D329254773A5",
+    "ledger_untouched_after_failure": true,
+    "raw_results_exists": false,
+    "raw_results_relpath": "reports/dlh_wl_p2b_2026_09_19/DLH_WL_P2B_RAW_RESULTS.json"
+  },
+  "experiment_id": "EXP-20260919-DLH-WL-P2B-001",
+  "failure": {
+    "cause": "the harness passed the per-fit metrics mapping (fit_key -> {split: metrics}) to a helper written to consume {split: metrics} entries; the science helper was verified by unit tests but the post-fit aggregation call path was not exercised by any zero-fit test before the freeze",
+    "classification": "harness/accounting defect, not a scientific or environment failure",
+    "component": "scripts/run_dlh_wl_p2b_replication_science.py",
+    "configuration_or_results_tuned": false,
+    "exception": "KeyError: 'metrics'",
+    "function": "_constraint_diagnostics",
+    "raw_results_written": false,
+    "recoverable_in_process": false,
+    "scientific_outcome_consulted": false,
+    "stage": "post-fit harness accounting, after all 12 fits had completed",
+    "why_not_recovered": "Issue #77 forbids any second science invocation and any science retry after the first optimizer step; a fix-and-rerun would also reuse already-attempted fits, which the #76 adjudication rejected"
+  },
+  "fits": {
+    "all_twelve_fits_completed": true,
+    "attempt_indices_completed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "attempt_indices_started": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "attempts_completed": 12,
+    "attempts_failed": 0,
+    "attempts_started": 12,
+    "plan": "12 frozen attempts (2 parametric primaries, 2 parametric verification repeats, 6 neural primaries, 2 neural seed-0 verification repeats)"
+  },
+  "forbidden_actions_respected": {
+    "full_suite": false,
+    "hjb_kfe_ge_matlab": false,
+    "real_data": false,
+    "science_retry": false,
+    "scientific_design_change": false,
+    "second_execute_science": false,
+    "tuning_or_extra_seed": false
+  },
+  "issue": 77,
+  "pre_run_freeze_sha": "1f7c802784f9a07a98bf4b0dab8de029fd3aad8b",
+  "record_kind": "SCIENCE_RUN_FAILURE",
+  "recorded_utc": "2026-09-19T07:40:18.820774+00:00",
+  "science_invocations_attempted": 1,
+  "science_invocations_completed": 0,
+  "science_retries": 0,
+  "second_science_invocation_attempted": false,
+  "structural_remedy_evidence": {
+    "builder_authority_to_act": false,
+    "note": "the 12 fits were executed and durably recorded, so a faithful completion of this replication would require reusing these already-attempted fits rather than running 13+ attempts; the harness cannot currently do that because it evaluates constraints in-process",
+    "proposed_direction_for_reviewer_only": "a successor or amendment that (a) treats the durable ledger as the attempt record and (b) evaluates constraints/metrics in a zero-fit accounting path over persisted per-fit predictions; no design change is required and no science rerun is needed"
+  },
+  "terminal": "DLH_WL_P2B_CLEAN_REPLICATION__GATE_FAIL__NO_SCIENCE_RERUN_AUTHORIZED"
+}
