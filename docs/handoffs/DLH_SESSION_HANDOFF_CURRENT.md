@@ -56,3 +56,7 @@ Issue #80 is ACTIVE / OPERATIVE. DSH must read the final activation and audit re
 
 ## P3A complete — Branch B
 Issue #80 is accepted and integrated. Do not build a real adapter or fit W yet. P3B must first preregister the exact bridge family/source and its assumptions, region dictionary, weights/harmonization, m/ell provenance requirements, timing/leakage rules and sensitivity design. Branch B is a routing result only.
+
+
+## P3B staged
+Issue #81 is STAGED / NOT OPERATIVE. After activation, DSH must compare source-specific bridge families and freeze assumptions/failure conditions/sensitivity requirements, including the population-to-labor-service semantic bridge. No real adapter or fit may be started.
