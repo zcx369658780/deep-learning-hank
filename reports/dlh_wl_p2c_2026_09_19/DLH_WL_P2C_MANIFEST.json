@@ -1,0 +1,83 @@
+{
+  "artifact_hashes": {
+    "ledger_blob_sha1": "0ce19f8485e5bdad2f8fe36d81a2ec8495ab9560",
+    "ledger_relpath": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_ATTEMPT_LEDGER.jsonl",
+    "ledger_sha256_lf": "C23DC03A4AA7288BD51CE69EBD4CA5B8D133B35C4B8967A6EB58272A506D50FE",
+    "raw_results_blob_sha1": "7ac20faca07182c58c3ad90507d7401b52e4b62f",
+    "raw_results_relpath": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_RAW_RESULTS.json",
+    "raw_results_sha256_lf": "A7C05998E15FFB8DBBF895EA5F71EE65437F142107171C81E0DB2F58F896D2BD",
+    "report_relpath": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_REPORT.md",
+    "report_sha256_lf": "CCA0C622A83FCF8ADD92C0C4C177972AA1F2D78442A7EE79FE15694C9C2B57F8",
+    "results_blob_sha1": "fccd4ca5162afcf027ccfb7675cbfa1bce3efc3a",
+    "results_canonical_sha256": "159F4828BB9408183723F595B3A428ED45F20F7C9800EB319E5255C2CB937D47",
+    "results_relpath": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_RESULTS.json",
+    "science_seal_relpath": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_SCIENCE_SEAL.json",
+    "science_seal_sha256_lf": "44CDF0436C6C26235BE1329042008390E34CD4CFCCF41CC1DEFEF546C8126649"
+  },
+  "declarations": {
+    "config_or_contract_mutated": false,
+    "data_download_scrape_purchase": false,
+    "extra_fit_or_second_science_invocation": false,
+    "full_repository_suite_runs": 0,
+    "household_or_hjb_kfe_ge_matlab_calls": 0,
+    "ledger_modified_by_renderer": false,
+    "real_data_used": false,
+    "renderer_calls_any_fitter": false,
+    "scientific_module_mutated": false,
+    "tuning_or_extra_seed": false
+  },
+  "experiment_id": "EXP-20260919-DLH-WL-P2C-001",
+  "frozen_inputs_read_only": [
+    "configs/dlh_wl_p2_offline_prototype.toml",
+    "docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md",
+    "docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md",
+    "src/deep_learning_hank/regional/labor_destination.py",
+    "src/deep_learning_hank/regional/labor_destination_p2.py"
+  ],
+  "identity_policy": "RESULTS.json and MANIFEST.json are serialised with indent=2 and sort_keys=True and end with one LF. The canonical results content is RESULTS.json serialised WITHOUT the two digest fields results_canonical_sha256 and manifest_canonical_sha256; its SHA-256 is recorded as results_canonical_sha256 inside the results file and as hashes.results_canonical_content in the manifest, together with the git blob SHA-1 of those canonical bytes. The canonical manifest content is MANIFEST.json serialised in full, because the manifest never records a hash of itself; its SHA-256 is recorded only inside RESULTS.json as manifest_canonical_sha256. The chain is acyclic: each digest is a function of content that does not contain it.",
+  "issue": 78,
+  "provenance_chain": {
+    "frozen_config_blob_sha1": "bb5dbbd0746e9d92874f94b03a1d54f3d382c4a8",
+    "frozen_config_relpath": "configs/dlh_wl_p2_offline_prototype.toml",
+    "frozen_contract_blob_sha1": "99b62bd8cc294e5518b3548ce7f6098784ccd561",
+    "frozen_contract_relpath": "docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md",
+    "frozen_schema_blob_sha1": "862debb5aacb47fc5de906127dca10690324965c",
+    "frozen_schema_relpath": "docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md",
+    "issue_78_operative_baseline": "d49ad061ce39c11d5202fb92a0bce5942c4c6bd2",
+    "issue_78_publication_baseline": "f6390ccea1eee27fb6528c3ba2572551a7e8dd06",
+    "p1a_module_blob_sha1": "7522dd9331504bd64f2ac933ed3c010605bc097d",
+    "p1a_module_relpath": "src/deep_learning_hank/regional/labor_destination.py",
+    "pre_run_freeze_role": "executed science code identity",
+    "pre_run_freeze_sha": "ae4115f20bb3bc7f43ab79d9d0ccf65b62fa2c7d",
+    "renderer_blob_sha1": "9c465f019eca9c4b6199ea7bd1937926f7f7c3b3",
+    "renderer_relpath": "scripts/render_dlh_wl_p2c_replication.py",
+    "science_runner_blob_sha1_at_render": "0a326507f433000a633dcbaa61775db342bac296",
+    "science_runner_relpath": "scripts/run_dlh_wl_p2c_replication_science.py",
+    "scientific_module_blob_sha1": "b1f2cd043605c511e4965254657d12306170609b",
+    "scientific_module_relpath": "src/deep_learning_hank/regional/labor_destination_p2.py"
+  },
+  "recorded_utc": "2026-09-19T08:36:39.330331+00:00",
+  "science_protocol": {
+    "completed_fits": 12,
+    "failed_fits": 0,
+    "fits_performed_by_renderer": 0,
+    "optimizer_steps_performed_by_renderer": 0,
+    "planned_fits": 12,
+    "render_only_invocations": 1,
+    "science_invocations": 1,
+    "science_retries": 0,
+    "started_fits": 12,
+    "zero_fit_publication": true,
+    "zero_science_reruns": true
+  },
+  "terminal": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__PASS__P2_METHOD_GATE_COMPLETE",
+  "zero_fit_recovery": {
+    "authoritative_source": "reports/dlh_wl_p2c_2026_09_19/DLH_WL_P2C_ATTEMPT_LEDGER.jsonl",
+    "fits_performed_here": 0,
+    "fitters_called_here": 0,
+    "ledger_modified_by_renderer": false,
+    "optimizer_steps_performed_here": 0,
+    "recovery_object": "PERSISTED_FIT_COMPLETED_PREDICTION_TENSORS",
+    "statement": "This render stage performs zero fits and zero optimizer steps. Every number it publishes is recomputed from the persisted FIT_COMPLETED prediction tensors of the durable attempt ledger plus the frozen inputs. No fitter, no optimizer, no training replay and no seed is used, and the ledger and science seal are never modified."
+  }
+}
