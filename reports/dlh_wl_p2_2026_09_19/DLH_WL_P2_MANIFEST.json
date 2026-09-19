@@ -1,41 +1,204 @@
 {
-  "experiment_id": "EXP-20260919-DLH-WL-P2A-001",
-  "issue": 76,
-  "generated_utc": "2026-09-19T06:35:38.403309+00:00",
-  "exact_command": "PYTHONPATH=D:\\dlh-issue76-p2a\\src python -B scripts/run_dlh_wl_p2_offline_prototype.py --execute",
+  "attempt_counts": {
+    "absolute_attempt_ceiling": 13,
+    "attempt_ceiling_breach": true,
+    "attempts_logged_in_published_run": 12,
+    "completed_fits_builder_reported_total": 48,
+    "completed_fits_minimum_proven_total": 36,
+    "engineering_retries_authorized_and_consumed": 0,
+    "extra_fits_outside_ledger": 36,
+    "hyperparameter_search_runs": 0,
+    "planned_fit_executions": 12,
+    "primary_fit_configurations": 8,
+    "seed_search_runs": 0,
+    "unauthorized_repeated_executions": 3,
+    "within_attempt_ceiling": false
+  },
   "code": {
+    "baseline": "fa00cdddf10f14bb55d651ff610668d1ac748234",
+    "baseline_note": "Issue #76 operative baseline; the frozen #75 config separately records its own P1B-era publication baseline 4b4dc8c39d6a18b8928407308248f4020c10602c",
     "branch": "dsh/issue-76-dlh-wl-p2a-offline-synthetic-prototype-2026-09-19",
     "commit": "fab19a3686778eac437b12c62216f1153edc247c",
-    "baseline": "4b4dc8c39d6a18b8928407308248f4020c10602c",
+    "commit_recorded_at_run": "fab19a3686778eac437b12c62216f1153edc247c",
+    "commit_recorded_at_run_note": "recorded by the manifest writer as a best-effort HEAD at artifact-write time; the scientific execution happened with the working tree uncommitted",
     "dirty_paths": [
       "M reports/dlh_wl_p2_2026_09_19/DLH_WL_P2_REPORT.md",
       " M reports/dlh_wl_p2_2026_09_19/DLH_WL_P2_RESULTS.json",
       " M scripts/run_dlh_wl_p2_offline_prototype.py"
-    ]
+    ],
+    "final_candidate": "9e4765c57bae385316e9492b11d9310de76ce185",
+    "runner_blob_at_final_candidate": "b10939fbbc7ffa76c27f4134c59a0acbb5a16455",
+    "runner_blob_during_run": "8d13c150d503e34b6e4c964ee710fb15af02b32a",
+    "runner_blob_remediation": "38c404d3634d257fca930b9d8b31fa0673b3465c",
+    "runner_remediation_change_scope": "documentation/accounting text only: the cross-invocation attempt-accounting requirement was added as a manifest field; the scientific module, the frozen config and every fit/optimizer code path are untouched and were not executed"
   },
-  "hashes": {
-    "policy": "SHA-256 over LF-normalised bytes (platform independent)",
-    "code_module": "C0AD7B4141C5C4DC29E03047DBD5B743874D4C076B62854577BDE57FEDD4437B",
-    "runner": "1D836840442269D92584A422C0AA86D347FB09FCEDD26B797DA8DB133715D720",
-    "tests": "17281FC6CCBBDFFBB6C15DEC7809B8E89624BD1C1F18B55DDA7BD93B29984A76",
-    "config": "B4728EC1DB71D682D9C0DD96B17B039FCB7BFDCCDFFB0803FABDB216DFA60FD4",
-    "contract": "3DF8FA01FCBC2F3B7BF6F1D2FFEEA5AF236AC47BBC9D170B04CC175A17AE2ACF",
-    "schema": "98AB3BBF9130F730AAC119F998BBE9AFA305C0BE9C39A7450EA5BC42EF413D00",
-    "report": "3EC35ED210C60A3ED5385B238337A6CEB31373FB5D3718E8592FC7DF4871442A",
-    "results_canonical_content": "AFF7995157BF155A1D87963CF4F82DFD96FA67E1442FE5484C071198A5550474"
+  "declarations": {
+    "accepted_p2_pass_claimed": false,
+    "additional_execute_invocations_after_first_fit": 3,
+    "data_download_scrape_purchase": false,
+    "full_repository_suite_runs": 0,
+    "gate_failed": true,
+    "ge_calls": 0,
+    "hjb_calls": 0,
+    "household_or_HA_coupling": false,
+    "kfe_calls": 0,
+    "matlab_calls": 0,
+    "real_data_used": false,
+    "selected_q_work": false,
+    "successor_issue_created": false
   },
+  "exact_command": "PYTHONPATH=D:\\dlh-issue76-p2a\\src python -B scripts/run_dlh_wl_p2_offline_prototype.py --execute",
+  "execution_provenance": {
+    "attempt_ledger_all_invocations": [
+      {
+        "evidence": "builder session record; consistent with the manifest addendum written during attempt 4",
+        "failed_at": "report rendering (KeyError: terminal)",
+        "fits_completed": 12,
+        "fits_retained": 0,
+        "invocation": 1,
+        "kind": "execute"
+      },
+      {
+        "evidence": "builder session record; consistent with the manifest addendum written during attempt 4",
+        "failed_at": "manifest hash self-consistency (results hash recorded before finalisation)",
+        "fits_completed": 12,
+        "fits_retained": 0,
+        "invocation": 2,
+        "kind": "execute"
+      },
+      {
+        "evidence": "builder session record; named in the completed-run provenance note of the manifest",
+        "failed_at": "raw CRLF-sensitive artifact hashing (platform-dependent identity chain)",
+        "fits_completed": 12,
+        "fits_retained": 0,
+        "invocation": 3,
+        "kind": "execute"
+      },
+      {
+        "evidence": "the published RESULTS.json ledger (12 executions), MANIFEST hashes and the completion comment 5739969155",
+        "failed_at": null,
+        "fits_completed": 12,
+        "fits_retained": 12,
+        "invocation": 4,
+        "kind": "execute"
+      }
+    ],
+    "code_provenance": {
+      "config_declared_baseline_note": "the frozen #75 config carries the P1B-era baseline it was published against; it is not the Issue #76 operative baseline",
+      "config_declared_operative_baseline": "4b4dc8c39d6a18b8928407308248f4020c10602c",
+      "final_candidate": "9e4765c57bae385316e9492b11d9310de76ce185",
+      "identity_evidence": "MANIFEST.json recorded runner LF SHA-256 8B993480CBCF245F2929DCEA52A33FC08F61A925848383AAC331D2FF8B8CE5D6 and code-module LF SHA-256 C0AD7B4141C5C4DC29E03047DBD5B743874D4C076B62854577BDE57FEDD4437B when the published artifacts were written; the runner LF SHA-256 of the pre-remediation committed blob 8d13c150 is exactly 8B993480CBCF..., confirming the runner used for the published run is the runner committed at fab19a36, while the final candidate carries runner blob b10939fb",
+      "operative_baseline_issue76": "fa00cdddf10f14bb55d651ff610668d1ac748234",
+      "runner_blob_at_final_candidate": "b10939fbbc7ffa76c27f4134c59a0acbb5a16455",
+      "runner_blob_changed_after_run": true,
+      "runner_blob_during_published_run": "8d13c150d503e34b6e4c964ee710fb15af02b32a",
+      "runner_change_scope": "artifact hashing policy and accounting/reporting only; no scientific code path was modified and no fit was re-run afterwards",
+      "scientific_module_blob": "b1f2cd043605c511e4965254657d12306170609b",
+      "scientific_module_identical_between": [
+        "fab19a3686778eac437b12c62216f1153edc247c",
+        "9e4765c57bae385316e9492b11d9310de76ce185"
+      ],
+      "scientific_module_verified_identical": true,
+      "scientific_run_commit_note": "recorded by the manifest writer at artifact-write time as a best-effort HEAD; the scientific execution itself happened with the working tree uncommitted, so this commit is not independent proof that the candidate code was the executed code",
+      "scientific_run_commit_recorded_by_manifest": "fab19a3686778eac437b12c62216f1153edc247c",
+      "tests_blob": "a6bb7a9facd5a482234b16ca5235a832d4a61f7b",
+      "tests_blob_identical_between": [
+        "fab19a3686778eac437b12c62216f1153edc247c",
+        "9e4765c57bae385316e9492b11d9310de76ce185"
+      ]
+    },
+    "completed_fits": {
+      "absolute_attempt_ceiling": 13,
+      "builder_reported_basis": "4 --execute invocations x 12 completed fits each (completion comment 5739969155 and the builder session record)",
+      "builder_reported_total": 48,
+      "ceiling_exceeded_under_every_reading": true,
+      "minimum_proven_basis": "2 earlier failed invocations x 12 completed fits (recorded in the manifest addendum written during the final invocation) + 1 published invocation x 12 completed fits (published RESULTS.json ledger) = 36",
+      "minimum_proven_total": 36,
+      "note": "a completed fit remains a fit attempt even when its output was discarded, so 'not retained', 'not used' and 'byte-identical' do not remove it from the ledger",
+      "planned_fit_executions": 12
+    },
+    "execute_invocations": {
+      "count_builder_reported": 4,
+      "count_builder_session_record": 4,
+      "count_proven_from_durable_artifacts": 1,
+      "discrepancy_statement": "Durable repository evidence proves one published --execute invocation with a completed 12-fit ledger (the published RESULTS.json). Before it, the manifest addendum written during the final invocation records two earlier failed --execute invocations with 12 completed fits each. The builder session record and completion comment 5739969155 report four --execute invocations in total (the fourth being the published one). No durable per-invocation log exists for the earlier invocations, so the exact number is not recoverable from artifacts alone and the 3-vs-4 statement is recorded here as unresolved rather than guessed.",
+      "unresolved_discrepancy": true
+    },
+    "gate_authority": "Issue #76 sections 4-5 and the Reviewer adjudication comment 5740021294",
+    "gate_failed_because": "the pre-registered absolute fit-attempt ceiling of 13 was exceeded by repeated --execute invocations after the first scientific fit began",
+    "gate_status": "GATE_FAIL",
+    "metrics_status": {
+      "classification": "OBSERVATIONAL_OUTPUT_FROM_PROTOCOL_GATE_FAILED_RUN",
+      "confirmatory_p2_pass_allowed": false,
+      "statement": "the published metrics, constraint diagnostics and determinism deviations are preserved exactly as observed; they are observational output of a run whose execution gate failed and no accepted P2 PASS inference may be drawn from them",
+      "values_preserved": true
+    },
+    "negative_result_status": {
+      "classification": "OBSERVATION_ONLY",
+      "neural_non_gain_observed": true,
+      "statement": "the neural mapping did not beat the parametric baseline on S0 or S1 under the frozen frozen configuration; this remains a valid negative observation, but it is not a confirmatory P2 PASS result and the gate failure is not evidence that the method hypothesis failed"
+    },
+    "retry_classification": {
+      "authorized_infrastructure_retry_applicable": false,
+      "authorized_infrastructure_retry_consumed": 0,
+      "classification": "UNAUTHORIZED_REPEATED_EXECUTION",
+      "statement": "the failed invocations were caused by deterministic reporting/artifact-writing/hashing code defects, not by a pure infrastructure failure (crash/NaN) as the frozen retry clause requires; they were therefore not authorized retries and must not be described as free or authorized retries"
+    },
+    "wall_clock": {
+      "all_invocations_seconds_approximate": 8.7,
+      "approximate": true,
+      "approximate_basis": "sum of the four outer wall-clock measurements taken during the builder session (~3.2 s + ~1.4 s + ~1.4 s + ~1.4 s); no durable per-invocation timing log exists, so this is explicitly approximate",
+      "ceiling_seconds": 1800,
+      "note": "the attempt-ceiling breach is decisive regardless of wall clock; the wall-clock ceiling itself was never approached",
+      "published_run_seconds": 1.0344392999832053
+    }
+  },
+  "experiment_id": "EXP-20260919-DLH-WL-P2A-001",
+  "frozen_inputs_read_only": {
+    "config": "configs/dlh_wl_p2_offline_prototype.toml",
+    "contract": "docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md",
+    "schema": "docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md"
+  },
+  "generated_utc": "2026-09-19T06:35:38.403309+00:00",
   "git_blob_sha1": {
     "code_module": "b1f2cd043605c511e4965254657d12306170609b",
-    "runner": "b10939fbbc7ffa76c27f4134c59a0acbb5a16455",
-    "tests": "a6bb7a9facd5a482234b16ca5235a832d4a61f7b",
+    "code_module_at_run_and_candidate": "b1f2cd043605c511e4965254657d12306170609b",
     "contract": "99b62bd8cc294e5518b3548ce7f6098784ccd561",
-    "schema": "862debb5aacb47fc5de906127dca10690324965c"
+    "report": "c4181f4be84fb758bce1ad7190e3f1306439cb9f",
+    "results": "a3531b52485a858bc5a0c247756eb9fe3b594301",
+    "results_content": "170e1430ea0f4b14d899f07723305290876a6897",
+    "runner": "b10939fbbc7ffa76c27f4134c59a0acbb5a16455",
+    "schema": "862debb5aacb47fc5de906127dca10690324965c",
+    "tests": "a6bb7a9facd5a482234b16ca5235a832d4a61f7b",
+    "tests_at_run_and_candidate": "a6bb7a9facd5a482234b16ca5235a832d4a61f7b"
   },
+  "hashes": {
+    "code_module": "C0AD7B4141C5C4DC29E03047DBD5B743874D4C076B62854577BDE57FEDD4437B",
+    "config": "B4728EC1DB71D682D9C0DD96B17B039FCB7BFDCCDFFB0803FABDB216DFA60FD4",
+    "contract": "3DF8FA01FCBC2F3B7BF6F1D2FFEEA5AF236AC47BBC9D170B04CC175A17AE2ACF",
+    "policy": "SHA-256 over LF-normalised bytes (platform independent) plus git blob SHA-1",
+    "report": "8C144261FAA1AB8064750E63959F775BE2DA703CEFBE29C3466C4F7BBA7A5C46",
+    "results": null,
+    "results_canonical_content": "0EA6B5698CB0912F1E64305F9AAC00A5645ED421CCEA7C5ED9ED927ACA197144",
+    "runner": "1D836840442269D92584A422C0AA86D347FB09FCEDD26B797DA8DB133715D720",
+    "schema": "98AB3BBF9130F730AAC119F998BBE9AFA305C0BE9C39A7450EA5BC42EF413D00",
+    "tests": "17281FC6CCBBDFFBB6C15DEC7809B8E89624BD1C1F18B55DDA7BD93B29984A76"
+  },
+  "hashes_finalised_utc": "2026-09-19T06:35:38.800237+00:00",
+  "identity_policy": "All files are serialised with indent=2 and sort_keys=True and end with one LF. The canonical results content is RESULTS.json serialised WITHOUT the two digest fields results_canonical_sha256 and manifest_canonical_sha256; its SHA-256 is recorded as results_canonical_sha256 inside the results file and as hashes.results_canonical_content in the manifest, together with the git blob SHA-1 of those canonical bytes. The canonical manifest content is MANIFEST.json serialised in full, because the manifest never records a hash of itself; its SHA-256 is recorded only inside RESULTS.json as manifest_canonical_sha256. The chain is acyclic: each digest is a function of content that does not contain it.",
+  "issue": 76,
   "package_versions_imported": {
     "numpy": "2.4.6",
     "scipy": "1.17.1"
   },
   "random_seed_policy": {
+    "deterministic_algorithms": true,
+    "environment_thread_pinning": {
+      "MKL_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONHASHSEED": "0"
+    },
     "neural_seeds": [
       0,
       1,
@@ -43,71 +206,8 @@
     ],
     "numpy_seed_set_per_fit": true,
     "python_random_seed_set_per_fit": true,
-    "torch": "NOT_INSTALLED_NEURAL_BACKEND_IS_NUMPY",
-    "deterministic_algorithms": true,
-    "environment_thread_pinning": {
-      "OMP_NUM_THREADS": "1",
-      "OPENBLAS_NUM_THREADS": "1",
-      "MKL_NUM_THREADS": "1",
-      "PYTHONHASHSEED": "0"
-    }
+    "torch": "NOT_INSTALLED_NEURAL_BACKEND_IS_NUMPY"
   },
-  "attempt_counts": {
-    "primary_fit_configurations": 8,
-    "planned_fit_executions": 12,
-    "attempts_logged": 12,
-    "engineering_retries_used": 0,
-    "absolute_attempt_ceiling": 13,
-    "within_attempt_ceiling": true,
-    "total_runtime_seconds": 1.0344392999832053,
-    "wall_clock_ceiling_seconds": 1800.0,
-    "within_wall_clock_ceiling": true,
-    "hyperparameter_search_runs": 0,
-    "extra_fits_outside_ledger": 0
-  },
-  "declarations": {
-    "real_data_used": false,
-    "data_download_scrape_purchase": false,
-    "household_or_HA_coupling": false,
-    "hjb_calls": 0,
-    "kfe_calls": 0,
-    "ge_calls": 0,
-    "matlab_calls": 0,
-    "selected_q_work": false,
-    "full_repository_suite_runs": 0,
-    "successor_issue_created": false
-  },
-  "frozen_inputs_read_only": {
-    "config": "configs/dlh_wl_p2_offline_prototype.toml",
-    "contract": "docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md",
-    "schema": "docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md"
-  },
-  "execution_provenance": {
-    "published_run_is_the_final_execution": true,
-    "earlier_failed_attempts": [
-      {
-        "attempt": 1,
-        "failed_at": "report rendering (KeyError: terminal)",
-        "cause": "deterministic reporting-layer defect: the terminal was attached after the report had been rendered",
-        "fits_completed": 12,
-        "fits_retained_or_used": 0,
-        "scientific_outcome_used": false
-      },
-      {
-        "attempt": 2,
-        "failed_at": "manifest hash self-consistency",
-        "cause": "deterministic artifact-writing defect: the results file hash was recorded before the file was finalised",
-        "fits_completed": 12,
-        "fits_retained_or_used": 0,
-        "scientific_outcome_used": false
-      }
-    ],
-    "pre_authorized_engineering_retry_consumed": 0,
-    "retry_policy_note": "the frozen retry is scoped to pure infrastructure failures; both defects above were deterministic code defects in the reporting layer only, so the byte-identical frozen program was executed once more after repair and only that run is published",
-    "scientific_design_changed_after_first_fit": false,
-    "architecture_or_hyperparameter_or_seed_change": false,
-    "extra_fits_outside_ledger": 0
-  },
-  "wall_clock_note": "total_runtime_seconds in RESULTS.json covers the published run only; the three --execute processes together (including the two failed reporting attempts) took about 6 s, still far below the 1800 s ceiling",
-  "hashes_finalised_utc": "2026-09-19T06:35:38.800237+00:00"
+  "terminal": "DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED",
+  "wall_clock_note": "sum of the four outer wall-clock measurements taken during the builder session (~3.2 s + ~1.4 s + ~1.4 s + ~1.4 s); no durable per-invocation timing log exists, so this is explicitly approximate"
 }

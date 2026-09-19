@@ -347,6 +347,28 @@ def _write_artifacts(payload: dict, universe, ledger: list[dict], total_seconds:
             "full_repository_suite_runs": 0,
             "successor_issue_created": False,
         },
+        "cross_invocation_attempt_accounting": {
+            "ledger_is_append_only_across_invocations": False,
+            "required_behaviour": (
+                "every completed fit from every --execute invocation must be appended to a durable "
+                "attempt ledger before any artifact is published, and the run must fail closed when "
+                "the cumulative fits exceed absolute_attempt_ceiling"
+            ),
+            "why_it_matters": (
+                "Issue #76 caps absolute fit attempts at 13; this runner only ever persisted the "
+                "current invocation's 12 fits, so earlier completed fits vanished from the ledger "
+                "and the ceiling breach had to be reconstructed afterwards from session evidence"
+            ),
+            "remediation_status": (
+                "documented here as a required fix; NOT implemented in this evidence-only "
+                "remediation because Issue #76's Reviewer adjudication forbids any further "
+                "--execute or fit, and the changed code could not be executed to verify it"
+            ),
+            "observed_historical_outcome": (
+                "3 unauthorized repeated --execute invocations after the first scientific fit, "
+                "with a minimum proven total of 36 completed fits against a ceiling of 13"
+            ),
+        },
         "frozen_inputs_read_only": {
             "config": CONFIG_RELPATH,
             "contract": CONTRACT_RELPATH,
@@ -550,7 +572,6 @@ def main(argv: list[str] | None = None) -> int:
     passed = bool(gate["determinism_ok"] and gate["row_normalization_ok"] and gate["negativity_ok"]
                   and gate["support_ok"] and gate["split_counts_ok"] and accounting_ok)
     terminal = TERMINAL_PASS if passed else TERMINAL_GATE_FAIL
-
     command = (f"PYTHONPATH={SRC} python -B "
                f"scripts/run_dlh_wl_p2_offline_prototype.py --execute")
     written = _write_artifacts(payload, universe, ledger, total_seconds, gate, flags, env, command,
