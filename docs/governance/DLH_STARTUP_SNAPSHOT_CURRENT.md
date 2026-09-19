@@ -115,3 +115,8 @@ Issue #82 is ACCEPTED / CLOSED / INTEGRATED at `3496ba96b78992a579821348ad563e3b
 ## Owner amendment — latent labor measurement architecture — 2026-09-19
 
 Owner approved: real population/employment observations are measurement anchors rather than truth values of latent `W_star` / `ell_star`; retain the distance + economic-gap structural flow equation as the latent-flow backbone. First-wave choices: 2010 Census only initially; 2000 excluded; share-equivalence only as declared sensitivity/benchmark; employed persons as noisy proxy for latent `ell_star`; canonical information set window-start. Issue #83 remains the human source-verification gate. A docs/config-only latent-measurement architecture task may proceed in parallel, but no empirical execution is authorized.
+
+
+## P3E latent labor measurement architecture staged — 2026-09-19
+
+Issue #84 is **STAGED / NOT OPERATIVE**. It is docs/config-only and runs in parallel with Owner-only #83. It formalizes latent W*/ell*, the distance+economic-gap structural backbone, measurement equations, identification/regularization of labor wedges, residual-budget restrictions and STRUCTURAL_ONLY / NAIVE_DATA_PROXY / LATENT_MEASUREMENT_ADJUSTED comparisons. No real source/data read or empirical execution is authorized.
