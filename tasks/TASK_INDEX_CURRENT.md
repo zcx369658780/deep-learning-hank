@@ -1,7 +1,7 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P2A_GATE_FAIL_ACCEPTED__ISSUE_77_P2B_STAGED_NOT_OPERATIVE`。
+状态：`P2A_GATE_FAIL_ACCEPTED__ISSUE_77_P2B_ACTIVE_OPERATIVE`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
 Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
@@ -12,9 +12,9 @@ Issue #76 / P2A：GATE FAIL EVIDENCE ACCEPTED / CLOSED / INTEGRATED。
 
 下一科学 Builder Issue：
 - #77 / `DLH-WL-P2B: clean immutable replication of frozen synthetic prototype`
-- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- 状态：**OPEN / ACTIVE / OPERATIVE**
 - publication baseline：`8110a17e9da1900adfdf0788eb63e10be6416920`
-- final activation comment 发布前不得执行。
+- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
 
 #77 目标：在不改变 #75 科学设计、不修改 #76 scientific module 的前提下，做一次 clean replication。
 关键执行规则：
