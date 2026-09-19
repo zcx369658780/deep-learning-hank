@@ -64,3 +64,7 @@ Issue #81 is ACTIVE / OPERATIVE. DSH must read the final activation and compare 
 
 ## P3B complete — candidate available
 Issue #81 is accepted and integrated. Do not execute the bridge yet. P3C must first freeze Reviewer-side tolerances/search protocol and make explicit that a finite numerical search set is not proof of global root uniqueness. Human source/schema verification remains a separate prerequisite.
+
+
+## P3C staged
+Issue #82 is STAGED / NOT OPERATIVE. It must freeze thresholds/search semantics and human-verification requirements only. A finite numerical root search may never be presented as global root enumeration or uniqueness proof. No real matrix execution or data ingestion is authorized.
