@@ -16,3 +16,7 @@ m 与家庭总劳动给定；W origin×destination、foreign 行归一；P 含 h
 #73 已知 path guard 债务仍在，full suite 未全绿；文档同步不触发历史实验。科学假设失败可以结案，不无限追加预算。
 
 建议恢复句：读取并继承 DLH-WL-V1-20260918，不重选研究路线；先确认项目源与 DSH 同步回报，再在锁定边界内下达下一任务。
+
+
+## P2A staged
+Issue #76 is published STAGED / NOT OPERATIVE. After final activation, DSH must fresh-fetch, create the exact dedicated branch from the activation baseline, implement only the P2 harness/focused tests/results paths, then execute the frozen 12-planned-fit synthetic experiment under the 1800s / <=13-attempt ceiling. No outcome-driven tuning.
