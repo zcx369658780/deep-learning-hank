@@ -5,7 +5,8 @@ Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
 Reviewer HOLDs remediated by this deliverable: **`5738867875`** (revision 2, seven
-items) and **`5739104810`** (revision 3, identifiability/schema closure).
+items), **`5739104810`** (revision 3, identifiability/schema closure) and
+**`5739836193`** (revision 4, split-interpretation metadata fix).
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
 Dedicated branch: `dsh/issue-75-dlh-wl-p1b-data-schema-p2-contract-2026-09-18`.
 
@@ -36,11 +37,11 @@ HOLD and supersedes the affected numbers in sections 3-5.
 
 ## 2. Exact changed paths (4/4, allowlist-exact)
 
-| # | Path | Status | Lines (rev 3) |
+| # | Path | Status | Lines (rev 4) |
 |---|---|---|---|
-| 1 | `docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md` | created | 437 |
-| 2 | `docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md` | created | 465 |
-| 3 | `configs/dlh_wl_p2_offline_prototype.toml` | created (config revision 3) | 361 |
+| 1 | `docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md` | created | 457 |
+| 2 | `docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md` | created | 492 |
+| 3 | `configs/dlh_wl_p2_offline_prototype.toml` | created (config revision 4) | 370 |
 | 4 | `reports/dlh_wl_p1b_2026_09_18/DLH_WL_P1B_REPORT.md` | created | this file |
 
 No source code, test, CURRENT governance, Owner decision, route lock, household
@@ -147,16 +148,28 @@ no identified choice below two available destinations, offline-only imports).
   `<= 32`) followed by masked row normalization. No
   GNN/attention/transformer/recurrent/embedding/
   end-to-end HANK component;
-- single frozen fold (`DLH_WL_P2_SPLIT_V1`) with an explicit excluded/reference
-  state so all 20 blocks are accounted for: `TRAIN = t∈{1,2,3} × {R00,R01,R02}`
-  (9 blocks), `VALIDATION = t=4 × {R00,R01,R02}` (3 blocks),
-  `TEST = t=4 × {R03,R04}` (2 blocks, region-blocked), and
+- single frozen fold (`DLH_WL_P2_SPLIT_V1`,
+  `scheme = blocked_time_and_origin`) with an explicit excluded/reference state so
+  all 20 blocks are accounted for: `TRAIN = t∈{1,2,3} × {R00,R01,R02}` (9 blocks),
+  `VALIDATION = t=4 × {R00,R01,R02}` (3 blocks),
+  `TEST = t=4 × {R03,R04}` (2 blocks, origin-role holdout), and
   `EXCLUDED_REFERENCE_ONLY = t∈{1,2,3} × {R03,R04}` (6 blocks) which may be
   generated only for deterministic reference/arithmetic checks and are never used
-  for fitting, early stopping or final metrics. Counts satisfy `9+3+2+6 = 20`. The
-  test split shares neither time nor regions with training; preprocessing
-  statistics are fitted on `TRAIN` only; test is used once after the final
-  checkpoint; P2 reports the excluded-block count explicitly (expected `6`);
+  for fitting, early stopping or final metrics. Counts satisfy `9+3+2+6 = 20`;
+  preprocessing statistics are fitted on `TRAIN` only; test is used once after the
+  final checkpoint; P2 reports the excluded-block count explicitly (expected `6`);
+- **what the split does and does not hold out**: the blocking is by time and
+  **origin role**, not by region identity. TRAIN origins are `R00,R01,R02`, but the
+  TRAIN destination set **includes `R03` and `R04`**, so those two regions do occur
+  in training as destinations and their destination-side features are visible while
+  fitting. TEST origins `R03,R04` are therefore unseen **as origins**
+  (`test_touches_train_origin = false`) but they are **not** unseen regions
+  (`test_regions_appear_as_train_destinations = true`,
+  `test_regions_are_unseen_regions = false`). So the only claims this experiment can
+  support are **held-out time** and **held-out origin role** generalization;
+  fully-region-blocked or unseen-region claims are forbidden. Destination-role
+  exposure is not leakage — it does not expose labels, future information or test
+  targets — and must not be suppressed, but it does cap the claim;
 - training protocol: weighted cross entropy, Adam `lr = 0.01`, full batch,
   `max_steps = 1500`, `eval_every = 50`, `early_stop_patience = 200`,
   `min_delta = 1e-4`, `NEURAL_SEEDS = [0, 1, 2]`, deterministic algorithms on,
@@ -234,6 +247,12 @@ HJB, KFE or GE code was touched or triggered.
 - the synthetic control is deliberately small (20 blocks, 18 evaluable share cells
   per time slice / 72 total, 9 training blocks); it is a method-validation
   device and carries no economic content;
+- **the split is not an unseen-region test** (HOLD 3 `5739836193`): `TRAIN` uses
+  origins `R00,R01,R02` but its destination set includes `R03,R04`, so those regions
+  are visible during fitting as destinations. The strongest claims available are
+  held-out **time** and held-out **origin role**; fully-region-blocked or
+  unseen-region claims are forbidden, and any later P2/P3 report must respect that
+  ceiling;
 - inherited repository test-contract debt from Issue #73 is untouched, and no
   repository-wide green is claimed (no suite was run here).
 
@@ -356,7 +375,49 @@ S1  R00 t1 [0.479223272, 0.219532182, 0.163400470, 0.137844076]   R04 t1 [0.1509
 
 ---
 
-## 11. Terminal
+## 11. Remediation record (Reviewer HOLD 3 `5739836193`, revision 4)
+
+Scope: same Issue #75, same dedicated branch, no successor. Only the same four
+allowlist paths were modified. This is a **metadata/interpretation fix only** — no
+formula, universe, support, split membership, feature value, reference share,
+architecture, budget or training-protocol change.
+
+**Defect.** The split was described as region-blocked, and the contract/config
+claimed `test_touches_train_region = false` plus that the test split "shares neither
+time nor regions with training". That is false: `TRAIN` origins are `R00,R01,R02`,
+but their allowed destinations include `R03` and `R04`, so those two regions do occur
+in `TRAIN` as destinations and their destination-side node/pair feature values are
+visible while fitting.
+
+**Repair.**
+
+| HOLD 3 item | Change |
+|---|---|
+| 1. scheme naming | `scheme` is now `blocked_time_and_origin_with_explicit_excluded_reference_blocks` in the config and `blocked_time_and_origin` in the contract, replacing the misleading "…_time_and_region…" naming |
+| 2. explicit metadata fields | the config now carries `test_touches_train_origin = false`, `test_regions_appear_as_train_destinations = true`, `test_regions_are_unseen_regions = false`, `test_origin_role_unseen_during_fitting = true`, `destination_role_exposure_is_not_leakage = true`, `generalization_claims_allowed = ["HELD_OUT_TIME", "HELD_OUT_ORIGIN_ROLE"]` and `generalization_claims_forbidden = ["FULLY_REGION_BLOCKED", "UNSEEN_REGION", "UNSEEN_REGION_NODE_FEATURES"]`; the old `test_touches_train_region` key is removed, and split block ids were renamed to `TEST_ORIGIN_ROLE_R03_R04` / `EXCLUDED_ORIGIN_ROLE_R03_R04_TIMES_1_3` |
+| 3. clear statement | contract §5.1 and the report now state that `TEST` origins `R03,R04` are unseen **as origins** during fitting while `R03,R04` are **not** unseen regions because they occur as `TRAIN` destinations, so only **held-out time** and **held-out origin role** generalization may be claimed |
+| 4. leakage clarification | the schema `leakage_flags` semantics and the contract both state that destination-role exposure is **not** leakage — it exposes no labels, future information or test targets — so `USES_TEST_REGION_INFORMATION` must not be raised merely because an eventual test-origin region appears as a training destination, while label/future/test-target leakage remains forbidden; the schema adds `test_touches_train_origin`, `test_regions_appear_as_train_destinations` and `split_generalization_claim` fields and applies them in the canonical example |
+| 5. cross-document wording | schema, contract, TOML and report were all updated, together with the static checker, and the earlier claim that the test split shared no regions with training was removed everywhere |
+| 6. preserved results | `9/3/2/6 = 20`, the S0/S1 definitions and reference shares, the six-column parametric design, the `8 / 12 / <=13 / <=1800 s` budget and every HOLD-1/HOLD-2 result are unchanged |
+
+### 11.1 Static checks (revision 4)
+
+```
+tomllib parse of configs/dlh_wl_p2_offline_prototype.toml : PASS (17 sections)
+split-interpretation checker                              : enumerates TRAIN origins and
+                                                            destinations; R03/R04 absent
+                                                            from TRAIN origins and present
+                                                            in TRAIN destinations; TEST
+                                                            time 4 absent from TRAIN times
+```
+
+The checker also confirms that the corrected claim wording is used consistently in
+all four paths, that the forbidden claims do not appear, and that every preserved
+HOLD-1/HOLD-2 value is unchanged.
+
+---
+
+## 12. Terminal
 
 ```
 DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY
@@ -364,5 +425,6 @@ DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY
 
 One terminal only. No PR, merge, close, successor Issue or self-acceptance was
 performed. Independent Reviewer verification is required.
+
 
 

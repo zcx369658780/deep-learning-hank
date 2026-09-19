@@ -23,9 +23,10 @@ owner_route = "DLH-WL-V1-20260918"
 activation_comment = 5731890746
 remediation_hold_comment = 5738867875
 remediation_hold2_comment = 5739104810
+remediation_hold3_comment = 5739836193
 operative_baseline = "4b4dc8c39d6a18b8928407308248f4020c10602c"
 design_only_in_this_issue = true
-config_revision = 3
+config_revision = 4
 route_lock_verified_static = true
 route_lock_block_sha256 = "4d2ef5c125bfbf0bbb59bbb416734485ad3df6b4c4b50b17c760d4718b555ce8"
 owner_decision_sha256 = "4b87eab29d46e8e53d5da77a7c6210cc9dbaee5b12d852379528d36c25ebd38c"
@@ -277,19 +278,27 @@ fixed_baseline_seed = "NOT_APPLICABLE"
 
 [split]
 split_policy_id = "DLH_WL_P2_SPLIT_V1"
-scheme = "single_fold_blocked_time_and_region_with_explicit_excluded_reference_blocks"
+scheme = "blocked_time_and_origin_with_explicit_excluded_reference_blocks"
+scheme_note = "TEST holds out time and the ORIGIN ROLE only; test-origin regions still appear as TRAIN destinations"
 states = ["TRAIN", "VALIDATION", "TEST", "EXCLUDED_REFERENCE_ONLY"]
 train = { times = [1, 2, 3], origins = ["R00", "R01", "R02"], blocks = 9 }
 validation = { times = [4], origins = ["R00", "R01", "R02"], blocks = 3 }
-test = { times = [4], origins = ["R03", "R04"], blocks = 2, split_block_id = "TEST_REGION_R03_R04" }
-excluded_reference_only = { times = [1, 2, 3], origins = ["R03", "R04"], blocks = 6, split_block_id = "EXCLUDED_REGION_R03_R04_TIMES_1_3", used_for_fitting = false, used_for_early_stopping = false, used_for_final_metrics = false, allowed_for = ["DETERMINISTIC_REFERENCE_SHARE_CHECKS", "ARITHMETIC_INTEGRITY_CHECKS"] }
+test = { times = [4], origins = ["R03", "R04"], blocks = 2, split_block_id = "TEST_ORIGIN_ROLE_R03_R04" }
+excluded_reference_only = { times = [1, 2, 3], origins = ["R03", "R04"], blocks = 6, split_block_id = "EXCLUDED_ORIGIN_ROLE_R03_R04_TIMES_1_3", used_for_fitting = false, used_for_early_stopping = false, used_for_final_metrics = false, allowed_for = ["DETERMINISTIC_REFERENCE_SHARE_CHECKS", "ARITHMETIC_INTEGRITY_CHECKS"] }
 split_counts_sum = 20
 split_counts = { TRAIN = 9, VALIDATION = 3, TEST = 2, EXCLUDED_REFERENCE_ONLY = 6 }
 every_block_has_exactly_one_state = true
 test_touches_train_time = false
-test_touches_train_region = false
+test_touches_train_origin = false
+test_regions_appear_as_train_destinations = true
+test_regions_are_unseen_regions = false
+test_origin_role_unseen_during_fitting = true
+destination_role_exposure_is_not_leakage = true
+destination_role_exposure_note = "R03/R04 appear among TRAIN destinations, so their destination/node feature values are visible while fitting; this is not label, future-information or test-target leakage, and it means the split is NOT an unseen-region test"
+generalization_claims_allowed = ["HELD_OUT_TIME", "HELD_OUT_ORIGIN_ROLE"]
+generalization_claims_forbidden = ["FULLY_REGION_BLOCKED", "UNSEEN_REGION", "UNSEEN_REGION_NODE_FEATURES"]
 excluded_shares_time_with_train = true
-excluded_shares_region_with_test = true
+excluded_shares_origin_role_with_test = true
 preprocessing_fit_on = "TRAIN_ONLY"
 test_used_once_after_final_checkpoint = true
 

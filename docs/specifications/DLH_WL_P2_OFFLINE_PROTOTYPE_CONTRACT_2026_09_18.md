@@ -5,8 +5,9 @@ only by a later activated P2 Issue).
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
-Reviewer HOLDs remediated by this revision: **`5738867875`** (seven-item pass) and
-**`5739104810`** (identifiability/schema closure pass; configuration revision 3).
+Reviewer HOLDs remediated by this revision: **`5738867875`** (seven-item pass),
+**`5739104810`** (identifiability/schema closure pass) and **`5739836193`**
+(split-interpretation metadata fix; configuration revision 4).
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
 Machine-readable twin: `configs/dlh_wl_p2_offline_prototype.toml`.
 Status: **frozen design; not executed.** No training ran in P1B.
@@ -128,7 +129,9 @@ Static features (`X_static_ij`): `w_ij`.
 
 Availability: every feature is available at prediction time; the schema records
 availability per feature group (`T0_STATIC` / `T-1`), `leakage_flags = []`. No
-feature uses the label, the same-period realized flow, or the held-out test region.
+feature uses the label, the same-period realized flow, any future information, or any
+test target. Destination-role exposure of a test-origin region (see §5.1) is not a
+leakage flag.
 
 ---
 
@@ -277,31 +280,54 @@ only), masked to allowed foreign cells.
 
 ## 5. Split, preprocessing and reproducibility
 
-Frozen single fold (`split_policy_id = DLH_WL_P2_SPLIT_V1`) with an explicit
-excluded/reference state, so the 20 universe blocks are exhausted:
+Frozen single fold (`split_policy_id = DLH_WL_P2_SPLIT_V1`,
+`scheme = blocked_time_and_origin`) with an explicit excluded/reference state, so the
+20 universe blocks are exhausted:
 
 | Split state | Definition | Blocks |
 |---|---|---|
 | `TRAIN` | `t in {1, 2, 3}` for origins `R00, R01, R02` | 9 |
 | `VALIDATION` | `t = 4` for origins `R00, R01, R02` | 3 |
-| `TEST` | `t = 4` for origins `R03, R04` (`split_block_id = TEST_REGION_R03_R04`) | 2 |
-| `EXCLUDED_REFERENCE_ONLY` | `t in {1, 2, 3}` for origins `R03, R04` (`split_block_id = EXCLUDED_REGION_R03_R04_TIMES_1_3`) | 6 |
+| `TEST` | `t = 4` for origins `R03, R04` (`split_block_id = TEST_ORIGIN_ROLE_R03_R04`) | 2 |
+| `EXCLUDED_REFERENCE_ONLY` | `t in {1, 2, 3}` for origins `R03, R04` (`split_block_id = EXCLUDED_ORIGIN_ROLE_R03_R04_TIMES_1_3`) | 6 |
 | **total** | every block carries exactly one state | **20** |
+
+### 5.1 What the split does and does not hold out (normative)
+
+The blocking is by **time** and by **origin role**, not by region identity:
+
+- `TRAIN` holds `t in {1,2,3}` and origins `R00, R01, R02`, but its **destination
+  set includes `R03` and `R04`**, because those origins send labor to other regions
+  and those other regions receive it. R03/R04 therefore appear in `TRAIN` as
+  destinations, and their destination-side node/pair feature values are visible while
+  fitting;
+- `TEST` uses `t = 4` for origins `R03, R04`. Those two regions never appear as
+  `TRAIN` **origins** (`test_touches_train_origin = false`), but they are **not**
+  unseen regions (`test_regions_are_unseen_regions = false`), because
+  `test_regions_appear_as_train_destinations = true`;
+- consequently the only generalization claims this experiment can support are
+  **held-out time** and **held-out origin role**. Claims of fully region-blocked or
+  unseen-region generalization are **forbidden**, because the neural scorer receives
+  origin and destination node features in separate slots and the destination slot has
+  already seen R03/R04.
+
+Destination-role exposure is **not** leakage. `R03`/`R04` appearing among training
+destinations exposes destination feature values only; it does not expose the test
+labels, the test-period realized flows, any future information, or the test targets
+themselves. Label leakage, future-information leakage and test-target leakage remain
+absolutely forbidden, and `USES_TEST_REGION_INFORMATION` must not be raised merely
+because an eventual test-origin region occurs as a training destination.
 
 `EXCLUDED_REFERENCE_ONLY` semantics (normative): these six blocks may be generated
 for deterministic reference-share checks and arithmetic integrity checks, but they
 are **never** used for fitting, for early stopping, or for final test metrics. They
-are not moved into `TRAIN`, because that would destroy the intended region holdout;
-and they are not test blocks, because they share both time and regions with
-training. P2 must report the excluded-block count explicitly (expected `6`).
+are not moved into `TRAIN`, because that would destroy the intended origin-role
+holdout; and they are not test blocks, because they share both time and origin role
+with training. P2 must report the excluded-block count explicitly (expected `6`).
 
-Blocked structure is deliberate: the test split holds out **both** a later time
-point and two entire regions, so no training block shares either its time or its
-regions with the test split. Region-based and time-based generalization are
-therefore both probed without a hyper-parameter search. Preprocessing statistics
-are fitted on `TRAIN` only; validation is used solely for the frozen early-stop
-rule; the test split is used **once** after the final checkpoint and may never
-inform any choice.
+Preprocessing statistics are fitted on `TRAIN` only; validation is used solely for
+the frozen early-stop rule; the test split is used **once** after the final
+checkpoint and may never inform any choice.
 
 Reproducibility declarations:
 
@@ -456,6 +482,7 @@ Deterministic arithmetic checks performed while freezing the constants
 | time variation | S0 `~2.4e-4`, S1 `~2.6e-4` absolute between `time_id 1` and `time_id 4`; **not** invariant |
 | blocked-pair accounting | `R03` and `R04` have 3 allowed destinations, so their reference vectors have 3 entries |
 | split | `9 TRAIN / 3 VALIDATION / 2 TEST / 6 EXCLUDED_REFERENCE_ONLY = 20` with every block in exactly one state |
+| split interpretation | TRAIN origins `{R00,R01,R02}` with destinations including `R03,R04`; TEST origins `{R03,R04}` absent from the TRAIN origin set; TEST time `4` absent from TRAIN times; `test_touches_train_origin = false`, `test_regions_appear_as_train_destinations = true`, `test_regions_are_unseen_regions = false`; allowed claims are held-out time and held-out origin role only |
 | budget arithmetic | `8` primary configurations / `12` planned executions / `<= 13` absolute attempts / `<= 1800 s` |
 | determinism acceptance scope | exactly the four verification configurations |
 | checks executed | HOLD-2 post-remediation checker rerun after remediation (see report) |

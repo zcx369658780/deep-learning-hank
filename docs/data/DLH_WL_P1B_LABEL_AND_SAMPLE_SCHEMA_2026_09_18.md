@@ -4,9 +4,10 @@ Issue: **#75 / `DLH-WL-P1B`** — design / specification only.
 Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT_AUTHORIZED`.
 Reviewer final activation comment: **`5731890746`**.
-Reviewer HOLDs remediated by this revision: **`5738867875`** and **`5739104810`**.
+Reviewer HOLDs remediated by this revision: **`5738867875`**, **`5739104810`** and
+**`5739836193`** (split-interpretation metadata fix).
 Operative baseline: **`4b4dc8c39d6a18b8928407308248f4020c10602c`**.
-Status: **frozen design, revision 3**. No data was downloaded, scraped, purchased or
+Status: **frozen design, revision 4**. No data was downloaded, scraped, purchased or
 ingested; no model was trained; no E0/E1 evidence was upgraded.
 
 This document is one of the four Issue #75 deliverables. Its machine-readable
@@ -242,7 +243,7 @@ be aligned to the wrong group.
 | `time_feature_transformation_log` | list[string] | yes | as above for time features |
 | `static_feature_transformation_log` | list[string] | yes | as above for static features |
 | `feature_available_at_prediction_time` | bool | yes | `false` iff any declared input becomes known only after `time_id` |
-| `leakage_flags` | list[string] | yes | `USES_LABEL`, `USES_FUTURE_INFORMATION`, `USES_TEST_REGION_INFORMATION`, or empty |
+| `leakage_flags` | list[string] | yes | `USES_LABEL`, `USES_FUTURE_INFORMATION`, `USES_TEST_REGION_INFORMATION`, or empty. Only genuine leakage may be flagged: label values, future information, or test **targets**. A region held out **as an origin** that also occurs as a training **destination** is destination-role exposure, which is **not** leakage and must not be flagged |
 
 Normative rules:
 
@@ -254,8 +255,13 @@ Normative rules:
 - a per-feature mapping keyed by feature name is an accepted equivalent encoding,
   provided every declared name appears exactly once with both an availability and a
   transformation entry;
-- features must not encode the label, the same-period realized flow, or any future
-  information; normalization statistics are fitted on training data only;
+- features must not encode the label, the same-period realized flow, any future
+  information or any test target; normalization statistics are fitted on training
+  data only;
+- destination-role exposure must be recorded honestly rather than suppressed: when a
+  test-origin region also appears among training destinations, its destination-side
+  features are legitimately visible during fitting. This is not leakage, but it also
+  means **no unseen-region generalization claim may be made** from such a split;
 - `m` and `ell` are **never** features, and the group metadata may not imply
   otherwise.
 
@@ -273,6 +279,9 @@ Normative rules:
 | `split_assignment` | enum | yes | exactly one of `TRAIN`, `VALIDATION`, `TEST`, `EXCLUDED_REFERENCE_ONLY`. Every allocation block of the universe must carry exactly one state, and the state counts must sum to the universe block count |
 | `split_block_id` | string | yes | the block (time and/or region) that defines the split unit |
 | `split_policy_id` | string | yes | the frozen split policy applied |
+| `test_touches_train_origin` | bool | yes | `false` iff no `TEST` origin appears as a `TRAIN` origin (origin **role** holdout) |
+| `test_regions_appear_as_train_destinations` | bool | yes | `true` iff at least one `TEST` origin region also occurs among `TRAIN` destinations (destination-role exposure). When `true`, no unseen-region generalization claim may be made |
+| `split_generalization_claim` | enum | yes | the strongest generalization claim the split supports: `HELD_OUT_TIME`, `HELD_OUT_ORIGIN_ROLE`, or `UNSEEN_REGION`. The third value requires `test_regions_appear_as_train_destinations = false` and is **not** available to the frozen P2 split |
 | `identifiable_conditional_target` | bool | yes | whether this allocation block supplies an identifiable conditional target at all |
 | `available_foreign_destination_count` | integer | yes | count of allowed foreign destinations in the block |
 | `block_valid_row` | bool | yes | whether the block is an allocation-required, fully valid conditional row |
@@ -292,6 +301,14 @@ conditional_choice_identified  = exists a block with identifiable_conditional_ta
 The last two rules are exactly the accepted P1A semantics
 (`rows_without_identifiable_target`, `rows_with_conditional_choice`,
 `conditional_choice_identified`); the schema may not redefine them.
+
+Split semantics (frozen, normative): blocking is by **time** and by **origin role**,
+not by region identity. A region may hold a `TEST` origin role while still appearing
+as a `TRAIN` **destination**; when it does,
+`test_regions_appear_as_train_destinations` is `true`, `split_generalization_claim`
+must not be `UNSEEN_REGION`, and the sample must be described by the claims it can
+actually support — held-out time and held-out origin role. Destination-role exposure
+is not leakage, but it does cap the generalization claim.
 
 ### 3.7 Canonical record (normative example)
 
@@ -357,8 +374,11 @@ record:
   sample_weight: null
   sample_weight_source: null
   split_assignment: "TRAIN"
-  split_block_id: "TIME_1:REGIONS_R00_R01_R02"
+  split_block_id: "TIME_1:ORIGIN_ROLE_R00_R01_R02"
   split_policy_id: "DLH_WL_P2_SPLIT_V1"
+  test_touches_train_origin: false
+  test_regions_appear_as_train_destinations: true
+  split_generalization_claim: "HELD_OUT_TIME"
   identifiable_conditional_target: true
   available_foreign_destination_count: 4
   block_valid_row: true
