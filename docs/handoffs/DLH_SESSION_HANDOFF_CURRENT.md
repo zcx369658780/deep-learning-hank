@@ -24,3 +24,7 @@ Issue #76 is ACTIVE / OPERATIVE. DSH must fresh-fetch, read the final activation
 
 ## P2A gate-fail accepted
 Issue #76 is complete as a protocol-gate-failed experiment. Do not reopen or rerun it. Observed S0/S1 metrics are audit evidence only. The next task must preserve the frozen #75 design and obtain a clean replication by separating the one authorized scientific execution from zero-fit artifact rendering.
+
+
+## P2B clean replication staged
+Issue #77 is STAGED / NOT OPERATIVE. After final activation, DSH must first build and commit/push an immutable pre-run replication harness, then execute science exactly once from a clean detached worktree at that SHA. Scientific execution writes only durable attempt ledger + raw results; final reporting uses render-only and may never rerun fits.
