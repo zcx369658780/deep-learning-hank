@@ -59,11 +59,11 @@ support-admissible) with `P^k = T^(k)`.
 | **T1 existence is not guaranteed** | the 2-region exchange object `T = [[0,1],[1,0]]` admits **no** real non-negative stochastic square root. Proved twice: directly from `x² + (1−x)(1−y) = 0`, and from the eigenvalue argument (eigenvalues `±i` force `bc = −1 − a² < 0`). A window in which regions effectively exchange their populations cannot be annualized at all. |
 | **T1 uniqueness is not guaranteed** | the 2-region object `T^(2) = [[5/8,3/8],[3/8,5/8]]` has **two** admissible roots, `[[1/4,3/4],[3/4,1/4]]` and `[[3/4,1/4],[1/4,3/4]]`. The implied annual outflow share is `m = 3/4` or `m = 1/4` — **a factor of three, from identical data**. |
 | **the naive rule is invalid** | "divide the k-year off-diagonal by k" gives `3/16` for that example — neither root. It is not a valid annualization. |
-| **general multiplicity** | for `n = 2, k = 2` the solution set reduces to `s² − 2s + (A+B) = 0`, which has **two** roots whenever `A + B < 1`. Multiplicity is generic, not a corner case. |
+| **algebraic vs admissible roots** | for `n = 2, k = 2` the system reduces to `s² − 2s + (A+B) = 0` with `a = A/(2−s)`, `b = B/(2−s)`. **Two algebraic roots** `s = 1 ± √(1−A−B)` exist whenever `A + B < 1`, but a root is an **admissible stochastic root** only if `a, b ∈ [0,1]` componentwise, i.e. `max(A,B) ≤ 1 − √(1−A−B)` — equivalently `m*² − 2m* + (A+B) ≥ 0` with `m* = max(A,B)`. The low-`s` root is always admissible; a **second** admissible root exists iff that condition holds. Counterexample: `A = 0.90, B = 0.01` has algebraic roots `0.7` and `1.3`, but for `s = 1.3`, `a = 0.90/0.7 ≈ 1.286 > 1`, so only one root is stochastic. Non-uniqueness is therefore claimed as **"can occur on a nonempty admissible subset"**, never for every `A + B < 1`. |
 | **the generator route restricts but does not rescue** | embeddability requires `det(T^(k)) > 0` (necessary); the exchange object has `det = −1` and is excluded. For the `T^(2)` example the embedding exists and selects **one** of the two roots (the low-mobility one, off-diagonal `1/4`). Embeddability is not implied by row-stochasticity, and the embedding is not unique in general. |
 | **a second window length is unavailable** | all documented waves are `k = 5`, and consecutive non-overlapping windows give one equation each with no nested structure, so the strongest identification route is unavailable. |
-| **T2 (low mobility)** | `P̂ = I + (T^(k) − I)/k` is always admissible in (A1)–(A3), with error `P̂ − P = ((k−1)/2)A² + O(‖A‖³)`, i.e. **second order** in the annual hazard scale, or `O((π^(k))²/k)`. Applicability is conditional on the preregistered check `C1: max_i(1 − T^(k)_ii) ≤ pi_max`. |
-| **T3 (multi-year proxy)** | exact and error-free as a computation, but **structurally biased**: on the exact annual matrix `circ(1/2, 3/10, 1/5)` with `W = (0.600, 0.400)`, the 2-year proxy is `(0.53968, 0.46032)` — a **10.05 %** understatement with **no annualization error at all**; at `k = 5` it is `≈ 0.50112`, a **16.5 %** understatement. The bias grows with `k` and converges to `π_j/Σ_{l≠i}π_l`, the ergodic composition, **deleting the origin-conditional variation the model exists to learn**. First-order decomposition: `W^(k)_ij ∝ W_ij[1 + ((k−1)/2)(ρ_i^ret − h_j)] + ((k−1)/2)R_ij/h_i`, exposing three channels — return migration, destination turnover, multi-step routing. The bias is **first order** in the mobility scale, one order worse than T1/T2, and **not repairable by better annualization**. |
+| **T2 (low mobility)** | `P̂ = I + (T^(k) − I)/k` **always satisfies (A1) non-negativity and (A2) row-stochasticity**, but **not (A3) support admissibility**: an indirect k-year path can make `T^(k)_ij > 0` on a pair the declared annual mask forbids, and then `P̂_ij = T^(k)_ij/k > 0`. `P̂` satisfies (A3) iff every positive off-diagonal of `T^(k)` is support-admissible, otherwise the block fails closed. Errors, stated separately: one-year `P̂ − P = ((k−1)/2)A² + O(‖A‖³) = O(k‖A‖²)` (**second order**); k-step reconstruction `P̂^k − T^(k) = Σ_{r=0}^{k−1} P^r δ P^{k−1−r} + O(‖δ‖²) = O(k²‖A‖²)` **generically** — also second order, **not** cubic. Applicability is conditional on the preregistered check `C1: max_i(1 − T^(k)_ii) ≤ pi_max`. |
+| **T3 (multi-year proxy)** | exact and error-free as a computation, but **structurally biased**: on the exact annual matrix `circ(1/2, 3/10, 1/5)` with `W = (0.600, 0.400)`, the 2-year proxy is `(0.53968, 0.46032)` — a **10.05 %** understatement with **no annualization error at all**; at `k = 5` it is `≈ 0.50112`, a **16.5 %** understatement. In **this constructed circulant example** the distortion increases from `k = 2` to `k = 5`, and it converges to `π_j/Σ_{l≠i}π_l`, the ergodic composition under irreducibility and aperiodicity, **deleting the origin-conditional variation the model exists to learn**. **Monotonicity in `k` is not claimed in general**: negative or complex subdominant eigenvalues give non-monotonic, possibly oscillatory convergence, so the distortion can rise and fall with `k`. What is general is only that the bias is zero at `k = 1`, non-zero in general for `k ≥ 2`, and has the stated ergodic limit. First-order decomposition: `W^(k)_ij ∝ W_ij[1 + ((k−1)/2)(ρ_i^ret − h_j)] + ((k−1)/2)R_ij/h_i`, exposing three channels — return migration, destination turnover, multi-step routing. The bias is **first order** in the mobility scale, one order worse than T1/T2, and **not repairable by better annualization**. |
 
 **Preregistered selection rule (§2.6 of the preregistration):** enumerate `𝓕_enum`; fail closed
 if empty; then prefer generator-embedding, else the principal real non-negative stochastic root,
@@ -79,7 +79,7 @@ outcome-driven selection.
 | Result | Statement |
 |---|---|
 | accounting | `S_ij = F_ij · D_ij` per cell (Little's law) |
-| **exact equality condition** | row-normalized stock shares equal flow shares **iff** expected duration `D_ij` is constant across the origin's destinations. Proved: the stock share equals the **duration-weighted** flow share, so a destination with above-average duration is over-represented by exactly its duration ratio. |
+| **exact equality condition** | assuming positive total outflow, row-normalized stock shares equal flow shares **iff** expected duration `D_ij` is constant across the destinations with `F_ij > 0`. **Zero-flow cells impose no duration restriction**: `F_ij = 0 ⇒ S_ij = 0` and both normalized shares are `0` regardless of `D_ij`, so such a cell can neither assert nor reject duration equality, and its ratio is `0/0`, left undefined. Exact ratio on positive-flow cells: `stock_share_ij / flow_share_ij = D_ij / E_F[D_i]`, with `E_F[D_i]` the flow-weighted mean duration over the origin's positive-flow destinations — so a long-duration destination is over-represented by exactly that ratio. |
 | **turnover is not identified from cross-sections** | `S_ij(t+1) = S_ij(t) − Out_ij(t) + In_ij(t)` is one equation with two unknowns per cell; only the net is identified. The CMDS and the floating-population OD are documented as cross-sections, not panels, so the repeated-snapshot route is **unavailable**. |
 | **hukou-origin ≠ previous-residence** | a path `i → k → j` contributes to `S^h_ij` but not to `S^r_ij`; the difference is `O(η²)` and **systematically oriented**, over-counting origins that supply long chains of onward moves. |
 | consequence | `stock → flow` is `NOT_IDENTIFIED` for families S and C under currently documented evidence. A constant-duration assumption is admissible **only** as an explicitly preregistered assumption with full sensitivity, never as a convenience. |
@@ -89,9 +89,9 @@ outcome-driven selection.
 | Result | Statement |
 |---|---|
 | observed units | T: all persons. S: floating population, all persons. C: migrants-only frame, unit `NOT_VERIFIED_EXTERNAL`. geodoi: excluded from pair-label design. |
-| required assumption | `(P-L)`: `E[φ | i→j] = E[φ | i→any]` for every `j`, i.e. destination choice independent of per-migrant labor-service intensity. |
-| exact correction if it fails | `W^L_ij = W^persons_ij (ρ_ij φ_ij) / Σ_l W^persons_il (ρ_il φ_il)` |
-| **key unification** | the correction needs a **destination-varying labor-intensity weight `ρφ`** — which is *the same object* required to put `ell_i` on an efficiency-labor basis. There is therefore **one** missing external input, not two: without it, neither the population→labor bridge nor the `ell` basis can be supplied, and the pair target stays blocked even if a clean bilateral matrix exists. |
+| required assumption | define `lambda_ij := E[labor service per observed person | i→j] = rho_ij * phi_ij`, where `rho_ij` is the employment/labor-force participation margin and `phi_ij` the efficiency-labor intensity **conditional on employment**. Then `(P-L)` is: `lambda_ij` is constant across the destinations of the same origin (on positive mover support). Both margins are carried inside `lambda`, because a destination-varying employment rate alone breaks share equality. If instead `phi` is redefined to include zero service for non-workers, then `lambda ≡ phi` and the separate `rho` is redundant and must be dropped — one encoding must be declared, and the two must not be mixed. |
+| exact correction if it fails | `W^L_ij ∝ W^persons_ij * lambda_ij`, i.e. `W^L_ij = W^persons_ij rho_ij phi_ij / Σ_l W^persons_il rho_il phi_il`, normalized over `j ≠ i` and restricted to positive mover support |
+| **two linked, distinct requirements** | the correction needs the **pair-level** `lambda_ij` (conditional labor service per observed mover, for reweighting destination shares); the `ell` basis needs the **origin-level** `ell_i` (total origin labor, including home/stayer labor via `P_ii = 1 − m_i`, which mover-based pair data cannot observe). They are logically distinct moments, and **neither identifies the other**. A rich enough joint labor/employment data system could supply both coherently, and pair-level intensity may aggregate into an origin basis if the frame is complete and weights and stayers are covered — but that is a possibility, not an identity. Both remain **separately required fields** until a source proves one coherent frame, and they are tied by the frozen consistency condition `(C-LINK)`: `ell_i = ell_i^movers + ell_i^stay + ell_i^unobserved`, to be supplied from one frame or declared with a reported residual. |
 | failure direction is not innocuous | if `φ` rises with destination attractiveness, the person-based share **systematically understates** high-wage destinations' labor-service share, i.e. the bias is correlated with the model's own explanatory variables and will not average out. |
 | mandatory statements | who is excluded; whether a mover-only frame distorts destination shares relative to origin labor; whether weights can recover the intended labor population (they cannot invent labor-force status not collected); whether efficiency-labor weighting is ignored, approximated or externally supplied — one of the three must be declared. |
 
@@ -154,7 +154,7 @@ Full 19-axis matrix: companion document §4. Axes, all frozen before execution:
 A1  time-bridge family            A2  admissible-root spread        A3  low-mobility applicability (C1)
 A4  window length k               A5  duration heterogeneity (dest) A6  duration heterogeneity (origin)
 A7  duration-flow correlation     A8  duration definition           A9  origin-type (hukou vs residence)
-A10 population->labor mapping     A11 labor-intensity gradient      A12 efficiency-labor weighting
+A10 population->lambda mapping    A11 lambda/rho/phi gradients       A12 efficiency-labor weighting
 A13 region mapping                A14 survey-weight harmonization   A15 support-mask treatment
 A16 missing-cell handling         A17 prediction-time information set
 A18 publication/revision timing   A19 split claim
@@ -226,6 +226,66 @@ first-order bias formula vs truth in the small-mobility regime:
 
 The last line is the substantive one: the three-channel first-order decomposition is not merely
 asserted, it reproduces the exact bias to within 0.3 % where its small-mobility premise holds.
+
+### 7.2 Bounded remediation under Reviewer HOLD `5741346648`
+
+Six mathematical/semantic statements were too strong or imprecise and have been corrected in all
+affected equations, claims and tables (no route change):
+
+| HOLD item | Correction applied |
+|---|---|
+| A — T1 algebraic vs admissible roots | kept the exact two-admissible-root counterexample; separated the two **algebraic** roots (`A + B < 1`) from **admissible stochastic** roots (componentwise `a, b ∈ [0,1]`, i.e. `max(A,B) ≤ 1 − √(1−A−B)`, equivalently `m*² − 2m* + (A+B) ≥ 0`); added the one-root counterexample `A = 0.90, B = 0.01`; removed the claim of two admissible roots for every `A + B < 1`; non-uniqueness now stated as "can occur on a nonempty admissible subset" |
+| B — T2 support admissibility | (A1)/(A2) automatic, **(A3) not automatic**; `P̂` satisfies the support mask iff every positive off-diagonal of `T^(k)` is support-admissible under the declared annual mask; fail-closed rule preserved |
+| C — T2 residual order | one-year error `P̂ − P = O(k‖A‖²)`; k-step reconstruction `P̂^k − T^(k) = O(k²‖A‖²)` **generically** via `Σ P^r δ P^{k−1−r}`; the `O(k²‖A‖³)` cubic claim removed; added the consequence that `P̂^k` vs `T^(k)` must **not** be used as a self-consistency test |
+| D — T3 monotonicity | the `k = 2 → k = 5` growth is now stated as a property of **the constructed circulant example**; the general claim is limited to zero bias at `k = 1` and convergence to `π_j/Σ_{l≠i}π_l` under irreducibility **and aperiodicity**, with the oscillatory subdominant-eigenvalue case noted; no general monotonicity claim |
+| E — stock equality | the iff is restricted to `F_ij > 0` with positive total outflow; zero-flow cells impose no duration restriction and their ratio is left undefined; exact ratio `stock_share_ij / flow_share_ij = D_ij / E_F[D_i]` frozen |
+| F — population→labor | single object `lambda_ij := rho_ij · phi_ij` defined (participation × conditional intensity); `(P-L)` restated as `lambda_ij` constant across destinations within origin; correction `W^L_ij ∝ W^persons_ij lambda_ij`; the single-margin `phi`-includes-zero-service encoding stated and `rho` declared redundant under it |
+| G — `lambda` vs `ell` | the "same missing object / one input not two" claim removed; replaced by two **linked but distinct** provenance requirements with a comparison table, plus the frozen consistency condition `(C-LINK)`: `ell_i = ell_i^movers + ell_i^stay + ell_i^unobserved` |
+
+Unchanged by the remediation: the `CANDIDATE_AVAILABLE` route; the existence counterexample; the
+exact two-root non-uniqueness counterexample; T1 as an explicit candidate family; T2 as a
+conditional low-mobility candidate; T3 as `PROXY_ONLY`; stock→flow `NOT_IDENTIFIED`; the
+region / `m` / `ell` / leakage gating; and the refusal to choose `tau_W`, `pi_max`, the search
+parameters or the unmappable-mass threshold numerically.
+
+### 7.3 Corrected static math checks (38 of 38 passed, constructed matrices only, zero data)
+
+```
+A  algebraic vs admissible roots
+   reviewer one-root case A=0.90, B=0.01 : algebraic roots {0.7000, 1.3000};
+        exactly ONE admissible root s=0.7 (a=0.6923, b=0.0077);
+        the high root has a = 0.90/0.70 = 1.2857 > 1  -> inadmissible
+   two-admissible-root case A=B=3/8      : (s=0.5, a=b=0.25) and (s=1.5, a=b=0.75)
+   low-s root admissible for EVERY admissible 2x2 T^(2)  : no counterexample found
+   criterion  max(A,B) <= 1 - sqrt(1-A-B)  <=>  m*^2 - 2m* + (A+B) >= 0,  m* := max(A,B)
+        exact over a 61x61 (A,B) grid: 0 mismatches
+   grid counts: 1242 (A,B) pairs with A+B<1 have exactly ONE admissible root,
+                587 have two  ->  the earlier "two for every A+B<1" claim is FALSE
+B  T2 support admissibility
+   annual P_13 = 0 under the declared mask; the two-year path 1->2->3 gives T^(2)_13 = 0.06 > 0;
+   hence P_hat_13 = 0.03 > 0  ->  (A3) VIOLATED, while (A1)/(A2) still hold
+C  residual orders (300 random small-hazard matrices per k, k in {2,5})
+   max ||P_hat - P||       / (k   * ||A||^2) = 0.739    (bounded -> second order)
+   max ||P_hat^k - T^(k)|| / (k^2 * ||A||^2) = 0.690    (bounded -> second order)
+   ||P_hat^k - T^(k)|| / (k^2 * ||A||^3) = 235.7 at ||A|| ~ 1.57e-3
+        -> blows up as ||A|| -> 0, so the order is NOT cubic
+D  T3 monotonicity: explicit constructed counterexample
+   W_01 = 0.188337 ; distortions |W^(k)/W - 1| at k = 1..8
+        [0.0000, 0.4066, 0.3334, 0.3614, 0.3554, 0.3573, 0.3568, 0.3569]
+        -> rises k=1->2, falls k=2->3, rises k=3->4: NOT monotone (oscillatory convergence)
+   the k = 1 distortion is exactly 0 ; the circulant example still increases k=2 -> k=5
+E  stock shares: the zero-flow cell has zero stock and zero share; equal durations on the
+   positive-flow support give share equality; stock_share/flow_share = D_ij / E_F[D_i]
+   matches to 1e-16; changing a zero-flow duration by 12000x changes no share
+F  lambda: constant lambda gives person/labor share equality; varying lambda breaks it
+   ([0.1923, 0.3462, 0.4615] against W = [0.5, 0.3, 0.2]); destination-varying rho ALONE
+   breaks it ([0.3571, 0.3857, 0.2571]); only the product lambda matters, not its split
+G  lambda vs ell: with lambda held constant, doubling the mover counts moves ell from 400 to 800
+   (lambda does not determine ell); different lambda can produce the same ell by rescaling
+   (ell does not determine lambda); (C-LINK) verified on a constructed configuration
+   (movers 340 + stay 250 + unobserved 40 = 630), with the stayer term positive and
+   unobservable from mover-based pair data
+```
 
 ## 8. Exact changed paths (4 — exactly the Issue #81 allowlist)
 

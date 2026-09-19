@@ -232,24 +232,70 @@ the resulting claim ceiling must say so.
 | E8 | **consistency with `m`**: `m_unit_basis` and `ell_unit` must be reconcilable, so that `F_ij = ell_i · m_i · W_ij` is dimensionally coherent |
 | E9 | **coverage**: the `ell` source must cover the same region universe as the label, or the intersection rule of §1.7 applies |
 
-### 3.3 The `ell` basis and the population→labor bridge are the same missing object
+### 3.3 `ell_i` and the pair-level `lambda_ij` are two linked provenance requirements
 
-The population→labor-service bridge requires a destination-varying labor-intensity weight
-`ρ_ij φ_ij` (preregistration §4.2). Converting person counts into an efficiency-labor basis for
-`ell` requires the same kind of weight. Therefore:
+The population→labor-service bridge requires the **pair-level** weight
+`lambda_ij = rho_ij · phi_ij` — expected labor service per observed mover to destination `j`
+(preregistration §4.2). Putting `ell_i` on an efficiency-labor basis requires an **origin-level**
+labor amount. These are **logically distinct moments** and neither identifies the other:
+
+| | pair-level `lambda_ij` | origin-level `ell_i` |
+|---|---|---|
+| what it measures | conditional labor service per **observed mover/person** to destination `j` | **total** origin labor amount entering `F_ij = ell_i · m_i · W_ij` |
+| conditioning | destination `j` within origin `i` | origin `i` only; no destination dimension |
+| does it include stayers? | no — movers only | yes, via `P_ii = 1 − m_i` (home retention) |
+| role | reweighting destination shares | scaling the origin's total flow |
 
 ```
-REQUIRED_EXTERNAL: a labor-intensity / employment source that provides, at minimum, an
-                   origin-level efficiency-labor basis and, for the population->labor bridge,
-                   a destination-varying intensity gradient.
-STATUS           : no such source is verified in this repository or in this Issue.
-CONSEQUENCE      : BOTH the ell basis AND the population->labor bridge remain blocked, and the
-                   pair target remains UNRESOLVED, even if a clean bilateral matrix exists.
+REQUIRED_EXTERNAL (two linked requirements, ideally supplied by ONE coherent
+                   labor-intensity / employment data system):
+   R-lambda : pair-level   lambda_ij = rho_ij * phi_ij   (destination-varying, on the observed
+                                                          mover frame)
+   R-ell    : origin-level ell_i                          (total origin labor, consistent with
+                                                          m_i and with the home/stayer share
+                                                          1 - m_i)
+STATUS     : no such source is verified in this repository or in this Issue.
+CONSEQUENCE: BOTH requirements remain unsatisfied and must stay separately declared, so the
+             population->labor bridge AND the ell basis remain blocked, and the pair target
+             remains UNRESOLVED, even if a clean bilateral matrix exists.
 ```
 
-This is the single most load-bearing external dependency identified by P3B, and it is recorded
-here so that a later Issue cannot satisfy the `ell` requirement formally while leaving the
-labor-service bridge silently unaddressed.
+A sufficiently rich joint microdata or administrative data system **could** supply both
+coherently, and pair-level labor-intensity information may aggregate into an origin-level basis
+**if** the population frame is complete and weights and stayers are covered. That is a
+possibility, not an identity. Until a source proves that both come from one coherent frame,
+`R-lambda` and `R-ell` remain **separately required fields**, and neither may be inferred from,
+substituted for, or used to validate the other. This is recorded so that a later Issue cannot
+satisfy the `ell` requirement formally while leaving the labor-service bridge silently
+unaddressed — or vice versa.
+
+### 3.4 Frozen consistency condition between the pair-level and origin-level objects
+
+Let `N_ij` be the observed i→j mover count and `𝓜_i = {j : N_ij > 0}`. Define the
+mover-implied labor leaving `i` as
+
+```
+ell_i^movers  :=  Σ_{j ∈ M_i}  N_ij * lambda_ij
+```
+
+Any design using both `lambda_ij` and `ell_i` must satisfy, with every term declared from the
+same `(i, t)`:
+
+```
+(C-LINK)   ell_i  =  ell_i^movers  +  ell_i^stay  +  ell_i^unobserved
+```
+
+| Term | Meaning |
+|---|---|
+| `ell_i^movers` | labor services of observed movers, from the pair-level data and `lambda_ij` |
+| `ell_i^stay` | home/stayer labor, carried by `P_ii = 1 − m_i`; **not observable** in a mover-only frame |
+| `ell_i^unobserved` | movers outside the observed frame; **not zero a priori** for a mover-only frame (families S and C) |
+
+A design must either (a) supply all three components from one coherent frame, or (b) **declare
+which components are unobserved and treat `(C-LINK)` as a consistency check with a reported
+residual** — never as an equality assumed by construction. `(C-LINK)` is a consistency
+condition, not an identification of either object; satisfying it does not make `lambda_ij` and
+`ell_i` the same thing, and failing it does not by itself invalidate either.
 
 ## 4. Weights, harmonization and leakage contract
 

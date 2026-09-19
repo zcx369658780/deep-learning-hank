@@ -175,10 +175,55 @@ So from identical two-year data the annual outflow share is either `3/4` or `1/4
 that the naive "divide the k-year off-diagonal by k" rule would give `3/16`, which is neither
 root: **the naive rule is not a valid annualization.**
 
-*General structural reading.* For `n = 2` and `k = 2` the solution set can be characterized
-exactly: with `T_12 = A`, `T_21 = B`, `s := x + y`, the equations reduce to `s² - 2s + (A+B) = 0`,
-which has **two** roots `s = 1 ± √(1-A-B)` whenever `A + B < 1`. Hence multiplicity is the
-generic case for the smallest non-trivial problem, not a corner case.
+*General structural reading — algebraic versus admissible roots.* For `n = 2` and `k = 2` the
+solution set can be characterized exactly. Write the annual matrix and the observation as
+
+```
+P = [[1-a, a],        T^(2) = [[1-A, A],
+     [b, 1-b]]                 [1-B, B]]        s := a + b
+```
+
+Then `T_12 = a(2-s) = A` and `T_21 = b(2-s) = B`, so for a stochastic `T^(2)` (which forces
+`0 ≤ A, B ≤ 1`) the system reduces to
+
+```
+s² - 2s + (A + B) = 0          =>   s = 1 ± sqrt(1 - A - B)      (real iff A + B <= 1)
+a = A / (2 - s),   b = B / (2 - s)
+```
+
+Two facts must be kept apart and are binding on any later implementation:
+
+1. **two ALGEBRAIC roots** `s = 1 ± √(1-A-B)` exist whenever `A + B < 1`; but
+2. a root is an **ADMISSIBLE stochastic root** only if, componentwise,
+   `a = A/(2-s) ∈ [0,1]` **and** `b = B/(2-s) ∈ [0,1]`. Both roots have `0 < s < 2`, so
+   `2 - s > 0` and `a, b ≥ 0` hold automatically; the binding requirement is
+   `max(A,B) ≤ 2 - s`.
+
+It follows that the low-`s` root `s₋ = 1 - √(1-A-B)` is admissible for **every** admissible
+`T^(2)` (because `2 - s₋ = 1 + √(1-A-B) ≥ 1 ≥ max(A,B)`), so exactly one admissible stochastic
+root always exists, while a **second** admissible root exists iff
+
+```
+max(A,B) <= 1 - sqrt(1 - A - B)      equivalently      m*² - 2 m* + (A + B) >= 0,
+                                                       m* := max(A,B)
+```
+
+(the equivalence follows from `1 - m* ≥ √(1-A-B) ≥ 0` after squaring both sides).
+
+**Concrete one-root example.** `A = 0.90`, `B = 0.01`, so `A + B = 0.91 < 1`. The algebraic
+roots are `s = 1 ± √0.09 = 0.7` and `1.3`. For `s = 1.3`, `2 - s = 0.7` and
+`a = 0.90/0.7 ≈ 1.286 > 1` — the high-`s` root is **not** stochastic. Only `s = 0.7` is
+admissible, with `a ≈ 0.6923`, `b ≈ 0.0077`.
+
+**Concrete two-root example.** `A = B = 3/8`, so `A + B = 0.75`. Roots `s = 0.5` and `1.5`, giving
+`a = b = 0.25` and `a = b = 0.75` — both componentwise admissible. This is the case used in
+Finding T1-b above.
+
+**Correct non-uniqueness statement.** Multiplicity **can occur**, and occurs on a nonempty
+admissible subset (e.g. `A = B = 3/8`); it is **not** claimed for every `A + B < 1`. That is all
+the identification argument needs: a single admissible two-root case suffices to show that the
+observation does not determine the annualization, so the bridge must enumerate the admissible set
+rather than assume a unique root.
 
 **Finding T1-c — the continuous-time (generator) route restricts but does not rescue
 identification.** Require additionally that `P = exp(Q)` for a generator `Q` (off-diagonal
@@ -227,22 +272,52 @@ P̂ := I + (T^(k) - I)/k        i.e.   P̂_ij = T^(k)_ij / k  (j != i),
                                      P̂_ii = 1 - (1 - T^(k)_ii)/k
 ```
 
-**Exact admissibility.** `P̂` is non-negative for every `k ≥ 1` (`T^(k)_ij ≥ 0` and
-`1 - (1-T^(k)_ii)/k ≥ 0`), and row-stochastic, so T2 never fails (A1)–(A3). It generally
-**fails (A4)**.
+**Admissibility.** `P̂` **always satisfies (A1) non-negativity and (A2) row-stochasticity** for
+every `k ≥ 1` (`T^(k)_ij ≥ 0`, and `1 - (1-T^(k)_ii)/k ≥ 0`). It does **not** automatically
+satisfy (A3) support admissibility, and it generally **fails (A4)**:
 
-**Error.** Write the exact annual matrix as `P` with `T^(k) = P^k` and let `A := P - I`
-(so `A_ij = P_ij ≥ 0`, `A_ii = -h_i ≤ 0`). Then `T^(k) - I = kA + C(k,2)A² + O(k³‖A‖³)` and
+- **(A1), (A2) automatic.** As stated.
+- **(A3) NOT automatic.** If the declared annual support mask forbids the pair `i→j`, an indirect
+  k-year path can still produce `T^(k)_ij > 0`, and then `P̂_ij = T^(k)_ij/k > 0`, which violates
+  the annual support mask. `P̂` therefore satisfies (A3) **iff every positive off-diagonal entry
+  of `T^(k)` is support-admissible under the declared annual mask**. This is a checkable
+  condition on the observed object, not a property of the formula. When it fails, the observed
+  window already contradicts the declared support and the block must fail closed (§5 of the
+  region contract); the support mask is a design object (P1B §3.4) and may not be widened to
+  accommodate an observation.
+- **(A4) generally fails.** `P̂^k ≠ T^(k)` in general; the residual order is given below.
+
+**Error, with the two distinct orders stated separately.** Write the exact annual matrix as `P`
+with `T^(k) = P^k` and let `A := P - I` (so `A_ij = P_ij ≥ 0` for `i ≠ j`, `A_ii = -h_i ≤ 0`).
+Then `T^(k) - I = kA + C(k,2)A² + O(k³‖A‖³)` and
 
 ```
-P̂ = I + A + ((k-1)/2) A² + O(‖A‖³)
-  = P + ((k-1)/2) A² + O(‖A‖³)
+(1) one-year matrix error
+      P̂ = I + A + ((k-1)/2) A² + O(‖A‖³)
+      P̂ - P = ((k-1)/2) A² + O(‖A‖³)              =  O(k ‖A‖²)
 ```
 
-so `‖P̂ - P‖ = O(k ‖A‖²)`: the approximation error is **second order in the annual hazard
-scale** `‖A‖`. Equivalently, since `h_i = 1 - P_ii` is the annual outflow probability and
-`1 - T^(k)_ii ≈ k h_i` for small mobility, the error is `O((π^(k))²/k)` where `π^(k) := max_i
-(1 - T^(k)_ii)` is the largest k-year one-way outflow probability.
+The one-year error is **second order in the annual hazard scale** `‖A‖`. Equivalently, since
+`h_i = 1 - P_ii` and `1 - T^(k)_ii ≈ k h_i` for small mobility, it is `O((π^(k))²/k)` where
+`π^(k) := max_i (1 - T^(k)_ii)` is the largest k-year one-way outflow probability.
+
+```
+(2) k-step reconstruction residual
+      let  delta := P̂ - P = ((k-1)/2) A² + O(‖A‖³)
+      P̂^k - P^k  =  SUM_{r=0}^{k-1} P^r  delta  P^(k-1-r)  +  O(‖delta‖²)
+                  =  O( k * ‖delta‖ )  =  O( k² ‖A‖² )        (generically)
+```
+
+Each `P^r` is stochastic, so `‖P^r‖ = O(1)` for every `r`, and the k-term sum contributes a
+factor `k` on top of `‖δ‖ = O(k‖A‖²)`. The k-step residual is therefore **second order** in
+`‖A‖` with a `k²` factor, **not** third order. It is an `O(·)` statement, not an identity: it is
+the first-order-in-`δ` bound, attained generically, and P3B does not claim a matching lower bound
+or any cancellation.
+
+**Consequence for use.** Because the residual is `O(k²‖A‖²)`, a T2-annualized matrix must never be
+re-substituted into `P^k` and compared with `T^(k)` as a self-consistency test: that test would
+reject valid inputs and accept nothing. The admissible consistency checks are (a) the one-year
+error bound (1), (b) `C1`, and (c) the (A3) support check above.
 
 **Preregistered applicability condition (must be checked at adapter time, not assumed).**
 
@@ -257,11 +332,11 @@ arbitrary, and choosing it after seeing results would be outcome-driven — see 
 **Failure conditions for T2.**
 
 - `C1` violated → the second-order term is not negligible and T2 must **not** be used;
-- `T^(k)_ij > 0` for a pair forbidden by the support mask (`A3` violated) → the observed
-  window already contradicts the support and the block must fail closed (§5 of the region
-  contract);
-- the low-mobility expansion is only valid while `‖A‖` is small; it does not improve with
-  repeated application, since `P̂^k ≠ T^(k)` by an `O(k²‖A‖³)`-scale residual.
+- some `T^(k)_ij > 0` on a pair forbidden by the annual support mask (A3 not satisfied) → the
+  observed window contradicts the declared support and the block must **fail closed** (§5 of the
+  region contract);
+- `T^(k)_ij` negative or non-finite, or a row sum departing from 1 beyond the frozen numerical
+  tolerance → the observation is not a valid k-year transition matrix and the block fails closed.
 
 ### 2.4 T3 — direct multi-year conditional share as a proxy
 
@@ -306,8 +381,9 @@ For the same `P`, extending the window to `k = 5` gives `P⁵ = circ(0.333250, 0
 W^(5)_12 = 0.334120/(1 - 0.333250) ≈ 0.50112
 ```
 
-i.e. a `≈ 16.5 %` understatement at `k = 5`. The bias is **increasing in `k`** and its limit
-is explicit: as `k → ∞` with `P` indecomposable, `(P^k)_ij → π_j` (the stationary
+i.e. a `≈ 16.5 %` understatement at `k = 5`. **In this constructed circulant example** the
+distortion increases from `k = 2` (`10.05 %`) to `k = 5` (`16.48 %`), and its limit is explicit:
+as `k → ∞` with `P` **irreducible and aperiodic**, `(P^k)_ij → π_j` (the stationary
 distribution), so
 
 ```
@@ -317,6 +393,21 @@ W^(k)_ij  →  π_j / Σ_{l≠i} π_l
 which no longer depends on the origin's *current* conditional split at all. **The multi-year
 proxy converges to an ergodic composition, deleting exactly the origin-conditional variation
 the model is meant to learn.**
+
+**Monotonicity is NOT claimed in general.** Convergence to the ergodic limit does not imply that
+the absolute distortion increases monotonically in `k` for every admissible `P`. A subdominant
+eigenvalue that is negative or complex makes `P^k` (and hence `W^(k)`) converge
+**non-monotonically, possibly oscillatorily**, so the distortion can rise and fall with `k`. What
+is claimed in general is only:
+
+- `W^(k) → π_j/Σ_{l≠i}π_l` under irreducibility and aperiodicity (without aperiodicity, `P^k`
+  need not converge and only the Cesàro mean does);
+- `W^(1) = W` exactly (the window of length one carries no aggregation bias);
+- therefore the distortion is zero at `k = 1` and non-zero in general for `k ≥ 2`;
+- and the observed `k = 2 → k = 5` growth is a property of **this example**, reported as such.
+
+Any future claim about the direction or monotonicity of the T3 distortion for a real window must
+be established for that window, not inherited from the illustration.
 
 **First-order decomposition of the bias (small mobility).** With `A = P - I`, `h_i = 1 - P_ii`,
 `ρ_i^ret := Σ_{l≠i} W_il P_li` (annual return propensity of origin `i`) and
@@ -339,9 +430,10 @@ acceptable substitute for annualizing first.
 **Magnitude caveat (stated honestly).** The illustrative `P` above has annual off-diagonal
 probabilities of 20–30 %, far above real interprovincial annual migration. Its error
 *magnitudes* are therefore not a forecast. What it establishes is structural: the bias is
-non-zero, is systematic rather than noise, grows with `k`, has a known limit, and is **not
-repairable by better annualization**. A real magnitude must be quantified at adapter time
-under the preregistered sensitivity design.
+non-zero, is systematic rather than noise, has a known ergodic limit, and is **not repairable by
+better annualization**. A real magnitude — including whether the distortion rises or falls across
+the window lengths a source actually offers — must be quantified at adapter time under the
+preregistered sensitivity design.
 
 ### 2.5 What each time-bridge family may claim
 
@@ -403,26 +495,46 @@ slowly-varying system, and exactly valid in steady state):
 S_ij  =  F_ij * D_ij
 ```
 
-**Proposition (equal shares ⟺ equal durations).** For fixed origin `i`,
+**Proposition (equal shares ⟺ equal durations on the positive-flow support).** Fix origin `i`
+and assume the total outflow is positive, `Φ_i := Σ_{l≠i} F_il > 0`. Then
 
 ```
-F_ij / Σ_{l≠i} F_il   =   S_ij / Σ_{l≠i} S_il      for all j ≠ i
-        if and only if    D_ij = D_il    for all j, l ≠ i.
+F_ij / Σ_{l≠i} F_il  =  S_ij / Σ_{l≠i} S_il     for every j ≠ i with F_ij > 0
+        if and only if   D_ij = D_il   for all j, l with F_ij > 0 and F_il > 0.
 ```
 
-*Proof.* `S_ij = F_ij D_ij`. The two ratios are equal iff `F_ij D_ij / Σ_l F_il D_il =
-F_ij / Σ_l F_il`, i.e. iff `D_ij Σ_l F_il = Σ_l F_il D_il` for every `j` (multiply through by
-the positive denominators), i.e. iff `D_ij` equals the `F`-weighted mean of `D_il` for every
-`j` — that is, iff all `D_ij` are equal. ∎
+*Proof.* `S_ij = F_ij D_ij`. For a cell with `F_ij > 0`, equality of the two normalized shares is
+`F_ij D_ij / Σ_l F_il D_il = F_ij / Φ_i`, i.e. (multiplying through by the positive quantities
+`Φ_i` and `Σ_l F_il D_il`, and cancelling the positive `F_ij`) `D_ij Φ_i = Σ_l F_il D_il`, i.e.
+`D_ij` equals the `F`-weighted mean of the durations over the **positive-flow** destinations.
+Holding for every positive-flow `j` is exactly the statement that all positive-flow durations are
+equal. ∎
 
-Equivalently, the **stock-based share is a duration-weighted version of the flow share**:
+**Zero-flow cells impose no duration restriction.** If `F_ij = 0` then `S_ij = F_ij D_ij = 0` and
+both normalized shares are `0` regardless of the value of `D_ij`. The equality therefore says
+nothing about `D_ij` for a zero-flow destination, and such a cell must not be used either to
+assert or to reject duration equality. (An unobserved cell and a genuinely zero-flow cell are also
+different objects under P1B §3.4: `MISSING` versus `OBSERVED_ZERO`.)
+
+**Exact ratio on positive-flow cells.** Dividing the two normalized shares gives, for every `j`
+with `F_ij > 0`,
 
 ```
-S_ij / Σ_l S_il  =  ( F_ij D_ij ) / Σ_l ( F_il D_il )
+stock_share_ij / flow_share_ij  =  D_ij / E_F[ D_i ]
 ```
 
-so a destination with above-average duration is **over-represented** in the stock share by
-exactly its duration ratio, regardless of its flow share.
+where `E_F[D_i] := ( Σ_{l: F_il > 0} F_il D_il ) / ( Σ_{l: F_il > 0} F_il )` is the
+flow-weighted mean duration over the positive-flow destinations of origin `i`. So a destination
+whose duration exceeds the origin's flow-weighted mean duration is **over-represented** in the
+stock share by exactly `D_ij / E_F[D_i]`, independently of its flow share; equality for all
+positive-flow cells holds iff `D_ij = E_F[D_i]` for all of them. For a zero-flow cell the ratio is
+`0/0` and is left **undefined**, not set to 1.
+
+Equivalently, the **stock-based share is a duration-reweighted version of the flow share**:
+
+```
+S_ij / Σ_l S_il  =  ( F_ij D_ij ) / Σ_l ( F_il D_il )       (over positive-flow cells)
+```
 
 ### 3.2 Identification requirements
 
@@ -498,39 +610,108 @@ Fixed in advance; all evaluated and reported, none selected on the basis of any 
 
 ### 4.2 The required assumption, stated exactly
 
-Let a mover from `i` to `j` carry a **labor-service weight** `φ > 0` (hours × efficiency).
-Person-based and labor-service destination shares coincide iff
+Define, for a mover from `i` to `j`, the **expected labor service per observed person**:
 
 ```
-(P-L)  E[ φ | i -> j ]  =  E[ φ | i -> any ]     for every j ≠ i
+lambda_ij  :=  E[ labor service | i -> j ]
+           =  rho_ij * phi_ij
 ```
 
-i.e. iff destination choice is **independent of per-migrant labor-service intensity** within
-each origin and period. If `(P-L)` holds, the person-based share **is** the labor-service share
-and no bridge is needed. If it fails, the exact correction is
+where
+
+- `rho_ij` = the probability that an observed i→j mover is employed (or in the labor force,
+  per the declared basis) — the **participation/employment margin**;
+- `phi_ij` = `E[ efficiency-labor intensity | i→j and employed ]` > 0 (hours × efficiency) —
+  the **intensity margin conditional on being employed**.
+
+So `lambda_ij` carries both margins in one object. Person-based and labor-service destination
+shares coincide iff
 
 ```
-W^L_ij  =  W^persons_ij * ( rho_ij * phi_ij ) / Σ_{l≠i} W^persons_il * ( rho_il * phi_il )
+(P-L)   lambda_ij  =  lambda_il      for all l with F_ij > 0 and F_il > 0   (within origin i)
 ```
 
-where `ρ_ij` is the labor-force (or employment) participation rate among i→j movers and
-`φ_ij` the mean efficiency-labor weight of an employed i→j mover.
+i.e. iff expected labor service per observed mover is **constant across the destinations of the
+same origin** (on the positive mover support). If `(P-L)` holds, the person-based share **is**
+the labor-service share and no bridge is needed. If it fails, the exact correction is
 
-**Finding L-1 — the bridge and the `ell` provenance are the same missing object.** The
-correction requires `ρ_ij φ_ij` — a **destination-varying labor-intensity weight**. That is
-exactly the object required to convert `ell_i` from a population count into an efficiency-labor
-basis (companion contract §4). There is therefore **one** missing external input, not two:
-without a destination-varying labor-intensity source, neither the population→labor bridge nor
-the `ell` basis can be supplied, and the pair target stays blocked even if a bilateral matrix
-exists. This matches, and sharpens, the P1B residual item that no real efficiency-labor
-conversion exists in the repository.
+```
+W^L_ij  ∝  W^persons_ij * lambda_ij            normalized over j ≠ i
+        =  W^persons_ij * rho_ij * phi_ij  /  Σ_{l≠i} W^persons_il * rho_il * phi_il
+```
 
-**Finding L-2 — the failure direction is not innocuous.** If `φ` rises with destination wage
-or return — the very mechanism the model is meant to capture — then `ρ φ` is positively
-correlated with the destination's attractiveness, and the person-based share
-**systematically understates** high-wage destinations' labor-service share. The bias is
-therefore correlated with the model's own explanatory variables, so it is not a random
-measurement error and it will not average out. Report it, do not absorb it silently.
+with the same positive-support caveat: for a cell with `W^persons_ij = 0` both shares are `0` and
+`lambda_ij` is not identified by the equality.
+
+*Why both margins are needed.* Writing `phi` as "hours × efficiency" while ignoring
+participation would silently assume that the employment margin is destination-invariant. It is
+not: if employment rates differ across destinations for the same origin, then `rho_ij` varies and
+`E[phi | i→j]` alone cannot restore share equality. The Reviewer's HOLD identified exactly this
+gap; it is now closed by carrying both margins inside `lambda`.
+
+*Equivalent single-margin formulation.* If instead `phi` is **redefined** to include zero service
+for non-workers — i.e. `phi_ij := E[labor service | i→j]` over *all* observed movers, with
+`phi = 0` for non-workers — then `lambda_ij ≡ phi_ij` and the separate `rho_ij` is **redundant**
+and must be dropped. P3B fixes the two-margin form `lambda = rho · phi` as canonical and requires
+any implementation to declare which of the two encodings it uses; the two must not be mixed
+inside one evaluation set.
+
+**Finding L-1 — the pair-level and origin-level requirements are related but NOT the same
+object.** What the correction above requires is the **pair-level** `lambda_ij`: conditional
+expected labor service per observed mover, used to reweight destination shares. What
+`ell_i` requires (companion contract §3) is an **origin-level** total labor amount used in
+`F_ij = ell_i P_ij`, which additionally involves the origin population/labor basis and, depending
+on the accounting, home/stayer labor that the mover-based pair data cannot observe at all.
+
+These are **logically distinct moments**:
+
+| | pair-level `lambda_ij` | origin-level `ell_i` |
+|---|---|---|
+| what it measures | conditional labor service per **observed mover/person** to destination `j` | **total** origin labor amount entering `F_ij = ell_i P_ij` |
+| conditioning | destination `j` within origin `i` | origin `i` only, no destination dimension |
+| does it include stayers? | no — movers only | yes, via `P_ii = 1 − m_i` (home retention) |
+| used for | reweighting destination shares | scaling the origin's total flow |
+
+A sufficiently rich joint microdata or administrative **labor/employment data system could supply
+both coherently**, and pair-level labor-intensity information may aggregate into an origin-level
+basis **if** the population frame is complete and weights and stayers are covered. But neither
+mechanically identifies the other. P3B therefore preregisters:
+
+```
+two LINKED provenance requirements:
+   R-lambda : pair-level     lambda_ij  (destination-varying, on the observed mover frame)
+   R-ell    : origin-level   ell_i      (total origin labor, consistent with m_i and with the
+                                        home/stayer share 1 - m_i)
+Both remain separately required fields until a future source proves they come from ONE coherent
+frame. Neither may be inferred from the other; neither may be substituted for the other.
+```
+
+**Frozen consistency condition.** Let `N_ij` be the observed i→j mover count and `𝓜_i = {j :
+N_ij > 0}`. Define the mover-implied labor leaving `i` as
+
+```
+ell_i^movers  :=  Σ_{j ∈ M_i}  N_ij * lambda_ij
+```
+
+Then any design using both objects must satisfy, with every term declared from the same `(i, t)`:
+
+```
+(C-LINK)   ell_i  =  ell_i^movers  +  ell_i^stay  +  ell_i^unobserved
+```
+
+where `ell_i^stay` is the home/stayer labor carried by `P_ii = 1 − m_i`, and
+`ell_i^unobserved` covers movers outside the observed frame (for a mover-only frame such as S or
+C this term is not zero a priori). A design must either (a) supply all three components from one
+coherent frame, or (b) **declare which components are unobserved and treat (C-LINK) as a
+consistency check with a reported residual** — never as an equality assumed by construction.
+`(C-LINK)` is a consistency condition, not an identification of either object.
+
+**Finding L-2 — the failure direction is not innocuous.** If `lambda` rises with destination wage
+or return — the very mechanism the model is meant to capture — then `lambda_ij` is positively
+correlated with the destination's attractiveness, and the person-based share **systematically
+understates** high-wage destinations' labor-service share. The bias is therefore correlated with
+the model's own explanatory variables, so it is not a random measurement error and it will not
+average out. Report it, do not absorb it silently.
 
 ### 4.3 Statements the bridge must make (per Issue #81 §5)
 
@@ -548,12 +729,15 @@ For every family, the bridge preregistration must state:
    variables exist in the instrument;
 4. **whether efficiency-labor weighting is ignored, approximated, or externally supplied** —
    one of the three must be declared; "ignored" is admissible only as an explicitly
-   preregistered approximation with the `(P-L)` assumption and full sensitivity over `φ`.
+   preregistered approximation with the `(P-L)` assumption and full sensitivity over `lambda`
+   (and, if the two-margin encoding is used, over `rho` and `phi` separately).
 
-**Conclusion of §4.** A defensible formulation of the bridge exists (the `(P-L)` assumption
-plus the correction formula, or the observable-subpopulation route). Its **execution** is
-blocked by the missing destination-varying labor-intensity source. Per Issue #81 §5, this
-alone would block empirical `W^L` fitting even if a clean bilateral pair matrix existed.
+**Conclusion of §4.** A defensible formulation of the bridge exists (the `(P-L)` assumption on
+`lambda_ij` plus the correction formula, or the observable-subpopulation route). Its
+**execution** is blocked by two **linked but distinct** missing provenance requirements — the
+pair-level `lambda_ij` and the origin-level `ell_i` — which are related through the consistency
+condition `(C-LINK)` but neither of which identifies the other. Per Issue #81 §5, this alone
+would block empirical `W^L` fitting even if a clean bilateral pair matrix existed.
 
 ## 5. Which bridge is preregisterable, and the decision
 
@@ -561,9 +745,9 @@ alone would block empirical `W^L` fitting even if a clean bilateral pair matrix 
 |---|---|---|---|---|---|
 | T1 time (root / embedding) | yes (§2.2) | time-homogeneous Markov; (A1)–(A4); preregistered selection rule | non-existence (proved); non-uniqueness (proved); non-embeddability | root family; selection rule; spread over `𝓕` | **yes** |
 | T2 time (low mobility) | yes (§2.3) | `C1`; `‖A‖` small | `C1` violation; support contradiction | `pi_max`; window `k` | **yes, conditional on `C1`** |
-| T3 multi-year proxy | yes (§2.4) | none beyond the observed object | structurally biased, non-repairable, grows with `k`, ergodic limit | `k` | **no** — proxy only |
+| T3 multi-year proxy | yes (§2.4) | none beyond the observed object | structurally biased, non-repairable, zero at `k = 1`, ergodic limit under irreducibility + aperiodicity; monotonicity in `k` **not** claimed in general | `k` | **no** — proxy only |
 | S/C stock→flow | yes (§3) | Little's law; duration structure | turnover not identified from cross-sections (proved); hukou-vs-residence mismatch | duration heterogeneity; correlation; definition | **candidate as a conditional design; `NOT_IDENTIFIED` under current evidence** |
-| L population→labor | yes (§4) | `(P-L)` or an observable worker subpopulation | `(P-L)` violation correlated with attractiveness; missing labor-intensity source | `φ` gradient; participation gradient | **candidate as a conditional design; execution blocked** |
+| L population→labor | yes (§4) | `(P-L)`: `lambda_ij = rho_ij phi_ij` constant across destinations within origin, or an observable worker subpopulation | `(P-L)` violation correlated with attractiveness; two linked but distinct missing provenance requirements (`lambda_ij` pair-level, `ell_i` origin-level) related only by `(C-LINK)` | `lambda` gradient; `rho` and `phi` separately | **candidate as a conditional design; execution blocked** |
 
 **Decision.** At least one source family (T) carries a mathematically explicit bridge
 candidate with named assumptions, failure conditions and sensitivity axes, and the terminal is
@@ -616,7 +800,9 @@ unchanged. Until every one of those preconditions holds, the pair target remains
 | P2 | no stochastic-root uniqueness assumption without enumeration and proof |
 | P3 | no stochastic-root **existence** assumption either: `𝓕 = ∅` must fail closed |
 | P4 | no multi-year conditional share relabelled annual, and no use of T3 as the empirical target |
-| P5 | no population share relabelled a labor-service share without the explicit `(P-L)` bridge or an observable worker subpopulation |
+| P5 | no population share relabelled a labor-service share without the explicit `(P-L)` bridge on `lambda_ij` or an observable worker subpopulation |
+| P11 | no claim that the pair-level `lambda_ij` and the origin-level `ell_i` are the same object, and no inference of one from the other; both are separately required until a source proves one coherent frame |
+| P12 | `P̂ = I + (T^(k) − I)/k` may not be assumed to satisfy the support condition (A3); the positive off-diagonals of `T^(k)` must be checked against the declared annual support mask |
 | P6 | no total population substituted for `ell` |
 | P7 | no region crosswalk guessed, and no un-mappable label silently merged |
 | P8 | no outcome-driven bridge, annualization, selection-rule, tolerance or sensitivity-level choice |
