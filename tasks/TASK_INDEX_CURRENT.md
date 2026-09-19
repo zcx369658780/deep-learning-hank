@@ -1,25 +1,25 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P3B_CANDIDATE_ACCEPTED__ISSUE_82_P3C_ACTIVE_OPERATIVE`。
+状态：`P3C_EXECUTION_READINESS_ACCEPTED__HUMAN_SOURCE_VERIFICATION_PENDING`。
 
+Issue #79 / P2D：ACCEPTED / CLOSED / INTEGRATED — P2 METHOD GATE COMPLETE。
+Issue #80 / P3A：ACCEPTED / CLOSED / INTEGRATED — BRANCH B。
 Issue #81 / P3B：ACCEPTED / CLOSED / INTEGRATED — CANDIDATE AVAILABLE。
-- integration: `1819b0a5a36b2a8ffde3641c711892df2cdcede7`
-- acceptance: `5741469418`
-- integration comment: `5741471600`
+Issue #82 / P3C：**ACCEPTED / CLOSED / INTEGRATED — HUMAN SOURCE VERIFICATION PENDING**。
+- integration: `3496ba96b78992a579821348ad563e3b67afdf16`
+- Reviewer acceptance: `5741828428`
+- integration comment: `5741830109`
+- terminal: `DLH_WL_P3C_EXECUTION_READINESS_FREEZE__PASS__HUMAN_SOURCE_VERIFICATION_PENDING`
 
-下一科学 Builder Issue：
-- #82 / `DLH-WL-P3C: bridge execution-readiness freeze and human verification packet`
-- 状态：**OPEN / ACTIVE / OPERATIVE**
-- publication baseline：`60d71ec068c044f73da0f56e86b1cb4bbf7c4a8d`
-- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
+Accepted P3C boundary:
+- all 16 Reviewer thresholds/search constants are frozen pre-execution；
+- F_all_exact and F_search_tol semantics are separated；
+- finite search cannot prove global uniqueness or non-existence；
+- exactly 64 optimizer starts are frozen for any future real execution；
+- H1–H7 packet is complete but 7/7 unresolved；
+- E3 promotion is a human/Owner act only；
+- no real bridge/data/adapter/model execution is authorized。
 
-#82 不执行真实 bridge；只冻结：
-- pi_max / tau_W / tau_m / unmappable-mass thresholds；
-- stochastic-root numerical tolerances；
-- finite F_search vs mathematical F_all semantics；
-- global uniqueness / non-existence claim ceiling；
-- deterministic multistart search protocol；
-- E3 human source/schema verification packet。
-
-禁止真实矩阵 bridge、data ingestion、adapter、fit/training。
+Current scientific Builder Issue：NONE。
+Current active gate：Owner/human verification of H1–H7 primary-source evidence. DSH is not authorized to self-resolve or promote any H item.
