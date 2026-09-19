@@ -23,3 +23,7 @@ Accepted P3C boundary:
 
 Current scientific Builder Issue：NONE。
 Current active gate：Owner/human verification of H1–H7 primary-source evidence. DSH is not authorized to self-resolve or promote any H item.
+
+Owner/human review Issue：#83 / `DLH-WL-P3D: Owner human/source verification gate H1–H7`。
+状态：**OPEN / OWNER-HUMAN REVIEW ONLY / NO BUILDER AUTHORITY**。
+完成规则：Owner/Reviewer 对 H1–H7 分别记录 primary-source provenance 与决策 token；在此之前 DSH 不得执行 P3 bridge、adapter 或 empirical fit。
