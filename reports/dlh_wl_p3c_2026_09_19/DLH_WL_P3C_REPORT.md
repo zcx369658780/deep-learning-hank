@@ -2,7 +2,8 @@
 
 Issue: **#82 / `DLH-WL-P3C`**. Owner route: `DLH-WL-V1-20260918`.
 Authority marker: `DLH_WL_P3C_EXECUTION_READINESS_FREEZE_AUTHORIZED`.
-Reviewer final activation comment: **`5741497930`**.
+Reviewer activation comment: **`5741497930`**.
+Reviewer HOLD remediated by this revision: **`5741651898`** (items A–E, §6.1).
 Operative baseline: `2b7b0b7d506907ecbf41509bc526ad2b5ea794a6`.
 Dedicated branch: `dsh/issue-82-dlh-wl-p3c-execution-readiness-freeze-2026-09-19`.
 
@@ -22,8 +23,8 @@ authorized or possible yet.
 
 | Terminal | Selected? | Reason |
 |---|---|---|
-| `DLH_WL_P3C_EXECUTION_READINESS_FREEZE__PASS__HUMAN_SOURCE_VERIFICATION_PENDING` | **YES — selected** | every PASS condition of Issue #82 §8 holds: all sixteen Reviewer thresholds are represented consistently in the documents and the TOML; the finite-search versus global-root-set semantics are explicit and the alias map to P3B is declared; uniqueness and non-existence claims are fail-closed with a closed four-term vocabulary and a certificate requirement; the human verification packet is complete (H1–H7, each with question, required primary evidence, decision tokens and fail-closed consequence); and no data, bridge or model execution occurred. |
-| `DLH_WL_P3C_EXECUTION_READINESS_FREEZE__REVIEW_REQUIRED` | no | not selected: no threshold, tolerance, search parameter or status term is internally inconsistent, and no P3B condition is left undecided by this freeze. The two interpretive decisions P3C did have to make are declared in place rather than left as silent choices — the negativity band `[-1e-10, -1e-12)` is handled as retain-and-record, and the degenerate-root rule is added fail-closed — and each is flagged for the Reviewer. Should the Reviewer disagree with either reading, the correct response is a dated pre-execution amendment, not a re-scoping of this Issue. |
+| `DLH_WL_P3C_EXECUTION_READINESS_FREEZE__PASS__HUMAN_SOURCE_VERIFICATION_PENDING` | **YES — selected** | every PASS condition of Issue #82 §8 holds: all sixteen Reviewer thresholds are represented consistently in the documents and the TOML; the tolerance-level candidate-set versus exact-root-set semantics are explicit, the alias map to P3B is declared and the `F_search_tol ⊆ F_all_exact` implication is withdrawn rather than asserted; uniqueness and non-existence claims are fail-closed with a closed four-term vocabulary and a certificate requirement; the human verification packet is complete (H1–H7, each with question, required primary evidence, decision tokens and fail-closed consequence); and no data, bridge or model execution occurred. |
+| `DLH_WL_P3C_EXECUTION_READINESS_FREEZE__REVIEW_REQUIRED` | no | not selected: after this bounded remediation no threshold, tolerance, search parameter or status term is internally inconsistent, and no P3B condition is left undecided by this freeze. The five HOLD `5741651898` items A–E were closed by content correction with all sixteen Reviewer numeric thresholds unchanged (§6.1): the support check now applies to the candidate annual `P` only, the candidate set is named `F_search_tol` with the `⊆ F_all_exact` implication withdrawn, `[-1e-10, -1e-12)` is `NUMERIC_SIGN_AMBIGUOUS__NOT_BRIDGE_USABLE`, exactly 64 optimizer starts are executed for every window, and a degenerate origin is a row-level condition instead of a whole-window failure. |
 
 `HUMAN_SOURCE_VERIFICATION_PENDING` is part of the selected terminal, not a caveat on it: the
 packet it refers to is complete **and** entirely unresolved, which is exactly the intended state
@@ -33,7 +34,7 @@ before any real transition matrix is inspected.
 
 | # | Path | Role |
 |---|---|---|
-| 1 | `docs/specifications/DLH_WL_P3C_EXECUTION_READINESS_FREEZE_2026_09_19.md` | the freeze: thresholds, the P3B condition each tolerance decides, `F_all`/`F_search` semantics, closed status vocabulary, deterministic search protocol, claim ceiling, invariants |
+| 1 | `docs/specifications/DLH_WL_P3C_EXECUTION_READINESS_FREEZE_2026_09_19.md` | the freeze: thresholds, the P3B condition each tolerance decides, `F_all_exact`/`F_search_tol` semantics, closed status vocabulary, deterministic search protocol, claim ceiling, invariants |
 | 2 | `docs/data/DLH_WL_P3C_HUMAN_SOURCE_VERIFICATION_PACKET_2026_09_19.md` | the E3 packet H1–H7, each with question, required primary evidence, decision tokens, fail-closed consequence |
 | 3 | `configs/dlh_wl_p3c_bridge_readiness.toml` | machine-readable mirror of every threshold, search parameter and status vocabulary |
 | 4 | this report | Issue report and terminal |
@@ -49,7 +50,7 @@ before any real transition matrix is inspected.
    the `(A1)`–`(A4)` admissibility conditions, the generator conditions, the `C1` applicability
    check, the §2.6 selection rule S1–S5, the sensitivity axes, the region fail-closed rules and
    the `lambda`/`ell` separation;
-4. Issue #82 body and activation comment `5741497930`.
+4. Issue #82 body, activation comment `5741497930` and Reviewer HOLD `5741651898` (items A–E).
 
 No dataset, microdata, tabulation, codebook, licence text or full text was opened. No external
 metadata query was issued: every item this Issue needed was either a Reviewer-frozen number or a
@@ -68,70 +69,102 @@ TOML, and each is bound to the P3B condition it decides.
 | `unmappable_mass_share_max` | `0.01` | the region-mapping threshold P3B left `TO_BE_FROZEN` |
 | row-sum absolute tolerance | `1e-10` | (A2) row-stochasticity |
 | stochastic non-negativity hard failure | below `-1e-10` | (A1) non-negativity |
+| negativity middle band — **derived from the two frozen values, not a new threshold** | `[-1e-10, -1e-12)` | `NUMERIC_SIGN_AMBIGUOUS__NOT_BRIDGE_USABLE`, diagnostic only (item C) |
 | cosmetic zeroing band | `[-1e-12, 0)` | canonicalization within (A1) |
 | forbidden-support mass tolerance | `1e-12` | (A3) support admissibility |
 | exact k-step root residual | `1e-8` | (A4) window consistency |
 | generator row-sum tolerance | `1e-10` | generator condition `Q·1 = 0` |
 | generator off-diagonal hard failure | below `-1e-10` | generator condition `Q_ij ≥ 0, i ≠ j` |
-| discovered-root dedup threshold | `1e-7` | `F_search` reporting identity |
+| discovered-root dedup threshold | `1e-7` | `F_search_tol` candidate identity |
 | imaginary-part tolerance | `1e-10` | reality of a candidate matrix / root / logarithm |
 | multistart RNG seed | `20260919` | R4 |
-| deterministic constrained starts | `64` | R4 |
+| deterministic constrained starts | `64` | R4 — **exactly 64 executed optimizer starts per window** (item D) |
 | max iterations per start | `5000` | R4 |
 
 This closes the four items P3B explicitly left open — `tau_W`, `pi_max`, the unmappable-mass
 threshold and the search parameters — **before any source is opened**, which is exactly the
 condition P3B attached to them.
 
-**Two additions P3C made, both fail-closed, both flagged for the Reviewer:**
+**Bounded remediation under HOLD `5741651898`.** The first revision of this report and of the freeze
+contained five semantics the Reviewer correctly rejected (items A–E). All five were corrected by
+content change, with **all sixteen Reviewer numeric thresholds unchanged**. In summary:
 
-1. **Degenerate-root rule.** If any retained root has `min_i m_i(P) ≤ 0`, the window fails closed
-   to `NOT_IDENTIFIED_BY_ANNUALIZATION` **regardless of the measured spreads**. Enforcing only
-   the spread statistic would let a `0/0` conditional-share cell pass unnoticed; P1B §2.2 item 5
-   already forbids fabricating a label for a block with `m_i = 0`.
-2. **Negativity band `[-1e-10, -1e-12)` = retain-and-record, never zero.** The two frozen
-   negativity numbers leave this band in neither the hard-failure nor the cosmetic-zeroing
-   category. P3C treats such an entry as acceptable floating-point noise (root admissible) but
-   **does not canonicalize it**, recording its count, minimum and location. If the Reviewer
-   intended the cosmetic band to cover the whole `[-1e-10, 0)` range, that is a dated
-   pre-execution amendment; P3C does not assume it.
+1. **A — support semantics.** The `T^(k)`-side global block failure was **removed**: a k-step matrix
+   legitimately carries mass on pairs that are not annual direct edges, via indirect paths. Only the
+   candidate annual `P` is tested against the annual transition support; positive `T^(k)` mass on a
+   non-annual pair is the non-failing diagnostic `MULTISTEP_MASS_ON_NON_ANNUAL_PAIR`; for the T2 route
+   alone, ineligibility is recorded as `T2_SUPPORT_ELIGIBILITY_FAIL`.
+2. **B — exact roots versus numerical candidates.** `F_all`/`F_search` are renamed
+   `F_all_exact`/`F_search_tol`, and the unconditional subset claim is **withdrawn**
+   (`F_search_tol_is_subset_of_F_all_exact = NOT_ASSERTED`). Only the certified subset
+   `{ P ∈ F_search_tol : exact_root_certified(P) = true } ⊆ F_all_exact` is asserted.
+3. **C — negativity middle band.** `[-1e-10, -1e-12)` is
+   `NUMERIC_SIGN_AMBIGUOUS__NOT_BRIDGE_USABLE`: raw-solver diagnostic only, never entering
+   `F_search_tol`, any spread, bridge selection, `m`/`W` construction or any admissibility count.
+4. **D — exactly 64 starts.** Every window executes exactly 64 optimizer starts,
+   `n_special_valid + (64 − n_special_valid) = 64`; unavailable special starts go to a separate ledger and
+   are not optimizer starts; special starts consume no RNG draws.
+5. **E — degenerate `m` is row-level.** `m_i(P) = 0` marks only that origin
+   `TARGET_UNAVAILABLE_DEGENERATE_OUTFLOW`; the window status is unaffected, the row is excluded from the
+   `W` spread and from supervised rows, and no uniform `W` is fabricated for it.
+
+§6.1 records the per-item closure with the corrected statement, its frozen location and the toy-check
+evidence. The remaining `W` semantics are unchanged: the **`W` support excludes the diagonal** while the
+**transition support includes it** (P1B §3.4).
 
 ## 4. Search semantics
 
-### 4.1 `F_all` versus `F_search`
+### 4.1 `F_all_exact` versus `F_search_tol` (corrected: HOLD `5741651898` item B)
 
 ```
-F_all     = the mathematical set of all admissible annual stochastic roots P of P^k = T^(k)
-F_search  = the finite set of admissible roots discovered by the preregistered search,
-            retained after deduplication at 1e-7
-F_search subset of F_all ;  F_search is NEVER reported as complete or global
+F_all_exact  = the mathematical set of all annual stochastic matrices P satisfying P^k = T^(k) EXACTLY
+F_search_tol = the finite set of numerically admissible eps-root candidates retained by the
+               preregistered search under the frozen tolerances, after deduplication at 1e-7
+
+{ P in F_search_tol : exact_root_certified(P) = true }  subset of  F_all_exact
+F_search_tol_is_subset_of_F_all_exact = NOT_ASSERTED
+F_search_tol is NEVER reported as complete, global or exhaustive
 ```
 
-The aliases to P3B are declared so the two documents cannot drift: `F_all` ≡ P3B's `𝓕(T^(k))`;
-`F_search` ≡ P3B's `𝓕_enum`.
+The pre-remediation names `F_all`/`F_search` survive only in the forbidden/superseded list below. The
+aliases to P3B are declared so the two documents cannot drift: `F_all_exact` ≡ P3B's `𝓕(T^(k))`;
+`F_search_tol` ≡ P3B's `𝓕_enum`, read as a tolerance-level candidate set.
 
-**Fail-closed claim rules.** One numerical root ⇒
-`ONE_ROOT_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED`, never `UNIQUE_ROOT`. Zero numerical roots ⇒
-`NO_ADMISSIBLE_ROOT_FOUND__EXISTENCE_NOT_PROVEN`, never a proof of non-existence.
-`GLOBAL_UNIQUENESS_CERTIFIED` requires an analytical, interval, verified-continuation or
+**Why the old subset claim is withdrawn.** A candidate with residual `7e-9` satisfies the frozen
+`1e-8` tolerance but is a numerical ε-root candidate, not necessarily an exact mathematical root, so
+`F_search ⊆ F_all` was not literally valid and is superseded. Only the certified subset above is
+asserted. Every retained candidate therefore carries its `root_residual` and an `exact_root_certified`
+flag, the latter `true` only with an analytical/interval/verified-continuation proof. The residual bound
+is a **backward-error** statement: it does **not** establish that an exact root exists nearby, which
+would require a separate perturbation/conditioning argument. All spread diagnostics are computed over
+`F_search_tol` and are **search-defined sensitivity evidence**, never a statement about the complete
+exact-root set.
+
+**Fail-closed claim rules.** One numerically admissible candidate ⇒
+`ONE_NUMERICALLY_ADMISSIBLE_ROOT_CANDIDATE_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED`, never
+`UNIQUE_ROOT`. Zero numerically admissible candidates ⇒
+`NO_NUMERICALLY_ADMISSIBLE_ROOT_CANDIDATE_FOUND__EXISTENCE_NOT_PROVEN`, never a proof of
+non-existence. `GLOBAL_UNIQUENESS_CERTIFIED` requires an analytical, interval, verified-continuation or
 equivalent certificate over the admissible domain — a finite search can never produce it.
 
-Closed status vocabulary (**exactly one per window**), as frozen:
+Closed status vocabulary (**exactly one per window**), as frozen and replaced under HOLD `5741651898`:
 
 ```
 GLOBAL_UNIQUENESS_CERTIFIED
-MULTIPLE_ADMISSIBLE_ROOTS_FOUND
-ONE_ROOT_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED
-NO_ADMISSIBLE_ROOT_FOUND__EXISTENCE_NOT_PROVEN
+MULTIPLE_NUMERICALLY_ADMISSIBLE_ROOT_CANDIDATES_FOUND
+ONE_NUMERICALLY_ADMISSIBLE_ROOT_CANDIDATE_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED
+NO_NUMERICALLY_ADMISSIBLE_ROOT_CANDIDATE_FOUND__EXISTENCE_NOT_PROVEN
 ```
 
-Forbidden terms, allowed only inside a statement that they are forbidden: `UNIQUE_ROOT`,
+Forbidden terms, allowed only inside a statement that they are forbidden or superseded: `UNIQUE_ROOT`,
 `GLOBALLY_UNIQUE`, `NO_ROOT_EXISTS`, `NON_EXISTENCE_PROVEN`, `F_search_IS_F_all`,
-`COMPLETE_ROOT_SET`, `ALL_ROOTS_FOUND`.
+`COMPLETE_ROOT_SET`, `ALL_ROOTS_FOUND`, and the superseded pre-remediation wordings
+`MULTIPLE_ADMISSIBLE_ROOTS_FOUND`, `ONE_ROOT_FOUND__GLOBAL_NONUNIQUENESS_NOT_EXCLUDED`,
+`NO_ADMISSIBLE_ROOT_FOUND__EXISTENCE_NOT_PROVEN`, `ADMISSIBLE_ROOTS_FOUND`.
 
-**Coverage limit recorded with every `F_search` report.** A numerical search over the row simplex
-cannot certify that it found everything: a root could lie in a basin none of the 64 starts
-enters. That is precisely why status 1 needs a certificate and why statuses 3 and 4 are phrased
+**Coverage limit recorded with every `F_search_tol` report.** A numerical search over the row simplex
+cannot certify that it found everything: a candidate could lie in a basin none of the 64 executed
+starts enters. That is precisely why status 1 needs a certificate and why statuses 3 and 4 are phrased
 as non-exclusions and non-proofs.
 
 ### 4.2 Deterministic search protocol
@@ -152,8 +185,13 @@ parameterization : allowed-support row simplex, bound-constrained
 objective        : ||P^k - T^(k)||_F^2
 validity metric  : max_abs(P^k - T^(k)) <= 1e-8
 rng              : numpy.random.Generator (PCG64) via default_rng, seed 20260919
-starts           : exactly 64 = 4 special (identity, T2, principal root, embedding) in P-space
-                   with NO random draws + 60 from one continuous stream,
+starts           : EXACTLY 64 EXECUTED OPTIMIZER STARTS FOR EVERY WINDOW
+                   executed_starts = n_special_valid + (64 - n_special_valid) = 64
+                   n_special_valid = valid special starts among {identity, T2, principal root,
+                   embedding}; specials are built in P-space and consume NO RNG draws
+                   invalid specials -> separate special_start_unavailable ledger, and they are
+                   NOT optimizer starts, so they never reduce the 64 executed starts
+                   random starts   = 64 - n_special_valid from one continuous stream,
                    Dirichlet(alpha = 1) on the allowed-support row simplex,
                    draw order = ascending origin row, ascending allowed entry, ascending start
 extra starts / restarts / family changes after seeing results : NOT ALLOWED
@@ -164,39 +202,56 @@ scope            : joint over all origins (P^k couples rows)
 Three design decisions are recorded with their reasons rather than left implicit:
 
 - **softmax / logit row parameterization is explicitly rejected.** A softmax cannot attain an
-  exact interior zero, so an admissible root with a genuine interior zero would be unreachable —
-  silently shrinking `F_search` and weakening exactly the completeness question this Issue
-  exists to protect. The bound-constrained simplex keeps such roots reachable.
-- **the start distribution has no free numeric parameter.** `Dirichlet(alpha = 1)` is
-  parameter-free, so no Builder-invented number enters a Reviewer-frozen contract.
+  exact interior zero, so a candidate with a genuine interior zero would be unreachable — silently
+  shrinking `F_search_tol` and weakening exactly the completeness question this Issue exists to
+  protect. The bound-constrained simplex keeps such candidates reachable.
+- **the start-distribution constants are Reviewer-ratified design constants.** `default_rng`/PCG64 and
+  `Dirichlet(alpha = 1)` are pre-execution search-design constants ratified by the Reviewer (HOLD
+  `5741651898` item D). They are **no longer described as "parameter-free"**, which would misdescribe
+  them as threshold-free rather than as Builder-chosen-but-ratified design constants; no
+  Builder-invented number enters a Reviewer-frozen contract.
 - **the RNG stream is version-dependent, and that is disclosed rather than hidden.** The contract
-  requires the implementation to record the NumPy version and a **start-manifest hash** over the
-  64 generated start matrices, so the actual starts are auditable even if a future NumPy release
-  changes the stream for the same seed.
+  requires the implementation to record the NumPy version and a **start-manifest hash** over all 64
+  executed start matrices, so the actual starts are auditable even if a future NumPy release changes
+  the stream for the same seed.
 
 ### 4.3 Route execution order versus bridge-convention preference
 
 P3B froze a preference order (generator embedding → principal real non-negative root → T2 if `C1`
 passes → fail closed). P3C freezes R1→R2→R3→R4 as the **execution** order. These are different
 objects and the difference is frozen explicitly so it cannot be read as a contradiction:
-**R1–R4 decides which candidate generators are run and in what order to build `F_search`; the
+**R1–R4 decides which candidate generators are run and in what order to build `F_search_tol`; the
 P3B order decides which discovered root becomes the selected bridge convention.** The preference
 selects a convention, not an identification theorem, and alternative discovered roots and their
 spreads remain reportable.
 
-### 4.4 Two support checks against two distinct masks
+### 4.4 Support semantics (corrected: HOLD `5741651898` item A)
 
-P3C freezes **both** the `T^(k)`-side pre-check (no positive off-diagonal of the observed window
-on a pair forbidden by the declared annual transition support; positive means `> 1e-12`,
-otherwise the block fails closed) **and** the `P`-side check (forbidden mass `<= 1e-12`, else the
-root is rejected). It also freezes that two masks must be declared separately:
+**The `T^(k)`-side global block failure of the first revision is removed.** `T^(k)` is a **k-step**
+matrix: where the annual direct edge `i → j` is forbidden but an allowed indirect path
+`i → l → … → j` exists, `T^(k)_ij > 0` is the expected behaviour, not a contradiction. Applying the
+annual transition support to `T^(k)` would fail essentially every non-trivial window closed; a
+synthetic counterexample is recorded in §6.1 (toy check A1: a 3-origin allowed support with
+`(0,2)` forbidden annually still gives `T^(2)_02 = 1/4` through the allowed path `0 → 1 → 2`).
 
-- the **transition support** includes the diagonal — `P_ii` is home retention and is a real
-  allowed transition;
+The corrected rules are frozen as:
+
+1. **Annual support is tested on the candidate annual `P` only.** Forbidden *annual* mass `≤ 1e-12`,
+   else the candidate is rejected. R1, R2 and R4 check only candidate annual `P`.
+2. **Positive `T^(k)` mass on a non-annual pair is a diagnostic, not a failure**:
+   `MULTISTEP_MASS_ON_NON_ANNUAL_PAIR`, recorded with count, location and magnitude.
+3. **T2 alone is affected by the `T^(k)`-side test.** Because T2 sets `P̂_ij = T^(k)_ij / k`, a
+   positive `T^(k)_ij` on a pair forbidden by the **annual** transition support makes T2 ineligible;
+   that is recorded as `T2_SUPPORT_ELIGIBILITY_FAIL` and scoped to T2 only. `P^k` is therefore
+   **allowed** to carry positive mass on non-annual pairs.
+
+Two masks are still declared separately:
+
+- the **transition support** includes the diagonal — `P_ii` is home retention and is a real allowed
+  transition;
 - the **`W` support** always excludes the diagonal (P1B §3.4).
 
-Conflating them would either forbid self-transitions (making every root inadmissible) or allow the
-diagonal into the conditional target.
+Conflating them would either forbid self-transitions or leak the diagonal into the conditional target.
 
 ## 5. Human/source verification packet
 
@@ -232,14 +287,15 @@ Aggregate packet status: **7 of 7 unresolved · 0 promoted by DSH · 0 datasets 
 Only the checks Issue #82 §10 allows: TOML parse, cross-document threshold consistency,
 static/symbolic reasoning and deterministic-search pseudocode review.
 
-- **TOML parses** with the Python standard-library `tomllib`; 13 top-level keys (11 of them
-  tables) and 176 leaf values; LF SHA-256
-  `D2F238EB035F5DE35572BCA33487369DB832F5AAF85E2956BA2D4AD4E07A688A`.
+- **TOML parses** with the Python standard-library `tomllib`; 14 top-level keys (12 of them
+  tables) and 246 leaf values; LF SHA-256
+  `C232D43FE1D1923A6C2DC380D596E1AF1B33612D4654E3D5DC813CAC2FA8E3B1`.
 - **all sixteen frozen numbers are byte-identical** between the freeze document and the TOML.
 - **every tolerance is bound** to the P3B condition it decides, with no tolerance left
   unassigned and no P3B condition left undecided.
-- **`F_all`/`F_search` are distinguished everywhere**, the P3B alias map is declared, and every
-  occurrence of a forbidden term sits inside a statement that it is forbidden.
+- **`F_all_exact`/`F_search_tol` are distinguished everywhere**, the P3B alias map is declared, the
+  `F_search_tol ⊆ F_all_exact` implication is withdrawn rather than asserted, and every occurrence of
+  a forbidden or superseded term sits inside a statement that it is forbidden or superseded.
 - **the closed status vocabulary is stated once and reused**, with exactly one status required
   per window.
 - **the pseudocode contains no branch that can reach `GLOBAL_UNIQUENESS_CERTIFIED` without a
@@ -248,6 +304,46 @@ static/symbolic reasoning and deterministic-search pseudocode review.
   `ell`, no `W`, no region mass.
 
 No real matrix was executed by any of these checks, and no source file was ingested.
+
+### 6.1 Bounded remediation closure — HOLD `5741651898` items A–E
+
+| Item | Reviewer finding | Corrected statement now frozen | Frozen location | Toy-check evidence |
+|---|---|---|---|---|
+| **A** | the `T^(k)`-side global support check was mathematically wrong | only the **candidate annual `P`** is tested against the annual transition support (forbidden annual mass `≤ 1e-12` else the candidate is rejected, R1/R2/R4); positive `T^(k)` mass on a non-annual pair is the **non-failing** diagnostic `MULTISTEP_MASS_ON_NON_ANNUAL_PAIR`; T2-only ineligibility is `T2_SUPPORT_ELIGIBILITY_FAIL`; `P^k` may carry positive mass on non-annual pairs | freeze §2.2, §4.2, §4.4; TOML `[numerical.support]`, `[status_vocabulary.route]` | A1–A5 |
+| **B** | `F_search ⊆ F_all` was not literally valid and the two objects were conflated | `F_all_exact` (exact roots of `P^k = T^(k)`) separated from `F_search_tol` (numerically admissible ε-root candidates under the frozen tolerances); unconditional subset claim **withdrawn**; per-candidate `root_residual` + `exact_root_certified`; the residual bound is backward-error only; spreads are search-defined sensitivity evidence; closed four-term vocabulary | freeze §3.1–§3.3, §4; TOML `[root_sets]`, `[status_vocabulary.uniqueness]` | static/symbolic |
+| **C** | `[-1e-10, -1e-12)` cannot be "admissible" while retaining a negative entry | `NUMERIC_SIGN_AMBIGUOUS__NOT_BRIDGE_USABLE`: raw-solver diagnostic only, excluded from `F_search_tol`, spreads, bridge selection, `m`/`W` and admissibility counts; admission requires a retained matrix entrywise `≥ 0`, after which row-sum, annual-support and residual checks are re-run | freeze §2.1; TOML `[numerical]` | C1–C9 |
+| **D** | the slot-based rule could execute fewer than 64 starts | `executed_starts = n_special_valid + (64 − n_special_valid) = 64` for **every** window; invalid specials go to a separate `special_start_unavailable` ledger and are not optimizer starts; specials consume no RNG draws; `default_rng`/PCG64 and `Dirichlet(alpha = 1)` declared as Reviewer-ratified design constants; NumPy version + start-manifest hash over all 64 executed starts retained | freeze §4.2; TOML `[search]`, `[search.R4_constrained_multistart]` | D1–D6 |
+| **E** | the whole-window degenerate failure was wrong; P1B's rule is row-specific | `m_i(P) = 0` marks **only that origin** `TARGET_UNAVAILABLE_DEGENERATE_OUTFLOW`, excluded from the `W` spread and from supervised/evaluation rows, with **no** fabricated uniform `W`; window root status unaffected; `m_i < 0` invalid through the negativity rules; `m` spread over **all** origins, `W` spread over non-degenerate origins only; whole-panel completeness is a separate design gate | freeze §1.5, §5.6; TOML `[row_availability]` | E1–E5 |
+
+**Vocabulary mirror completed (no numeric change).** The route-status vocabulary in the TOML now mirrors
+both route-status terms the freeze document uses — `C1_FAILED` for a `pi_max` applicability failure (P3B
+`C1`) and `T2_SUPPORT_ELIGIBILITY_FAIL` for the T2-only support rule — and the row vocabulary mirrors
+`TARGET_UNAVAILABLE_DEGENERATE_OUTFLOW`. No threshold, tolerance or search parameter was touched by this
+completion; it removes a vocabulary-mirror gap only.
+
+**Reviewer numeric thresholds: sixteen, all unchanged by this remediation.** Every value was re-parsed
+from the TOML and compared against the §3 table: `pi_max = 0.15`, `tau_W_abs = 0.02`,
+`tau_m_abs = 0.02`, `unmappable_mass_share_max = 0.01`, row-sum tolerance `1e-10`, negativity hard
+failure `< -1e-10`, cosmetic-zeroing band `[-1e-12, 0)`, forbidden-support tolerance `1e-12`, exact
+k-step root residual `1e-8`, generator row-sum tolerance `1e-10`, generator off-diagonal hard failure
+`< -1e-10`, root dedup `1e-7`, imaginary-part tolerance `1e-10`, RNG seed `20260919`, 64 deterministic
+start slots, 5000 max iterations per start.
+
+**Toy/synthetic checks (25, exact rational arithmetic, zero empirical values).** Only the checks Issue
+#82 §10 allows were used: TOML parse, cross-document static consistency, symbolic reading and
+toy-matrix reasoning. The toy checks were performed outside the repository with a synthetic 3×3
+allowed-support matrix, a synthetic negativity sweep over the two frozen thresholds and their interior,
+a synthetic start-count enumeration and a synthetic `m` vector; no artifact was added to the allowlist
+and no empirical number was produced. Results: **A1–A5, C1–C9, D1–D6, E1–E5 all PASS (25/25)**,
+including the A1 counterexample that invalidated the old `T^(k)`-side failure and the C7/C9 cases
+showing that a candidate retaining a sign-ambiguous or hard-failing entry is rejected before any spread
+is computed. A separate 115-check static/TOML pass over all four artifacts reports **115 PASS / 0 FAIL**,
+including the 16/16 unchanged Reviewer thresholds.
+
+**Unchanged by this remediation:** the four-path allowlist, the ancestry and authority chain
+(→ P3B preregistration → Issue #82 → activation `5741497930` → HOLD `5741651898`), the H1–H7
+human/source packet (7 of 7 `UNRESOLVED`, 0 self-promoted, 0 promoted by DSH), the selected terminal and
+its direction, and the zero-execution accounting of §7.
 
 ## 7. Prohibited-action accounting (all zero)
 
@@ -262,10 +358,15 @@ No real matrix was executed by any of these checks, and no source file was inges
 | HJB / KFE / GE / MATLAB / household calls | **0** |
 | `pytest` / full-suite runs | **0** |
 | evidence levels promoted | **0** |
-| frozen values invented by the Builder | **0** (all sixteen come from the Reviewer; the only parameter-free design choices are declared as such) |
+| frozen values invented by the Builder | **0** (all sixteen come from the Reviewer; the start-distribution constants are declared as Reviewer-ratified design constants, not Builder-invented values) |
 | numeric empirical values emitted | **0** |
 | source code, tests, config outside the allowlist, CURRENT governance or P3B artifacts touched | **0** |
 | PRs, merges, closes, successors or self-acceptances | **0** |
+
+Only the Issue #82 §10 check classes were used in this revision: TOML parse, cross-document static
+consistency, symbolic reading and deterministic-search pseudocode review, plus toy-matrix checks on
+synthetic inputs (25 toy checks, 115 static checks, both fully passing). Every toy input is synthetic or
+exact rational arithmetic; **no empirical value** was read, produced or emitted by any of them.
 
 ## 8. Exact changed paths (4 — exactly the Issue #82 allowlist)
 
@@ -282,17 +383,39 @@ no P3B artifact, no P2/P2D artifact.
 Artifact identity (LF-normalised SHA-256):
 
 ```
-freeze specification   32D016C12065DE520F505A9F8AB53FAB0E0D2C3D36A01EB1558F9F1F297B1890
-human packet            9AB077D9569BC5E6AC52985387932311F19611E7B493966A13866F7FD9D5FFDF
-readiness TOML          D2F238EB035F5DE35572BCA33487369DB832F5AAF85E2956BA2D4AD4E07A688A
-report                  FD4F7FF58BE1CF05C656BFF3415CE48773B7319B8EEE40AD194EE77E382C437E
+freeze specification   CF3224210396BBA004C392F03814EDC1B8282F13221490544F8295990EC4D349
+human packet           9AB077D9569BC5E6AC52985387932311F19611E7B493966A13866F7FD9D5FFDF
+readiness TOML         C232D43FE1D1923A6C2DC380D596E1AF1B33612D4654E3D5DC813CAC2FA8E3B1
+report                 319C5287C7A3E31B5C0411D227D5C42F15DD0B9AC08E73D74F28F3CD6FD95C40
 ```
+
+The `report` value is the LF SHA-256 of this report **with its own identity line removed**, so the
+value is reproducible from the committed artifact instead of being self-referential; the other three
+values are the plain LF SHA-256 of the named files as committed.
+
+The `report` value is the LF SHA-256 of this report **with its own identity line removed**, so the
+value is reproducible from the committed artifact instead of being self-referential; the other three
+values are the plain LF SHA-256 of the named files as committed.
+
+The `report` value is the LF SHA-256 of this report **with its own identity line removed**, so the
+value is reproducible from the committed artifact instead of being self-referential; the other three
+values are the plain LF SHA-256 of the named files as committed.
+
+The `report` value is the LF SHA-256 of this report **with its own identity line removed**, so the
+value is reproducible from the committed artifact instead of being self-referential; the other three
+values are the plain LF SHA-256 of the named files as committed.
+
+This bounded remediation changed three of the four allowlisted paths — the freeze specification, the
+readiness TOML and this report. The human/source verification packet was re-read against items A–E and
+required **no change** (its terminology was unaffected), so its identity is unchanged at
+`9AB077D9569BC5E6AC52985387932311F19611E7B493966A13866F7FD9D5FFDF`.
 
 ## 9. Interpretation ceiling
 
 Allowed by this Issue: the freeze itself; the statement that the packet is complete and
-unresolved; the statement that no real bridge execution is authorized ; the declarations that
-`F_search` is a subset of `F_all` and that no uniqueness or non-existence claim is available.
+unresolved; the statement that no real bridge execution is authorized ; the declaration that only the
+certified subset `{ P ∈ F_search_tol : exact_root_certified(P) = true }` is contained in `F_all_exact`, with the
+unconditional subset claim withdrawn, and that no uniqueness or non-existence claim is available.
 
 Explicitly **not** claimed: that any source exists, is available, is licensed or is accessible;
 that any source's semantics, schema, codes, weights or timings have been verified; that any
@@ -308,7 +431,7 @@ This Issue authorizes **nothing executable**. The next step is a **human** pass 
 packet; DSH cannot perform it and cannot promote anything. Only after the items a given wave
 needs are resolved as documented — and after a separately authorized Issue — could the
 preregistered bridge be implemented against this frozen contract, with the same tolerances, the
-same route set and order, the same 64-start construction and the same claim ceiling.
+same route set and order, the same exactly-64-executed-start construction and the same claim ceiling.
 
 ## 11. Terminal
 
