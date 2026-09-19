@@ -110,3 +110,8 @@ Issue #82 is now **ACTIVE / OPERATIVE**. It freezes Reviewer-side thresholds, nu
 ## P3C execution-readiness accepted — human verification pending — 2026-09-19
 
 Issue #82 is ACCEPTED / CLOSED / INTEGRATED at `3496ba96b78992a579821348ad563e3b67afdf16` (Reviewer acceptance `5741828428`; integration `5741830109`). Numerical/search/claim semantics are frozen before any real matrix execution. H1–H7 remain 7/7 unresolved and E3 promotion is reserved to human/Owner verification. No Builder scientific issue is active and no empirical bridge execution is authorized.
+
+
+## Owner amendment — latent labor measurement architecture — 2026-09-19
+
+Owner approved: real population/employment observations are measurement anchors rather than truth values of latent `W_star` / `ell_star`; retain the distance + economic-gap structural flow equation as the latent-flow backbone. First-wave choices: 2010 Census only initially; 2000 excluded; share-equivalence only as declared sensitivity/benchmark; employed persons as noisy proxy for latent `ell_star`; canonical information set window-start. Issue #83 remains the human source-verification gate. A docs/config-only latent-measurement architecture task may proceed in parallel, but no empirical execution is authorized.
