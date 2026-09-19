@@ -90,3 +90,6 @@ P2A 首次执行已完成但因重复完整执行突破 absolute-attempt ceiling
 Task Index 只写任务指针；Snapshot 写当前事实；本文件写路线。不要反复复制长篇历史。更新已验收进度不需要更新 Owner 锁定区块。
 
 历史三份 CURRENT 的原 blob 保存在 `docs/archive/pre_wl_route_2026_09_18/`。#73 科学接受与 waiver 仍见 Issue #73 和 `docs/handoffs/DLH_SESSION_HANDOFF_POST_5VY_2026_09_18.md`。旧失败结果不删除、不重新认证。
+
+
+P2B clean replication respected the single-invocation rule but ended Gate Fail after all 12 fits because post-fit aggregation crashed before predictions/results were persisted. This validates the need for per-fit durable scientific output. The next P2 replication keeps the #75 design unchanged and persists predictions/state in every FIT_COMPLETED record, making downstream accounting/rendering zero-fit recoverable.
