@@ -50,3 +50,8 @@ P1B accepted/integrated at `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`. Issue #76
 ## P2A adjudicated — 2026-09-19
 
 Issue #76 is CLOSED with accepted terminal `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED`, integrated at `8c5a9a7f474ce1feac3c63e449e07753141d8984`. The published metrics and neural non-gain are observational only; there is no accepted P2 PASS because the absolute fit-attempt ceiling was breached (minimum proven 36, Builder-reported 48 vs ceiling 13). Next gate is a clean replication with immutable pre-run scientific code and no science rerun on reporting failure.
+
+
+## P2B clean replication staged — 2026-09-19
+
+Issue #77 has been published as **STAGED / NOT OPERATIVE**. It preserves the #75 frozen scientific design and reuses the #76 scientific module byte-for-byte. The replication requires an immutable PRE_RUN_FREEZE commit, exactly one science invocation, durable per-fit attempt logging, immutable raw results, and zero-fit render-only publication. No execution before Reviewer final activation.
