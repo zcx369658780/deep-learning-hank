@@ -27,4 +27,4 @@ Issue #76 is complete as a protocol-gate-failed experiment. Do not reopen or rer
 
 
 ## P2B clean replication staged
-Issue #77 is STAGED / NOT OPERATIVE. After final activation, DSH must first build and commit/push an immutable pre-run replication harness, then execute science exactly once from a clean detached worktree at that SHA. Scientific execution writes only durable attempt ledger + raw results; final reporting uses render-only and may never rerun fits.
+Issue #77 is ACTIVE / OPERATIVE. DSH must read the final activation, then build and commit/push an immutable pre-run replication harness, and execute science exactly once from a clean detached worktree at that SHA. Scientific execution writes only durable attempt ledger + raw results; final reporting uses render-only and may never rerun fits.
