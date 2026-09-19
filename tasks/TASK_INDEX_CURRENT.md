@@ -1,21 +1,29 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P2A_GATE_FAIL_ACCEPTED__CLEAN_REPLICATION_NEXT`。
+状态：`P2A_GATE_FAIL_ACCEPTED__ISSUE_77_P2B_STAGED_NOT_OPERATIVE`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
 Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
-Issue #76 / P2A：**GATE FAIL EVIDENCE ACCEPTED / CLOSED / INTEGRATED**。
-- accepted evidence integration: `8c5a9a7f474ce1feac3c63e449e07753141d8984`
-- Reviewer acceptance comment: `5740209318`
-- integration comment: `5740210337`
-- accepted terminal: `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED`
+Issue #76 / P2A：GATE FAIL EVIDENCE ACCEPTED / CLOSED / INTEGRATED。
+- integration: `8c5a9a7f474ce1feac3c63e449e07753141d8984`
+- terminal: `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED`
+- observational metrics retained; no confirmatory P2 PASS。
 
-#76 scientific outcome boundary:
-- neural non-gain on S0/S1 is retained as observational evidence only;
-- no confirmatory P2 PASS exists;
-- minimum proven completed fits = 36; Builder-reported = 48; either exceeds <=13 ceiling;
-- gate failure is reproducibility/protocol failure, not a neural-method rejection.
+下一科学 Builder Issue：
+- #77 / `DLH-WL-P2B: clean immutable replication of frozen synthetic prototype`
+- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- publication baseline：`8110a17e9da1900adfdf0788eb63e10be6416920`
+- final activation comment 发布前不得执行。
 
-Current scientific Builder Issue：**NONE**。
-Next gate: clean independent P2 replication using the same frozen #75 design, with immutable pre-run code and one science invocation only. Reporting/render fixes must never trigger another fit.
+#77 目标：在不改变 #75 科学设计、不修改 #76 scientific module 的前提下，做一次 clean replication。
+关键执行规则：
+- pre-run code 必须先 commit/push 冻结；
+- 从该 exact PRE_RUN_FREEZE SHA 的 clean detached worktree 执行；
+- science invocation 恰好 1 次；
+- 12 planned fits 恰好 12 attempts，0 science retry；
+- durable attempt ledger + immutable raw results；
+- report/hash 只能走零-fit render-only；
+- renderer 出错不得触发再训练；
+- no real data / HJB / KFE / GE / MATLAB / tuning；
+- split claim 仍仅 held-out time + held-out origin role。
