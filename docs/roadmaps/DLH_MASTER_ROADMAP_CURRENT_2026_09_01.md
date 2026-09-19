@@ -108,3 +108,8 @@ P3B completed with a preregisterable T-family bridge candidate. Before any empir
 
 
 P3C execution-readiness is complete. The project is now intentionally paused at the human/source verification gate: H1–H7 must be resolved from primary evidence before any real transition matrix, bridge implementation, adapter or empirical fit is authorized. Finite root search semantics and all first-execution numerical thresholds are already frozen, preventing post-hoc rule changes once real data are inspected.
+
+
+## 2026-09-19 Owner amendment: latent labor measurement architecture
+
+P3 empirical interpretation is amended additively: real population/employment observations are measurement anchors for latent labor allocation, not hard truth values. The distance + economic-gap mobility structure remains the latent-flow backbone. Future real-data work must explicitly separate migration/residence measurement, employment coverage, hours/intensity and efficiency-labor measurement, and must prevent unrestricted joint absorption by labor wedges, TFP/productivity wedges and government-investment residuals. Before policy interpretation, the empirical program must compare STRUCTURAL_ONLY, NAIVE_DATA_PROXY and LATENT_MEASUREMENT_ADJUSTED variants. Issue #83 remains the human source-verification gate.
