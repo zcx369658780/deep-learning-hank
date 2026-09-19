@@ -81,7 +81,7 @@ P4/5 分别报告 ML、HJB、KFE/operator、GE/accounting 误差。资本 B/A �
 
 已完成：Owner 路线确认、P0 三端同步、Issue #74 / P1A、Issue #75 / P1B。P1B accepted/integrated 于 `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`；P1 已完成，数据/标签 schema 与首次 P2 method-only synthetic experiment contract 已冻结。
 
-下一 gate 为 P2 首次小型离线实验：严格执行已冻结 S0/S1、fixed/parametric/small-neural 三基准、split、metrics 与预算；不因结果修改合同。现实 OD 标签仍按现有证据分级，不因缺口恢复 solver 主线。
+P2A 首次执行已完成但因重复完整执行突破 absolute-attempt ceiling 而以 protocol GATE FAIL 结案；observed neural non-gain 仅保留为观察证据。下一 gate 是在不改变 #75 冻结设计的前提下做一次 clean independent replication：科学代码先冻结成不可变 commit，科学执行只允许一次，报告/哈希修复只能走零-fit render。现实 OD 标签仍按现有证据分级，不因缺口恢复 solver 主线。
 
 每个新任务注明 route ID、具体问题、预算、数据性质、allowed paths、产物与停止条件。Reviewer 可完善这些实施细节，不得改变锁定核心。
 
