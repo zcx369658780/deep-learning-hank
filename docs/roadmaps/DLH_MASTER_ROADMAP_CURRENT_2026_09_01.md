@@ -99,3 +99,6 @@ P2C fixed the durability layer but exposed one isolated scientific runner defect
 
 
 P2 method gate completed at Issue #79. The accepted synthetic result is deliberately negative: the small neural mapping does not outperform the correctly specified parametric baseline on S0/S1, and no tuning is performed. P3 now begins with an evidence gate, not training: real source semantics, timing, population, origin/destination support, direct-vs-bridged W target status, provenance/licence and leakage availability must be verified before any empirical fitting or HANK coupling.
+
+
+P3A completed at Issue #80 with Branch B. No direct annual bilateral OD flow target is verified, but bilateral transition/stock objects are documented strongly enough to justify a separately authorized bridge-design gate. P3B must compare and preregister bridge assumptions before any adapter or empirical fit, and must keep E3/source-schema, region-dictionary, m/ell, weighting and leakage gaps explicit.
