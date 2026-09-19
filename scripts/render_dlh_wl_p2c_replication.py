@@ -124,6 +124,78 @@ ZERO_FIT_STATEMENT = (
     "replay and no seed is used, and the ledger and science seal are never modified."
 )
 
+# ------------------------------------------------------- reviewer adjudication registry
+#
+# A binding Reviewer adjudication is a statement about one *executed* run, identified by
+# the PRE_RUN_FREEZE SHA that produced it — not a property of this renderer. The registry
+# is therefore keyed by that SHA: a run with no adjudication is rendered from its own
+# mechanical gates, and a run with an adjudication is rendered with the adjudicated
+# terminal even when every mechanical gate passes.
+#
+# Zero-fit remediation only (Issue #78 adjudication comment 5740611528): this block records
+# authority and the resulting terminal. Every corroborating number is *recomputed* from the
+# durable ledger by ``preprocessing_defect_evidence`` below and printed in the report so a
+# Reviewer can check each value against the ledger by hand. No fit, optimizer step, second
+# science invocation, seed, tuning or ledger/seal mutation is involved anywhere.
+REVIEWER_ADJUDICATIONS: dict[str, dict[str, Any]] = {
+    "ae4115f20bb3bc7f43ab79d9d0ccf65b62fa2c7d": {
+        "adjudication_comment": 5740611528,
+        "adjudication_url": "https://github.com/zcx369658780/deep-learning-hank/issues/"
+                            "78#issuecomment-5740611528",
+        "adjudication_kind": "REVIEWER_ADJUDICATION_HOLD",
+        "reviewed_candidate_sha": "97c87e089c758b5afb5285b1c4b94612917c9e83",
+        "decision": "PASS_TERMINAL_NOT_ACCEPTED",
+        "finding": "the executed neural prediction path violates the frozen #75 TRAIN-only "
+                   "z-score preprocessing contract",
+        "corrected_terminal": TERMINAL_GATE_FAIL,
+        "confirmatory_p2_pass_allowed": False,
+        "durability_protocol_finding": "the durability/protocol machinery is correct and the "
+                                       "#77 durability defect is genuinely fixed",
+        "scientific_execution_finding": "one required baseline family was executed incorrectly, "
+                                        "so the experiment fails as a whole",
+        "defect": {
+            "affected_family": "neural",
+            "unaffected_families": ["fixed_support_normalized_uniform",
+                                    "gravity_multinomial_logit"],
+            "frozen_requirement": "neural inputs use the TRAIN-only z-scored design",
+            "training_design": "TRAIN_ONLY_ZSCORED (sci._train_only_zscore)",
+            "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+            "prediction_path": "_neural_predict -> _neural_predict_blocks -> "
+                               "universe.design_matrix",
+            "fallback_mechanism": "SyntheticUniverse.design_matrix returns raw_design when "
+                                  "_design_matrix is None",
+            "missing_assignment": "universe._design_matrix = design",
+            "canonical_path_performs_the_assignment": True,
+            "executed_science_runner_performs_the_assignment": False,
+            "consequence": "neural parameters are trained on TRAIN-z-scored inputs while the "
+                           "persisted final prediction tensors are generated on "
+                           "raw/unstandardized inputs",
+            "this_is_not_a_performance_finding": "the executed neural numbers are not evidence "
+                                                 "that the neural model performs worse",
+        },
+        "zero_fit_recovery_possible": False,
+        "zero_fit_recovery_reason": "the accepted FitOutcome does not expose the trained neural "
+                                    "parameter tensors, so a correctly preprocessed prediction "
+                                    "tensor cannot be reconstructed from this ledger without "
+                                    "re-running the fitting path; transforming the stored "
+                                    "raw-design predictions is invalid for the nonlinear MLP",
+        "second_science_invocation_authorized": False,
+        "authorized_remediation": "evidence only, zero new science",
+    }
+}
+
+NEURAL_METRIC_PROVENANCE = "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH"
+PARAMETRIC_METRIC_PROVENANCE = "FROZEN_DESIGN_CONFORMANT"
+FIXED_METRIC_PROVENANCE = "FROZEN_DESIGN_CONFORMANT_ZERO_FIT_BASELINE"
+NEURAL_VS_PARAMETRIC_COMPARISON_PERMITTED = False
+NEURAL_COMPARISON_WITHHELD_REASON = (
+    "the P2C neural prediction path violates the frozen TRAIN-only preprocessing contract, so "
+    "the persisted neural numbers are observational artifacts of an invalid path; no "
+    "neural-vs-parametric scientific performance comparison may be drawn from P2C, and no "
+    "tuning, extra seed or extra fit was performed to compensate"
+)
+DURABILITY_STATUS_CORRECT = "VERIFIED_CORRECT_BY_REVIEWER_AND_REPRODUCED_FROM_THE_LEDGER"
+
 
 # --------------------------------------------------------------------------- helpers
 def sha256_lf(path: Path) -> str:
@@ -627,32 +699,86 @@ def fit_summaries(completed: Sequence[dict[str, Any]]) -> dict[str, dict[str, An
 
 
 # --------------------------------------------------------------------------- reporting
-def negative_result_flags(metrics: dict[str, dict[str, Any]],
-                          fixed: dict[str, dict[str, Any]]) -> dict[str, Any]:
-    flags: dict[str, Any] = {"neural_beats_parametric_required": False}
+def metric_provenance(adjudication: dict[str, Any] | None) -> dict[str, Any]:
+    """Per-fit metric provenance classification.
+
+    The neural split metrics computed from the persisted P2C prediction tensors are
+    *observational*: they were produced by a prediction path that violates the frozen
+    TRAIN-only preprocessing contract, so they may be retained for audit but carry no
+    scientific weight. The parametric and fixed-baseline numbers are conformant.
+    """
+    classification: dict[str, str] = {}
+    for key in PRIMARY_FIT_KEYS:
+        classification[key] = (NEURAL_METRIC_PROVENANCE if ":neural:" in key
+                              else PARAMETRIC_METRIC_PROVENANCE)
+    for _, repeat_key in REPEAT_PAIRS:
+        classification[repeat_key] = (NEURAL_METRIC_PROVENANCE if ":neural:" in repeat_key
+                                     else PARAMETRIC_METRIC_PROVENANCE)
+    return {
+        "applies": adjudication is not None,
+        "adjudication_comment": adjudication["adjudication_comment"] if adjudication else None,
+        "neural_marker": NEURAL_METRIC_PROVENANCE,
+        "parametric_marker": PARAMETRIC_METRIC_PROVENANCE,
+        "fixed_baseline_marker": FIXED_METRIC_PROVENANCE,
+        "per_fit_key": classification,
+        "values_retained_for_audit": True,
+        "values_replaced_with_issue_76": False,
+        "statement": (
+            "The neural split metrics below are the persisted P2C values, retained unchanged for "
+            "audit and explicitly classified as " + NEURAL_METRIC_PROVENANCE + ". They were NOT "
+            "replaced with the Issue #76 values and must not be read as a measurement of the "
+            "frozen neural mapping."),
+        "parametric_statement": (
+            "The parametric outputs were produced through the frozen contrast design and the "
+            "frozen six-column fitted matrix; they reproduce the earlier frozen observations "
+            "exactly and remain valid under the frozen #75 design."),
+        "fixed_baseline_statement": (
+            "The fixed baseline is a zero-fit evaluation of the frozen support-normalized "
+            "uniform prior and is unaffected by the neural preprocessing defect."),
+        "experiment_verdict": (
+            "the parametric family being conformant does not rescue the experiment: P2C fails as "
+            "a whole because one required baseline family was executed incorrectly"),
+    }
+
+
+def neural_comparison_status(metrics: dict[str, dict[str, Any]],
+                             fixed: dict[str, dict[str, Any]],
+                             adjudication: dict[str, Any] | None) -> dict[str, Any]:
+    """Withhold any neural-vs-parametric scientific inference drawn from P2C.
+
+    The numbers are still reported, because an audit needs them, but they are labelled
+    as non-inferential when a preprocessing-path adjudication applies.
+    """
+    status: dict[str, Any] = {
+        "neural_vs_parametric_comparison_permitted": (
+            NEURAL_VS_PARAMETRIC_COMPARISON_PERMITTED if adjudication is not None else True),
+        "neural_beats_parametric_required": False,
+        "observational_values_retained_for_audit": {},
+    }
     for regime in REGIMES:
         parametric = metrics[f"{regime}:parametric"]["metrics"]["TEST"]["weighted_cross_entropy"]
         seeds = {f"seed{seed}": metrics[f"{regime}:neural:seed{seed}"]["metrics"]["TEST"]
                  ["weighted_cross_entropy"] for seed in (0, 1, 2)}
-        best_seed = min(seeds, key=seeds.get)
-        flags[f"{regime}_fixed_baseline_test_ce"] = fixed[regime]["metrics"]["TEST"][
-            "weighted_cross_entropy"]
-        flags[f"{regime}_parametric_test_ce"] = parametric
-        flags[f"{regime}_neural_test_ce_by_seed"] = seeds
-        flags[f"{regime}_best_neural_seed"] = best_seed
-        flags[f"{regime}_neural_beats_parametric"] = bool(seeds[best_seed] < parametric)
-    flags["negative_result"] = not all(flags[f"{regime}_neural_beats_parametric"]
-                                       for regime in REGIMES)
-    flags["statement"] = (
-        "A neural non-gain is a valid negative scientific result under the frozen design; "
-        "there is no neural-win acceptance gate. No tuning, extra seed or ad-hoc fit was "
-        "performed during or after the science stage."
-    )
-    return flags
+        status["observational_values_retained_for_audit"][regime] = {
+            "fixed_baseline_test_ce": fixed[regime]["metrics"]["TEST"]["weighted_cross_entropy"],
+            "parametric_test_ce": parametric,
+            "neural_test_ce_by_seed": seeds,
+            "neural_minus_parametric_test_ce": {name: value - parametric
+                                                for name, value in seeds.items()},
+            "interpretation": "AUDIT_ONLY_NOT_A_SCIENTIFIC_COMPARISON",
+        }
+    if adjudication is not None:
+        status["withheld"] = True
+        status["withheld_reason"] = NEURAL_COMPARISON_WITHHELD_REASON
+        status["classification"] = NEURAL_METRIC_PROVENANCE
+    else:
+        status["withheld"] = False
+    return status
 
 
 def audit_context_vs_issue_76(metrics: dict[str, dict[str, Any]],
-                              repo_root: Path) -> dict[str, Any]:
+                              repo_root: Path,
+                              adjudication: dict[str, Any] | None = None) -> dict[str, Any]:
     """Audit-only provenance of the #76 observations (never an acceptance threshold)."""
     source = "RECORDED_CONSTANTS_FROM_THE_ACCEPTED_ISSUE_76_ARTIFACT"
     observational = dict(ISSUE_76_OBSERVATIONAL_FALLBACK)
@@ -685,11 +811,18 @@ def audit_context_vs_issue_76(metrics: dict[str, dict[str, Any]],
     comparisons: dict[str, Any] = {}
     for key, observed_76 in observational.items():
         observed_p2c = metrics[key]["metrics"]["TEST"]["weighted_cross_entropy"]
-        comparisons[key] = {
+        entry: dict[str, Any] = {
             "issue_76_observational": observed_76,
             "p2c_observed": observed_p2c,
             "absolute_difference": abs(observed_p2c - observed_76),
         }
+        if ":neural:" in key:
+            entry["p2c_value_classification"] = NEURAL_METRIC_PROVENANCE
+            entry["comparison_permitted"] = adjudication is None
+        else:
+            entry["p2c_value_classification"] = PARAMETRIC_METRIC_PROVENANCE
+            entry["comparison_permitted"] = True
+        comparisons[key] = entry
     return {
         "role": "AUDIT_CONTEXT_ONLY",
         "provenance": source,
@@ -697,7 +830,215 @@ def audit_context_vs_issue_76(metrics: dict[str, dict[str, Any]],
         "issue_76_execution_accounting": issue_76_accounting,
         "statement": "the Issue #76 observational metrics are audit context and are NOT an "
                      "acceptance threshold; P2C was not tuned to match them",
+        "neural_rows_are_not_a_performance_comparison": adjudication is not None,
         "comparisons": comparisons,
+    }
+
+
+def issue_76_neural_reference(repo_root: Path) -> dict[str, Any]:
+    """The earlier frozen neural trajectory, read from the preserved #76 artifact.
+
+    Used by the defect evidence as an independent reference for the training path
+    (objective, best step, best validation loss), not as a metric target.
+    """
+    preserved = read_json(repo_root / ISSUE_76_RESULTS_RELPATH)
+    if not isinstance(preserved, dict):
+        return {"available": False, "provenance": None, "per_fit_key": {}}
+    per_key: dict[str, Any] = {}
+    summaries = preserved.get("fit_summaries") or {}
+    by_split = preserved.get("metrics_by_split") or {}
+    for key, summary in summaries.items():
+        if ":neural:" not in key:
+            continue
+        entry = {
+            "objective": summary.get("objective"),
+            "best_step": summary.get("best_step"),
+            "best_validation_loss": summary.get("best_validation_loss"),
+        }
+        split_entry = by_split.get(key) or {}
+        for split in SPLIT_STATES:
+            block = split_entry.get(split)
+            if isinstance(block, dict) and "weighted_cross_entropy" in block:
+                entry[f"{split.lower()}_weighted_cross_entropy"] = block["weighted_cross_entropy"]
+        per_key[key] = entry
+    return {
+        "available": bool(per_key),
+        "provenance": f"READ_FROM_{ISSUE_76_RESULTS_RELPATH}",
+        "role": "TRAINING_TRAJECTORY_REFERENCE_NOT_A_METRIC_TARGET",
+        "per_fit_key": per_key,
+    }
+
+
+def _assigns_design_matrix(path: Path) -> dict[str, Any]:
+    """Static AST check: does ``path`` assign ``<something>._design_matrix = ...``?
+
+    This is the zero-fit proof of the missing frozen-preprocessing assignment. It reads
+    and parses the file; it never imports or executes it.
+    """
+    import ast
+
+    if not path.is_file():
+        return {"path": str(path), "exists": False, "assigns_design_matrix": None}
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    hits: list[int] = []
+    for node in ast.walk(tree):
+        targets: list[Any] = []
+        if isinstance(node, ast.Assign):
+            targets = list(node.targets)
+        elif isinstance(node, ast.AnnAssign) and node.value is not None:
+            targets = [node.target]
+        for target in targets:
+            for sub in ast.walk(target):
+                if isinstance(sub, ast.Attribute) and sub.attr == "_design_matrix":
+                    hits.append(getattr(node, "lineno", -1))
+    return {
+        "path": path.name,
+        "exists": True,
+        "assigns_design_matrix": bool(hits),
+        "assignment_lines": sorted(set(hits)),
+    }
+
+
+def preprocessing_defect_evidence(universe: sci.SyntheticUniverse,
+                                  metrics: dict[str, dict[str, Any]],
+                                  completed_by_key: dict[str, dict[str, Any]],
+                                  reference: dict[str, Any],
+                                  repo_root: Path,
+                                  adjudication: dict[str, Any]) -> dict[str, Any]:
+    """Zero-fit reconstruction of the frozen-preprocessing-path defect from durable data.
+
+    Every number here is derived either from the durable ``FIT_COMPLETED`` records, from the
+    frozen inputs, or from a static AST read of the immutable files. Nothing is fitted,
+    optimized, trained or replayed, and no stored prediction is transformed.
+    """
+    tolerance = 1e-12
+    defect = adjudication["defect"]
+    executed_runner = repo_root / SCIENCE_RUNNER_RELPATH
+    canonical_module = repo_root / SCIENTIFIC_MODULE_RELPATH
+    runner_assignment = _assigns_design_matrix(executed_runner)
+
+    per_fit: dict[str, Any] = {}
+    for key in sorted(completed_by_key):
+        record = completed_by_key[key]
+        if str(record.get("family")) != "neural":
+            continue
+        reference_key = str(record.get("repeat_of") or key)
+        reference_entry = (reference.get("per_fit_key") or {}).get(reference_key) or {}
+        objective = record.get("objective")
+        best_validation_loss = record.get("best_validation_loss")
+        best_step = record.get("best_step")
+        train_ce = metrics[key]["metrics"]["TRAIN"]["weighted_cross_entropy"]
+        validation_ce = metrics[key]["metrics"]["VALIDATION"]["weighted_cross_entropy"]
+        test_ce = metrics[key]["metrics"]["TEST"]["weighted_cross_entropy"]
+        validation_gap = (abs(validation_ce - best_validation_loss)
+                          if isinstance(best_validation_loss, (int, float)) else None)
+        objective_gap = abs(objective - train_ce) if isinstance(objective, (int, float)) else None
+        reference_objective = reference_entry.get("objective")
+        per_fit[key] = {
+            "attempt_index": record.get("attempt_index"),
+            "kind": record.get("kind"),
+            "regime": record.get("regime"),
+            "seed": record.get("seed"),
+            "reference_fit_key": reference_key,
+            "training_design": "TRAIN_ONLY_ZSCORED",
+            "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+            # in-process, training-design-dependent quantities recorded by the frozen module
+            "recorded_objective": objective,
+            "recorded_best_step": best_step,
+            "recorded_best_validation_loss": best_validation_loss,
+            # quantities recomputed here from the persisted prediction tensor only
+            "persisted_predictions_train_ce": train_ce,
+            "persisted_predictions_validation_ce": validation_ce,
+            "persisted_predictions_test_ce": test_ce,
+            # signature 1: the objective is literally a function of the persisted tensor
+            "objective_equals_persisted_train_ce": (None if objective_gap is None
+                                                    else bool(objective_gap <= tolerance)),
+            "objective_minus_persisted_train_ce": objective_gap,
+            # signature 2: the recorded early-stopping checkpoint cannot be the persisted tensor
+            "validation_mismatch_absolute": validation_gap,
+            "persisted_predictions_consistent_with_recorded_validation": (
+                None if validation_gap is None else bool(validation_gap <= tolerance)),
+            # independent earlier-run reference for the *training* path
+            "reference_objective": reference_objective,
+            "reference_best_step": reference_entry.get("best_step"),
+            "reference_best_validation_loss": reference_entry.get("best_validation_loss"),
+            "best_step_matches_reference": (
+                None if reference_entry.get("best_step") is None
+                else bool(best_step == reference_entry.get("best_step"))),
+            "best_validation_loss_matches_reference": (
+                None if reference_entry.get("best_validation_loss") is None
+                else bool(abs(best_validation_loss - reference_entry["best_validation_loss"])
+                          <= tolerance)),
+            "objective_matches_reference": (
+                None if reference_objective is None
+                else bool(abs(objective - reference_objective) <= 1e-9)),
+            "objective_minus_reference": (
+                None if reference_objective is None else objective - reference_objective),
+            "classification": NEURAL_METRIC_PROVENANCE,
+        }
+
+    trajectory_matches = [v["best_validation_loss_matches_reference"] for v in per_fit.values()]
+    consistent = [v["persisted_predictions_consistent_with_recorded_validation"]
+                  for v in per_fit.values()]
+    objective_is_persisted = [v["objective_equals_persisted_train_ce"] for v in per_fit.values()]
+    summary = {
+        "neural_fits_examined": len(per_fit),
+        "training_trajectory_matches_frozen_reference": (
+            bool(per_fit) and all(flag is True for flag in trajectory_matches)),
+        "persisted_predictions_consistent_with_recorded_validation": (
+            bool(per_fit) and all(flag is True for flag in consistent)),
+        "objective_equals_persisted_train_ce_for_all_neural_fits": (
+            bool(per_fit) and all(flag is True for flag in objective_is_persisted)),
+        "max_validation_mismatch_absolute": max(
+            (v["validation_mismatch_absolute"] or 0.0) for v in per_fit.values()),
+        "defect_corroborated_by_durable_evidence": None,
+    }
+    summary["defect_corroborated_by_durable_evidence"] = bool(
+        summary["training_trajectory_matches_frozen_reference"]
+        and not summary["persisted_predictions_consistent_with_recorded_validation"])
+
+    return {
+        "applies_to_executed_run": True,
+        "adjudication_comment": adjudication["adjudication_comment"],
+        "adjudication_url": adjudication["adjudication_url"],
+        "decision": adjudication["decision"],
+        "finding": adjudication["finding"],
+        "frozen_contract_requirement": {
+            "requirement": defect["frozen_requirement"],
+            "canonical_assignment": defect["missing_assignment"],
+            "canonical_path": "run_scientific_program",
+            "canonical_path_assigns_it": defect["canonical_path_performs_the_assignment"],
+            "canonical_module_static_check": _assigns_design_matrix(canonical_module),
+            "executed_science_runner_static_check": runner_assignment,
+            "executed_science_runner_assigns_it": runner_assignment["assigns_design_matrix"],
+        },
+        "executed_defect": {
+            "affected_family": defect["affected_family"],
+            "unaffected_families": defect["unaffected_families"],
+            "training_design": defect["training_design"],
+            "persisted_prediction_design": defect["persisted_prediction_design"],
+            "prediction_path": defect["prediction_path"],
+            "fallback_mechanism": defect["fallback_mechanism"],
+            "missing_assignment": defect["missing_assignment"],
+            "consequence": defect["consequence"],
+            "this_is_not_a_performance_finding": defect["this_is_not_a_performance_finding"],
+        },
+        "fallback_precondition_observed_zero_fit": {
+            "universe_design_matrix_unset_after_build": universe._design_matrix is None,
+            "design_matrix_property_returns_raw_design": universe.design_matrix is
+            universe.raw_design,
+            "note": "observed on the freshly built universe without touching any fitter "
+                    "(accessing the property is what the frozen prediction path does)",
+        },
+        "per_fit_corroboration": per_fit,
+        "summary": summary,
+        "zero_fit_recovery_possible_for_corrected_neural_predictions": adjudication[
+            "zero_fit_recovery_possible"],
+        "zero_fit_recovery_reason": adjudication["zero_fit_recovery_reason"],
+        "second_science_invocation_authorized": adjudication[
+            "second_science_invocation_authorized"],
+        "no_prediction_transformation_attempted": True,
+        "computation": "zero-fit: durable ledger records + frozen inputs + static AST reads only",
     }
 
 
@@ -856,8 +1197,57 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
         "published_metric_keys_complete": set(metrics) == set(
             PRIMARY_FIT_KEYS) | {repeat for _, repeat in REPEAT_PAIRS},
     }
-    gate_ok = all(gate_checks.values())
+    # the mechanical protocol/durability machinery on its own (the Reviewer confirmed this
+    # part is correct); it is reported separately from the experiment terminal
+    mechanical_protocol_gate_ok = all(gate_checks.values())
+
+    # ---- binding Reviewer adjudication (authority, not a re-derived predicate) --------
+    executed_pre_run_freeze_sha = (invariants["pre_run_freeze_shas_in_started_records"] or [None])[0]
+    adjudication = REVIEWER_ADJUDICATIONS.get(str(executed_pre_run_freeze_sha))
+    adjudication_applies = adjudication is not None
+    confirmatory_p2_pass_allowed = bool(mechanical_protocol_gate_ok and not adjudication_applies)
+    gate_ok = confirmatory_p2_pass_allowed
     terminal = TERMINAL_PASS if gate_ok else TERMINAL_GATE_FAIL
+
+    provenance = metric_provenance(adjudication)
+    comparison = neural_comparison_status(metrics, fixed_metrics, adjudication)
+    if adjudication_applies:
+        defect_evidence: dict[str, Any] = preprocessing_defect_evidence(
+            universe, metrics, by_key, issue_76_neural_reference(repo_root), repo_root,
+            adjudication)
+    else:
+        defect_evidence = {
+            "applies_to_executed_run": False,
+            "adjudication_comment": None,
+            "lookup_key_pre_run_freeze_sha": executed_pre_run_freeze_sha,
+            "note": "no Reviewer adjudication is registered against this PRE_RUN_FREEZE SHA, "
+                    "so the terminal is taken from the mechanical protocol gates alone",
+        }
+    audit = audit_context_vs_issue_76(metrics, repo_root, adjudication)
+
+    def adjudication_block() -> dict[str, Any]:
+        if not adjudication_applies:
+            return {"applies": False, "lookup_key_pre_run_freeze_sha":
+                    executed_pre_run_freeze_sha}
+        return {
+            "applies": True,
+            "adjudication_comment": adjudication["adjudication_comment"],
+            "adjudication_url": adjudication["adjudication_url"],
+            "adjudication_kind": adjudication["adjudication_kind"],
+            "reviewed_candidate_sha": adjudication["reviewed_candidate_sha"],
+            "decision": adjudication["decision"],
+            "finding": adjudication["finding"],
+            "corrected_terminal": adjudication["corrected_terminal"],
+            "confirmatory_p2_pass_allowed": adjudication["confirmatory_p2_pass_allowed"],
+            "durability_protocol_finding": adjudication["durability_protocol_finding"],
+            "scientific_execution_finding": adjudication["scientific_execution_finding"],
+            "zero_fit_recovery_possible_for_corrected_neural_predictions": adjudication[
+                "zero_fit_recovery_possible"],
+            "second_science_invocation_authorized": adjudication[
+                "second_science_invocation_authorized"],
+            "authorized_remediation": adjudication["authorized_remediation"],
+            "struck_terminal": TERMINAL_PASS,
+        }
 
     raw: dict[str, Any] = {
         "experiment_id": EXPERIMENT_ID,
@@ -902,13 +1292,17 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
                     "twelve fits had run; the shape is now asserted at the consumer.",
         },
         "gate_ok": gate_ok,
+        "confirmatory_p2_pass_allowed": confirmatory_p2_pass_allowed,
+        "mechanical_protocol_gate_ok": mechanical_protocol_gate_ok,
+        "reviewer_adjudication": adjudication_block(),
+        "durability_protocol_status": DURABILITY_STATUS_CORRECT,
+        "metric_provenance": provenance,
+        "neural_comparison_status": comparison,
+        "preprocessing_path_defect_evidence": defect_evidence,
         "terminal": terminal,
         "not_an_acceptance": "raw scientific output; acceptance is decided by the Reviewer, "
                              "not by this artifact",
     }
-
-    negative = negative_result_flags(metrics, fixed_metrics)
-    audit = audit_context_vs_issue_76(metrics, repo_root)
 
     results: dict[str, Any] = {
         "experiment_id": EXPERIMENT_ID,
@@ -936,13 +1330,19 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
         "determinism": determinism,
         "constraint_diagnostics": constraints,
         "p1a_accounting_checks": p1a,
-        "negative_result_flags": negative,
+        "negative_result_flags": comparison,
+        "metric_provenance": provenance,
         "audit_context_vs_issue_76": audit,
         "acceptance_gate_checks": gate_checks,
+        "mechanical_protocol_gate_ok": mechanical_protocol_gate_ok,
+        "confirmatory_p2_pass_allowed": confirmatory_p2_pass_allowed,
+        "reviewer_adjudication": raw["reviewer_adjudication"],
+        "durability_protocol_status": DURABILITY_STATUS_CORRECT,
+        "preprocessing_path_defect_evidence": defect_evidence,
         "interpretation_ceiling": {
             "allowed": [
-                "method/pipeline replication under the frozen synthetic controls",
-                "fixed / parametric / neural comparison",
+                "method/pipeline replication under the frozen synthetic controls, for the "
+                "families that were executed under the frozen design",
                 "held-out-time and held-out-origin-role observations",
                 "audit comparison with the Issue #76 observational output",
             ],
@@ -953,12 +1353,15 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
                 "causal or economic mechanism claim",
                 "HJB/KFE/GE/household policy or welfare claim",
                 "any tuning based on Issue #76 or P2C outcomes",
+                "any neural-vs-parametric scientific performance comparison from P2C",
+                "any treatment of the persisted P2C neural metrics as a measurement of the "
+                "frozen neural mapping",
             ],
         },
         "terminal": terminal,
     }
 
-    report_text = render_report(results, raw, metrics, fixed_metrics, negative, determinism,
+    report_text = render_report(results, raw, metrics, fixed_metrics, comparison, determinism,
                                constraints, shares, p1a, wall_clock, identity, gate_checks,
                                terminal)
 
@@ -1034,7 +1437,25 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
             "extra_fit_or_second_science_invocation": False,
             "ledger_modified_by_renderer": False,
             "renderer_calls_any_fitter": _calls_any_fitter(),
+            "new_fits_in_this_remediation": 0,
+            "optimizer_steps_in_this_remediation": 0,
+            "ledger_or_seal_modified_in_this_remediation": False,
+            "science_runner_or_tests_modified_after_first_optimizer_step": False,
+            "prediction_tensor_transformation_attempted": False,
         },
+        "reviewer_adjudication": raw["reviewer_adjudication"],
+        "confirmatory_p2_pass_allowed": confirmatory_p2_pass_allowed,
+        "mechanical_protocol_gate_ok": mechanical_protocol_gate_ok,
+        "durability_protocol_status": DURABILITY_STATUS_CORRECT,
+        "metric_provenance": {
+            "neural_marker": NEURAL_METRIC_PROVENANCE,
+            "parametric_marker": PARAMETRIC_METRIC_PROVENANCE,
+            "fixed_baseline_marker": FIXED_METRIC_PROVENANCE,
+            "values_retained_for_audit": True,
+            "values_replaced_with_issue_76": False,
+            "applies": provenance["applies"],
+        },
+        "preprocessing_path_defect_evidence": defect_evidence,
         "terminal": terminal,
     }
 
@@ -1082,10 +1503,16 @@ def render(*, repo_root: Path | None = None, ledger_path: Path | None = None,
         "optimizer_steps": 0,
         "metrics_computed_from": "PERSISTED_LEDGER_PREDICTIONS_ONLY",
         "gate_checks": gate_checks,
+        "mechanical_protocol_gate_ok": mechanical_protocol_gate_ok,
+        "reviewer_adjudication_applies": adjudication_applies,
+        "reviewer_adjudication_comment": (adjudication["adjudication_comment"]
+                                          if adjudication_applies else None),
+        "confirmatory_p2_pass_allowed": confirmatory_p2_pass_allowed,
         "gate_ok": gate_ok,
         "terminal": terminal,
         "checks": checks,
         "all_checks_pass": all(checks.values()),
+        "render_status": ("RENDERED_PASS" if gate_ok else "RENDERED_GATE_FAIL"),
         "results": RESULTS_RELPATH,
         "manifest": MANIFEST_RELPATH,
         "raw": RAW_RELPATH,
@@ -1102,6 +1529,7 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
                   identity: dict[str, Any], gate_checks: dict[str, bool],
                   terminal: str) -> str:
     invariants = results["attempt_ledger_summary"]
+    adjudication = results["reviewer_adjudication"]
     lines: list[str] = []
     lines.append("# DLH-WL-P2C — durable per-fit-output replication of the frozen "
                  "synthetic prototype\n")
@@ -1109,6 +1537,24 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append("```")
     lines.append(f"terminal: {terminal}")
     lines.append("```\n")
+    if adjudication.get("applies"):
+        lines.append(f"**This terminal is a corrected Gate Fail.** The previously recorded "
+                     f"`{adjudication['struck_terminal']}` is **struck**: Reviewer "
+                     f"adjudication `{adjudication['adjudication_comment']}` "
+                     f"({adjudication['adjudication_kind']}) found that the executed neural "
+                     f"prediction path violates the frozen #75 TRAIN-only z-score "
+                     f"preprocessing contract. "
+                     f"`confirmatory_p2_pass_allowed = {results['confirmatory_p2_pass_allowed']}`.")
+        lines.append("")
+        lines.append(f"- The durability/protocol machinery is correct and the #77 durability "
+                     f"defect is genuinely fixed "
+                     f"(`mechanical_protocol_gate_ok = "
+                     f"{results['mechanical_protocol_gate_ok']}`, "
+                     f"`durability_protocol_status` = "
+                     f"`{results['durability_protocol_status']}`).")
+        lines.append(f"- The experiment nevertheless fails as a whole because one required "
+                     f"baseline family was executed incorrectly.")
+        lines.append("")
     lines.append(f"- Issue: **#78** / `{results['task_id']}`; route `{results['route']}`")
     lines.append(f"- PRE_RUN_FREEZE SHA (executed science code identity): "
                  f"`{results['pre_run_freeze_sha']}`")
@@ -1148,12 +1594,143 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append("")
     lines.append(results["zero_fit_statement"])
     lines.append("")
-    lines.append("## 2. Acceptance gate checks\n")
-    lines.append("| check | value |")
+    lines.append("## 2. Acceptance gate checks and the experiment terminal\n")
+    lines.append(f"- mechanical protocol/durability gate (`acceptance_gate_checks`): "
+                 f"**{results['mechanical_protocol_gate_ok']}**")
+    lines.append(f"- Reviewer adjudication applies to this run: "
+                 f"**{adjudication.get('applies')}**")
+    lines.append(f"- `confirmatory_p2_pass_allowed`: "
+                 f"**{results['confirmatory_p2_pass_allowed']}**")
+    lines.append(f"- corrected terminal: `{terminal}`")
+    lines.append("")
+    lines.append("The mechanical checks below all pass; they verify the durability and protocol "
+                 "machinery, which the Reviewer confirmed is correct. They do **not** verify "
+                 "that the neural family was executed under the frozen preprocessing contract, "
+                 "which is why the experiment terminal is a Gate Fail.")
+    lines.append("")
+    lines.append("| mechanical check | value |")
     lines.append("|---|---|")
     for name, ok in gate_checks.items():
         lines.append(f"| {name} | {ok} |")
     lines.append("")
+    if adjudication.get("applies"):
+        lines.append("## 2b. Binding Reviewer adjudication\n")
+        lines.append(f"- comment: `{adjudication['adjudication_comment']}` "
+                     f"({adjudication['adjudication_kind']})")
+        lines.append(f"- url: {adjudication['adjudication_url']}")
+        lines.append(f"- reviewed candidate: `{adjudication['reviewed_candidate_sha']}`")
+        lines.append(f"- decision: **{adjudication['decision']}**")
+        lines.append(f"- struck terminal: `{adjudication['struck_terminal']}`")
+        lines.append(f"- corrected terminal: `{adjudication['corrected_terminal']}`")
+        lines.append(f"- finding: {adjudication['finding']}")
+        lines.append(f"- durability/protocol finding: "
+                     f"{adjudication['durability_protocol_finding']}")
+        lines.append(f"- scientific-execution finding: "
+                     f"{adjudication['scientific_execution_finding']}")
+        lines.append("")
+        lines.append("### 2b.1 Defect provenance (frozen contract vs executed path)\n")
+        evidence = results["preprocessing_path_defect_evidence"]
+        frozen = evidence["frozen_contract_requirement"]
+        defect = evidence["executed_defect"]
+        fallback = evidence["fallback_precondition_observed_zero_fit"]
+        lines.append("| element | value |")
+        lines.append("|---|---|")
+        lines.append(f"| frozen requirement | {frozen['requirement']} |")
+        lines.append(f"| required assignment | `{frozen['canonical_assignment']}` |")
+        lines.append(f"| canonical path | `{frozen['canonical_path']}` performs it: "
+                     f"**{frozen['canonical_path_assigns_it']}** |")
+        lines.append(f"| canonical module static check | "
+                     f"`{frozen['canonical_module_static_check']['path']}` assigns "
+                     f"`_design_matrix` at lines "
+                     f"{frozen['canonical_module_static_check']['assignment_lines']} |")
+        lines.append(f"| executed science runner | "
+                     f"`{frozen['executed_science_runner_static_check']['path']}` assigns "
+                     f"`_design_matrix`: "
+                     f"**{frozen['executed_science_runner_assigns_it']}** "
+                     f"(lines {frozen['executed_science_runner_static_check']['assignment_lines']}) |")
+        lines.append(f"| training design | {defect['training_design']} |")
+        lines.append(f"| persisted prediction design | {defect['persisted_prediction_design']} |")
+        lines.append(f"| prediction path | `{defect['prediction_path']}` |")
+        lines.append(f"| fallback mechanism | {defect['fallback_mechanism']} |")
+        lines.append(f"| missing assignment | `{defect['missing_assignment']}` |")
+        lines.append(f"| affected family | {defect['affected_family']} |")
+        lines.append(f"| unaffected families | {', '.join(defect['unaffected_families'])} |")
+        lines.append("")
+        lines.append("Zero-fit observation of the fallback precondition on the freshly built "
+                     "universe:")
+        lines.append("")
+        lines.append("```")
+        lines.append(f"universe._design_matrix is None            : "
+                     f"{fallback['universe_design_matrix_unset_after_build']}")
+        lines.append(f"universe.design_matrix is universe.raw_design: "
+                     f"{fallback['design_matrix_property_returns_raw_design']}")
+        lines.append("```")
+        lines.append("")
+        lines.append(f"{defect['consequence']}")
+        lines.append("")
+        lines.append(f"**{defect['this_is_not_a_performance_finding']}**")
+        lines.append("")
+        lines.append("### 2b.2 Corroboration recomputed from the durable ledger\n")
+        lines.append("Every value below is recomputed by this zero-fit stage from the durable "
+                     "`FIT_COMPLETED` prediction tensors, and can be checked by hand against "
+                     "`DLH_WL_P2C_ATTEMPT_LEDGER.jsonl`.")
+        lines.append("")
+        lines.append("| fit key | recorded objective | persisted TRAIN CE | obj = persisted "
+                     "TRAIN CE | recorded best-val loss | persisted VALIDATION CE | mismatch "
+                     "| ref objective (#76) | ref best step | ref best-val loss | best-val "
+                     "matches ref | obj matches ref |")
+        lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
+        for key, row in sorted(evidence["per_fit_corroboration"].items()):
+            lines.append(
+                f"| `{key}` | {row['recorded_objective']:.15f} "
+                f"| {row['persisted_predictions_train_ce']:.15f} "
+                f"| {row['objective_equals_persisted_train_ce']} "
+                f"| {row['recorded_best_validation_loss']:.15f} "
+                f"| {row['persisted_predictions_validation_ce']:.15f} "
+                f"| {row['validation_mismatch_absolute']:.15f} "
+                f"| {row['reference_objective']:.15f} "
+                f"| {row['reference_best_step']} "
+                f"| {row['reference_best_validation_loss']:.15f} "
+                f"| {row['best_validation_loss_matches_reference']} "
+                f"| {row['objective_matches_reference']} |")
+        lines.append("")
+        summary = evidence["summary"]
+        lines.append("```")
+        lines.append(f"neural_fits_examined                                   : "
+                     f"{summary['neural_fits_examined']}")
+        lines.append(f"training_trajectory_matches_frozen_reference           : "
+                     f"{summary['training_trajectory_matches_frozen_reference']}")
+        lines.append(f"persisted_predictions_consistent_with_recorded_validation: "
+                     f"{summary['persisted_predictions_consistent_with_recorded_validation']}")
+        lines.append(f"objective_equals_persisted_train_ce_for_all_neural_fits : "
+                     f"{summary['objective_equals_persisted_train_ce_for_all_neural_fits']}")
+        lines.append(f"max_validation_mismatch_absolute                       : "
+                     f"{summary['max_validation_mismatch_absolute']:.15f}")
+        lines.append(f"defect_corroborated_by_durable_evidence                : "
+                     f"{summary['defect_corroborated_by_durable_evidence']}")
+        lines.append("```")
+        lines.append("")
+        lines.append("Reading of the two signatures:")
+        lines.append("")
+        lines.append("- the recorded **objective is literally a function of the persisted "
+                     "tensor** (`objective == persisted TRAIN CE` for every neural fit), and it "
+                     "differs from the earlier frozen reference objective — so the objective "
+                     "was computed through the raw-design prediction path;")
+        lines.append("- the recorded **best validation loss cannot belong to the persisted "
+                     "tensor**: it was measured in-process on the TRAIN-z-scored validation "
+                     "design and matches the earlier frozen reference exactly, while the "
+                     "persisted tensor's own validation CE is higher by the mismatch column "
+                     "above. The early-stopping checkpoint proves the *training* path used the "
+                     "z-scored design; the persisted tensor did not.")
+        lines.append("")
+        lines.append("### 2b.3 Zero-fit recovery of corrected neural predictions\n")
+        lines.append(f"- possible: **{evidence['zero_fit_recovery_possible_for_corrected_neural_predictions']}**")
+        lines.append(f"- reason: {evidence['zero_fit_recovery_reason']}")
+        lines.append(f"- no stored prediction was transformed: "
+                     f"**{evidence['no_prediction_transformation_attempted']}**")
+        lines.append(f"- second science invocation authorized: "
+                     f"**{evidence['second_science_invocation_authorized']}**")
+        lines.append("")
     lines.append("## 3. Durable attempt ledger\n")
     lines.append(f"`{LEDGER_RELPATH}` — {invariants['records']} records "
                  f"({invariants['started_count']} `FIT_ATTEMPT_STARTED`, "
@@ -1184,9 +1761,20 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append("```")
     lines.append("")
     lines.append("## 4. Observed results\n")
+    provenance = results["metric_provenance"]
+    if provenance["applies"]:
+        lines.append("**Metric provenance.** The parametric and fixed-baseline rows are "
+                     "conformant with the frozen #75 design. The neural rows are retained "
+                     "unchanged for audit and are classified "
+                     f"`{provenance['neural_marker']}`: they were produced by a prediction "
+                     "path that violates the frozen TRAIN-only preprocessing contract, so they "
+                     "are not a measurement of the frozen neural mapping. The neural numbers "
+                     "were **not** replaced with the Issue #76 values.")
+        lines.append("")
     lines.append("| regime | family | seed | TEST weighted CE | TEST mean abs share error "
-                 "| TEST row-norm max | neg | support | top-1 | VALIDATION CE | best step |")
-    lines.append("|---|---|---|---|---|---|---|---|---|---|---|")
+                 "| TEST row-norm max | neg | support | top-1 | VALIDATION CE | best step | "
+                 "provenance |")
+    lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|")
     for regime in REGIMES:
         fixed = fixed_metrics[regime]["metrics"]
         lines.append(f"| {regime} | fixed | — | "
@@ -1196,7 +1784,8 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
                      f"| {fixed['TEST']['negativity_violation_count']} "
                      f"| {fixed['TEST']['support_violation_count']} "
                      f"| {fixed['TEST']['top1_destination_accuracy']:.3f} "
-                     f"| {fixed['VALIDATION']['weighted_cross_entropy']:.6f} | — |")
+                     f"| {fixed['VALIDATION']['weighted_cross_entropy']:.6f} | — "
+                     f"| `{provenance['fixed_baseline_marker']}` |")
         block = metrics[f"{regime}:parametric"]["metrics"]
         lines.append(f"| {regime} | parametric | — | "
                      f"{block['TEST']['weighted_cross_entropy']:.6f} "
@@ -1205,7 +1794,8 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
                      f"| {block['TEST']['negativity_violation_count']} "
                      f"| {block['TEST']['support_violation_count']} "
                      f"| {block['TEST']['top1_destination_accuracy']:.3f} "
-                     f"| {block['VALIDATION']['weighted_cross_entropy']:.6f} | — |")
+                     f"| {block['VALIDATION']['weighted_cross_entropy']:.6f} | — "
+                     f"| `{provenance['parametric_marker']}` |")
         for seed in (0, 1, 2):
             block = metrics[f"{regime}:neural:seed{seed}"]["metrics"]
             summary = results["fit_summaries"][f"{regime}:neural:seed{seed}"]
@@ -1217,7 +1807,14 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
                          f"| {block['TEST']['support_violation_count']} "
                          f"| {block['TEST']['top1_destination_accuracy']:.3f} "
                          f"| {block['VALIDATION']['weighted_cross_entropy']:.6f} "
-                         f"| {summary['best_step']} |")
+                         f"| {summary['best_step']} "
+                         f"| `{provenance['neural_marker']}` |")
+    lines.append("")
+    lines.append(provenance["parametric_statement"])
+    lines.append("")
+    lines.append(provenance["fixed_baseline_statement"])
+    lines.append("")
+    lines.append(f"Experiment verdict: {provenance['experiment_verdict']}.")
     lines.append("")
     lines.append("Parametric fitted coefficients (six contrast-identifiable columns, frozen "
                  "order):")
@@ -1284,32 +1881,52 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append(f"closes={p1a['closes']}")
     lines.append("```")
     lines.append("")
-    lines.append("## 7. Neural comparison (no win requirement)\n")
+    lines.append("## 7. Neural comparison (withheld)\n")
     lines.append(f"- neural-beats-parametric required: "
                  f"**{negative['neural_beats_parametric_required']}**")
+    lines.append(f"- neural-vs-parametric comparison permitted: "
+                 f"**{negative['neural_vs_parametric_comparison_permitted']}**")
+    if negative.get("withheld"):
+        lines.append(f"- withheld reason: {negative['withheld_reason']}")
+        lines.append(f"- classification of the neural rows: `{negative['classification']}`")
+    lines.append("")
+    lines.append("The values are reported below for audit completeness only. They carry no "
+                 "scientific inference.")
+    lines.append("")
     for regime in REGIMES:
-        best = negative[f"{regime}_best_neural_seed"]
-        lines.append(f"- {regime}: fixed {negative[f'{regime}_fixed_baseline_test_ce']:.6f}; "
-                     f"parametric {negative[f'{regime}_parametric_test_ce']:.6f}; "
-                     f"best neural {best} "
-                     f"({negative[f'{regime}_neural_test_ce_by_seed'][best]:.6f}); "
-                     f"neural beats parametric = "
-                     f"{negative[f'{regime}_neural_beats_parametric']}")
-    lines.append(f"- negative result flag: **{negative['negative_result']}**")
-    lines.append(f"- {negative['statement']}")
+        row = negative["observational_values_retained_for_audit"][regime]
+        seeds = row["neural_test_ce_by_seed"]
+        lines.append(f"- {regime}: fixed {row['fixed_baseline_test_ce']:.6f}; "
+                     f"parametric {row['parametric_test_ce']:.6f}; "
+                     f"neural by seed "
+                     + ", ".join(f"{name} {value:.6f}" for name, value in sorted(seeds.items()))
+                     + " — `AUDIT_ONLY_NOT_A_SCIENTIFIC_COMPARISON`")
+    lines.append("")
+    lines.append("No tuning, extra seed or ad-hoc fit was performed during or after the science "
+                 "stage, and no neural-vs-parametric scientific conclusion may be drawn from "
+                 "P2C.")
     lines.append("")
     lines.append("## 8. Audit context versus Issue #76 (not a threshold)\n")
     audit = results["audit_context_vs_issue_76"]
     lines.append(f"Provenance of the #76 observations: `{audit['provenance']}`.")
     lines.append("")
     lines.append("| configuration | Issue #76 observational | P2C observed | absolute "
-                 "difference |")
-    lines.append("|---|---|---|---|")
+                 "difference | comparison permitted |")
+    lines.append("|---|---|---|---|---|")
     for key, comparison in audit["comparisons"].items():
         lines.append(f"| {key} | {comparison['issue_76_observational']:.10f} "
                      f"| {comparison['p2c_observed']:.10f} "
-                     f"| {comparison['absolute_difference']:.3e} |")
+                     f"| {comparison['absolute_difference']:.3e} "
+                     f"| {comparison['comparison_permitted']} |")
     lines.append("")
+    if audit.get("neural_rows_are_not_a_performance_comparison"):
+        lines.append("The neural rows of this table are **not** a performance comparison: the "
+                     "P2C neural values are classified "
+                     f"`{NEURAL_METRIC_PROVENANCE}`. They are shown so a Reviewer can see that "
+                     "the parametric family reproduces the earlier frozen observations exactly "
+                     "while the neural family does not, which is the expected signature of the "
+                     "preprocessing-path defect and **not** evidence about model quality.")
+        lines.append("")
     lines.append(f"- #76 terminal: `{audit['issue_76_terminal']}`")
     lines.append(f"- #76 execution accounting: "
                  f"`{json.dumps(audit['issue_76_execution_accounting'], sort_keys=True)}`")
@@ -1335,20 +1952,33 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append("- neural weights are not persisted because the accepted scientific module "
                  "does not expose them through `FitOutcome`; the full persisted predictions "
                  "are the authoritative recovery object and are sufficient for every frozen "
-                 "metric;")
+                 "metric — but for P2C that recovery object was produced through the wrong "
+                 "preprocessing path, so no corrected neural tensor can be recovered from this "
+                 "ledger without re-running the fitting path;")
     lines.append("- real annual bilateral OD label availability remains `UNRESOLVED`; nothing "
                  "here speaks to Chinese interprovincial flows and no HJB/KFE/GE/household "
                  "coupling was attempted;")
     lines.append("- identity is PRE_RUN_FREEZE SHA + frozen config + environment + seeds + "
                  "durable ledger + manifest + rendered metrics; the science runner and the "
                  "ledger are immutable after the first optimizer step, and this renderer is "
-                 "strictly zero-fit so it may be rerun.")
+                 "strictly zero-fit so it may be rerun;")
+    lines.append("- **no second science invocation is authorized under Issue #78**, so this "
+                 "Gate-Fail evidence package is terminal for the issue as filed; any corrected "
+                 "replication requires a separate authorization, and no successor exists yet.")
     lines.append("")
     lines.append("## 11. Terminal\n")
     lines.append("```")
     lines.append(terminal)
     lines.append("```")
     lines.append("")
+    if adjudication.get("applies"):
+        lines.append(f"Correction recorded by a zero-fit evidence-only remediation under "
+                     f"Reviewer adjudication `{adjudication['adjudication_comment']}`: the "
+                     f"mechanical durability/protocol gate is "
+                     f"`{results['mechanical_protocol_gate_ok']}`, but a required neural "
+                     f"preprocessing contract was violated during science execution, so the "
+                     f"experiment terminal is the corrected Gate Fail above.")
+        lines.append("")
     return "\n".join(lines)
 
 

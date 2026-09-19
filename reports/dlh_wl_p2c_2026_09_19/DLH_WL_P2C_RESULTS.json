@@ -119,23 +119,31 @@
     "comparisons": {
       "S0:neural:seed0": {
         "absolute_difference": 0.11355739787833308,
+        "comparison_permitted": false,
         "issue_76_observational": 0.9132187018208984,
-        "p2c_observed": 1.0267760996992314
+        "p2c_observed": 1.0267760996992314,
+        "p2c_value_classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH"
       },
       "S0:parametric": {
         "absolute_difference": 0.0,
+        "comparison_permitted": true,
         "issue_76_observational": 0.9121715994501418,
-        "p2c_observed": 0.9121715994501418
+        "p2c_observed": 0.9121715994501418,
+        "p2c_value_classification": "FROZEN_DESIGN_CONFORMANT"
       },
       "S1:neural:seed0": {
         "absolute_difference": 0.11766841704804631,
+        "comparison_permitted": false,
         "issue_76_observational": 0.9093538306365426,
-        "p2c_observed": 1.027022247684589
+        "p2c_observed": 1.027022247684589,
+        "p2c_value_classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH"
       },
       "S1:parametric": {
         "absolute_difference": 0.0,
+        "comparison_permitted": true,
         "issue_76_observational": 0.9081586773751914,
-        "p2c_observed": 0.9081586773751914
+        "p2c_observed": 0.9081586773751914,
+        "p2c_value_classification": "FROZEN_DESIGN_CONFORMANT"
       }
     },
     "issue_76_execution_accounting": {
@@ -144,11 +152,13 @@
       "within_attempt_ceiling": false
     },
     "issue_76_terminal": "DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED",
+    "neural_rows_are_not_a_performance_comparison": true,
     "provenance": "READ_FROM_reports/dlh_wl_p2_2026_09_19/DLH_WL_P2_RESULTS.json",
     "role": "AUDIT_CONTEXT_ONLY",
     "statement": "the Issue #76 observational metrics are audit context and are NOT an acceptance threshold; P2C was not tuned to match them"
   },
   "authority_marker": "DLH_WL_P2C_DURABLE_PER_FIT_OUTPUT_REPLICATION_AUTHORIZED",
+  "confirmatory_p2_pass_allowed": false,
   "constraint_diagnostics": {
     "allocation_blocks": 20,
     "evaluated_prediction_sets": 14,
@@ -248,6 +258,7 @@
     },
     "scope": "TWO_PARAMETRIC_REPEATS_AND_NEURAL_SEED0_REPEATS_ONLY; neural seeds 1 and 2 are sensitivity replications, not duplicate determinism checks"
   },
+  "durability_protocol_status": "VERIFIED_CORRECT_BY_REVIEWER_AND_REPRODUCED_FROM_THE_LEDGER",
   "environment": {
     "thread_pinning": {
       "MKL_NUM_THREADS": "1",
@@ -1004,8 +1015,7 @@
   },
   "interpretation_ceiling": {
     "allowed": [
-      "method/pipeline replication under the frozen synthetic controls",
-      "fixed / parametric / neural comparison",
+      "method/pipeline replication under the frozen synthetic controls, for the families that were executed under the frozen design",
       "held-out-time and held-out-origin-role observations",
       "audit comparison with the Issue #76 observational output"
     ],
@@ -1015,11 +1025,41 @@
       "unseen-region claim",
       "causal or economic mechanism claim",
       "HJB/KFE/GE/household policy or welfare claim",
-      "any tuning based on Issue #76 or P2C outcomes"
+      "any tuning based on Issue #76 or P2C outcomes",
+      "any neural-vs-parametric scientific performance comparison from P2C",
+      "any treatment of the persisted P2C neural metrics as a measurement of the frozen neural mapping"
     ]
   },
   "issue": 78,
-  "manifest_canonical_sha256": "FB0891F2E23D34A114F4E75CB3C39EF53E4F02836573C8EF695820DB515739B9",
+  "manifest_canonical_sha256": "E1053860671A98CF695EADED317FFFC0A3792ABC45EAF4D9B39CE82186F94C8C",
+  "mechanical_protocol_gate_ok": true,
+  "metric_provenance": {
+    "adjudication_comment": 5740611528,
+    "applies": true,
+    "experiment_verdict": "the parametric family being conformant does not rescue the experiment: P2C fails as a whole because one required baseline family was executed incorrectly",
+    "fixed_baseline_marker": "FROZEN_DESIGN_CONFORMANT_ZERO_FIT_BASELINE",
+    "fixed_baseline_statement": "The fixed baseline is a zero-fit evaluation of the frozen support-normalized uniform prior and is unaffected by the neural preprocessing defect.",
+    "neural_marker": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+    "parametric_marker": "FROZEN_DESIGN_CONFORMANT",
+    "parametric_statement": "The parametric outputs were produced through the frozen contrast design and the frozen six-column fitted matrix; they reproduce the earlier frozen observations exactly and remain valid under the frozen #75 design.",
+    "per_fit_key": {
+      "S0:neural:seed0": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S0:neural:seed0:repeat": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S0:neural:seed1": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S0:neural:seed2": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S0:parametric": "FROZEN_DESIGN_CONFORMANT",
+      "S0:parametric:repeat": "FROZEN_DESIGN_CONFORMANT",
+      "S1:neural:seed0": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S1:neural:seed0:repeat": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S1:neural:seed1": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S1:neural:seed2": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+      "S1:parametric": "FROZEN_DESIGN_CONFORMANT",
+      "S1:parametric:repeat": "FROZEN_DESIGN_CONFORMANT"
+    },
+    "statement": "The neural split metrics below are the persisted P2C values, retained unchanged for audit and explicitly classified as OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH. They were NOT replaced with the Issue #76 values and must not be read as a measurement of the frozen neural mapping.",
+    "values_replaced_with_issue_76": false,
+    "values_retained_for_audit": true
+  },
   "metrics_by_split": {
     "S0:neural:seed0": {
       "EXCLUDED_REFERENCE_ONLY": {
@@ -2031,27 +2071,43 @@
     }
   },
   "negative_result_flags": {
-    "S0_best_neural_seed": "seed1",
-    "S0_fixed_baseline_test_ce": 1.0986122886681098,
-    "S0_neural_beats_parametric": false,
-    "S0_neural_test_ce_by_seed": {
-      "seed0": 1.0267760996992314,
-      "seed1": 0.9606842118523773,
-      "seed2": 1.0194073287963255
-    },
-    "S0_parametric_test_ce": 0.9121715994501418,
-    "S1_best_neural_seed": "seed1",
-    "S1_fixed_baseline_test_ce": 1.09861228866811,
-    "S1_neural_beats_parametric": false,
-    "S1_neural_test_ce_by_seed": {
-      "seed0": 1.027022247684589,
-      "seed1": 0.9571208326316112,
-      "seed2": 1.011268974154034
-    },
-    "S1_parametric_test_ce": 0.9081586773751914,
-    "negative_result": true,
+    "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
     "neural_beats_parametric_required": false,
-    "statement": "A neural non-gain is a valid negative scientific result under the frozen design; there is no neural-win acceptance gate. No tuning, extra seed or ad-hoc fit was performed during or after the science stage."
+    "neural_vs_parametric_comparison_permitted": false,
+    "observational_values_retained_for_audit": {
+      "S0": {
+        "fixed_baseline_test_ce": 1.0986122886681098,
+        "interpretation": "AUDIT_ONLY_NOT_A_SCIENTIFIC_COMPARISON",
+        "neural_minus_parametric_test_ce": {
+          "seed0": 0.11460450024908964,
+          "seed1": 0.04851261240223548,
+          "seed2": 0.10723572934618364
+        },
+        "neural_test_ce_by_seed": {
+          "seed0": 1.0267760996992314,
+          "seed1": 0.9606842118523773,
+          "seed2": 1.0194073287963255
+        },
+        "parametric_test_ce": 0.9121715994501418
+      },
+      "S1": {
+        "fixed_baseline_test_ce": 1.09861228866811,
+        "interpretation": "AUDIT_ONLY_NOT_A_SCIENTIFIC_COMPARISON",
+        "neural_minus_parametric_test_ce": {
+          "seed0": 0.11886357030939754,
+          "seed1": 0.04896215525641978,
+          "seed2": 0.10311029677884254
+        },
+        "neural_test_ce_by_seed": {
+          "seed0": 1.027022247684589,
+          "seed1": 0.9571208326316112,
+          "seed2": 1.011268974154034
+        },
+        "parametric_test_ce": 0.9081586773751914
+      }
+    },
+    "withheld": true,
+    "withheld_reason": "the P2C neural prediction path violates the frozen TRAIN-only preprocessing contract, so the persisted neural numbers are observational artifacts of an invalid path; no neural-vs-parametric scientific performance comparison may be drawn from P2C, and no tuning, extra seed or extra fit was performed to compensate"
   },
   "p1a_accounting_checks": {
     "all_rows_valid": true,
@@ -2360,9 +2416,307 @@
   },
   "phase": "RENDER_STAGE_ZERO_FIT_PUBLICATION",
   "pre_run_freeze_sha": "ae4115f20bb3bc7f43ab79d9d0ccf65b62fa2c7d",
-  "recorded_utc": "2026-09-19T08:36:39.327233+00:00",
-  "render_only_invocations": 1,
-  "results_canonical_sha256": "159F4828BB9408183723F595B3A428ED45F20F7C9800EB319E5255C2CB937D47",
+  "preprocessing_path_defect_evidence": {
+    "adjudication_comment": 5740611528,
+    "adjudication_url": "https://github.com/zcx369658780/deep-learning-hank/issues/78#issuecomment-5740611528",
+    "applies_to_executed_run": true,
+    "computation": "zero-fit: durable ledger records + frozen inputs + static AST reads only",
+    "decision": "PASS_TERMINAL_NOT_ACCEPTED",
+    "executed_defect": {
+      "affected_family": "neural",
+      "consequence": "neural parameters are trained on TRAIN-z-scored inputs while the persisted final prediction tensors are generated on raw/unstandardized inputs",
+      "fallback_mechanism": "SyntheticUniverse.design_matrix returns raw_design when _design_matrix is None",
+      "missing_assignment": "universe._design_matrix = design",
+      "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+      "prediction_path": "_neural_predict -> _neural_predict_blocks -> universe.design_matrix",
+      "this_is_not_a_performance_finding": "the executed neural numbers are not evidence that the neural model performs worse",
+      "training_design": "TRAIN_ONLY_ZSCORED (sci._train_only_zscore)",
+      "unaffected_families": [
+        "fixed_support_normalized_uniform",
+        "gravity_multinomial_logit"
+      ]
+    },
+    "fallback_precondition_observed_zero_fit": {
+      "design_matrix_property_returns_raw_design": true,
+      "note": "observed on the freshly built universe without touching any fitter (accessing the property is what the frozen prediction path does)",
+      "universe_design_matrix_unset_after_build": true
+    },
+    "finding": "the executed neural prediction path violates the frozen #75 TRAIN-only z-score preprocessing contract",
+    "frozen_contract_requirement": {
+      "canonical_assignment": "universe._design_matrix = design",
+      "canonical_module_static_check": {
+        "assignment_lines": [
+          259,
+          264,
+          405,
+          1046
+        ],
+        "assigns_design_matrix": true,
+        "exists": true,
+        "path": "labor_destination_p2.py"
+      },
+      "canonical_path": "run_scientific_program",
+      "canonical_path_assigns_it": true,
+      "executed_science_runner_assigns_it": false,
+      "executed_science_runner_static_check": {
+        "assignment_lines": [],
+        "assigns_design_matrix": false,
+        "exists": true,
+        "path": "run_dlh_wl_p2c_replication_science.py"
+      },
+      "requirement": "neural inputs use the TRAIN-only z-scored design"
+    },
+    "no_prediction_transformation_attempted": true,
+    "per_fit_corroboration": {
+      "S0:neural:seed0": {
+        "attempt_index": 5,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.02414048473851471,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.0267760996992314,
+        "persisted_predictions_train_ce": 1.317497091047865,
+        "persisted_predictions_validation_ce": 1.3202670871266122,
+        "recorded_best_step": 350,
+        "recorded_best_validation_loss": 1.2933199091156884,
+        "recorded_objective": 1.317497091047865,
+        "reference_best_step": 350,
+        "reference_best_validation_loss": 1.2933199091156884,
+        "reference_fit_key": "S0:neural:seed0",
+        "reference_objective": 1.2933566063093502,
+        "regime": "S0",
+        "seed": 0,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.026947178010923833
+      },
+      "S0:neural:seed0:repeat": {
+        "attempt_index": 11,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "verification_repeat",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.02414048473851471,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.0267760996992314,
+        "persisted_predictions_train_ce": 1.317497091047865,
+        "persisted_predictions_validation_ce": 1.3202670871266122,
+        "recorded_best_step": 350,
+        "recorded_best_validation_loss": 1.2933199091156884,
+        "recorded_objective": 1.317497091047865,
+        "reference_best_step": 350,
+        "reference_best_validation_loss": 1.2933199091156884,
+        "reference_fit_key": "S0:neural:seed0",
+        "reference_objective": 1.2933566063093502,
+        "regime": "S0",
+        "seed": 0,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.026947178010923833
+      },
+      "S0:neural:seed1": {
+        "attempt_index": 6,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.034646352611254816,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 0.9606842118523773,
+        "persisted_predictions_train_ce": 1.3280046962869665,
+        "persisted_predictions_validation_ce": 1.328221519269436,
+        "recorded_best_step": 300,
+        "recorded_best_validation_loss": 1.2932741080076287,
+        "recorded_objective": 1.3280046962869665,
+        "reference_best_step": 300,
+        "reference_best_validation_loss": 1.2932741080076287,
+        "reference_fit_key": "S0:neural:seed1",
+        "reference_objective": 1.2933583436757117,
+        "regime": "S0",
+        "seed": 1,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.03494741126180734
+      },
+      "S0:neural:seed2": {
+        "attempt_index": 7,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.027852477007112242,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.0194073287963255,
+        "persisted_predictions_train_ce": 1.3212082669035035,
+        "persisted_predictions_validation_ce": 1.323122743542055,
+        "recorded_best_step": 400,
+        "recorded_best_validation_loss": 1.2933025102931601,
+        "recorded_objective": 1.3212082669035035,
+        "reference_best_step": 400,
+        "reference_best_validation_loss": 1.2933025102931601,
+        "reference_fit_key": "S0:neural:seed2",
+        "reference_objective": 1.2933557898963912,
+        "regime": "S0",
+        "seed": 2,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.029820233248894823
+      },
+      "S1:neural:seed0": {
+        "attempt_index": 8,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.02436407439433297,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.027022247684589,
+        "persisted_predictions_train_ce": 1.31785701506759,
+        "persisted_predictions_validation_ce": 1.3213990783165563,
+        "recorded_best_step": 350,
+        "recorded_best_validation_loss": 1.2934494830113215,
+        "recorded_objective": 1.31785701506759,
+        "reference_best_step": 350,
+        "reference_best_validation_loss": 1.2934494830113215,
+        "reference_fit_key": "S1:neural:seed0",
+        "reference_objective": 1.293492940673257,
+        "regime": "S1",
+        "seed": 0,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.027949595305234887
+      },
+      "S1:neural:seed0:repeat": {
+        "attempt_index": 12,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "verification_repeat",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.02436407439433297,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.027022247684589,
+        "persisted_predictions_train_ce": 1.31785701506759,
+        "persisted_predictions_validation_ce": 1.3213990783165563,
+        "recorded_best_step": 350,
+        "recorded_best_validation_loss": 1.2934494830113215,
+        "recorded_objective": 1.31785701506759,
+        "reference_best_step": 350,
+        "reference_best_validation_loss": 1.2934494830113215,
+        "reference_fit_key": "S1:neural:seed0",
+        "reference_objective": 1.293492940673257,
+        "regime": "S1",
+        "seed": 0,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.027949595305234887
+      },
+      "S1:neural:seed1": {
+        "attempt_index": 9,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.03448725160370203,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 0.9571208326316112,
+        "persisted_predictions_train_ce": 1.3279722165082712,
+        "persisted_predictions_validation_ce": 1.3278395814389745,
+        "recorded_best_step": 300,
+        "recorded_best_validation_loss": 1.2933967812002543,
+        "recorded_objective": 1.3279722165082712,
+        "reference_best_step": 300,
+        "reference_best_validation_loss": 1.2933967812002543,
+        "reference_fit_key": "S1:neural:seed1",
+        "reference_objective": 1.2934849649045692,
+        "regime": "S1",
+        "seed": 1,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.03444280023872026
+      },
+      "S1:neural:seed2": {
+        "attempt_index": 10,
+        "best_step_matches_reference": true,
+        "best_validation_loss_matches_reference": true,
+        "classification": "OBSERVATIONAL_OUTPUT_FROM_INVALID_PREPROCESSING_PREDICTION_PATH",
+        "kind": "primary",
+        "objective_equals_persisted_train_ce": true,
+        "objective_matches_reference": false,
+        "objective_minus_persisted_train_ce": 0.0,
+        "objective_minus_reference": 0.024900345886950337,
+        "persisted_prediction_design": "RAW_DESIGN_FALLBACK",
+        "persisted_predictions_consistent_with_recorded_validation": false,
+        "persisted_predictions_test_ce": 1.011268974154034,
+        "persisted_predictions_train_ce": 1.3183684911557974,
+        "persisted_predictions_validation_ce": 1.3211435380101888,
+        "recorded_best_step": 400,
+        "recorded_best_validation_loss": 1.2934288421977802,
+        "recorded_objective": 1.3183684911557974,
+        "reference_best_step": 400,
+        "reference_best_validation_loss": 1.2934288421977802,
+        "reference_fit_key": "S1:neural:seed2",
+        "reference_objective": 1.293468145268847,
+        "regime": "S1",
+        "seed": 2,
+        "training_design": "TRAIN_ONLY_ZSCORED",
+        "validation_mismatch_absolute": 0.027714695812408596
+      }
+    },
+    "second_science_invocation_authorized": false,
+    "summary": {
+      "defect_corroborated_by_durable_evidence": true,
+      "max_validation_mismatch_absolute": 0.03494741126180734,
+      "neural_fits_examined": 8,
+      "objective_equals_persisted_train_ce_for_all_neural_fits": true,
+      "persisted_predictions_consistent_with_recorded_validation": false,
+      "training_trajectory_matches_frozen_reference": true
+    },
+    "zero_fit_recovery_possible_for_corrected_neural_predictions": false,
+    "zero_fit_recovery_reason": "the accepted FitOutcome does not expose the trained neural parameter tensors, so a correctly preprocessed prediction tensor cannot be reconstructed from this ledger without re-running the fitting path; transforming the stored raw-design predictions is invalid for the nonlinear MLP"
+  },
+  "recorded_utc": "2026-09-19T09:33:45.961615+00:00",
+  "render_only_invocations": 2,
+  "results_canonical_sha256": "B6B6671DCCF83EA6136006CAEB910F21645DAC7C49253DB848E12B2384549B9D",
+  "reviewer_adjudication": {
+    "adjudication_comment": 5740611528,
+    "adjudication_kind": "REVIEWER_ADJUDICATION_HOLD",
+    "adjudication_url": "https://github.com/zcx369658780/deep-learning-hank/issues/78#issuecomment-5740611528",
+    "applies": true,
+    "authorized_remediation": "evidence only, zero new science",
+    "confirmatory_p2_pass_allowed": false,
+    "corrected_terminal": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__GATE_FAIL__NO_SCIENCE_RERUN_AUTHORIZED",
+    "decision": "PASS_TERMINAL_NOT_ACCEPTED",
+    "durability_protocol_finding": "the durability/protocol machinery is correct and the #77 durability defect is genuinely fixed",
+    "finding": "the executed neural prediction path violates the frozen #75 TRAIN-only z-score preprocessing contract",
+    "reviewed_candidate_sha": "97c87e089c758b5afb5285b1c4b94612917c9e83",
+    "scientific_execution_finding": "one required baseline family was executed incorrectly, so the experiment fails as a whole",
+    "second_science_invocation_authorized": false,
+    "struck_terminal": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__PASS__P2_METHOD_GATE_COMPLETE",
+    "zero_fit_recovery_possible_for_corrected_neural_predictions": false
+  },
   "route": "DLH-WL-V1-20260918",
   "science_code_identity": {
     "config_blob_sha1": "bb5dbbd0746e9d92874f94b03a1d54f3d382c4a8",
@@ -2471,6 +2825,6 @@
     "tolerance": 1e-10
   },
   "task_id": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION",
-  "terminal": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__PASS__P2_METHOD_GATE_COMPLETE",
+  "terminal": "DLH_WL_P2C_DURABLE_OUTPUT_REPLICATION__GATE_FAIL__NO_SCIENCE_RERUN_AUTHORIZED",
   "zero_fit_statement": "This render stage performs zero fits and zero optimizer steps. Every number it publishes is recomputed from the persisted FIT_COMPLETED prediction tensors of the durable attempt ledger plus the frozen inputs. No fitter, no optimizer, no training replay and no seed is used, and the ledger and science seal are never modified."
 }
