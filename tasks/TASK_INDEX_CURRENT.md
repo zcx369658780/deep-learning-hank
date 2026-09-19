@@ -1,7 +1,7 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P3A_BRANCH_B_ACCEPTED__ISSUE_81_P3B_STAGED_NOT_OPERATIVE`。
+状态：`P3A_BRANCH_B_ACCEPTED__ISSUE_81_P3B_ACTIVE_OPERATIVE`。
 
 Issue #79 / P2D：ACCEPTED / CLOSED / INTEGRATED — P2 METHOD GATE COMPLETE。
 Issue #80 / P3A：ACCEPTED / CLOSED / INTEGRATED — BRANCH B。
@@ -11,9 +11,9 @@ Issue #80 / P3A：ACCEPTED / CLOSED / INTEGRATED — BRANCH B。
 
 下一科学 Builder Issue：
 - #81 / `DLH-WL-P3B: bridge/source preregistration gate`
-- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- 状态：**OPEN / ACTIVE / OPERATIVE**
 - publication baseline：`4bb8be1ed4750269f322d23675072e50742d5ea9`
-- final activation comment 发布前不得执行。
+- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
 
 #81 仅做 bridge preregistration：
 - time bridge；
