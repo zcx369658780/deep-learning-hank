@@ -1,0 +1,807 @@
+# DLH-WL-P3E — latent labor measurement architecture (machine-readable mirror)
+# Issue #84 / `DLH-WL-P3E`. Owner route: DLH-WL-V1-20260918 + dated latent-labor amendment.
+# Architecture freeze only. NO empirical value appears in this file, and NO new numeric
+# threshold is introduced: the P3C threshold block is inherited unchanged (see [inherited_p3c]).
+# No source, dataset or transition matrix was read while writing this file.
+
+schema_version = "DLH_WL_P3E_LATENT_MEASUREMENT_V1"
+frozen_utc_date = "2026-09-19"
+
+[authority]
+issue = 84
+task_id = "DLH_WL_P3E_LATENT_LABOR_MEASUREMENT_ARCHITECTURE"
+authority_marker = "DLH_WL_P3E_LATENT_LABOR_MEASUREMENT_ARCHITECTURE_AUTHORIZED"
+owner_route = "DLH-WL-V1-20260918"
+owner_route_freeze = "docs/decisions/DLH_OWNER_ROUTE_FREEZE_WL_V1_2026_09_18.md"
+owner_amendment = "docs/decisions/DLH_OWNER_ROUTE_AMENDMENT_LATENT_LABOR_MEASUREMENT_2026_09_19.md"
+owner_amendment_id = "DLH_OWNER_ROUTE_AMENDMENT_LATENT_LABOR_MEASUREMENT_2026_09_19"
+activation_comment = 5742332586
+operative_baseline = "2f4bd66343ed8ae8a95e36316d2730084bd24e52"
+amendment_publication_baseline = "7012bb5eb7ed05b0c85fb4835a350773e9ac9c6f"
+p3c_integration = "3496ba96b78992a579821348ad563e3b67afdf16"
+p3b_integration = "1819b0a5a36b2a8ffde3641c711892df2cdcede7"
+dedicated_branch = "dsh/issue-84-dlh-wl-p3e-latent-labor-measurement-2026-09-19"
+binding_hierarchy = [
+  "owner_route",
+  "owner_amendment_latent_labor_measurement",
+  "accepted_P1B_P3A_semantics",
+  "accepted_P3B_preregistration",
+  "accepted_P3C_execution_readiness_freeze",
+  "issue_84_body",
+  "activation_comment_5742332586",
+]
+architecture_frozen_before_any_real_data_read = true
+relaxation_after_outcome_observed = false
+new_numeric_thresholds_introduced = 0
+parallel_human_gate_issue = 83
+parallel_human_gate_task_id = "DLH_WL_P3D"
+human_gate_is_the_only_h_source_authority = true
+builder_may_resolve_or_promote_h_items = false
+
+[scope]
+kind = "docs_and_config_only"
+real_data_or_source_read = false
+transition_matrix_inspected_or_executed = false
+measurement_equation_evaluated = false
+bridge_executed = false
+empirical_estimator_implemented = false
+scientific_calls = 0
+model_calls = 0
+training_calls = 0
+empirical_bridge_calls = 0
+permitted_check_classes = [
+  "symbolic_reasoning",
+  "static_reasoning",
+  "config_parse",
+  "cross_document_consistency",
+  "dimension_and_unit_check",
+]
+
+[latent_objects.W_star_ij_t]
+symbol = "W_star_ij,t"
+name = "latent conditional destination share of labor services"
+interpretation = "share of the labor-service outflow of origin i realized in period t that goes to j, conditional on the outflow having occurred"
+unit = "dimensionless_share"
+kind = "v1_learning_object"
+block_membership = ["household_block_as_given_input", "flow_accounting_block", "measurement_block"]
+normalization = "W_star_ii = 0 ; W_star_ij >= 0 ; sum over j != i of W_star_ij = 1"
+identification_status = "STRUCTURALLY_DEFINED_NOT_OBSERVED"
+observed_by_any_source = false
+may_be_equated_to_an_observation = false
+never_a_feature = false
+never_a_label = false
+
+[latent_objects.m_star_i_t]
+symbol = "m_star_i,t"
+name = "latent outflow share / transition intensity"
+interpretation = "within-period outflow share of the origin labor amount, required by the accounting closure"
+unit = "dimensionless_share_in_0_1"
+kind = "given_accounting_input"
+block_membership = ["household_block_as_given_input", "flow_accounting_block", "measurement_block"]
+identification_status = "LATENT__BLOCKED_BY_H"
+admissible_derivation_routes = ["M-A_annual_transition_given_input", "M-B_not_identified", "M-C_not_identified", "M-D_prohibited"]
+observed_by_any_source = false
+may_be_equated_to_an_observation = false
+never_a_feature = true
+never_a_label = true
+required_declarations = ["m_provenance_id", "m_unit_basis", "m_time_alignment", "accounting_period_alignment", "m_is_never_a_feature", "m_not_learning_target"]
+
+[latent_objects.ell_star_i_t]
+symbol = "ell_star_i,t"
+name = "latent effective origin labor amount"
+interpretation = "total effective labor of origin i in period t entering the flow identity"
+unit = "efficiency_labor_units"
+kind = "given_accounting_input"
+block_membership = ["household_block_as_given_input", "firm_block_as_effective_labor", "flow_accounting_block", "measurement_block"]
+decomposition = "ell_star_i,t = N_workers_star_i,t * h_star_i,t * e_star_i,t"
+identification_status = "LATENT__BLOCKED_BY_H"
+observed_by_any_source = false
+may_be_equated_to_an_observation = false
+may_be_equated_to_a_person_count = false
+never_a_feature = true
+never_a_label = true
+decomposition_is_a_modeling_decomposition_not_an_identification_claim = true
+
+[latent_objects.N_workers_star_i_t]
+symbol = "N_workers_star_i,t"
+name = "latent worker quantity"
+interpretation = "number of employed workers of origin i in period t"
+unit = "persons"
+kind = "latent_component"
+block_membership = ["firm_block_as_effective_labor", "measurement_block"]
+identification_status = "LATENT__BLOCKED_BY_H"
+observed_by_any_source = false
+never_a_feature = true
+never_a_label = true
+
+[latent_objects.h_star_i_t]
+symbol = "h_star_i,t"
+name = "latent hours / intensity"
+interpretation = "effective hours per worker in the period, carrying declared duration and intensity content"
+unit = "hours_per_person"
+kind = "latent_component"
+block_membership = ["firm_block_as_effective_labor", "measurement_block"]
+identification_status = "LATENT__NOT_SEPARATELY_IDENTIFIED"
+observed_by_any_source = false
+never_a_feature = true
+never_a_label = true
+
+[latent_objects.e_star_i_t]
+symbol = "e_star_i,t"
+name = "latent efficiency per hour"
+interpretation = "efficiency-labor units per hour; a declared per-worker basis is admissible only if stated and never mixed with the per-hour encoding inside one evaluation set"
+unit = "efficiency_labor_units_per_hour"
+kind = "latent_component"
+block_membership = ["firm_block_as_effective_labor", "measurement_block"]
+identification_status = "LATENT__NOT_SEPARATELY_IDENTIFIED"
+observed_by_any_source = false
+never_a_feature = true
+never_a_label = true
+
+[latent_objects.omega_i_t]
+symbol = "omega_i,t"
+name = "intensity-efficiency content per worker"
+interpretation = "effective labor carried by one worker; the ONLY route by which a worker count can anchor ell_star"
+unit = "efficiency_labor_units_per_person"
+definition = "omega_i,t = h_star_i,t * e_star_i,t"
+identification_status = "LATENT__PRIOR_REGULARIZED"
+may_be_free_per_region = false
+regularization_form_required = true
+
+[latent_objects.A_i_t]
+symbol = "A_i,t"
+name = "productivity object of the registered production location"
+unit = "declared_output_per_input_unit"
+registration_tier = 4
+specified_in_this_issue = false
+block_membership = ["firm_block_registered_only", "measurement_block_registered_only"]
+identification_status = "LATENT__PRIOR_REGULARIZED"
+
+[latent_objects.G_i_t]
+symbol = "G_i,t"
+name = "government-investment / government-output block"
+unit = "declared_output_unit"
+registration_tier = 5
+specified_in_this_issue = false
+block_membership = ["government_block_registered_only", "measurement_block_registered_only"]
+identification_status = "LATENT__PRIOR_REGULARIZED"
+may_be_an_unbounded_provincial_balancing_residual = false
+
+[identification_status_vocabulary]
+allowed = [
+  "STRUCTURALLY_DEFINED_NOT_OBSERVED",
+  "LATENT__MEASUREMENT_DISCIPLINED",
+  "LATENT__PRIOR_REGULARIZED",
+  "LATENT__NOT_SEPARATELY_IDENTIFIED",
+  "LATENT__BLOCKED_BY_H",
+]
+exactly_one_required_per_object_per_design = true
+builder_may_upgrade_a_status = false
+LATENT__MEASUREMENT_DISCIPLINED_requires = "a human-resolved H item and a declared measurement equation with a verified source"
+
+[accounting]
+tier = 1
+imposed_exactly_never_fitted = true
+identities = [
+  "W_star_ii,t = 0",
+  "W_star_ij,t >= 0",
+  "sum over j != i of W_star_ij,t = 1",
+  "P_ii,t = 1 - m_star_i,t",
+  "P_ij,t = m_star_i,t * W_star_ij,t for j != i",
+  "F_ij,t = ell_star_i,t * m_star_i,t * W_star_ij,t",
+]
+residual_may_enter_an_identity_as_a_free_parameter = false
+pair_target_re_derived_here = false
+
+[units]
+W_star = "dimensionless"
+m_star = "dimensionless"
+ell_star = "efficiency_labor_units"
+N_workers_star = "persons"
+h_star = "hours_per_person"
+e_star = "efficiency_labor_units_per_hour"
+omega = "efficiency_labor_units_per_person"
+F = "efficiency_labor_units"
+L_obs = "persons"
+H_obs = "hours"
+ELL_obs = "efficiency_labor_units"
+COV_obs = "persons"
+coverage_factors = "dimensionless"
+distance = "km_or_declared_monotone_transform"
+beta_d = "per_distance_unit"
+economic_gap = "dimensionless_declared_log_ratio_or_normalized_difference"
+score_s = "dimensionless"
+period_is_a_label_not_a_dimension = true
+rules = [
+  "U-1 ell_star is NOT a person count; equating them requires q_cov = 1 AND omega = 1, which is never assumed",
+  "U-2 m_unit_basis and ell_unit must be reconcilable so that F = ell * m * W is dimensionally coherent",
+  "U-3 a score term whose unit is not dimensionless after multiplying by its coefficient may not enter s_ij,t",
+  "U-4 no measurement equation may contain a quantity of undeclared unit",
+  "U-5 the accounting period is a LABEL, not a dimension; the period is never carried as a unit factor, which is why h_star is hours/person, ell_star is efficiency-labor units, omega = h_star * e_star is per-person and N_workers_star * omega = ell_star exactly",
+]
+
+[backbone]
+status = "PRESERVED_AS_LATENT_FLOW_BACKBONE"
+score = "s_ij,t = beta_d * distance_ij + beta_gap' * economic_gap_ij,t + beta_z' * Z_ij,t"
+normalization = "W_star_ij,t = exp(s_ij,t) / sum over l != i, l in S_i,t of exp(s_il,t)"
+diagonal = "W_star_ii,t = 0 exactly, excluded by construction"
+required_terms = ["static_geographic_friction", "wage_or_income_opportunity_gap", "output_or_productivity_opportunity_gap"]
+optional_terms = ["accessibility_terms_if_later_verified", "policy_or_friction_terms_if_later_verified"]
+coefficients_are_symbolic = true
+numeric_coefficient_values_frozen_here = 0
+neural_replacement_required = false
+ml_component_rule = "ADDITIVE_AUGMENTING_ONLY_SEPARATELY_IDENTIFIED_DIMENSIONALITY_DECLARED"
+properties = [
+  "B1 masked conditional normalization; diagonal falsified",
+  "B2 support is a design object; never widened to fit an observation; never changed after outcomes",
+  "B3 interpretability preserved because the accepted P2 result did not prefer the neural mapping",
+  "B4 an ML component is additive only and never absorbs a structural term",
+  "B5 all backbone coefficients symbolic; no value, sign estimate or prior magnitude frozen",
+  "B6 declared expected signs are design priors, not findings",
+  "B7 every gap and Z term must be available at window start",
+  "B8 m_star, ell_star and same-period realized flows are never features",
+  "B9 one declared gap form per design, applied to every origin-destination cell",
+]
+prohibited_in_backbone = [
+  "any observation as an argument",
+  "an undeclared per-pair free intercept",
+  "re-tuning per wave or region after outcomes are seen",
+]
+
+[measurement.M1]
+family = "residence_migration_observation"
+observed_object = "T_obs^(k)_ij,t"
+observed_meaning = "k-year residence-transition share, person-based, on the declared source frame"
+latent_target = "Pp^(k)_ij,t"
+latent_target_meaning = "latent k-step PERSON-based residence transition share, NOT a labor-service share and NOT W_star"
+equation = "T_obs^(k)_ij,t = (1 - kappa_res_t) * Pp^(k)_ij,t * 1{j in frame} + zeta_res_ij,t + eps_res_ij,t"
+active_wedge = "WEDGE_RES"
+error_treatment = "declared moment condition or likelihood; zeta_res carries frame/timing terms and the reported unclassified bucket a_res_i,t"
+required_declarations = ["frame", "universe", "reference_window_t_minus_k_to_t", "orientation", "diagonal_treatment", "weights", "missing_and_unknown_categories", "reference_date", "publication_vintage"]
+prohibited = ["W_obs = W_star as an identity", "a labor-service reading of M1", "distributing an unclassified bucket", "using a post-reference-moment vintage unless declared"]
+semantic_bridge = "the labor-service conditional share is reached only through the accepted P3B T-family bridge and the lambda / H5 route"
+status = "NO_SOURCE_VERIFIED__BLOCKED_BY_H1_H3"
+blocked_by = ["H1", "H3"]
+claim_ceiling = "people-based multi-year residence transitions; never W_star"
+
+[measurement.M2]
+family = "employment_count_observation"
+observed_object = "L_obs_i,t"
+latent_target = "N_workers_star_i,t"
+equation = "L_obs_i,t = q_cov_i,t * N_workers_star_i,t + eps_L_i,t"
+active_wedge = "WEDGE_COV"
+required_declarations = ["source_frame", "institutional_coverage_basis", "unit_persons_jobs_or_posts", "region_universe", "reference_period", "weighting_status"]
+prohibited = ["numeric q_cov", "q_cov equal to one for all sources", "equating a job count with a worker count without a declared equation"]
+status = "NO_SOURCE_VERIFIED__BLOCKED_BY_H2_H4"
+blocked_by = ["H2", "H4"]
+claim_ceiling = "partial observation of worker quantity; never ell_star"
+
+[measurement.M3]
+family = "hours_intensity_observation"
+observed_object = "H_obs_i,t"
+latent_target = "h_star_i,t"
+equation = "H_obs_i,t = q_hours_i,t * (N_workers_star_i,t * h_star_i,t) + eps_H_i,t"
+absent_case = "if no hours source exists, h_star must be carried by a declared L_* prior form with a sensitivity replicate; it may not be a hidden constant and may not be free per region"
+active_wedge = "WEDGE_HOURS"
+required_declarations = ["source_basis", "per_worker_or_per_job", "reference_period"]
+prohibited = ["inferring long hours from worker counts", "substituting a worker count for hours"]
+status = "NO_SOURCE_VERIFIED__BLOCKED_BY_H2_H4"
+blocked_by = ["H2", "H4"]
+claim_ceiling = "partial hours-margin observation; no proof that h_star is identified"
+
+[measurement.M4a]
+family = "efficiency_labor_observation_direct"
+observed_object = "ELL_obs_i,t"
+latent_target = "ell_star_i,t"
+equation = "ELL_obs_i,t = q_eff_i,t * ell_star_i,t + eps_eff_i,t"
+active_wedge = "WEDGE_EFF"
+ell_unit = "EFFICIENCY_LABOR"
+required_declarations = ["ell_unit", "unit_with_hours_and_efficiency_content", "timing_precedes_or_coincides", "coverage_versus_label_universe", "C_LINK_status"]
+prohibited = ["substituting total population, urbanization or an unrelated total", "deriving ell from an unrelated aggregate", "equating person counts with efficiency labor"]
+status = "NO_SOURCE_VERIFIED__BLOCKED_BY_H6"
+blocked_by = ["H6"]
+claim_ceiling = "partial efficiency-labor observation"
+
+[measurement.M4b]
+family = "efficiency_labor_observation_declared_proxy"
+observed_object = "N_obs_i,t"
+observed_meaning = "employed-persons proxy observation"
+latent_target = "ell_star_i,t jointly with N_workers_star_i,t and omega_i,t"
+equations = [
+  "N_obs_i,t = q_cov_i,t * N_workers_star_i,t + eps_L_i,t",
+  "ell_star_i,t = omega_i,t * N_workers_star_i,t",
+  "omega_i,t = h_star_i,t * e_star_i,t",
+]
+active_wedge = ["WEDGE_COV", "WEDGE_OMEGA"]
+ell_unit = "EMPLOYED_PERSONS_DECLARED_AS_PROXY"
+proxy_measures = "worker_quantity_not_ell_star"
+identity_prohibited = "ell_star_i,t != N_obs_i,t unless q_cov = 1 AND omega = 1, which is NEVER assumed"
+identity_is_a_declared_sensitivity_variant_only = "ELL_PROXY_UNIT_INTENSITY_VARIANT"
+required_declarations = ["ell_unit", "explicit_proxy_status", "sensitivity_replicate", "ELL_PROXY_IDENTITY_NOT_ASSUMED"]
+status = "NO_SOURCE_VERIFIED__BLOCKED_BY_H6"
+blocked_by = ["H6"]
+claim_ceiling = "noisy anchor for ell_star under the declared proxy basis; never ell_star itself"
+
+[measurement.M5]
+family = "covered_uncovered_employment_channel"
+observed_object = "COV_obs_i,t"
+observed_meaning = "social-insurance enrollment, unit-employment count, or an equivalent institutional channel"
+decomposition = "N_workers_star_i,t = N_cov_star_i,t + N_unc_star_i,t"
+equation = "COV_obs_i,t = q_si_i,t * N_cov_star_i,t + eps_cov_i,t"
+registry_entry = "WEDGE_SI_COVERAGE"
+required_declarations = ["channel_identity", "institutional_coverage_basis", "region_universe", "period"]
+prohibited = [
+  "numeric q_si",
+  "equating social-insurance enrollment with total employment",
+  "assuming an informal or uncovered share numerically",
+  "inventing, borrowing or defaulting an undercoverage rate",
+]
+status = "MEASUREMENT_CHANNEL_DECLARED_NOT_CALIBRATED"
+blocked_by = ["H2", "H4"]
+claim_ceiling = "a declared channel for a coverage split; never a measured undercoverage rate"
+
+[measurement.M6]
+family = "macro_production_anchor_registered_only"
+observed_objects = ["Y_obs_i,t", "K_obs_i,t", "w_obs_i,t", "G_obs_i,t"]
+latent_targets = ["A_i,t", "K_star_i,t", "ell_star_i,t", "G_i,t"]
+specified_in_this_issue = false
+purpose = "register the moment side of the residual budget; no functional form, elasticity, share parameter or government rule is chosen here"
+prohibited = ["choosing a production function here", "choosing an elasticity or share parameter here", "using these symbols for any quantitative claim in this issue"]
+status = "REGISTERED_NOT_SPECIFIED_IN_THIS_ISSUE"
+blocked_by = ["H2", "H7"]
+claim_ceiling = "registered locations only"
+
+[wedges.WEDGE_RES]
+tier = 3
+symbol = "kappa_res_t"
+unit = "dimensionless"
+equation_location = "M1"
+economic_interpretation = "residence classification, timing and multi-year aggregation discrepancy; a measurement discrepancy, NOT an economic migration cost"
+disciplining_source_or_moment = "H1/H3 source semantics, resolved by documentation, not by fitting"
+allowed_dimensionality = "wave-level and source-level scalars; a declared semantic variant; never a per-pair or per-origin free residual"
+prior_or_regularization = "resolved value when H1 resolves the mapping; otherwise a declared L_* form with a stated prior"
+sensitivity_requirement = "residence-semantics variant replicate"
+claim_ceiling = "a measurement discrepancy; never a migration barrier, cost or friction"
+may_be_free_without_anchor_or_prior = false
+free_parameter_count_per_region_and_period = "FORBIDDEN"
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_COV]
+tier = 3
+symbol = "q_cov_i,t"
+unit = "dimensionless"
+equation_location = "M2 and M4b"
+economic_interpretation = "institutional frame of an employment count relative to the latent worker universe"
+disciplining_source_or_moment = "M5 channel if a source supports it; otherwise the macro employment accounting identity"
+allowed_dimensionality = "declared L_* form; a per-region-per-period free vector is forbidden without an anchor, prior or grouping"
+prior_or_regularization = "declared prior with a reported sensitivity"
+sensitivity_requirement = "anchored versus prior-only replicate"
+claim_ceiling = "coverage of a specific source; never a labor-supply distortion and never an economy-wide undercoverage rate"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_HOURS]
+tier = 3
+symbol = "q_hours_i,t"
+unit = "dimensionless"
+equation_location = "M3"
+economic_interpretation = "reporting basis of an hours or intensity measure"
+disciplining_source_or_moment = "the M3 source if it exists; otherwise a declared prior"
+allowed_dimensionality = "declared L_* form"
+prior_or_regularization = "required prior; h_star may not be free per region"
+sensitivity_requirement = "prior-scaled replicate"
+claim_ceiling = "a measurement basis; never a leisure or labor-supply preference"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_EFF]
+tier = 3
+symbol = "q_eff_i,t"
+unit = "dimensionless"
+equation_location = "M4a"
+economic_interpretation = "efficiency-labor content discrepancy of a source relative to the latent effective labor object"
+disciplining_source_or_moment = "the M4a source if it exists; otherwise a declared prior"
+allowed_dimensionality = "declared L_* form"
+prior_or_regularization = "required prior, jointly with the h/e split status"
+sensitivity_requirement = "split-sensitivity replicate, with WEDGE_OMEGA"
+claim_ceiling = "a measurement basis; never a technology or human-capital claim"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_OMEGA]
+tier = 3
+symbol = "omega_i,t = h_star_i,t * e_star_i,t"
+unit = "efficiency_labor_units_per_person"
+equation_location = "M4b"
+economic_interpretation = "effective labor carried by one worker; the only route by which a worker count can anchor ell_star"
+disciplining_source_or_moment = "M3 and M4a jointly if both exist; otherwise the declared prior"
+allowed_dimensionality = "declared L_* form; free per region is forbidden"
+prior_or_regularization = "required, with the functional form declared"
+sensitivity_requirement = "ELL_PROXY_UNIT_INTENSITY_VARIANT reported as its own row"
+claim_ceiling = "a decomposition; never an identified productivity level"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_TFP]
+tier = 4
+symbol = "A_i,t"
+unit = "declared_output_per_input_unit"
+equation_location = "M6 registered production location"
+economic_interpretation = "total-factor-productivity or productivity object of the registered production mapping"
+disciplining_source_or_moment = "declared macro moments: output, capital, wage"
+allowed_dimensionality = "declared low-dimensional form, aggregate or sector"
+prior_or_regularization = "required"
+sensitivity_requirement = "productivity-prior replicate"
+claim_ceiling = "a registered productivity object; never an identified causal effect"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+
+[wedges.WEDGE_GOV]
+tier = 5
+symbol = "G_i,t"
+unit = "declared_output_unit"
+equation_location = "M6 registered government location"
+economic_interpretation = "an explicit government-investment / government-output economic block"
+disciplining_source_or_moment = "its own declared anchor G_obs or a declared prior, plus a moment set disjoint from every labor wedge"
+allowed_dimensionality = "bounded by its declared low-dimensional form; an unbounded province-by-province free form is forbidden"
+prior_or_regularization = "anchor or prior required"
+sensitivity_requirement = "anchor-relaxation replicate"
+claim_ceiling = "an economic block with its own moments; never a provincial balancing residual that closes output"
+may_be_free_without_anchor_or_prior = false
+fail_closed_when_h_unresolved = true
+record_complete = true
+may_be_unbounded_balancing_residual = false
+
+[wedges.required_record_fields]
+fields = ["symbol", "equation_location", "economic_interpretation", "disciplining_source_or_moment", "allowed_dimensionality", "prior_or_regularization", "sensitivity_requirement", "claim_ceiling"]
+incomplete_record_status = "WEDGE_RECORD_INCOMPLETE__NOT_ADMISSIBLE"
+
+[wedge_identification_rules]
+rules = [
+  "I1 every wedge carries the complete eight-field record before it appears in any equation",
+  "I2 every wedge declares its dimensionality and free-parameter count; undeclared or unbounded dimensionality is UNRESTRICTED_WEDGE_FORBIDDEN",
+  "I3 a wedge whose free directions span regions and periods without an anchor, prior or grouping is forbidden",
+  "I4 an unidentified split may not have both partners free; exactly one is free and the split status is reported honestly",
+  "I5 the six-element set {labor coverage, hours, efficiency, migration, TFP, government} may not be simultaneously unrestricted",
+  "I6 when the source that would discipline a wedge is unresolved in H1-H7, the wedge is fixed by prior or the affected dimension set is excluded (H_BLOCKED_WEDGE_FAIL_CLOSED); it is never freed",
+  "I7 no wedge may be introduced solely to close provincial output or GDP without an explicit moment or prior",
+  "I8 no wedge value may be reported as data-identified unless a source-specific measurement contract proves it",
+  "I9 every active wedge reports its sensitivity replicate; a missing replicate is a reporting defect",
+  "I10 a wedge failing any rule makes the design RESIDUAL_BUDGET_EXCEEDED__NOT_ADMISSIBLE",
+]
+unrestricted_wedge_status = "UNRESTRICTED_WEDGE_FORBIDDEN"
+h_blocked_wedge_action = "H_BLOCKED_WEDGE_FAIL_CLOSED"
+
+[regularization_forms]
+forms = ["L_constant", "L_time", "L_factor", "L_anchored", "L_grouped"]
+form_expression = [
+  "L_constant: wedge_i,t = wedge_bar",
+  "L_time: wedge_i,t = wedge_bar_t",
+  "L_factor: log wedge_i,t = log wedge_bar_t + gamma' X_i",
+  "L_anchored: pinned by a declared anchor where covered, declared form elsewhere",
+  "L_grouped: wedge_i,t = wedge_g(i) with a declared partition g(i)",
+]
+chosen_before_execution = true
+free_parameter_count_reported_in = "D9"
+form_change_after_outcomes_observed = "FORBIDDEN"
+X_may_include_post_decision_measurement = false
+X_may_include_the_label_or_a_same_period_realized_flow = false
+
+[residual_budget]
+hierarchy_tiers = [
+  "TIER_1_observed_and_accounting_identities_imposed_exactly",
+  "TIER_2_low_dimensional_structural_mobility",
+  "TIER_3_source_specific_measurement_wedges",
+  "TIER_4_production_and_productivity_residuals",
+  "TIER_5_government_residual_only_if_separately_anchored_and_bounded",
+]
+rules = [
+  "RB1 every free residual block has a non-empty declared moment set",
+  "RB2 the declared free-parameter count of a block may not exceed its assigned moment count",
+  "RB3 tier-1 accounting identities are imposed exactly; no residual parameter may enter them",
+  "RB4 moment sets are disjoint across residual blocks",
+  "RB5 no two residual blocks may be algebraic complements inside one identity, and no block may be defined as the difference of two others in a way no moment can separate",
+  "RB6 the government block is active only with its own anchor or prior, a moment set disjoint from every labor wedge, and a dimension bounded by its declared form",
+  "RB7 the six-element forbidden set is not simultaneously unrestricted; at least the tier-3 wedges satisfy RB1-RB2 and at least one tier-4 or tier-5 block is anchored or inactive",
+  "RB8 the design reports the dimension-accounting table D9, the moment-assignment matrix and the absorption shares D7; a missing report blocks interpretation claims",
+]
+failure_status = "RESIDUAL_BUDGET_EXCEEDED__NOT_ADMISSIBLE"
+failure_is_fail_closed = true
+no_double_residual_rule_id = "NO_DOUBLE_RESIDUAL_RULE"
+no_double_residual_rule = "the same unexplained variation may not be absorbed by two residual blocks; a labor-wedge moment may not also be assigned to the TFP or government block; the government block may not be an unbounded provincial balancing residual; a residual introduced only because an identity fails to close is forbidden"
+permitted_responses_to_a_budget_failure = [
+  "resolve the missing source or anchor under Issue 83",
+  "reduce dimensionality by a declared prior or grouping",
+  "drop the affected regions or periods by the declared exclusion rule",
+]
+freeing_a_wedge_to_compensate = "FORBIDDEN"
+
+[moment_assignment]
+families = [
+  "accounting_identities_tier_1_imposed_not_claimed",
+  "mobility_moments",
+  "employment_moments",
+  "hours_moments",
+  "efficiency_labor_moments",
+  "coverage_channel_moments",
+  "output_capital_wage_moments",
+  "government_moments",
+]
+rules = [
+  "MA1 moment sets are declared before execution and are disjoint across residual blocks",
+  "MA2 a moment may not be claimed by two blocks without a declared non-redundancy restriction",
+  "MA3 identity moments are never claimed; the identities are imposed",
+  "MA4 an M5 coverage moment disciplines q_cov or the coverage split, not both at full strength",
+  "MA5 the government moment set is disjoint from every labor-moment family",
+  "MA6 the moment inventory, block inventory and disjointness check are reported in D9",
+]
+absent_family_dispositions = [
+  "no M5 source: q_cov is prior-carried or grouped; it is not calibrated from a coverage channel",
+  "no M3 source: h_star prior-carried; the h/e split is LATENT__NOT_SEPARATELY_IDENTIFIED",
+  "no M4 source: omega prior-carried; the proxy anchors ell_star only weakly and the claim ceiling says so",
+  "no M1 source: S2 loses its mobility anchor; WEDGE_RES may not be freed to compensate",
+  "no M6 government anchor: the government block is inactive and may not be activated as a free residual",
+]
+
+[dimension_accounting]
+required_report = "D9"
+blocks = ["WEDGE_RES", "WEDGE_COV", "WEDGE_HOURS", "WEDGE_EFF", "WEDGE_OMEGA", "WEDGE_TFP", "WEDGE_GOV", "structural_beta"]
+required_fields = ["declared_form", "free_parameter_count", "assigned_moment_count", "RB2_satisfied", "disjointness_checked_against"]
+contains_no_numeric_threshold = true
+
+[models.S0]
+id = "S0"
+name = "STRUCTURAL_ONLY"
+latent_flow_source = "the backbone alone, masked softmax"
+observation_role = "OD observations are not truth and may appear only as reported diagnostics"
+active_tiers = [1, 2]
+measurement_wedges_active = false
+residual_budget_binding_on = "tier_2_structural_parameters"
+claim_ceiling = "may not claim to match observed OD; may claim a structural latent allocation disciplined by macro moments"
+not_preferred_truth = true
+
+[models.S1]
+id = "S1"
+name = "NAIVE_DATA_PROXY"
+latent_flow_source = "the observed proxy used as directly as its source semantics allow"
+observation_role = "the observation is the working object"
+active_tiers = [1]
+measurement_wedges_active = false
+residual_budget_binding_on = "no_free_residuals"
+claim_ceiling = "benchmark only; may not claim structural interpretation and may not claim the proxy equals the latent object"
+not_preferred_truth = true
+labelled_variant = "S1_VARIANT_SHARE_EQUIVALENCE__DECLARED_BENCHMARK"
+ell_basis = "EMPLOYED_PERSONS_DECLARED_AS_PROXY"
+
+[models.S2]
+id = "S2"
+name = "LATENT_MEASUREMENT_ADJUSTED"
+latent_flow_source = "the backbone jointly disciplined by the M1-M6 measurement equations"
+observation_role = "every observation is a noisy anchor with a declared measurement equation and source-specific uncertainty"
+active_tiers = [1, 2, 3, 4, 5]
+measurement_wedges_active = true
+residual_budget_binding_on = "RB1_through_RB8"
+claim_ceiling = "may claim joint latent discipline; may not claim observation of any latent object nor global identification"
+labelled_variant = "ELL_PROXY_UNIT_INTENSITY_VARIANT"
+
+[model_comparison]
+shared_elements = [
+  "region_universe_U1_to_U6_and_the_per_wave_mappable_intersection",
+  "information_timing_window_start_canonical",
+  "macro_accounting_definitions_and_tier_1_identities",
+  "W_support_convention_diagonal_false",
+  "row_conditional_normalization_and_units",
+  "downstream_HANK_blocks_when_later_coupled",
+  "diagnostics_set_D1_to_D10",
+  "wedge_registry_and_residual_budget_rules",
+]
+rules = [
+  "CMP1 all admissible models are reported; an inadmissible model is reported with its failing rule and never replaced silently",
+  "CMP2 no model is selected, preferred, tuned or dropped after inspecting outcomes (NO_OUTCOME_BASED_MODEL_SELECTION)",
+  "CMP3 S1 agreement is not validation of the proxy and disagreement is not proof that the latent model is correct",
+  "CMP4 S0 is not compared on observed-OD fit alone",
+  "CMP5 per-model moment consumption is declared so the comparison cannot create a double residual",
+  "CMP6 no numeric acceptance threshold, tolerance or ranking criterion beyond the frozen P3C values",
+  "CMP7 the share-equivalence route is a labelled variant inside S1, reported with its own row",
+]
+no_outcome_based_model_selection = true
+
+[first_wave_owner_choices]
+owner_comment = 5742312556
+A_first_wave = "FIRST_WAVE_2010_CENSUS_ONLY"
+B_wave_2000 = "WAVE_2000_EXCLUDED"
+C_share_equivalence = "SHARE_EQUIVALENCE__DECLARED_BENCHMARK_VARIANT"
+D_ell_anchor = "EMPLOYED_PERSONS_DECLARED_AS_PROXY"
+E_information_set = "WINDOW_START_CANONICAL"
+window_end_nowcast_in_first_pass = "EXCLUDED"
+chosen_before_any_outcome_observed = true
+resolves_any_H_item = false
+authorizes_opening_any_2010_source = false
+
+[diagnostics]
+mandatory_in_any_later_execution_report = true
+numeric_acceptance_thresholds_attached_here = 0
+missing_diagnostic_effect = "reporting defect that blocks interpretation claims"
+
+[diagnostics.D1]
+definition = "measurement residual by source and region, observed minus equation-implied value, per family"
+required_in = ["S2"]
+[diagnostics.D2]
+definition = "coverage wedge magnitude, reported profile of q_cov and of q_si if M5 is active"
+required_in = ["S2"]
+[diagnostics.D3]
+definition = "hours and efficiency decomposition sensitivity across declared variants"
+required_in = ["S2"]
+[diagnostics.D4]
+definition = "latent-versus-naive W difference by pair and by origin"
+required_in = ["S0", "S1", "S2"]
+[diagnostics.D5]
+definition = "latent-versus-official ell difference on the declared ell_unit basis"
+required_in = ["S0", "S1", "S2"]
+[diagnostics.D6]
+definition = "output, capital and wage fit at the registered M6 locations"
+required_in = ["S0", "S2"]
+[diagnostics.D7]
+definition = "share of provincial output residual absorbed by each wedge or block"
+required_in = ["S0", "S2"]
+[diagnostics.D8]
+definition = "government-residual crowding-out check: moment overlap with labor wedges and labor-wedge sensitivity with the block active versus inactive"
+required_in = ["S0", "S2"]
+[diagnostics.D9]
+definition = "wedge dimension-accounting table: declared free-parameter count, assigned moment count and the RB2 comparison"
+required_in = ["S2"]
+[diagnostics.D10]
+definition = "three-model comparison table on the common universe, timing and accounting"
+required_in = ["S0", "S1", "S2"]
+
+[human_gate]
+issue = 83
+task_id = "DLH_WL_P3D"
+is_the_only_h_source_verification_authority = true
+builder_may_resolve_or_promote = false
+self_promotion_allowed = false
+all_items_unresolved_at_this_issue = true
+items = ["H1", "H2", "H3", "H4", "H5", "H6", "H7"]
+packet_document = "docs/data/DLH_WL_P3C_HUMAN_SOURCE_VERIFICATION_PACKET_2026_09_19.md"
+unresolved_item_reading = "an unresolved item may never be read as assuming the neutral reading"
+
+[human_gate.H1]
+subject = "NBS transition semantics"
+blocks = ["M1", "WEDGE_RES", "m_star_derivation_M-A"]
+[human_gate.H2]
+subject = "census and 1 percent table availability and vintage"
+blocks = ["M1", "M2", "M3", "M4a", "M4b", "M5", "M6"]
+[human_gate.H3]
+subject = "region coding, pinned code standard, 2000-wave Chongqing and Sichuan treatment, HK Macao Taiwan, XPCC, merged and absent units"
+blocks = ["M1", "region_universe_joins", "all_region_joined_objects"]
+[human_gate.H4]
+subject = "weights, cross-wave comparability, questionnaire and sample-design changes"
+blocks = ["M2", "M3", "M5", "weighted_variants"]
+[human_gate.H5]
+subject = "pair labor intensity lambda_ij = rho_ij * phi_ij or the declared share-equivalence route"
+owner_design_level_note = "partially resolved as RESOLVED_WITH_DECLARED_VARIANT for the share-equivalence benchmark; this does not prove that population shares equal labor-service shares"
+still_requires_primary_source_verification = true
+blocks = ["population_to_labor_bridge", "W_star_link_to_M1", "mover_frame_coverage_for_M4b"]
+[human_gate.H6]
+subject = "origin labor amount ell_i on a declared basis"
+owner_design_level_note = "basis Owner-selected as EMPLOYED_PERSONS_DECLARED_AS_PROXY; the actual source, vintage and timing still require primary-source verification"
+still_requires_primary_source_verification = true
+blocks = ["ell_star_status", "M4", "conditional_denominator"]
+[human_gate.H7]
+subject = "timing, publication, leakage and the supported split claim"
+owner_design_level_note = "the canonical design choice is window-start at the Owner-design level; source publication and reference timing still require verification"
+still_requires_primary_source_verification = true
+blocks = ["M6", "feature_availability", "every_timing_declaration"]
+
+[provenance_separation]
+lambda_ij_field = "lambda_ij"
+ell_i_field = "ell_i"
+are_separate_provenance_fields = true
+tied_only_by = "C-LINK: ell_i = ell_i^movers + ell_i^stay + ell_i^unobserved"
+may_be_inferred_from_each_other = false
+measurement_layer_may_infer_one_from_the_other = false
+
+[inherited_p3c]
+source_config = "configs/dlh_wl_p3c_bridge_readiness.toml"
+source_document = "docs/specifications/DLH_WL_P3C_EXECUTION_READINESS_FREEZE_2026_09_19.md"
+values_inherited_unchanged = true
+any_inherited_value_changed = false
+thresholds_restated_with_new_numbers = 0
+invariants_inherited = "C1 through C21"
+p3b_conditions_inherited = "(A1) to (A4), (P-L), (C-LINK), region rules U1 to U6, weights harmonization and leakage contract"
+
+[inherited_p3c.thresholds.low_mobility]
+pi_max = 0.15
+[inherited_p3c.thresholds.identification_spread]
+tau_W_abs = 0.02
+tau_m_abs = 0.02
+[inherited_p3c.thresholds.region_mapping]
+unmappable_mass_share_max = 0.01
+[inherited_p3c.numerical.row_stochasticity]
+row_sum_abs_tol = 1e-10
+[inherited_p3c.numerical.negativity]
+hard_failure_below = -1e-10
+cosmetic_zero_lower = -1e-12
+cosmetic_zero_upper_exclusive = 0.0
+[inherited_p3c.numerical.support]
+forbidden_support_mass_tol = 1e-12
+[inherited_p3c.numerical.root_residual]
+k_step_max_abs_residual = 1e-08
+[inherited_p3c.numerical.generator]
+row_sum_abs_tol = 1e-10
+offdiagonal_hard_failure_below = -1e-10
+[inherited_p3c.numerical.dedup]
+max_abs_separation = 1e-07
+[inherited_p3c.numerical.reality]
+imaginary_part_abs_tol = 1e-10
+[inherited_p3c.search.R4_constrained_multistart]
+rng_seed = 20260919
+total_executed_optimizer_starts = 64
+max_iterations_per_start = 5000
+
+[invariants]
+inherited = "C1 through C21 of the P3C execution-readiness freeze remain binding"
+new = [
+  "E1 observations are measurement anchors, never truth values of W_star or ell_star; W_model = W_census and ell_model = ell_official are forbidden as assumptions",
+  "E2 the distance plus economic-gap backbone is preserved as the latent-flow backbone and may not be replaced by a data re-encoding or an ML component",
+  "E3 an ML residual component is additive and separately identified, dimensionality-declared and regularized, and never absorbs a structural term",
+  "E4 no numeric undercoverage rate, informal share, non-compliance share or coverage factor is assumed, borrowed or defaulted",
+  "E5 every wedge carries the complete eight-field record before appearing in any equation",
+  "E6 RB1 through RB8 bind every later design; a violating design is RESIDUAL_BUDGET_EXCEEDED__NOT_ADMISSIBLE and is fail-closed",
+  "E7 the labor coverage, hours, efficiency, migration, TFP and government blocks may not be simultaneously unrestricted",
+  "E8 the government block has its own anchor or prior and a moment set disjoint from the labor wedges, and is never an unbounded provincial balancing residual",
+  "E9 S0, S1 and S2 share the region universe, information timing, macro-accounting definitions, downstream HANK blocks and diagnostics set",
+  "E10 no model is selected, preferred, tuned or dropped after outcomes are inspected",
+  "E11 H1 through H7 remain unresolved; Issue 83 is the only authority that may resolve or promote them; the Builder never self-promotes",
+  "E12 no new numeric threshold, tolerance, seed, weight or acceptance criterion is introduced, and no inherited value is changed",
+  "E13 the canonical information set is window-start; the window-end nowcast is excluded from the first pass and never mixed with the canonical design",
+  "E14 the first bounded wave is 2010 Census only with the 2000 wave excluded initially",
+  "E15 m_star and ell_star are never the label and never a feature of the conditional-share learner",
+  "E16 ell_star may not be equated with any person count; the proxy route requires the explicit omega and q_cov objects",
+  "E17 h_star and e_star may not both be free where their split is unidentified",
+  "E18 a measurement equation is never an identity, and no source-specific equality is assumed without a separately accepted measurement contract",
+  "E19 the architecture authorizes no execution and supports no empirical, causal, welfare, policy, GE, HJB/KFE or household claim",
+  "E20 lambda_ij and ell_i remain separate provenance fields related only by C-LINK",
+]
+
+[prohibitions]
+real_data_or_source_opened = false
+dataset_download_scrape_purchase_ingestion = false
+source_adapter_or_crosswalk_created = false
+real_transition_matrix_inspected_or_executed = false
+bridge_execution = false
+empirical_estimation_fit_training_calibration = false
+social_insurance_undercoverage_calibration = false
+labor_law_noncompliance_calibration = false
+fixed_informal_employment_share = false
+new_government_investment_residual = false
+hjb_kfe_ge_matlab_household = false
+pytest_or_full_suite = false
+evidence_level_promotion = false
+h_item_resolution_or_promotion = false
+successor_issue = false
+pr_merge_close_or_self_acceptance = false
+source_code_tests_current_governance_or_p3c_p3d_edits = false
+measurement_equation_evaluation = false
+
+[expected_outputs]
+latent_state_accounting_vocabulary = true
+structural_mobility_backbone = true
+symbolic_measurement_equations = true
+wedge_identification_and_regularization_matrix = true
+residual_budget_and_no_double_residual_rule = true
+three_model_comparison_contract = true
+future_diagnostics_defined = true
+machine_readable_docs_and_config = true
+
+[terminal]
+selected = "DLH_WL_P3E_LATENT_LABOR_MEASUREMENT_ARCHITECTURE__PASS__READY_FOR_POST_E3_IMPLEMENTATION"
+not_selected = "DLH_WL_P3E_LATENT_LABOR_MEASUREMENT_ARCHITECTURE__REVIEW_REQUIRED"
+pass_does_not_authorize_real_data_implementation = true
+pass_requires = "only that the architecture is frozen and may be used after the required Issue 83 H items are resolved"
