@@ -59,4 +59,4 @@ Issue #80 is accepted and integrated. Do not build a real adapter or fit W yet. 
 
 
 ## P3B staged
-Issue #81 is STAGED / NOT OPERATIVE. After activation, DSH must compare source-specific bridge families and freeze assumptions/failure conditions/sensitivity requirements, including the population-to-labor-service semantic bridge. No real adapter or fit may be started.
+Issue #81 is ACTIVE / OPERATIVE. DSH must read the final activation and compare source-specific bridge families and freeze assumptions/failure conditions/sensitivity requirements, including the population-to-labor-service semantic bridge. No real adapter or fit may be started.
