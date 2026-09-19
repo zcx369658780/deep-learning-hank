@@ -74,4 +74,4 @@ Issue #78 is CLOSED with accepted terminal `DLH_WL_P2C_DURABLE_OUTPUT_REPLICATIO
 
 ## P2D minimal corrected replication staged — 2026-09-19
 
-Issue #79 is published as **STAGED / NOT OPERATIVE**. It preserves the #75 frozen scientific design and #78 accepted durable-output protocol. The only science-path repair is explicit `universe._design_matrix = design` propagation before neural fits, with a zero-fit pre-run prediction-path test that must distinguish the z-scored design from raw fallback. No execution before Reviewer final activation.
+Issue #79 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific design and #78 accepted durable-output protocol. The only science-path repair is explicit `universe._design_matrix = design` propagation before neural fits, with a zero-fit pre-run prediction-path test that must distinguish the z-scored design from raw fallback. Exact operative baseline and branch are named by the Reviewer final activation.
