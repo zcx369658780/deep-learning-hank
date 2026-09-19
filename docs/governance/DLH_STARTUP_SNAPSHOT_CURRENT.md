@@ -80,3 +80,8 @@ Issue #79 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific 
 ## P2 method gate complete — 2026-09-19
 
 Issue #79 / P2D is ACCEPTED / CLOSED / INTEGRATED at `8ae4561ca3b0c78ba1d47045182fa5b4b023ed6d` (Reviewer acceptance `5741061720`; integration `5741063251`). The frozen synthetic method experiment is now accepted: all protocol/preprocessing/durability gates pass, and the neural mapping does not beat the correctly specified parametric baseline in S0/S1. This is a valid negative synthetic-method result, not an empirical China result. The next gate is P3A real-data label/provenance/semantics verification before any empirical fitting.
+
+
+## P3A real-data evidence gate staged — 2026-09-19
+
+Issue #80 is published as **STAGED / NOT OPERATIVE**. It is evidence/schema validation only: source object, timing, population, bilateral OD support, stock/flow/transition semantics, direct-vs-bridged W status, provenance/licence and feature timing/leakage. No data ingestion or empirical fitting is authorized before Reviewer final activation and later P3A acceptance.
