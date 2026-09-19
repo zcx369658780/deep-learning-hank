@@ -76,3 +76,7 @@ P3C is accepted. Do not start a Builder bridge/data task. The next scientific au
 
 ## Latent labor measurement amendment
 Owner approved a structural+measurement interpretation: keep distance/economic-gap mobility as latent backbone; treat census/employment/social-insurance/unit-employment data as noisy/partial anchors; do not hard-set latent W or ell equal to observed series. H1–H4 remain human verification. A parallel docs/config-only Builder task may formalize measurement equations, wedge dimensionality/regularization and the required STRUCTURAL_ONLY vs NAIVE_DATA_PROXY vs LATENT_MEASUREMENT_ADJUSTED comparison. No data fitting yet.
+
+
+## P3E staged in parallel with #83
+Issue #84 is docs/config-only. Builder may formalize the latent labor measurement architecture but may not resolve H1–H7, inspect real sources, ingest data or fit any model. #83 remains the human evidence authority.
