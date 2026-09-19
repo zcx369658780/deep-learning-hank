@@ -1,27 +1,21 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P1_COMPLETE__ISSUE_76_P2A_ACTIVE_OPERATIVE`。
+状态：`P2A_GATE_FAIL_ACCEPTED__CLEAN_REPLICATION_NEXT`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
 Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
-- P1B integration: `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`
-- Reviewer acceptance: `5739889010`
-- integration comment: `5739889903`
+Issue #76 / P2A：**GATE FAIL EVIDENCE ACCEPTED / CLOSED / INTEGRATED**。
+- accepted evidence integration: `8c5a9a7f474ce1feac3c63e449e07753141d8984`
+- Reviewer acceptance comment: `5740209318`
+- integration comment: `5740210337`
+- accepted terminal: `DLH_WL_P2A_OFFLINE_SYNTHETIC_PROTOTYPE__GATE_FAIL__NO_TUNING_AUTHORIZED`
 
-下一科学 Builder Issue：
-- #76 / `DLH-WL-P2A: implement and execute frozen offline synthetic prototype`
-- 状态：**OPEN / ACTIVE / OPERATIVE**
-- publication baseline：`2750bf416b9d3034a5f77792c17e0bc59571aae8`
-- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
+#76 scientific outcome boundary:
+- neural non-gain on S0/S1 is retained as observational evidence only;
+- no confirmatory P2 PASS exists;
+- minimum proven completed fits = 36; Builder-reported = 48; either exceeds <=13 ceiling;
+- gate failure is reproducibility/protocol failure, not a neural-method rejection.
 
-#76 是第一张真正运行小型训练的 P2 Issue，但只能执行 #75 已冻结的合同：
-- synthetic S0/S1；
-- fixed / 6-parametric / small-neural 三基准；
-- split 9/3/2/6；
-- 8 primary configs / 12 planned executions / <=13 attempts / <=1800s；
-- no hyperparameter/seed search；
-- no real data / HJB / KFE / GE / MATLAB；
-- neural 不要求胜过 parametric；负结果可以是 PASS。
-
-split 的唯一允许解释是 held-out time + held-out origin role；不得声称 unseen-region。
+Current scientific Builder Issue：**NONE**。
+Next gate: clean independent P2 replication using the same frozen #75 design, with immutable pre-run code and one science invocation only. Reporting/render fixes must never trigger another fit.
