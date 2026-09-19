@@ -48,3 +48,7 @@ Issue #79 is ACTIVE / OPERATIVE. DSH must read the final activation, then prove 
 
 ## P2 complete
 Issue #79 is accepted and integrated. Do not continue synthetic tuning: the neural non-gain is an accepted negative result. The next bounded task is P3A real-data evidence validation only — establish source object, year/window, population definition, OD-vs-stock-vs-transition semantics, direct/bridged target status, provenance/licence and support coverage before authorizing any empirical model fit.
+
+
+## P3A staged
+Issue #80 is STAGED / NOT OPERATIVE. After activation, DSH must audit real source semantics/provenance only. It may verify public source metadata read-only if reachable, but must not download/ingest datasets or fit any empirical model. The outcome is Branch D (direct annual OD), B (bridged pair object), or P (pair target not currently supportable).
