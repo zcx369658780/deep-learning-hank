@@ -60,3 +60,7 @@ Issue #80 is accepted and integrated. Do not build a real adapter or fit W yet. 
 
 ## P3B staged
 Issue #81 is ACTIVE / OPERATIVE. DSH must read the final activation and compare source-specific bridge families and freeze assumptions/failure conditions/sensitivity requirements, including the population-to-labor-service semantic bridge. No real adapter or fit may be started.
+
+
+## P3B complete — candidate available
+Issue #81 is accepted and integrated. Do not execute the bridge yet. P3C must first freeze Reviewer-side tolerances/search protocol and make explicit that a finite numerical search set is not proof of global root uniqueness. Human source/schema verification remains a separate prerequisite.
