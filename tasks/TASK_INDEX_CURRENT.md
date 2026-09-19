@@ -1,27 +1,24 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P3A_BRANCH_B_ACCEPTED__ISSUE_81_P3B_ACTIVE_OPERATIVE`。
+状态：`P3B_BRIDGE_CANDIDATE_ACCEPTED__P3C_EXECUTION_READINESS_FREEZE_NEXT`。
 
 Issue #79 / P2D：ACCEPTED / CLOSED / INTEGRATED — P2 METHOD GATE COMPLETE。
 Issue #80 / P3A：ACCEPTED / CLOSED / INTEGRATED — BRANCH B。
-- integration: `a1505cf0deeaee58c0cde9dc886a16ec502ddae9`
-- acceptance: `5741207677`
-- integration comment: `5741209478`
+Issue #81 / P3B：**ACCEPTED / CLOSED / INTEGRATED — CANDIDATE AVAILABLE**。
+- integration: `1819b0a5a36b2a8ffde3641c711892df2cdcede7`
+- Reviewer acceptance: `5741469418`
+- integration comment: `5741471600`
+- terminal: `DLH_WL_P3B_BRIDGE_PREREGISTRATION__PASS__CANDIDATE_AVAILABLE`
 
-下一科学 Builder Issue：
-- #81 / `DLH-WL-P3B: bridge/source preregistration gate`
-- 状态：**OPEN / ACTIVE / OPERATIVE**
-- publication baseline：`4bb8be1ed4750269f322d23675072e50742d5ea9`
-- Builder 必须以 final activation comment 指定的 exact operative baseline 与 branch 为准。
+Accepted P3B boundary:
+- T1 stochastic-root / embedding bridge is mathematically explicit but existence/uniqueness is not automatic；
+- T2 low-mobility bridge is conditional；
+- T3 remains PROXY_ONLY；
+- stock-to-flow remains NOT_IDENTIFIED；
+- population→labor requires pair-level lambda_ij；
+- pair-level lambda_ij and origin-level ell_i are linked but distinct provenance requirements；
+- no empirical bridge execution or fit is authorized.
 
-#81 仅做 bridge preregistration：
-- time bridge；
-- stock-to-flow bridge；
-- population-to-labor-service bridge；
-- region dictionary；
-- m/ell provenance；
-- weights/harmonization/leakage；
-- sensitivity design。
-
-不得下载/摄取数据，不得构造 empirical adapter，不得估计/训练。
+Current scientific Builder Issue：NONE。
+Next gate: P3C execution-readiness freeze. Freeze reviewer thresholds, numerical root-search semantics, uniqueness claim ceiling, unmappable-mass threshold, and human source/schema verification checklist before any real-data bridge is executed.
