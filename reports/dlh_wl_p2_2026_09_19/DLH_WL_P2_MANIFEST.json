@@ -1,0 +1,113 @@
+{
+  "experiment_id": "EXP-20260919-DLH-WL-P2A-001",
+  "issue": 76,
+  "generated_utc": "2026-09-19T06:35:38.403309+00:00",
+  "exact_command": "PYTHONPATH=D:\\dlh-issue76-p2a\\src python -B scripts/run_dlh_wl_p2_offline_prototype.py --execute",
+  "code": {
+    "branch": "dsh/issue-76-dlh-wl-p2a-offline-synthetic-prototype-2026-09-19",
+    "commit": "fab19a3686778eac437b12c62216f1153edc247c",
+    "baseline": "4b4dc8c39d6a18b8928407308248f4020c10602c",
+    "dirty_paths": [
+      "M reports/dlh_wl_p2_2026_09_19/DLH_WL_P2_REPORT.md",
+      " M reports/dlh_wl_p2_2026_09_19/DLH_WL_P2_RESULTS.json",
+      " M scripts/run_dlh_wl_p2_offline_prototype.py"
+    ]
+  },
+  "hashes": {
+    "policy": "SHA-256 over LF-normalised bytes (platform independent)",
+    "code_module": "C0AD7B4141C5C4DC29E03047DBD5B743874D4C076B62854577BDE57FEDD4437B",
+    "runner": "1D836840442269D92584A422C0AA86D347FB09FCEDD26B797DA8DB133715D720",
+    "tests": "17281FC6CCBBDFFBB6C15DEC7809B8E89624BD1C1F18B55DDA7BD93B29984A76",
+    "config": "B4728EC1DB71D682D9C0DD96B17B039FCB7BFDCCDFFB0803FABDB216DFA60FD4",
+    "contract": "3DF8FA01FCBC2F3B7BF6F1D2FFEEA5AF236AC47BBC9D170B04CC175A17AE2ACF",
+    "schema": "98AB3BBF9130F730AAC119F998BBE9AFA305C0BE9C39A7450EA5BC42EF413D00",
+    "report": "3EC35ED210C60A3ED5385B238337A6CEB31373FB5D3718E8592FC7DF4871442A",
+    "results_canonical_content": "AFF7995157BF155A1D87963CF4F82DFD96FA67E1442FE5484C071198A5550474"
+  },
+  "git_blob_sha1": {
+    "code_module": "b1f2cd043605c511e4965254657d12306170609b",
+    "runner": "b10939fbbc7ffa76c27f4134c59a0acbb5a16455",
+    "tests": "a6bb7a9facd5a482234b16ca5235a832d4a61f7b",
+    "contract": "99b62bd8cc294e5518b3548ce7f6098784ccd561",
+    "schema": "862debb5aacb47fc5de906127dca10690324965c"
+  },
+  "package_versions_imported": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "random_seed_policy": {
+    "neural_seeds": [
+      0,
+      1,
+      2
+    ],
+    "numpy_seed_set_per_fit": true,
+    "python_random_seed_set_per_fit": true,
+    "torch": "NOT_INSTALLED_NEURAL_BACKEND_IS_NUMPY",
+    "deterministic_algorithms": true,
+    "environment_thread_pinning": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "PYTHONHASHSEED": "0"
+    }
+  },
+  "attempt_counts": {
+    "primary_fit_configurations": 8,
+    "planned_fit_executions": 12,
+    "attempts_logged": 12,
+    "engineering_retries_used": 0,
+    "absolute_attempt_ceiling": 13,
+    "within_attempt_ceiling": true,
+    "total_runtime_seconds": 1.0344392999832053,
+    "wall_clock_ceiling_seconds": 1800.0,
+    "within_wall_clock_ceiling": true,
+    "hyperparameter_search_runs": 0,
+    "extra_fits_outside_ledger": 0
+  },
+  "declarations": {
+    "real_data_used": false,
+    "data_download_scrape_purchase": false,
+    "household_or_HA_coupling": false,
+    "hjb_calls": 0,
+    "kfe_calls": 0,
+    "ge_calls": 0,
+    "matlab_calls": 0,
+    "selected_q_work": false,
+    "full_repository_suite_runs": 0,
+    "successor_issue_created": false
+  },
+  "frozen_inputs_read_only": {
+    "config": "configs/dlh_wl_p2_offline_prototype.toml",
+    "contract": "docs/specifications/DLH_WL_P2_OFFLINE_PROTOTYPE_CONTRACT_2026_09_18.md",
+    "schema": "docs/data/DLH_WL_P1B_LABEL_AND_SAMPLE_SCHEMA_2026_09_18.md"
+  },
+  "execution_provenance": {
+    "published_run_is_the_final_execution": true,
+    "earlier_failed_attempts": [
+      {
+        "attempt": 1,
+        "failed_at": "report rendering (KeyError: terminal)",
+        "cause": "deterministic reporting-layer defect: the terminal was attached after the report had been rendered",
+        "fits_completed": 12,
+        "fits_retained_or_used": 0,
+        "scientific_outcome_used": false
+      },
+      {
+        "attempt": 2,
+        "failed_at": "manifest hash self-consistency",
+        "cause": "deterministic artifact-writing defect: the results file hash was recorded before the file was finalised",
+        "fits_completed": 12,
+        "fits_retained_or_used": 0,
+        "scientific_outcome_used": false
+      }
+    ],
+    "pre_authorized_engineering_retry_consumed": 0,
+    "retry_policy_note": "the frozen retry is scoped to pure infrastructure failures; both defects above were deterministic code defects in the reporting layer only, so the byte-identical frozen program was executed once more after repair and only that run is published",
+    "scientific_design_changed_after_first_fit": false,
+    "architecture_or_hyperparameter_or_seed_change": false,
+    "extra_fits_outside_ledger": 0
+  },
+  "wall_clock_note": "total_runtime_seconds in RESULTS.json covers the published run only; the three --execute processes together (including the two failed reporting attempts) took about 6 s, still far below the 1800 s ceiling",
+  "hashes_finalised_utc": "2026-09-19T06:35:38.800237+00:00"
+}
