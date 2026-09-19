@@ -1,22 +1,27 @@
 # 当前任务指针
 
 更新：2026-09-19。路线：`DLH-WL-V1-20260918`。
-状态：`P1_COMPLETE__P2_FIRST_OFFLINE_RUN_PENDING_ISSUE`。
+状态：`P1_COMPLETE__ISSUE_76_P2A_STAGED_NOT_OPERATIVE`。
 
 Issue #74 / P1A：ACCEPTED / CLOSED / INTEGRATED。
-Issue #75 / P1B：**ACCEPTED / CLOSED / INTEGRATED**。
-- accepted integration: `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`
-- Reviewer acceptance comment: `5739889010`
+Issue #75 / P1B：ACCEPTED / CLOSED / INTEGRATED。
+- P1B integration: `e1b83b3d5b2c04d7e9052ad614e95631abb03dc6`
+- Reviewer acceptance: `5739889010`
 - integration comment: `5739889903`
-- terminal: `DLH_WL_P1B_DATA_SCHEMA_AND_P2_CONTRACT__PASS__P2_IMPLEMENTATION_GATE_READY`
 
-P1 已完成：
-- 家庭依赖 evidence registry 与离线 W/P/F accounting interface 已接受；
-- label semantics / canonical schema 已冻结；
-- P2 method-only synthetic S0/S1 合同、6 参数 parametric control、小型 neural architecture、split、metrics、12 planned executions 与 1800s 总预算已冻结；
-- split 只能解释为 held-out time + held-out origin role，不得声称 unseen-region；
-- real annual bilateral OD label availability 仍为 UNRESOLVED。
+下一科学 Builder Issue：
+- #76 / `DLH-WL-P2A: implement and execute frozen offline synthetic prototype`
+- 状态：**OPEN / STAGED / NOT OPERATIVE**
+- publication baseline：`2750bf416b9d3034a5f77792c17e0bc59571aae8`
+- final activation comment 发布前不得执行。
 
-当前科学 Builder Issue：**NONE**（Reviewer 将发布 P2 第一执行 Issue）。
+#76 是第一张真正运行小型训练的 P2 Issue，但只能执行 #75 已冻结的合同：
+- synthetic S0/S1；
+- fixed / 6-parametric / small-neural 三基准；
+- split 9/3/2/6；
+- 8 primary configs / 12 planned executions / <=13 attempts / <=1800s；
+- no hyperparameter/seed search；
+- no real data / HJB / KFE / GE / MATLAB；
+- neural 不要求胜过 parametric；负结果可以是 PASS。
 
-P2 首轮必须执行已冻结 config，不得改 #75 contract/config，不做 hyperparameter/seed search，不调用 HJB/KFE/GE/MATLAB，不使用真实数据。
+split 的唯一允许解释是 held-out time + held-out origin role；不得声称 unseen-region。
