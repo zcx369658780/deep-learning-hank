@@ -93,3 +93,6 @@ Task Index 只写任务指针；Snapshot 写当前事实；本文件写路线。
 
 
 P2B clean replication respected the single-invocation rule but ended Gate Fail after all 12 fits because post-fit aggregation crashed before predictions/results were persisted. This validates the need for per-fit durable scientific output. The next P2 replication keeps the #75 design unchanged and persists predictions/state in every FIT_COMPLETED record, making downstream accounting/rendering zero-fit recoverable.
+
+
+P2C fixed the durability layer but exposed one isolated scientific runner defect: the neural optimizer received the TRAIN-z-scored design while final prediction fell back to raw_design because the runner omitted `universe._design_matrix = design`. The next bounded replication changes no scientific design; it retains the accepted P2C durability machinery and repairs only this preprocessing-state propagation, with a dedicated zero-fit pre-run prediction-path test.
