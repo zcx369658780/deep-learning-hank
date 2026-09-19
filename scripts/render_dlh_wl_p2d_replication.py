@@ -1490,9 +1490,12 @@ def render_report(results: dict[str, Any], raw: dict[str, Any],
     lines.append("")
     lines.append("## 2b. Preprocessing-design evidence (Issue #79)\n")
     expected = preprocessing["expected_design"]
-    lines.append("Contract verification recomputes both designs from the frozen inputs with "
-                 "``sci._train_only_zscore`` (a pure preprocessing helper: no fit, no "
-                 "optimizer) and requires the durable evidence to match.")
+    lines.append("Contract verification recomputes both designs from the frozen inputs — "
+                 "the TRAIN-only statistics are re-derived here directly from the frozen "
+                 "universe (``recomputation = "
+                 f"{expected['recomputation']}``), not by calling the accepted module's "
+                 "preprocessing helper — and requires the durable evidence to match. No fit, "
+                 "no optimizer and no prediction is performed by this stage.")
     lines.append("")
     lines.append("```")
     lines.append(f"required assignment                     : "

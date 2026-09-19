@@ -13,7 +13,7 @@ terminal: DLH_WL_P2D_PREPROCESSING_CORRECTED_REPLICATION__PASS__P2_METHOD_GATE_C
 - science invocations: **1**; science retries: **0**
 - fit attempts started / completed / failed: **12 / 12 / 0**
 - science wall clock: **1.544039 s** (source `SCIENCE_SEAL`, ceiling 1800 s)
-- render-only invocations so far: **1** (zero fits, zero optimizer steps)
+- render-only invocations so far: **2** (zero fits, zero optimizer steps)
 - `confirmatory_p2_pass_allowed`: **True**
 
 ## 1. What P2D changes — the single authorized science-path repair
@@ -81,7 +81,7 @@ This render stage performs zero fits and zero optimizer steps. Every number it p
 
 ## 2b. Preprocessing-design evidence (Issue #79)
 
-Contract verification recomputes both designs from the frozen inputs with ``sci._train_only_zscore`` (a pure preprocessing helper: no fit, no optimizer) and requires the durable evidence to match.
+Contract verification recomputes both designs from the frozen inputs — the TRAIN-only statistics are re-derived here directly from the frozen universe (``recomputation = INDEPENDENT_OF_THE_ACCEPTED_MODULE_HELPER``), not by calling the accepted module's preprocessing helper — and requires the durable evidence to match. No fit, no optimizer and no prediction is performed by this stage.
 
 ```
 required assignment                     : universe._design_matrix = design

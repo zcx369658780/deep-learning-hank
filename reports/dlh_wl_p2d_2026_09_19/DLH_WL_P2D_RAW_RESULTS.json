@@ -2918,7 +2918,7 @@
     },
     "training_design_label": "TRAIN_ONLY_ZSCORED"
   },
-  "recorded_utc": "2026-09-19T10:06:43.921890+00:00",
+  "recorded_utc": "2026-09-19T10:07:46.641876+00:00",
   "route": "DLH-WL-V1-20260918",
   "science_wall_clock": {
     "ceiling_seconds": 1800.0,

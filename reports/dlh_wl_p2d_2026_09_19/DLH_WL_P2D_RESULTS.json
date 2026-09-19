@@ -1041,7 +1041,7 @@
     ]
   },
   "issue": 79,
-  "manifest_canonical_sha256": "378DB834229EF8E811AF2B0CB7CE8C854469499381A5747518AFA41FA4516483",
+  "manifest_canonical_sha256": "E6B69B24656A2E000BE3014090DAC207CF66CF8BB908B7081C66C9A8D1DE08C7",
   "mechanical_protocol_gate_ok": true,
   "metric_provenance": {
     "fixed_baseline_marker": "FROZEN_DESIGN_CONFORMANT_ZERO_FIT_BASELINE",
@@ -2735,9 +2735,9 @@
     },
     "training_design_label": "TRAIN_ONLY_ZSCORED"
   },
-  "recorded_utc": "2026-09-19T10:06:43.976338+00:00",
-  "render_only_invocations": 1,
-  "results_canonical_sha256": "586B879DBE1251C7B7518ACD614084B8733768E0CC7B562CB8E6AD622C7A1616",
+  "recorded_utc": "2026-09-19T10:07:46.691915+00:00",
+  "render_only_invocations": 2,
+  "results_canonical_sha256": "88F27A66306BBF82181B65D830A4E16FC08F1655F6F95C58D441BB32AEA3B80C",
   "route": "DLH-WL-V1-20260918",
   "science_code_identity": {
     "config_blob_sha1": "bb5dbbd0746e9d92874f94b03a1d54f3d382c4a8",
