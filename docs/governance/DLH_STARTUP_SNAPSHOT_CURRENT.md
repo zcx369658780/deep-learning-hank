@@ -75,3 +75,8 @@ Issue #78 is CLOSED with accepted terminal `DLH_WL_P2C_DURABLE_OUTPUT_REPLICATIO
 ## P2D minimal corrected replication staged — 2026-09-19
 
 Issue #79 is now **ACTIVE / OPERATIVE**. It preserves the #75 frozen scientific design and #78 accepted durable-output protocol. The only science-path repair is explicit `universe._design_matrix = design` propagation before neural fits, with a zero-fit pre-run prediction-path test that must distinguish the z-scored design from raw fallback. Exact operative baseline and branch are named by the Reviewer final activation.
+
+
+## P2 method gate complete — 2026-09-19
+
+Issue #79 / P2D is ACCEPTED / CLOSED / INTEGRATED at `8ae4561ca3b0c78ba1d47045182fa5b4b023ed6d` (Reviewer acceptance `5741061720`; integration `5741063251`). The frozen synthetic method experiment is now accepted: all protocol/preprocessing/durability gates pass, and the neural mapping does not beat the correctly specified parametric baseline in S0/S1. This is a valid negative synthetic-method result, not an empirical China result. The next gate is P3A real-data label/provenance/semantics verification before any empirical fitting.
