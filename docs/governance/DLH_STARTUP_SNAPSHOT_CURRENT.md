@@ -104,4 +104,4 @@ Issue #81 is ACCEPTED / CLOSED / INTEGRATED at `1819b0a5a36b2a8ffde3641c711892df
 
 ## P3C execution-readiness freeze staged — 2026-09-19
 
-Issue #82 is published as **STAGED / NOT OPERATIVE**. It freezes Reviewer-side thresholds, numerical root-search semantics, uniqueness/non-existence claim ceilings and the E3 human source-verification packet before any real transition matrix is executed. No bridge/data/model execution is authorized before final activation.
+Issue #82 is now **ACTIVE / OPERATIVE**. It freezes Reviewer-side thresholds, numerical root-search semantics, uniqueness/non-existence claim ceilings and the E3 human source-verification packet before any real transition matrix is executed. Exact operative baseline and branch are named by the Reviewer final activation. No real bridge/data/model execution is authorized in P3C.
