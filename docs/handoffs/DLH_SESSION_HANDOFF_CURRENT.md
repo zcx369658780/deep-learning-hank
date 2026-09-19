@@ -51,4 +51,4 @@ Issue #79 is accepted and integrated. Do not continue synthetic tuning: the neur
 
 
 ## P3A staged
-Issue #80 is STAGED / NOT OPERATIVE. After activation, DSH must audit real source semantics/provenance only. It may verify public source metadata read-only if reachable, but must not download/ingest datasets or fit any empirical model. The outcome is Branch D (direct annual OD), B (bridged pair object), or P (pair target not currently supportable).
+Issue #80 is ACTIVE / OPERATIVE. DSH must read the final activation and audit real source semantics/provenance only. It may verify public source metadata read-only if reachable, but must not download/ingest datasets or fit any empirical model. The outcome is Branch D (direct annual OD), B (bridged pair object), or P (pair target not currently supportable).
