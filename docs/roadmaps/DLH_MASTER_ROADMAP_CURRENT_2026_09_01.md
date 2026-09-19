@@ -105,3 +105,6 @@ P3A completed at Issue #80 with Branch B. No direct annual bilateral OD flow tar
 
 
 P3B completed with a preregisterable T-family bridge candidate. Before any empirical bridge execution, P3C must freeze numerical tolerances, root-search semantics, uniqueness/identification claim ceilings and source-verification requirements. In particular, finding one numerical stochastic root in 31 dimensions may not be treated as proof of uniqueness.
+
+
+P3C execution-readiness is complete. The project is now intentionally paused at the human/source verification gate: H1–H7 must be resolved from primary evidence before any real transition matrix, bridge implementation, adapter or empirical fit is authorized. Finite root search semantics and all first-execution numerical thresholds are already frozen, preventing post-hoc rule changes once real data are inspected.
