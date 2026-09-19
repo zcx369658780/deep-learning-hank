@@ -36,3 +36,7 @@ Issue #77 is complete. Do not rerun it. Its ledger proves 12 completed fits but 
 
 ## P2C staged
 Issue #78 is ACTIVE / OPERATIVE. DSH must read the final activation, then first prove with a fake 12-fit ledger that the exact zero-fit aggregation/render path works end-to-end. Then it freezes pre-run code, executes science exactly once, and persists full predictions inside every FIT_COMPLETED record before proceeding to the next fit.
+
+
+## P2C gate-fail accepted
+Issue #78 is complete. Do not rerun it. The next replication must retain the accepted durable per-fit-output protocol and add only the missing neural preprocessing state propagation: the runner must set `universe._design_matrix = design` before any neural fit and prove pre-run, without optimization, that the final prediction path reads that same TRAIN-z-scored design.
