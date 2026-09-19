@@ -52,3 +52,7 @@ Issue #79 is accepted and integrated. Do not continue synthetic tuning: the neur
 
 ## P3A staged
 Issue #80 is ACTIVE / OPERATIVE. DSH must read the final activation and audit real source semantics/provenance only. It may verify public source metadata read-only if reachable, but must not download/ingest datasets or fit any empirical model. The outcome is Branch D (direct annual OD), B (bridged pair object), or P (pair target not currently supportable).
+
+
+## P3A complete — Branch B
+Issue #80 is accepted and integrated. Do not build a real adapter or fit W yet. P3B must first preregister the exact bridge family/source and its assumptions, region dictionary, weights/harmonization, m/ell provenance requirements, timing/leakage rules and sensitivity design. Branch B is a routing result only.
